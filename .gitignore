@@ -1,0 +1,8 @@
+# Ignore vi swp files
+*.swp
+
+# And macOS things
+.DS_Store
+
+# Also, don't check the ROM in...
+*.gba
