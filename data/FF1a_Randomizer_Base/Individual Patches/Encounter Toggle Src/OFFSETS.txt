@@ -1,0 +1,49 @@
+Data changed in-place
+----------------------
+$1DABAC - Pointer to option description text updated
+
+$2160C8 - Message speed always at max
+
+$216F70-216FB3 - Encounter rates pointers updated
+
+$36070,$360AC
+$360B4,$36100
+$36108,$36148 - Pointers to toggle text updated
+
+$3606C - Pointer to option name text updated
+
+Routines changed in-place
+--------------------------
+$355C0 - Only 3 separate toggles for third option type
+$355C8 - (TBD: cursor spacing)
+
+$360A2, $360D4
+$360F0, $3611E - Updating X-coords for encounter rate toggles
+
+$3613E,$3616A - Fourth toggle will not be printed
+
+$4E746 - Start in Low encounters, Memory Cursor, Auto-Dash ON
+
+$5B608
+$5B6EC
+$5B800 - Updating pointers to encounter roll routine
+
+
+
+New Data
+---------
+$EE21F0: High encounter rates
+$EE2370: Low encounter rates
+
+New Text
+---------
+$EE8000: "High"
+$EE800A: "Low"
+$EE8012: "Off"
+
+$EE801A: "Encounter Rate"
+$EE8038: "Adjust frequency of/random encounters."
+
+New Routines
+-------------
+$F00000: Updated encounter roll routine

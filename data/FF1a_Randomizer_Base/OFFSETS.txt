@@ -1,0 +1,90 @@
+Data changed in-place
+----------------------
+$1DA280 - Pointer to Window Style #4 updated
+
+$1DABAC - Pointer to option description text updated
+
+$2160C8 - Message speed always at max
+
+$216F70-216FB3 - Encounter rates pointers updated
+
+$36070,$360AC
+$360B4,$36100
+$36108,$36148 - Pointers to toggle text updated
+
+$3606C - Pointer to option name text updated
+
+Routines changed in-place
+--------------------------
+$32160 - Equipment stats display routine branches to new code
+
+$355C0 - Only 3 separate toggles for third option type
+$355C8 - (TBD: cursor spacing)
+
+$360A2, $360D4
+$360F0, $3611E - Updating X-coords for encounter rate toggles
+
+$3613E,$3616A - Fourth toggle will not be printed
+
+$405EC
+$72170
+$7670C
+$7AEF0
+$7C91C
+$7CB2C - Pointers to Monster data all point to 0x1DE044
+
+$4B3C8 - Branch to party randomization code
+
+$4E746 - Start in Low encounters, Memory Cursor, Auto-Dash ON
+
+$5B608
+$5B6EC
+$5B800 - Updating pointers to encounter roll routine
+
+$62FC0
+$6F080
+$7B134 - Pointers to monster text pointer tables all point to 0x1DDD38
+
+$76A78 - If unrunnable battle detected, display text
+$789B8 - Unrunnable battles store flag to memory
+
+New Data
+---------
+$0321B0: Equipment screen display data settings table
+
+$EE21F0: High encounter rates
+$EE2370: Low encounter rates
+
+$EE7100: Modified Window Style #4 (Equipment Viewing)
+
+New Text
+---------
+$EE8000: "High"
+$EE800A: "Low"
+$EE8012: "Off"
+
+$EE801A: "Encounter Rate"
+$EE8038: "Adjust frequency of/random encounters."
+
+$EE8090: "No escape!"
+
+$EE80C0: Stat/Attribute names for status screen
+
+New Routines
+-------------
+$F00000: Updated encounter roll routine
+$F00070: Randomize default party
+
+$F10370: Updated main equipment stats display routine
+$F10650: Status screen expansion code
+
+
+Freed Space
+------------
+$214CB4-215FB7
+$2257AC-226AAF
+$22C0E0-22D3E3 - Duplicate monster name text data/pointers
+
+$223F4C-2257AB
+$227054-2288B3
+$22A880-22C0DF - Duplicate monster stats tables

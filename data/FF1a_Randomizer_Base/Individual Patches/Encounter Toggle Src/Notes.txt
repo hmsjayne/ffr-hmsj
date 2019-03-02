@@ -1,0 +1,42 @@
+-Find locations of text data for message speed: DONE
+-Insert new rates tables: DONE
+-Repoint to new rates tables: DONE
+-Replace encounter roll routine: DONE
+-Update pointers to enc roll routine: DONE
+-Fix Message Speed to max: DONE
+-Update Config logic: DONE
+-Update Config text: DONE
+-Update New Game initialization: DONE
+
+-Routine at $6682C does the actual roll for an encounter
+
+-Find out where options are initialized
+-Text speed use a default value instead?
+	-Or just use unused bits for encounter toggle...
+	-Or, just write 00's at $2160C8
+$1DA310 - "B Button Dash"
+$1DA33C - "Message Speed"
+
+$1DAA90 - B Button Dash option description
+$1DAAF8 - Message Speed option description
+
+$35FE4 / $36076, $36092 / $360C2, $360E6 / $36112
+	-Where text for the 1 2 3 4 are loaded (depends on if gray or white)
+	-Remember to modify coords...
+
+
+Problem: Encounter rates table data is pointed to individually from a separate pointer table
+	-Maybe in new $6682C replacement, if option is set advance by 0x40 bytes in ptr table?
+		-or rather by 0x40 in rate data
+	-And if no enc is set, auto-fail
+-Should I make steps go to 32? Why not, for normal rate can just fill out table
+
+-At 355C0, write 03 to have only three options available
+	355C8 determines spacing
+
+21B334 | EE21F0
+21B354 | EE2230
+21B374 | EE2270
+21B394 | EE22B0
+21B3B4 | EE22F0
+21B3D4 | EE2330

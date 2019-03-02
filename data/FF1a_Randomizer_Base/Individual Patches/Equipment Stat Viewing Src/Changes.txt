@@ -1,0 +1,12 @@
+-Hooks into vanilla equip display routine:
+	-$32160: 004A 1047 7103F108
+-New routine runs at 0xF10370
+
+-Changes gradient scaling in default item view window drawing routine to match new window theme:
+	-$32560: 3021 7022
+
+-Window theme 0x4 (Equipment viewing) modified
+	-Relocated to $EE7100
+	-Pointer at $1DA280 updated
+
+-New tables starting at $321B0 for defining text and number printing
