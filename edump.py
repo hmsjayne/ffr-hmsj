@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 
-import array, sys
+import array
+import sys
 
 # Global to hold the ROM data (for now)
 rom_data = bytes()
 
+
 # Simple routine to convert a memory address to an index into the ROM.
 def addr_to_rom(addr):
     return addr - 0x8000000
+
 
 # Looks up the starting memory address of an event given its ID
 def lookup_event(id):
@@ -34,6 +37,7 @@ def lookup_event(id):
     # Since it's stored little endian, we only really need the
     # first two bytes.
     return addr_to_rom(array.array("I", rom_data[lut_addr:lut_addr + 4])[0])
+
 
 def decompile(addr):
     working = dict()
@@ -74,6 +78,7 @@ def decompile(addr):
 
     return working
 
+
 def main(argv):
     if len(argv) != 2:
         raise ValueError("Please pass ROM path and event ID parameters")
@@ -83,7 +88,7 @@ def main(argv):
         # Read the whole file at once
         rom_data = binary_file.read()
 
-    if (argv[1].startswith("0x")):
+    if argv[1].startswith("0x"):
         event_id = int(argv[1], 0)
     else:
         event_id = int(argv[1], 16)
@@ -95,5 +100,6 @@ def main(argv):
     for key, value in sorted(event_code.items(), key=lambda x: x[0]):
         print("{:x}: {}".format(key, value))
 
-if __name__== "__main__":
-  main(sys.argv[1:])
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
