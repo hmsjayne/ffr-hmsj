@@ -1,0 +1,80 @@
+# -*- coding: utf-8 -*-
+"""Utility functions for working with IPS files."""
+
+IPS_MAGIC = b'PATCH'
+IPS_EOF = 0x454F46
+
+
+def load_ips_file(path):
+    """Loads an IPS file into memory.
+
+    :param path: Path to the IPS to load.
+    :return: A dictionary where the keys are the offset of the patch and the value is the data.
+    """
+    with open(path, "rb") as ips_file:
+        header = ips_file.read(len(IPS_MAGIC))
+        if not header == IPS_MAGIC:
+            raise RuntimeError("File is not an IPS file (invalid header)")
+
+        patch_data = dict()
+        while True:
+            offset = int.from_bytes(ips_file.read(3), byteorder="big", signed=False)
+            if offset == IPS_EOF:
+                break
+
+            length = int.from_bytes(ips_file.read(2), byteorder="big", signed=False)
+            if length == 0:
+                run_length = int.from_bytes(ips_file.read(2), byteorder="big", signed=False)
+                data = ips_file.read(1) * run_length
+            else:
+                data = ips_file.read(length)
+
+            patch_data[offset] = tuple(data)
+
+        return patch_data
+
+
+def load_ips_files(*args):
+    """Loads a set of IPS files.
+
+    :param args: List of IPS file paths to load.
+    :return: A dictionary containing all the offsets & data of the patches.
+    """
+    complete = dict()
+    for file in args:
+        patches = load_ips_file(file)
+        for offset, data in patches.items():
+            if offset in complete:
+                raise RuntimeWarning(f"Multiple patches targeted to {offset}")
+            complete[offset] = data
+    return complete
+
+
+def apply_patches(data, patches):
+    """Applies a set of patches to a block of data.
+
+    :param data: The data to apply the patches to.
+    :param patches: Patches to apply as a dictionary. Keys are offsets, values are patch data.
+    :return: A patched version of the input data.
+    """
+    new_data = bytearray()
+
+    working_offset = 0
+    for offset in sorted(patches.keys()):
+        if working_offset > offset:
+            raise RuntimeError(f"Could not apply patch to {offset}; already at {working_offset}!")
+
+        # Check if there's missing data between our working position and the next patch
+        if working_offset < offset:
+            new_data.extend(data[working_offset:offset])
+
+        # Now that we're caught up, plop the patch in, and update the working offset.
+        patch = patches[offset]
+        new_data.extend(patch)
+        working_offset = offset + len(patch)
+
+    # Now that the patches are applied, add whatever is left of the file.
+    new_data.extend(data[working_offset:])
+
+    # Return the patched data as a tuple so it's immutable.
+    return tuple(new_data)

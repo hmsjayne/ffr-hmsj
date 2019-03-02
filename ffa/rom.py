@@ -22,6 +22,12 @@ def open_rom(path: str) -> tuple:
         return tuple(rom_data)
 
 
+def write_rom(path: str, data: tuple):
+    with open(path, "wb") as rom_file:
+        rom_file.write(bytearray(data))
+        rom_file.close()
+
+
 def load_monster_data(rom_data):
     MONSTER_DATA_BASE = 0x1DE044
     MONSTER_DATA_SIZE = 0x20
