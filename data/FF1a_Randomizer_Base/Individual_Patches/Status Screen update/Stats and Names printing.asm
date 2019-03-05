@@ -1,4 +1,5 @@
-@Modify part of status screen routine to also print MDF
+@Modify part of status screen routine to also print MDF and number of hits
+@Also uses full words for stats instead of abbreviations
 @Replaces part of routine beginning at 0x38FB0
 @There, write 0048 0047 XXXXXXXX
 @r4 = 0x0

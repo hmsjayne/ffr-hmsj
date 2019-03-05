@@ -4,4 +4,4 @@
 -consolidate duplicated data tables (Done)
 -message display for unrunnable battles (Done)
 -Update status screen (Done)
--enable running on overworld?
+-Autorun change (Done)

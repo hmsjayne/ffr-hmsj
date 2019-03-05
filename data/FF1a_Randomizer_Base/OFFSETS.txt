@@ -37,6 +37,8 @@ $4B3C8 - Branch to party randomization code
 
 $4E746 - Start in Low encounters, Memory Cursor, Auto-Dash ON
 
+$56486 - Can run on overworld and on vehicles, B button switches running speed
+
 $5B608
 $5B6EC
 $5B800 - Updating pointers to encounter roll routine
@@ -47,6 +49,11 @@ $7B134 - Pointers to monster text pointer tables all point to 0x1DDD38
 
 $76A78 - If unrunnable battle detected, display text
 $789B8 - Unrunnable battles store flag to memory
+
+$78A20
+$79C58
+$7AEE0
+$7CED4 - Pointers to encounter data tables all point to $2288B4
 
 New Data
 ---------
@@ -81,10 +88,12 @@ $F10650: Status screen expansion code
 
 Freed Space
 ------------
-$214CB4-215FB7
-$2257AC-226AAF
-$22C0E0-22D3E3 - Duplicate monster name text data/pointers
+$214CB4 — 215FB7
+$2257AC — 226AAF
+$22C0E0 — 22D3E3 - Duplicate monster name text data/pointers
 
-$223F4C-2257AB
-$227054-2288B3
-$22A880-22C0DF - Duplicate monster stats tables
+0x22D3E4 — 0x22F0B7 - Duplicate encounter data table
+
+$223F4C — 2257AB
+$227054 — 2288B3
+$22A880 — 22C0DF - Duplicate monster stats tables
