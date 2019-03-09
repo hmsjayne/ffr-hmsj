@@ -41,6 +41,7 @@ class Enemies(object):
         end = len(self.sizes) if withsoc else 0x80
         return (index for index in range(0, end) if self.sizes[index] == size)
 
+
 class MonsterStats(MonsterStatsTuple):
     def scaleTo(self, other):
         return other
@@ -56,6 +57,13 @@ class EncounterData(EncounterDataTuple):
             return False
         else:
             return True
+
+    def apply_shuffle(self, shuffled):
+        id_1 = shuffled[self.group_1_id] if self.group_1_id in shuffled else self.group_1_id
+        id_2 = shuffled[self.group_2_id] if self.group_2_id in shuffled else self.group_2_id
+        id_3 = shuffled[self.group_3_id] if self.group_3_id in shuffled else self.group_3_id
+        id_4 = shuffled[self.group_4_id] if self.group_4_id in shuffled else self.group_4_id
+        return self._replace(group_1_id=id_1, group_2_id=id_2, group_3_id=id_3, group_4_id=id_4)
 
 
 def unpack_monster_stats(rom_data):

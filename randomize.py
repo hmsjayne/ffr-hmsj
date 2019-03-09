@@ -88,11 +88,7 @@ def shuffle_encounter(encounter, shuffled):
     if encounter.group_1_id == 0x76:
         return encounter
 
-    id_1 = shuffled[encounter.group_1_id] if encounter.group_1_id in shuffled else encounter.group_1_id
-    id_2 = shuffled[encounter.group_2_id] if encounter.group_2_id in shuffled else encounter.group_2_id
-    id_3 = shuffled[encounter.group_3_id] if encounter.group_3_id in shuffled else encounter.group_3_id
-    id_4 = shuffled[encounter.group_4_id] if encounter.group_4_id in shuffled else encounter.group_4_id
-    return encounter._replace(group_1_id=id_1, group_2_id=id_2, group_3_id=id_3, group_4_id=id_4)
+    return encounter.apply_shuffle(shuffled)
 
 
 def print_encounter(rom, encounter, orig):
