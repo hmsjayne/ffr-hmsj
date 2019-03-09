@@ -26,8 +26,6 @@ from ffa.monster import unpack_encounter_data, Enemies, pack_encounter_data
 
 
 class Rom(object):
-    enemies = None
-
     def __init__(self, path: str = None, data: bytearray = None):
         if path is not None and data is None:
             with open(path, "rb") as rom_file:
@@ -38,9 +36,7 @@ class Rom(object):
             raise RuntimeError("Pass only the path of the ROM to load")
 
         self.encounters = self._load_encounter_data()
-
-        if Rom.enemies is None:
-            Rom.enemies = Enemies(self)
+        self.enemies = Enemies(self)
 
     def find_string(self, offset):
         end_offset = offset

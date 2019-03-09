@@ -17,6 +17,7 @@
 import sys
 from random import sample
 
+from ffa.monster import Enemies
 from ffa.rom import Rom
 from ipsfile import load_ips_files
 
@@ -49,12 +50,20 @@ def main(argv):
 
     encounters = rom.encounters
 
-    small_monsters = tuple(rom.enemies.find_by_size(0))
+    small_monsters = rom.enemies.find_by_size(0)
+    small_monsters = filter(lambda id: not Enemies.is_soc(id), small_monsters)
+    small_monsters = filter(lambda id: not Enemies.is_miniboss(id), small_monsters)
+    small_monsters = tuple(small_monsters)
+
     big_monsters = tuple(rom.enemies.find_by_size(1))
+    big_monsters = filter(lambda id: not Enemies.is_soc(id), big_monsters)
+    big_monsters = filter(lambda id: not Enemies.is_miniboss(id), big_monsters)
+    big_monsters = tuple(big_monsters)
+
     shuffled = dict(zip(small_monsters, sample(small_monsters, len(small_monsters))))
     shuffled.update(zip(big_monsters, sample(big_monsters, len(big_monsters))))
 
-    new_encounters = map(lambda encounter: shuffle_encounter(encounter, shuffled), encounters)
+    new_encounters = tuple(map(lambda encounter: shuffle_encounter(encounter, shuffled), encounters))
     rom = rom.with_new_encounters(new_encounters)
 
     for monster in big_monsters:
@@ -63,10 +72,10 @@ def main(argv):
     # for encounter in encounters:
     #     if not encounter.is_soc():
     #         print_encounter(rom, encounter)
-    # for index in range(len(new_encounters)):
-    #     new_encounter = new_encounters[index]
-    #     orig = encounters[index]
-    #     print_encounter(rom, new_encounter, orig)
+    for index in range(len(new_encounters)):
+        new_encounter = new_encounters[index]
+        orig = encounters[index]
+        print_encounter(rom, new_encounter, orig)
     # index = 0
     # for name in rom.enemies.names:
     #     print(f"{hex(index)}: {name}")

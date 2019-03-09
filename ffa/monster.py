@@ -20,10 +20,17 @@ from struct import unpack, pack
 from ffa.dostypes import MONSTER_STATS, ENCOUNTER_DATA, MonsterStatsTuple, EncounterDataTuple
 from ffa.text import text_to_ascii
 
-FLYING_MONSTER_IDS = [0x51, 0x52, 0x52, 0xA2, 0x3E, 0x3F, 0xBB]
-
 
 class Enemies(object):
+    FLYING_MONSTER_IDS = [0x51, 0x52, 0x52, 0xA2, 0x3E, 0x3F, 0xBB]
+
+    MINI_BOSS_IDS = [
+        0xf,
+        0x69,
+        0x71,
+        0x76
+    ]
+
     def __init__(self, rom):
         MONSTER_DATA_BASE = 0x223644
         self.sizes = rom[MONSTER_DATA_BASE:(MONSTER_DATA_BASE + 195)]
@@ -37,13 +44,22 @@ class Enemies(object):
             names.append(text_to_ascii(string_data))
         self.names = tuple(names)
 
-    def find_by_size(self, size, withsoc=False):
-        end = len(self.sizes) if withsoc else 0x80
-        return (index for index in range(0, end) if self.sizes[index] == size)
+    def find_by_size(self, size):
+        return (index for index in range(0, len(self.sizes)) if self.sizes[index] == size)
+
+    @staticmethod
+    def is_soc(id):
+        # Soul of Chaos enemies start after Chaos (id=0x80)
+        return id > 0x80
+
+    @staticmethod
+    def is_miniboss(id):
+        # Soul of Chaos enemies start after Chaos (id=0x80)
+        return id in Enemies.MINI_BOSS_IDS
 
 
 class MonsterStats(MonsterStatsTuple):
-    def scaleTo(self, other):
+    def scale_to(self, other):
         return other
 
 
@@ -52,18 +68,43 @@ class EncounterData(EncounterDataTuple):
         return self._is_group_soc(self.group_1_id) or self._is_group_soc(self.group_2_id) or \
                self._is_group_soc(self.group_3_id) or self._is_group_soc(self.group_4_id)
 
-    def _is_group_soc(self, id):
-        if id == 0xff or id < 0x80:
-            return False
-        else:
-            return True
-
     def apply_shuffle(self, shuffled):
         id_1 = shuffled[self.group_1_id] if self.group_1_id in shuffled else self.group_1_id
         id_2 = shuffled[self.group_2_id] if self.group_2_id in shuffled else self.group_2_id
         id_3 = shuffled[self.group_3_id] if self.group_3_id in shuffled else self.group_3_id
         id_4 = shuffled[self.group_4_id] if self.group_4_id in shuffled else self.group_4_id
-        return self._replace(group_1_id=id_1, group_2_id=id_2, group_3_id=id_3, group_4_id=id_4)
+
+        new_config = self.config
+        if self.config == 0x0 or self.config == 0x5:
+            types = self._enemy_type(id_1) | self._enemy_type(id_2) | self._enemy_type(id_3) | self._enemy_type(id_4)
+            if types == 0x1 or types == 0x2:
+                # Either all land or all flying
+                new_config = 0x0
+            else:
+                # Combo of flying + ground
+                new_config = 0x5
+
+        return self._replace(config=new_config,
+                             group_1_id=id_1,
+                             group_2_id=id_2,
+                             group_3_id=id_3,
+                             group_4_id=id_4)
+
+    @staticmethod
+    def _enemy_type(id):
+        if id == 0xff:
+            return 0
+        elif id in Enemies.FLYING_MONSTER_IDS:
+            return 2
+        else:
+            return 1
+
+    @staticmethod
+    def _is_group_soc(id):
+        if id == 0xff or id < 0x80:
+            return False
+        else:
+            return True
 
 
 def unpack_monster_stats(rom_data):
