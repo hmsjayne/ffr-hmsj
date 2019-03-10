@@ -23,12 +23,12 @@ from collections import namedtuple
 #:
 #: -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#- -#-
 
-MonsterStatsTuple = namedtuple('MonsterStatsTuple',
-                          ['exp_reward', 'gil_reward', 'hp', 'moral', 'evasion', 'defense', 'hit_count', 'accuracy',
+EnemyStatsTuple = namedtuple('MonsterStatsTuple',
+                             ['exp_reward', 'gil_reward', 'hp', 'moral', 'evasion', 'defense', 'hit_count', 'accuracy',
                            'attack', 'agility', 'intelligence', 'crit_rate', 'status_attack_element',
                            'status_attack_ailment', 'family', 'magic_defense', 'elemental_weakness',
                            'elemental_resistances', 'item_drop_type', 'item_drop_id', 'item_drop_chance'])
-MONSTER_STATS = "<HHHBxBBBBBBBBHBBBxHHBBBxxx"
+ENEMY_STATS = "<HHHBxBBBBBBBBHBBBxHHBBBxxx"
 
 EncounterDataTuple = namedtuple('EncounterDataTuple',
                            ['config', 'is_unrunnable', 'surprise_chance', 'group_1_id', 'group_1_min_count',

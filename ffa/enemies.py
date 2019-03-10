@@ -17,7 +17,7 @@
 
 from struct import unpack, pack
 
-from ffa.dostypes import MONSTER_STATS, ENCOUNTER_DATA, MonsterStatsTuple, EncounterDataTuple
+from ffa.dostypes import ENEMY_STATS, ENCOUNTER_DATA, EnemyStatsTuple, EncounterDataTuple
 from ffa.text import text_to_ascii
 
 
@@ -43,6 +43,7 @@ class Enemies(object):
             string_data = rom.find_string(offset)
             names.append(text_to_ascii(string_data))
         self.names = tuple(names)
+        self.stats = self._load_enemy_data(rom)
 
     def find_by_size(self, size):
         return (index for index in range(0, len(self.sizes)) if self.sizes[index] == size)
@@ -57,10 +58,47 @@ class Enemies(object):
         # Soul of Chaos enemies start after Chaos (id=0x80)
         return id in Enemies.MINI_BOSS_IDS
 
+    @staticmethod
+    def _load_enemy_data(rom_data):
+        ENEMY_DATA_BASE = 0x1DE044
+        ENEMY_DATA_SIZE = 0x20
+        ENEMY_DATA_COUNT = 0xC2
 
-class MonsterStats(MonsterStatsTuple):
+        encounters = list()
+        for i in range(0, ENEMY_DATA_COUNT):
+            start_addr = ENEMY_DATA_BASE + (ENEMY_DATA_SIZE * i)
+
+            encounter = unpack_enemy_stats(rom_data[start_addr:start_addr + ENEMY_DATA_SIZE])
+            encounters.append(encounter)
+
+        return tuple(encounters)
+
+
+class EnemyStats(EnemyStatsTuple):
     def scale_to(self, other):
-        return other
+        if other == self:
+            return self
+
+        self_exp = self.exp_reward if self.exp_reward > 1 else 1620
+        other_exp = other.exp_reward if other.exp_reward > 1 else 1620
+        ratio = other_exp / self_exp
+
+        estimate_damage = ((other.accuracy / 200) * other.attack) * other.hit_count
+        target_attack = (estimate_damage / (self.accuracy / 200)) / self.hit_count
+        new_hit_count = self.hit_count
+        if target_attack > 220:
+            if new_hit_count == 1:
+                new_hit_count = 2
+                target_attack = min(target_attack / 2, 220)
+
+        return self._replace(
+            exp_reward=other.exp_reward if self.exp_reward > 1 else self.exp_reward,
+            gil_reward=int(self.gil_reward * ratio) if self.gil_reward > 1 else 1,
+            hp=int(self.hp * ratio),
+            intelligence=min(int(self.intelligence * ratio), 160),
+            attack=min(int(target_attack), 220),
+            hit_count=int(new_hit_count),
+        )
 
 
 class EncounterData(EncounterDataTuple):
@@ -107,22 +145,25 @@ class EncounterData(EncounterDataTuple):
             return True
 
 
-def unpack_monster_stats(rom_data):
-    """Unpacks monster stat data from ROM data
+def unpack_enemy_stats(rom_data):
+    """Unpacks enemy stat data from ROM data
 
-    :param rom_data: ROM data for the monster to unpack as a tuple (32 bytes)
-    :return: A [MonsterStats] namedtuple with the data unpacked.
+    :param rom_data: ROM data for the enemy to unpack as a tuple (32 bytes)
+    :return: An [EnemyStats] namedtuple with the data unpacked.
     """
-    return MonsterStats(*unpack(MONSTER_STATS, bytearray(rom_data)))
+    return EnemyStats(*unpack(ENEMY_STATS, bytearray(rom_data)))
 
 
-def pack_monster_stats(stats):
-    """Packs monster stat namedtuple into a tuple to be restitched into a ROM file.
+def pack_enemy_stats(stats):
+    """Packs enemy stat namedtuple into a tuple to be restitched into a ROM file.
 
-    :param stats: The updated monster stats.
+    :param stats: The updated enemy stats.
     :return: Byte tuple of the namedtuple.
     """
-    return pack(MONSTER_STATS, *stats)
+    packed_data = []
+    for element in stats:
+        packed_data.extend(pack(ENEMY_STATS, *element))
+    return packed_data
 
 
 def unpack_encounter_data(data):

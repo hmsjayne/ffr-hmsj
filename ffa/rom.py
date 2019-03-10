@@ -22,7 +22,7 @@ want to reference the strings module.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from ffa.monster import unpack_encounter_data, Enemies, pack_encounter_data
+from ffa.enemies import unpack_encounter_data, Enemies, pack_encounter_data, unpack_enemy_stats, pack_enemy_stats
 
 
 class Rom(object):
@@ -86,6 +86,19 @@ class Rom(object):
         new_data.extend(self.rom_data[0:ENCOUNTER_DATA_BASE])
         new_data.extend(pack_encounter_data(encounters))
         new_data.extend(self.rom_data[ENCOUNTER_DATA_BASE + (ENCOUNTER_DATA_SIZE * ENCOUNTER_DATA_COUNT):])
+
+        new_rom = Rom(data=new_data)
+        return new_rom
+
+    def with_new_enemies(self, enemies):
+        ENEMY_DATA_BASE = 0x1DE044
+        ENEMY_DATA_SIZE = 0x20
+        ENEMY_DATA_COUNT = 0xC2
+
+        new_data = bytearray()
+        new_data.extend(self.rom_data[0:ENEMY_DATA_BASE])
+        new_data.extend(pack_enemy_stats(enemies))
+        new_data.extend(self.rom_data[ENEMY_DATA_BASE + (ENEMY_DATA_SIZE * ENEMY_DATA_COUNT):])
 
         new_rom = Rom(data=new_data)
         return new_rom
