@@ -159,5 +159,6 @@ dmypy.json
 # And macOS things
 .DS_Store
 
-# Also, don't check the ROM in...
+# Also, don't check the ROM/Save games in...
 *.gba
+*.sav

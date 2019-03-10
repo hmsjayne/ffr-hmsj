@@ -15,9 +15,9 @@
 #  limitations under the License.
 
 import sys
-from random import sample
+from random import sample, seed, random, shuffle, Random
 
-from ffa.monster import Enemies
+from ffa.enemies import Enemies
 from ffa.rom import Rom
 from ipsfile import load_ips_files
 
@@ -55,27 +55,45 @@ def main(argv):
     small_monsters = filter(lambda id: not Enemies.is_miniboss(id), small_monsters)
     small_monsters = tuple(small_monsters)
 
+    small_monsters_shuffled = list(small_monsters)
+    shuffle(small_monsters_shuffled)
+
     big_monsters = tuple(rom.enemies.find_by_size(1))
     big_monsters = filter(lambda id: not Enemies.is_soc(id), big_monsters)
     big_monsters = filter(lambda id: not Enemies.is_miniboss(id), big_monsters)
     big_monsters = tuple(big_monsters)
 
-    shuffled = dict(zip(small_monsters, sample(small_monsters, len(small_monsters))))
-    shuffled.update(zip(big_monsters, sample(big_monsters, len(big_monsters))))
+    big_monsters_shuffled = list(big_monsters)
+    shuffle(big_monsters_shuffled)
+
+    shuffled = dict(zip(small_monsters, small_monsters_shuffled))
+    shuffled.update(zip(big_monsters, big_monsters_shuffled))
+
+    new_enemies = []
+    for index, enemy in enumerate(rom.enemies.stats):
+        if index not in shuffled:
+            new_enemies.append(enemy)
+        else:
+            print(f"Scale {rom.enemies.names[shuffled[index]]} -> {rom.enemies.names[index]}")
+            enemy_to_scale = rom.enemies.stats[shuffled[index]]
+            scale_target = rom.enemies.stats[index]
+            new_enemy = enemy_to_scale.scale_to(scale_target)
+            new_enemies.append(new_enemy)
+    rom = rom.with_new_enemies(tuple(new_enemies))
 
     new_encounters = tuple(map(lambda encounter: shuffle_encounter(encounter, shuffled), encounters))
     rom = rom.with_new_encounters(new_encounters)
 
-    for monster in big_monsters:
-        print(f"{hex(monster)}: {rom.enemies.names[monster]}")
-
+    # for monster in big_monsters:
+    #     print(f"{hex(monster)}: {rom.enemies.names[monster]}")
+    #
     # for encounter in encounters:
     #     if not encounter.is_soc():
     #         print_encounter(rom, encounter)
-    for index in range(len(new_encounters)):
-        new_encounter = new_encounters[index]
-        orig = encounters[index]
-        print_encounter(rom, new_encounter, orig)
+    # for index in range(len(new_encounters)):
+    #     new_encounter = new_encounters[index]
+    #     orig = encounters[index]
+    #     print_encounter(rom, new_encounter, orig)
     # index = 0
     # for name in rom.enemies.names:
     #     print(f"{hex(index)}: {name}")
