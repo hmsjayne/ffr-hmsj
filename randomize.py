@@ -44,7 +44,7 @@ ENCOUNTER_TYPES = {
 
 def main(argv):
     rom = Rom(argv[0])
-
+    seed(argv[1])
     base_patch = load_ips_files("data/FF1R_Base.ips")
     rom = rom.apply_patches(base_patch)
 
@@ -68,18 +68,18 @@ def main(argv):
 
     shuffled = dict(zip(small_monsters, small_monsters_shuffled))
     shuffled.update(zip(big_monsters, big_monsters_shuffled))
+    shuffled_lookup = dict([[v, k] for k, v in shuffled.items()])
 
-    new_enemies = []
+    scaled_enemies = []
     for index, enemy in enumerate(rom.enemies.stats):
-        if index not in shuffled:
-            new_enemies.append(enemy)
+        if index not in shuffled_lookup:
+            scaled_enemies.append(enemy)
         else:
-            print(f"Scale {rom.enemies.names[shuffled[index]]} -> {rom.enemies.names[index]}")
-            enemy_to_scale = rom.enemies.stats[shuffled[index]]
-            scale_target = rom.enemies.stats[index]
+            enemy_to_scale = rom.enemies.stats[index]
+            scale_target = rom.enemies.stats[shuffled_lookup[index]]
             new_enemy = enemy_to_scale.scale_to(scale_target)
-            new_enemies.append(new_enemy)
-    rom = rom.with_new_enemies(tuple(new_enemies))
+            scaled_enemies.append(new_enemy)
+    rom = rom.with_new_enemies(tuple(scaled_enemies))
 
     new_encounters = tuple(map(lambda encounter: shuffle_encounter(encounter, shuffled), encounters))
     rom = rom.with_new_encounters(new_encounters)
@@ -101,7 +101,7 @@ def main(argv):
     # for index in range(0, 0x80):
     #     print(f"{hex(index)}: {rom.enemies.names[index]}")
 
-    rom.write("ffr-dos.gba")
+    rom.write("ffr-dos" + argv[1] + ".gba")
 
 
 def shuffle_encounter(encounter, shuffled):

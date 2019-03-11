@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Representation of a monster"""
 
 #  Copyright 2019 Nicole Borrelli
@@ -78,12 +77,27 @@ class EnemyStats(EnemyStatsTuple):
     def scale_to(self, other):
         if other == self:
             return self
+        
+        self_exp = self.exp_reward if self.exp_reward > 1 else 1620
+        other_exp = other.exp_reward if other.exp_reward > 1 else 1620
+        ratio = other_exp / self_exp
 
-        estimate_damage = other.attack * other.hit_count
-        new_attack = max(int(estimate_damage / self.hit_count), 1)
+        estimate_damage = ((other.accuracy / 200) * other.attack) * other.hit_count
+        target_attack = (estimate_damage / (self.accuracy / 200)) / self.hit_count
+        new_hit_count = self.hit_count
+        if target_attack > 220:
+            if new_hit_count == 1:
+                new_hit_count = 2
+                target_attack = min(target_attack / 2, 220)
+
         return self._replace(
-            hp=other.hp,
-            attack=new_attack)
+            exp_reward=other.exp_reward if self.exp_reward > 1 else self.exp_reward,
+            gil_reward=int(self.gil_reward * ratio) if self.gil_reward > 1 else 1,
+            hp=int(self.hp * ratio),
+            intelligence=min(int(self.intelligence * ratio), 160),
+            attack=min(int(target_attack), 220),
+            hit_count=int(new_hit_count),
+        )
 
 
 class EncounterData(EncounterDataTuple):
