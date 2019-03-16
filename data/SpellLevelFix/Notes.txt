@@ -1,0 +1,16 @@
+-A spell's level is determined by its data byte, not by ID:
+	Field Spell Menu 1 - print all spell names:
+		$3983E: C907 1BD0 517A 0000
+		$39850: 8842 12DB
+	Field Spell Menu 2 - trying to cast current spell ($2FC34):
+		507A 317F 8142 06DA 78E2
+	Shopping ($47078):
+		0248 1101 4118 497A 08E0 0000 80191A08
+	Shopping 2 - Generic determination? ($454FA):
+		0348 1901 4018 407A 0138 06E0 0000 80191A08
+	Adding spell to your spellbook ($44F7A):
+		875C 3B01 024A D318 587A 441E 21E0 80191A08
+	($451D8):
+		C75C 014C 3901 15E0 80191A08
+	($4520C):
+		6118 4C7A 013C

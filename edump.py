@@ -18,7 +18,10 @@ import array
 import sys
 
 # Global to hold the ROM data (for now)
-rom_data = bytes()
+from ffa.rom import Rom
+from ffa.text import text_to_ascii, encode_text
+
+rom: Rom
 
 
 # Simple routine to convert a memory address to an index into the ROM.
@@ -50,7 +53,12 @@ def lookup_event(id):
     lut_addr = addr_to_rom(((id - lut_id_offset) * 4) + lut_base)
     # Since it's stored little endian, we only really need the
     # first two bytes.
-    return addr_to_rom(array.array("I", rom_data[lut_addr:lut_addr + 4])[0])
+    return addr_to_rom(array.array("I", rom[lut_addr:lut_addr + 4])[0])
+
+
+def lookup_event_string(string_id):
+    addr = 0x211770 + (string_id * 4)
+    return addr_to_rom(array.array("I", rom[addr:addr + 4])[0])
 
 
 def decompile(addr):
@@ -60,31 +68,36 @@ def decompile(addr):
     last_cmd = -1
     while last_cmd != 0:
         # Name some things (for readability)
-        cmd = rom_data[addr]
-        cmd_len = rom_data[addr + 1]
+        cmd = rom[addr]
+        cmd_len = rom[addr + 1]
 
         cmd_str = ""
         for i in range(cmd_len):
-            cmd_str = cmd_str + hex(rom_data[addr + i]) + " "
-        working[addr] = cmd_str
+            cmd_str = cmd_str + hex(rom[addr + i]) + " "
 
         # Check to see if it's a branch, if it is we may want to
         # decompile it as well.
-        if (cmd == 0x0c):
+        if cmd == 0x0c:
             # Jump command
-            jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
+            jump_target = addr_to_rom(array.array("I", rom[addr + 4:addr + 8])[0])
             jumps.append(jump_target)
-        elif (cmd == 0x2d and cmd_len == 0x8):
+        elif cmd == 0x2d and cmd_len == 0x8:
             # 0x2d variant with alternate
-            jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
+            jump_target = addr_to_rom(array.array("I", rom[addr + 4:addr + 8])[0])
             jumps.append(jump_target)
-        elif (cmd == 0x48):
+        elif cmd == 0x48:
             # Another jump command
-            jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
+            jump_target = addr_to_rom(array.array("I", rom[addr + 4:addr + 8])[0])
             jumps.append(jump_target)
+        elif cmd == 0x5:
+            event_string_id = array.array("H", rom[addr + 2:addr + 4])[0]
+            str_addr = lookup_event_string(event_string_id)
+            cmd_str += f"\nText {hex(event_string_id)}:\n{text_to_ascii(rom.find_string(str_addr))}"
 
-        last_cmd = rom_data[addr]
-        addr = addr + rom_data[addr + 1]
+        working[addr] = cmd_str
+
+        last_cmd = rom[addr]
+        addr = addr + rom[addr + 1]
 
     for jump in jumps:
         if jump not in working:
@@ -97,10 +110,8 @@ def main(argv):
     if len(argv) != 2:
         raise ValueError("Please pass ROM path and event ID parameters")
 
-    with open(argv[0], "rb") as binary_file:
-        global rom_data
-        # Read the whole file at once
-        rom_data = binary_file.read()
+    global rom
+    rom = Rom(argv[0])
 
     if argv[1].startswith("0x"):
         event_id = int(argv[1], 0)

@@ -18,7 +18,7 @@ from struct import unpack
 
 TEXT_TABLE = {
     0x00: "(End)",
-    0x0A: "(Newline)",
+    0x0A: "\\n",
     0x2D: "(Dash)",
     0x2E: "(period)",
     0x2530: "(E_Item)",
@@ -28,7 +28,7 @@ TEXT_TABLE = {
     0x2564: "(E_Amount)",
     0x253264: "[E_Beaver)",
     0x810A: "(cr)",
-    0x8140: "",
+    0x8140: " ",
     0x8143: ",",
     0x8144: ".",
     0x8145: "?",
@@ -259,4 +259,33 @@ def text_to_ascii(text):
             raise RuntimeError(f"Unknown code encountered in string: {hex(text[index])}")
 
         index = index + 1
+    return working
+
+
+def encode_text(text):
+    global TEXT_TABLE
+
+    inverted_table = dict([[v, k] for k, v in TEXT_TABLE.items()])
+
+    index = 0
+    working = []
+    while index < len(text):
+        if text[index] == '\\':
+            if text[index + 1] == 'x':
+                chars = int(text[index + 1:index + 5], 16)
+                index += 5
+            elif text[index + 1] == '\"':
+                chars = 0x815F
+                index += 2
+            elif text[index + 1] == 'n':
+                chars = 0xa
+                index += 2
+            else:
+                raise RuntimeError(f"Invalid escape character: {text[index + 1]}")
+        else:
+            chars = int(inverted_table[text[index]]).to_bytes(2, byteorder="big", signed=False)
+            index += 1
+        working.append(chars)
+
+    working.append(0x0)
     return working
