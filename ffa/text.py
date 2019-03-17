@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Text manipulation methods"""
 
 #  Copyright 2019 Nicole Borrelli
@@ -260,3 +259,18 @@ def text_to_ascii(text):
 
         index = index + 1
     return working
+
+#Returns a string such that all instances of target are transformed into replacement
+#In particular, it's guaranteed to work on python strings as well as arrays
+#But it should work on anything that ducktypes to those well enough
+def replace_text(original, target, replacement):
+    replacement_indices = [x for x in range(len(original)) if original[x:x+len(target)] == target]
+    if len(replacement_indices) == 0:
+        return original
+    replacement_indices.append(len(original))
+    output = original[:replacement_indices[0]]
+    for idx, value in enumerate(replacement_indices[:-1]):
+        output = output + replacement
+        output = output + original[value+len(target):replacement_indices[idx+1]]
+    return output
+        
