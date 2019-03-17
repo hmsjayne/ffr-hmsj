@@ -15,6 +15,8 @@
 #  limitations under the License.
 from struct import unpack
 
+from stringio.stringstream import StringStream
+
 TEXT_TABLE = {
     0x00: "(End)",
     0x0A: "\\n",
@@ -260,44 +262,61 @@ def text_to_ascii(text):
         index = index + 1
     return working
 
-#Returns a string such that all instances of target are transformed into replacement
-#In particular, it's guaranteed to work on python strings as well as arrays
-#But it should work on anything that ducktypes to those well enough
+
 def replace_text(original, target, replacement):
-    replacement_indices = [x for x in range(len(original)) if original[x:x+len(target)] == target]
+    """Returns a string such that all instances of target are transformed into replacement
+
+    In particular, it's guaranteed to work on python strings as well as arrays
+    But it should work on anything that ducktypes to those well enough
+
+    :param original: Original string with items to replace.
+    :param target: Item (string) to replace.
+    :param replacement: Item to replace the target with.
+    :return: A new string with all instances of target replaced by replacement.
+    """
+    replacement_indices = [x for x in range(len(original)) if original[x:x + len(target)] == target]
     if len(replacement_indices) == 0:
         return original
     replacement_indices.append(len(original))
     output = original[:replacement_indices[0]]
     for idx, value in enumerate(replacement_indices[:-1]):
         output = output + replacement
-        output = output + original[value+len(target):replacement_indices[idx+1]]
+        output = output + original[value + len(target):replacement_indices[idx + 1]]
     return output
+
 
 def encode_text(text):
     global TEXT_TABLE
 
     inverted_table = dict([[v, k] for k, v in TEXT_TABLE.items()])
 
-    index = 0
-    working = []
-    while index < len(text):
-        if text[index] == '\\':
-            if text[index + 1] == 'x':
-                chars = int(text[index + 1:index + 5], 16)
-                index += 5
-            elif text[index + 1] == '\"':
+    stream = StringStream(text)
+    working = bytearray()
+    while not stream.is_eos():
+        char = stream.getc()
+        if char == '\\':
+            char = stream.getc()
+            if char == 'x':
+                # \x designates a 2 digit hex code
+                num = stream.getc() + stream.getc()
+                chars = int(num, 16)
+            elif char == 'u':
+                # \u designates a 4 digit hex code
+                num = ""
+                for digit in range(4):
+                    num += stream.getc()
+                chars = int(num, 16)
+            elif char == '\"':
                 chars = 0x815F
-                index += 2
-            elif text[index + 1] == 'n':
+            elif char == 'n':
                 chars = 0xa
-                index += 2
             else:
-                raise RuntimeError(f"Invalid escape character: {text[index + 1]}")
+                raise RuntimeError(f"Invalid escape character: {char}")
         else:
-            chars = int(inverted_table[text[index]]).to_bytes(2, byteorder="big", signed=False)
-            index += 1
-        working.append(chars)
+            chars = inverted_table[char]
+
+        digits = int(len(hex(chars)) / 2) - 1
+        working += int(chars).to_bytes(digits, byteorder="big", signed=False)
 
     working.append(0x0)
     return working
