@@ -31,7 +31,7 @@ def addr_to_rom(addr):
 
 # Looks up the starting memory address of an event given its ID
 def lookup_event(id):
-    if (id >= 0x0 and id <= 0x100):
+    if (id >= 0x0 and id <= 0xD3):
         lut_id_offset = 0x0
         lut_base = 0x08007050
     elif (id >= 0xFA0 and id <= 0xFAA):
