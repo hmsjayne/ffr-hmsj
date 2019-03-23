@@ -23,9 +23,6 @@ class FFString(object):
         self.ascii = self._as_ascii()
 
     def update(self, new_string: str):
-        global TEXT_TABLE
-        global INVERTED_TEXT_TABLE
-
         stream = StringStream(new_string)
         working = bytearray()
         while not stream.is_eos():
@@ -49,7 +46,7 @@ class FFString(object):
                 else:
                     raise RuntimeError(f"Invalid escape character: {char}")
             else:
-                chars = INVERTED_TEXT_TABLE[char]
+                chars = FFString.INVERTED_TEXT_TABLE[char]
 
             digits = int(len(hex(chars)) / 2) - 1
             working += int(chars).to_bytes(digits, byteorder="big", signed=False)
@@ -58,31 +55,29 @@ class FFString(object):
         return FFString(self.pointer_offset, working)
 
     def _as_ascii(self):
-        global TEXT_TABLE
-
         index = 0
         working = ""
         while self.data[index] != 0x00:
             if self.data[index] > 0x80:
                 char_code = unpack(">H", self.data[index:index + 2])[0]
-                working = working + TEXT_TABLE[char_code]
+                working = working + FFString.TEXT_TABLE[char_code]
                 index = index + 1
             elif self.data[index] == 0x25:
                 if self.data[index + 1] in [30, 31, 64, 73]:
                     char_code = unpack(">H", self.data[index:index + 2])[0]
-                    working = working + TEXT_TABLE[char_code]
+                    working = working + FFString.TEXT_TABLE[char_code]
                     index = index + 1
                 elif self.data[index + 1] == 0x32:
                     if self.data[index + 2] == 0x64:
                         char_code = 0x253264
-                        working = working + TEXT_TABLE[char_code]
+                        working = working + FFString.TEXT_TABLE[char_code]
                         index = index + 2
                     else:
                         char_code = 0x2532
-                        working = working + TEXT_TABLE[char_code]
+                        working = working + FFString.TEXT_TABLE[char_code]
                         index = index + 1
-            elif self.data[index] in [0x0a, 0x2d, 0x2e]:
-                working = working + TEXT_TABLE[self.data[index]]
+            elif self.data[index] in FFString.TEXT_TABLE:
+                working = working + FFString.TEXT_TABLE[self.data[index]]
             else:
                 raise RuntimeError(f"Unknown code encountered in string: {hex(self.data[index])}")
 
@@ -94,6 +89,7 @@ class FFString(object):
         0x0A: "\\n",
         0x2D: "(Dash)",
         0x2E: "(period)",
+        0x30: "(%1)",
         0x2530: "(E_Item)",
         0x2531: "(E_Price)",
         0x2532: "(E_Char)",

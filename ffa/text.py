@@ -22,6 +22,7 @@ TEXT_TABLE = {
     0x0A: "\\n",
     0x2D: "(Dash)",
     0x2E: "(period)",
+    0x30: "(%1)",
     0x2530: "(E_Item)",
     0x2531: "(E_Price)",
     0x2532: "(E_Char)",
@@ -254,10 +255,10 @@ def text_to_ascii(text):
                     char_code = 0x2532
                     working = working + TEXT_TABLE[char_code]
                     index = index + 1
-        elif text[index] in [0x0a, 0x2d, 0x2e]:
+        elif text[index] in TEXT_TABLE:
             working = working + TEXT_TABLE[text[index]]
         else:
-            raise RuntimeError(f"Unknown code encountered in string: {hex(text[index])}")
+            working = working + "\\x" + hex(text[index])
 
         index = index + 1
     return working
