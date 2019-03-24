@@ -117,6 +117,9 @@ class Rom(object):
     def __setitem__(self, index, value):
         raise RuntimeError("Rom objects are immutable.")
 
+    def size(self):
+        return len(self.rom_data)
+
     def _load_encounter_data(self):
         ENCOUNTER_DATA_BASE = 0x2288B4
         ENCOUNTER_DATA_SIZE = 0x14

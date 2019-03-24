@@ -68,6 +68,10 @@ def decompile(addr):
     working = dict()
     jumps = []
 
+    if addr < 0 or addr > rom.size():
+        print(f"Invalid address: {hex(addr)}")
+        return working
+
     last_cmd = -1
     while last_cmd != 0:
         # Name some things (for readability)
