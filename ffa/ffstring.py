@@ -60,7 +60,10 @@ class FFString(object):
         while self.data[index] != 0x00:
             if self.data[index] > 0x80:
                 char_code = unpack(">H", self.data[index:index + 2])[0]
-                working = working + FFString.TEXT_TABLE[char_code]
+                if char_code in FFString.TEXT_TABLE:
+                    working = working + FFString.TEXT_TABLE[char_code]
+                else:
+                    working = working + f"\\u{hex(char_code)}"
                 index = index + 1
             elif self.data[index] == 0x25:
                 if self.data[index + 1] in [30, 31, 64, 73]:
@@ -79,7 +82,8 @@ class FFString(object):
             elif self.data[index] in FFString.TEXT_TABLE:
                 working = working + FFString.TEXT_TABLE[self.data[index]]
             else:
-                raise RuntimeError(f"Unknown code encountered in string: {hex(self.data[index])}")
+                print(f"Unknown code encountered in string: {hex(self.data[index])}")
+                working = working + f"\\u{hex(self.data[index])}"
 
             index = index + 1
         return working

@@ -23,6 +23,7 @@ want to reference the strings module.
 #  limitations under the License.
 
 from ffa.enemies import unpack_encounter_data, Enemies, pack_encounter_data, unpack_enemy_stats, pack_enemy_stats
+from ffa.ffstring import FFString
 
 
 class Rom(object):
@@ -37,6 +38,8 @@ class Rom(object):
 
         self.encounters = self._load_encounter_data()
         self.enemies = Enemies(self)
+
+        self.event_strings = TextBlock(self, 0x211770, 1000)
 
     def find_string(self, offset):
         end_offset = offset
@@ -127,3 +130,16 @@ class Rom(object):
             encounters.append(encounter)
 
         return tuple(encounters)
+
+
+class TextBlock(object):
+    def __init__(self, rom: Rom, lut_addr: int, lut_size):
+        self._strings = list()
+        for i in range(0, lut_size):
+            start = lut_addr + (i * 4)
+            offset = rom.read_pointer_as_offset(start)
+            string_data = FFString(offset, rom.find_string(offset))
+            self._strings.append(string_data)
+
+    def __getitem__(self, index):
+        return self._strings[index]

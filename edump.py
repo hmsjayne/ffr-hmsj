@@ -223,17 +223,21 @@ def main(argv):
     global rom
     rom = Rom(argv[0])
 
-    if argv[1].startswith("0x"):
-        event_id = int(argv[1], 0)
+    if argv[1] == "--strings":
+        for idx, estr in enumerate(rom.event_strings):
+            print(f"({idx}) {hex(estr.pointer_offset)}: {estr.ascii}")
     else:
-        event_id = int(argv[1], 16)
+        if argv[1].startswith("0x"):
+            event_id = int(argv[1], 0)
+        else:
+            event_id = int(argv[1], 16)
 
-    # Decompile the event in a function so it can recurse.
-    addr = lookup_event(event_id)
-    event_code = decompile(addr)
+        # Decompile the event in a function so it can recurse.
+        addr = lookup_event(event_id)
+        event_code = decompile(addr)
 
-    for key, value in sorted(event_code.items(), key=lambda x: x[0]):
-        print("{:x}: {}".format(key, value))
+        for key, value in sorted(event_code.items(), key=lambda x: x[0]):
+            print("{:x}: {}".format(key, value))
 
 
 if __name__ == "__main__":
