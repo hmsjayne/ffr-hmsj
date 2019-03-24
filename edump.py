@@ -151,7 +151,8 @@ def decompile(addr):
             cmd_str = f"remove_sprite {sprite_id} :: {cmd_str}"
         elif cmd == 0x15:
             tiles = rom[addr + 2]
-            speed = SPEEDS[rom[addr + 3]]
+            speed_index = rom[addr + 3]
+            speed = SPEEDS[speed_index] if speed_index in SPEEDS else hex(speed_index)
             pc_dirs = [
                 DIRECTIONS[rom[addr + 4]],
                 DIRECTIONS[rom[addr + 5]],
@@ -176,9 +177,9 @@ def decompile(addr):
             # 0x2d variant with alternate
             jump_target = addr_to_rom(array.array("I", rom[addr + 4:addr + 8])[0])
             jumps.append(jump_target)
-            cmd_str = f"check_flag_and_jump {hex(rom[addr + 2])}, {hex(jump_target)} :: {cmd_str}"
+            cmd_str = f"check_set_flag_and_jump {hex(rom[addr + 2])}, condition={hex(rom[addr + 3])}, {hex(jump_target)} :: {cmd_str}"
         elif cmd == 0x2d:
-            cmd_str = f"check_flag {hex(rom[addr + 2])} :: {cmd_str}"
+            cmd_str = f"check_set_flag {hex(rom[addr + 2])}, condition={hex(rom[addr + 3])} :: {cmd_str}"
         elif cmd == 0x2e:
             event_id = array.array("H", rom[addr + 2:addr + 4])[0]
             cmd_str = f"remove_trigger {hex(event_id)} :: {cmd_str}"

@@ -15,7 +15,7 @@
 #  limitations under the License.
 
 import sys
-from random import sample, seed, random, shuffle, Random
+from random import sample, seed, random, shuffle, Random, randint
 
 from ffa.enemies import Enemies
 from ffa.rom import Rom
@@ -29,6 +29,7 @@ BASE_PATCHES = [
     "data/RandomDefault.ips",
     "data/RunningChange.ips",
     "data/StatusScreenExpansion.ips",
+    "data/SpellLevelFix.ips"
 ]
 
 ENCOUNTER_TYPES = {
@@ -44,100 +45,41 @@ ENCOUNTER_TYPES = {
 
 def main(argv):
     rom = Rom(argv[0])
-    seed(argv[1])
-    base_patch = load_ips_files("data/FF1R_Base.ips")
+
+    if len(argv) > 1:
+        rom_seed = argv[1]
+    else:
+        rom_seed = hex(randint(0, 0xffffffff))
+
+    seed(seed)
+
+    base_patch = load_ips_files(*BASE_PATCHES)
+
     rom = rom.apply_patches(base_patch)
-
-    encounters = rom.encounters
-
-    small_monsters = rom.enemies.find_by_size(0)
-    small_monsters = filter(lambda id: not Enemies.is_soc(id), small_monsters)
-    small_monsters = filter(lambda id: not Enemies.is_miniboss(id), small_monsters)
-    small_monsters = tuple(small_monsters)
-
-    small_monsters_shuffled = list(small_monsters)
-    shuffle(small_monsters_shuffled)
-
-    big_monsters = tuple(rom.enemies.find_by_size(1))
-    big_monsters = filter(lambda id: not Enemies.is_soc(id), big_monsters)
-    big_monsters = filter(lambda id: not Enemies.is_miniboss(id), big_monsters)
-    big_monsters = tuple(big_monsters)
-
-    big_monsters_shuffled = list(big_monsters)
-    shuffle(big_monsters_shuffled)
-
-    shuffled = dict(zip(small_monsters, small_monsters_shuffled))
-    shuffled.update(zip(big_monsters, big_monsters_shuffled))
-    shuffled_lookup = dict([[v, k] for k, v in shuffled.items()])
-
-    scaled_enemies = []
-    for index, enemy in enumerate(rom.enemies.stats):
-        if index not in shuffled_lookup:
-            scaled_enemies.append(enemy)
-        else:
-            enemy_to_scale = rom.enemies.stats[index]
-            scale_target = rom.enemies.stats[shuffled_lookup[index]]
-            new_enemy = enemy_to_scale.scale_to(scale_target)
-            scaled_enemies.append(new_enemy)
-    rom = rom.with_new_enemies(tuple(scaled_enemies))
-
-    new_encounters = tuple(map(lambda encounter: shuffle_encounter(encounter, shuffled), encounters))
-    rom = rom.with_new_encounters(new_encounters)
-
-    # for monster in big_monsters:
-    #     print(f"{hex(monster)}: {rom.enemies.names[monster]}")
-    #
-    # for encounter in encounters:
-    #     if not encounter.is_soc():
-    #         print_encounter(rom, encounter)
-    # for index in range(len(new_encounters)):
-    #     new_encounter = new_encounters[index]
-    #     orig = encounters[index]
-    #     print_encounter(rom, new_encounter, orig)
-    # index = 0
-    # for name in rom.enemies.names:
-    #     print(f"{hex(index)}: {name}")
-    #     index += 1
-    # for index in range(0, 0x80):
-    #     print(f"{hex(index)}: {rom.enemies.names[index]}")
-
-    rom.write("ffr-dos" + argv[1] + ".gba")
+    rom.write("ffr-dos-" + rom_seed + ".gba")
 
 
-def shuffle_encounter(encounter, shuffled):
-    # Don't shuffle boss or mini-boss encounters
-    if encounter.config in [0x3, 0x4, 0x6]:
-        return encounter
-    # Also don't move the fight vs the pirates
-    if encounter.group_1_id == 0xf:
-        return encounter
-    # Don't move DeathMachine... just... no
-    if encounter.group_1_id == 0x76:
-        return encounter
-
-    return encounter.apply_shuffle(shuffled)
-
-
-def print_encounter(rom, encounter, orig):
+def encounter_p(rom, index, encounter):
     names = rom.enemies.names
 
     if encounter.is_unrunnable:
         unrunnable = " (Unrunnable)"
     else:
         unrunnable = ""
-    print(f"Encounter {ENCOUNTER_TYPES[encounter.config]} : {encounter.surprise_chance}{unrunnable}")
+    print_index = f"#{hex(index)}" if index is not None else ""
+    print(f"Encounter {print_index} {ENCOUNTER_TYPES[encounter.config]} : {encounter.surprise_chance}{unrunnable}")
     if encounter.group_1_max_count > 0:
         print(f"\tMonster: #{hex(encounter.group_1_id)} {names[encounter.group_1_id]}"
-              f"x{encounter.group_1_min_count}-{encounter.group_1_max_count} (was {names[orig.group_1_id]})")
+              f"x{encounter.group_1_min_count}-{encounter.group_1_max_count}")
     if encounter.group_2_id != 0xff and encounter.group_2_max_count > 0:
         print(f"\tMonster: #{hex(encounter.group_2_id)} {names[encounter.group_2_id]}"
-              f"x{encounter.group_2_min_count}-{encounter.group_2_max_count} (was {names[orig.group_2_id]})")
+              f"x{encounter.group_2_min_count}-{encounter.group_2_max_count}")
     if encounter.group_3_id != 0xff and encounter.group_3_max_count > 0:
         print(f"\tMonster: #{hex(encounter.group_3_id)} {names[encounter.group_3_id]}"
-              f"x{encounter.group_3_min_count}-{encounter.group_3_max_count} (was {names[orig.group_3_id]})")
+              f"x{encounter.group_3_min_count}-{encounter.group_3_max_count}")
     if encounter.group_4_id != 0xff and encounter.group_4_max_count > 0:
         print(f"\tMonster: #{hex(encounter.group_4_id)} {names[encounter.group_4_id]}"
-              f"x{encounter.group_4_min_count}-{encounter.group_4_max_count} (was {names[orig.group_4_id]})")
+              f"x{encounter.group_4_min_count}-{encounter.group_4_max_count}")
 
 
 if __name__ == "__main__":
