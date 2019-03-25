@@ -15,9 +15,8 @@
 #  limitations under the License.
 
 import sys
-from random import sample, seed, random, shuffle, Random, randint
+from random import seed, randint
 
-from ffa.enemies import Enemies
 from ffa.rom import Rom
 from ipsfile import load_ips_files
 
