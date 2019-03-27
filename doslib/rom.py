@@ -13,7 +13,7 @@
 #  limitations under the License.
 import struct
 
-from doslib.bytestream import ByteStream
+from stream.input import Input
 
 
 class Rom(object):
@@ -29,7 +29,7 @@ class Rom(object):
     def open_bytestream(self, offset: int, size: int = -1):
         if 0 <= offset < len(self.rom_data):
             data = self.rom_data[offset:] if size < 0 else self.rom_data[offset:(offset + size)]
-            return ByteStream(data)
+            return Input(data)
         raise RuntimeError(f"Index out of bounds {hex(offset)} vs {len(self.rom_data)}")
 
     def get_lut(self, offset: int, count: int):
@@ -41,10 +41,44 @@ class Rom(object):
             raise RuntimeError(f"Offset must be word aligned: {hex(offset)}")
         raise RuntimeError(f"Index out of bounds {hex(offset)} vs {len(self.rom_data)}")
 
+    def get_string(self, offset):
+        end_offset = offset
+        while self.rom_data[end_offset] != 0x0:
+            end_offset += 1
+        return self.rom_data[offset:end_offset + 1]
+
     def write(self, path: str):
         with open(path, "wb") as rom_file:
             rom_file.write(self.rom_data)
             rom_file.close()
+
+    def apply_patches(self, patches):
+        """Applies a set of patches to a the rom.
+
+        :param patches: Patches to apply as a dictionary. Keys are offsets, values are patch data.
+        :return: A patched version of the rom.
+        """
+        new_data = bytearray()
+
+        working_offset = 0
+        for offset in sorted(patches.keys()):
+            if working_offset > offset:
+                raise RuntimeError(f"Could not apply patch to {offset}; already at {working_offset}!")
+
+            # Check if there's missing data between our working position and the next patch
+            if working_offset < offset:
+                new_data.extend(self.rom_data[working_offset:offset])
+
+            # Now that we're caught up, plop the patch in, and update the working offset.
+            patch = patches[offset]
+            new_data.extend(patch)
+            working_offset = offset + len(patch)
+
+        # Now that the patches are applied, add whatever is left of the file.
+        new_data.extend(self.rom_data[working_offset:])
+
+        new_rom = Rom(data=new_data)
+        return new_rom
 
     @staticmethod
     def pointer_to_offset(pointer):

@@ -11,33 +11,74 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from struct import unpack
 
-from stringio.stringstream import StringStream
+from doslib.rom import Rom
+from stream.input import Input
 
 
-class FFString(object):
-    def __init__(self, pointer_offset: int, data: bytearray):
-        self.pointer_offset = pointer_offset
-        self.data = data
-        self.ascii = self._as_ascii()
+class TextBlock(object):
+    def __init__(self, rom: Rom, lut_addr: int, count: int):
+        self.lut = rom.get_lut(lut_addr, count)
+        self.strings = []
+        for addr in self.lut:
+            self.strings.append(rom.get_string(Rom.pointer_to_offset(addr)))
 
-    def update(self, new_string: str):
-        stream = StringStream(new_string)
+    def __getitem__(self, index):
+        return TextBlock._as_ascii(Input(self.strings[index], check_alignment=False))
+
+    def __setitem__(self, index, value):
+        self.strings[index] = TextBlock._encode_text(Input(value, check_alignment=False))
+
+    def size(self):
+        return len(self.strings)
+
+    @staticmethod
+    def _as_ascii(stream):
+        working = ""
+        while not stream.is_eos():
+            char_code = stream.get_u8()
+            if char_code > 0x80:
+                char_code = (char_code << 8) | stream.get_u8()
+                if char_code in TextBlock.TEXT_TABLE:
+                    working = working + TextBlock.TEXT_TABLE[char_code]
+                else:
+                    working = working + f"\\u{hex(char_code)}"
+            elif char_code == 0x25:
+                char_code = (char_code << 8) | stream.get_u8()
+                next_char = stream.get_u8()
+
+                if char_code == 0x2532 and next_char == 0x64:
+                    char_code = 0x253264
+                    working = working + TextBlock.TEXT_TABLE[char_code]
+                else:
+                    stream.unget_u8()
+                    if char_code in TextBlock.TEXT_TABLE:
+                        working = working + TextBlock.TEXT_TABLE[char_code]
+                    else:
+                        working = working + f"\\u{hex(char_code)}"
+            elif char_code in TextBlock.TEXT_TABLE:
+                working = working + TextBlock.TEXT_TABLE[char_code]
+            else:
+                print(f"Unknown code encountered in string: {hex(char_code)}")
+                working = working + f"\\x{hex(char_code)}"
+
+        return working
+
+    @staticmethod
+    def _encode_text(stream):
         working = bytearray()
         while not stream.is_eos():
-            char = stream.getc()
+            char = stream.get_u8()
             if char == '\\':
-                char = stream.getc()
+                char = stream.get_u8()
                 if char == 'x':
                     # \x designates a 2 digit hex code
-                    num = stream.getc() + stream.getc()
-                    chars = int(num, 16)
+                    chars = (stream.get_u8() << 8) + stream.get_u8()
                 elif char == 'u':
                     # \u designates a 4 digit hex code
                     num = ""
                     for digit in range(4):
-                        num += stream.getc()
+                        num += hex(stream.get_u8())
                     chars = int(num, 16)
                 elif char == '\"':
                     chars = 0x815F
@@ -46,46 +87,12 @@ class FFString(object):
                 else:
                     raise RuntimeError(f"Invalid escape character: {char}")
             else:
-                chars = FFString.INVERTED_TEXT_TABLE[char]
+                chars = TextBlock.INVERTED_TEXT_TABLE[char]
 
             digits = int(len(hex(chars)) / 2) - 1
             working += int(chars).to_bytes(digits, byteorder="big", signed=False)
 
         working.append(0x0)
-        return FFString(self.pointer_offset, working)
-
-    def _as_ascii(self):
-        index = 0
-        working = ""
-        while self.data[index] != 0x00:
-            if self.data[index] > 0x80:
-                char_code = unpack(">H", self.data[index:index + 2])[0]
-                if char_code in FFString.TEXT_TABLE:
-                    working = working + FFString.TEXT_TABLE[char_code]
-                else:
-                    working = working + f"\\u{hex(char_code)}"
-                index = index + 1
-            elif self.data[index] == 0x25:
-                if self.data[index + 1] in [30, 31, 64, 73]:
-                    char_code = unpack(">H", self.data[index:index + 2])[0]
-                    working = working + FFString.TEXT_TABLE[char_code]
-                    index = index + 1
-                elif self.data[index + 1] == 0x32:
-                    if self.data[index + 2] == 0x64:
-                        char_code = 0x253264
-                        working = working + FFString.TEXT_TABLE[char_code]
-                        index = index + 2
-                    else:
-                        char_code = 0x2532
-                        working = working + FFString.TEXT_TABLE[char_code]
-                        index = index + 1
-            elif self.data[index] in FFString.TEXT_TABLE:
-                working = working + FFString.TEXT_TABLE[self.data[index]]
-            else:
-                print(f"Unknown code encountered in string: {hex(self.data[index])}")
-                working = working + f"\\u{hex(self.data[index])}"
-
-            index = index + 1
         return working
 
     TEXT_TABLE = {
