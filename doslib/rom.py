@@ -47,10 +47,17 @@ class Rom(object):
             end_offset += 1
         return self.rom_data[offset:end_offset + 1]
 
-    def write(self, path: str):
-        with open(path, "wb") as rom_file:
-            rom_file.write(self.rom_data)
-            rom_file.close()
+    def apply_patch(self, offset: int, patch: bytearray):
+        """Applies a patch to the rom.
+
+        :param offset: The offset to apply the patch at
+        :param patch: The patch to apply as a byte array
+        :return: A new copy of the rom with the patch applied.
+        """
+        new_data = self.rom_data[0:offset]
+        new_data.extend(patch)
+        new_data.extend(self.rom_data[(offset + len(patch)):])
+        return Rom(data=new_data)
 
     def apply_patches(self, patches):
         """Applies a set of patches to a the rom.
@@ -77,8 +84,12 @@ class Rom(object):
         # Now that the patches are applied, add whatever is left of the file.
         new_data.extend(self.rom_data[working_offset:])
 
-        new_rom = Rom(data=new_data)
-        return new_rom
+        return Rom(data=new_data)
+
+    def write(self, path: str):
+        with open(path, "wb") as rom_file:
+            rom_file.write(self.rom_data)
+            rom_file.close()
 
     @staticmethod
     def pointer_to_offset(pointer):

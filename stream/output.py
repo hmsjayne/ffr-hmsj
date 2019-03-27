@@ -17,24 +17,24 @@ class Output(object):
     """Class to present a bytearray as a stream"""
 
     def __init__(self):
-        self.stream = bytearray()
+        self._stream = bytearray()
 
-    def get_buffer(self):
-        return self.stream
+    def get_buffer(self) -> bytearray:
+        return self._stream
 
     def put_u8(self, data: int):
-        self.stream.append(data)
+        self._stream.append(data)
 
     def put_u16(self, data: int):
-        self.stream.extend(int.to_bytes(data, 2, byteorder="little", signed=False))
+        self._stream.extend(int.to_bytes(data, 2, byteorder="little", signed=False))
 
     def put_u32(self, data: int):
-        self.stream.extend(int.to_bytes(data, 4, byteorder="little", signed=False))
+        self._stream.extend(int.to_bytes(data, 4, byteorder="little", signed=False))
 
     def _ensure_halfword_aligned(self):
-        if len(self.stream) % 2 != 0:
-            raise RuntimeError(f"Offset must be half-word aligned: {hex(len(self.stream))}")
+        if len(self._stream) % 2 != 0:
+            raise RuntimeError(f"Offset must be half-word aligned: {hex(len(self._stream))}")
 
     def _ensure_word_aligned(self):
-        if len(self.stream) % 4 != 0:
-            raise RuntimeError(f"Offset must be word aligned: {hex(len(self.stream))}")
+        if len(self._stream) % 4 != 0:
+            raise RuntimeError(f"Offset must be word aligned: {hex(len(self._stream))}")

@@ -44,8 +44,8 @@ def main(argv):
 
     base_patch = load_ips_files(*BASE_PATCHES)
     rom = rom.apply_patches(base_patch)
-    rom.write("ffr-dos-" + rom_seed + ".gba")
 
+    rom.write("ffr-dos-" + rom_seed + ".gba")
 
 if __name__ == "__main__":
     main(sys.argv[1:])
