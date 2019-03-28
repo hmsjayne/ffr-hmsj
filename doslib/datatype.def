@@ -1,0 +1,49 @@
+#  Copyright 2019 Nicole Borrelli
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# This is the definition file for the data types used by the library with Dawn of Souls.
+# Blank lines are ignored.
+# Comments (such as this one) begin with a '#' character.
+# Commands are case-sensitive! "module:" is not the same as "Module:"
+
+module: enemy
+
+class: EnemyStats
+    exp_reward, 16
+    gil_reward, 16
+    max_hp, 16
+    morale, 8
+    unused_ai, 8
+    evasion, 8
+    pdef, 8
+    hit_count, 8
+    acc, 8
+    atk, 8
+    agi, 8
+    intel, 8
+    crit_rate, 8
+    status_atk_elem, 16
+    status_atk_ailment, 8
+    family, 8
+    mdef, 8
+    unused_1, 8
+    elem_weakness, 16
+    elem_resists, 16
+    drop_type, 8
+    drop_id, 8
+    drop_chance, 8
+    unused_2, 8
+    unused_3, 8
+    unused_4, 8
+
