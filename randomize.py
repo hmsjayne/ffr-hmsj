@@ -47,5 +47,6 @@ def main(argv):
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
+
 if __name__ == "__main__":
     main(sys.argv[1:])

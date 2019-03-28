@@ -18,7 +18,7 @@ from stream.input import Input
 
 class TextBlock(object):
     def __init__(self, rom: Rom, lut_addr: int, count: int):
-        self.lut = rom.get_lut(lut_addr, count)
+        self.lut = list(rom.get_lut(lut_addr, count))
         self.strings = []
         for addr in self.lut:
             self.strings.append(rom.get_string(Rom.pointer_to_offset(addr)))
