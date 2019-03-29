@@ -55,34 +55,36 @@ class TextBlock(object):
         return PackedTextBlock(text_lut.get_buffer(), text_block)
 
     @staticmethod
-    def _as_ascii(stream):
+    def _as_ascii(stream: Input, symbolic_names: bool = False):
         working = ""
         while not stream.is_eos():
             char_code = stream.get_u8()
             if char_code > 0x80:
                 char_code = (char_code << 8) | stream.get_u8()
-                if char_code in TextBlock.TEXT_TABLE:
-                    working = working + TextBlock.TEXT_TABLE[char_code]
-                else:
-                    working = working + f"\\u{hex(char_code)}"
             elif char_code == 0x25:
                 char_code = (char_code << 8) | stream.get_u8()
                 next_char = stream.get_u8()
 
                 if char_code == 0x2532 and next_char == 0x64:
                     char_code = 0x253264
-                    working = working + TextBlock.TEXT_TABLE[char_code]
                 else:
                     stream.unget_u8()
-                    if char_code in TextBlock.TEXT_TABLE:
-                        working = working + TextBlock.TEXT_TABLE[char_code]
-                    else:
-                        working = working + f"\\u{hex(char_code)}"
             elif char_code in TextBlock.TEXT_TABLE:
-                working = working + TextBlock.TEXT_TABLE[char_code]
+                char_code = char_code
             else:
                 print(f"Unknown code encountered in string: {hex(char_code)}")
-                working = working + f"\\x{hex(char_code)}"
+
+            to_append = TextBlock.TEXT_TABLE[char_code] if char_code in TextBlock.TEXT_TABLE else None
+            if not symbolic_names:
+                if to_append is None or (len(to_append) > 1 and not to_append.startswith("\\")):
+                    working += TextBlock._escape(char_code)
+                else:
+                    working += to_append
+            else:
+                if to_append is not None:
+                    working += to_append
+                else:
+                    working += TextBlock._escape(char_code)
 
         return working
 
@@ -116,6 +118,16 @@ class TextBlock(object):
 
         working.append(0x0)
         return working
+
+    @staticmethod
+    def _escape(char_code: int):
+        if char_code <= 0xff:
+            escaped = f"\\x{char_code:02x}"
+        elif char_code <= 0xffff:
+            escaped = f"\\u{char_code:04x}"
+        else:
+            escaped = f"\\U{char_code:08x}"
+        return escaped
 
     TEXT_TABLE = {
         0x00: "(End)",
