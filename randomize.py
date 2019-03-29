@@ -17,6 +17,7 @@
 import sys
 from random import seed, randint
 
+from doslib.etextblock import EventTextBlock
 from doslib.rom import Rom
 from ipsfile import load_ips_files
 
@@ -44,6 +45,13 @@ def main(argv):
 
     base_patch = load_ips_files(*BASE_PATCHES)
     rom = rom.apply_patches(base_patch)
+
+    event_text_block = EventTextBlock(rom)
+    event_text_block.shrink()
+    patches = event_text_block.pack()
+
+    rom = rom.apply_patch(0x211770, patches.lut)
+    rom = rom.apply_patch(Rom.pointer_to_offset(event_text_block.lut[0]), patches.data)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 

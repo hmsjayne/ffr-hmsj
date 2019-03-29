@@ -96,3 +96,9 @@ class Rom(object):
         if pointer >= 0x8000000:
             return pointer - 0x8000000
         raise RuntimeError(f"Not a pointer {hex(pointer)}")
+
+    @staticmethod
+    def offset_to_pointer(offset):
+        if offset <= 0x8000000:
+            return offset + 0x8000000
+        raise RuntimeError(f"Not a pointer {hex(offset)}")

@@ -11,9 +11,11 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from collections import namedtuple
 
 from doslib.rom import Rom
 from stream.input import Input
+from stream.output import Output
 
 
 class TextBlock(object):
@@ -31,6 +33,26 @@ class TextBlock(object):
 
     def size(self):
         return len(self.strings)
+
+    def pack(self):
+        original_end = self.lut[999] + len(self.strings[999])
+
+        text_block = []
+        text_lut = Output()
+
+        next_addr = self.lut[0]
+        for index, data in enumerate(self.strings):
+            if data is not None:
+                text_lut.put_u32(next_addr)
+                text_block.extend(data)
+                next_addr += len(data)
+            else:
+                text_lut.put_u32(self.lut[0])
+
+        print(f"Packing saved {original_end - next_addr} bytes")
+
+        PackedTextBlock = namedtuple('PackedTextBlock', ["lut", "data"])
+        return PackedTextBlock(text_lut.get_buffer(), text_block)
 
     @staticmethod
     def _as_ascii(stream):

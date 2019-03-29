@@ -227,7 +227,7 @@ def main(argv):
 
     if argv[1] == "--strings":
         for idx, estr in enumerate(event_text):
-            print(f"({idx}): {estr}")
+            print(f"({idx}) @ {hex(event_text.lut[idx])}: {estr}")
     else:
         if argv[1].startswith("0x"):
             event_id = int(argv[1], 0)
