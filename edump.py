@@ -17,6 +17,7 @@
 import array
 import sys
 
+from doslib.etextblock import EventTextBlock
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 
@@ -223,7 +224,7 @@ def main(argv):
 
     global rom, event_text
     rom = Rom(argv[0])
-    event_text = TextBlock(rom, 0x211770, 1000)
+    event_text = EventTextBlock(rom)
 
     if argv[1] == "--strings":
         for idx, estr in enumerate(event_text):

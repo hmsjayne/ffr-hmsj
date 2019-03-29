@@ -18,7 +18,7 @@ from doslib.textblock import TextBlock
 
 class EventTextBlock(TextBlock):
     def __init__(self, rom: Rom):
-        super().__init__(rom, 0x211770, 1000)
+        super().__init__(rom, 0x211770, 1280)
 
     def shrink(self):
         space = 0
