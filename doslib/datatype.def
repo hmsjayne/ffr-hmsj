@@ -37,13 +37,11 @@ class: EnemyStats
     status_atk_ailment, 8
     family, 8
     mdef, 8
-    unused_1, 8
+    unused, 8
     elem_weakness, 16
     elem_resists, 16
     drop_type, 8
     drop_id, 8
     drop_chance, 8
-    unused_2, 8
-    unused_3, 8
-    unused_4, 8
+    padding, 8[3]
 
