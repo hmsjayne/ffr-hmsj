@@ -16,6 +16,18 @@ from doslib.rom import Rom
 from doslib.textblock import TextBlock
 
 
+class EventTable(object):
+    def __init__(self, rom: Rom, table_offset: int, table_size: int, base_event_id=0):
+        self._base_event_id = base_event_id
+        self._lut = list(rom.get_lut(table_offset, table_size))
+
+    def __getitem__(self, event_id):
+        return self._lut[event_id - self._base_event_id]
+
+    def __setitem__(self, event_id, value):
+        self._lut[event_id - self._base_event_id] = value
+
+
 class EventTextBlock(TextBlock):
     def __init__(self, rom: Rom):
         super().__init__(rom, 0x211770, 1280)

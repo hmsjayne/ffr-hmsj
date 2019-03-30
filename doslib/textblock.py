@@ -35,8 +35,6 @@ class TextBlock(object):
         return len(self.strings)
 
     def pack(self):
-        original_end = self.lut[len(self.lut) - 1] + len(self.strings[len(self.lut) - 1])
-
         text_block = []
         text_lut = Output()
 
@@ -48,8 +46,6 @@ class TextBlock(object):
                 next_addr += len(data)
             else:
                 text_lut.put_u32(self.lut[0])
-
-        print(f"Packing saved {original_end - next_addr} bytes")
 
         PackedTextBlock = namedtuple('PackedTextBlock', ["lut", "data"])
         return PackedTextBlock(text_lut.get_buffer(), text_block)
