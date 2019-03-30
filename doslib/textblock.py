@@ -49,8 +49,6 @@ class TextBlock(object):
             else:
                 text_lut.put_u32(self.lut[0])
 
-        print(f"Packing saved {original_end - next_addr} bytes")
-
         PackedTextBlock = namedtuple('PackedTextBlock', ["lut", "data"])
         return PackedTextBlock(text_lut.get_buffer(), text_block)
 

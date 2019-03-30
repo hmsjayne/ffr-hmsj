@@ -18,6 +18,7 @@ import sys
 from random import seed, randint
 
 from doslib.etextblock import EventTextBlock
+from doslib.eventbuilder import EventBuilder
 from doslib.rom import Rom
 from ipsfile import load_ips_files
 from stream.output import Output
@@ -63,10 +64,32 @@ def enable_free_airship(rom: Rom) -> Rom:
     map_init_events = list(rom.get_lut(0x7050, 0xD3))
     main_events = rom.get_lut(0x7788, 0xbb7)
 
-    # Move the airship's start location to right outside of Coneria.
+    # Build a new event (that will replace the soldiers in Coneria that usually bring you to the King.)
+    event = EventBuilder()
+    event.add_flag("garland_unlocked", 0x28)
+    event.add_flag("show_airship", 0x15)
+    event.add_label("init_world_map", map_init_events[0])
+
+    event.set_flag("garland_unlocked", 0x0)
+    event.set_flag("show_airship", 0x0)
+    event.jump_to("init_world_map")
+    event.event_end()
+
+    # Write the new event over the old one.
+    # TODO: Make an EventTable class so this calculation is wrapped inside.
+    index_to_replace = 0x138C - 0x1388
+    rom = rom.apply_patch(Rom.pointer_to_offset(main_events[index_to_replace]), event.get_event())
+
+    # Then, change the pointer of the world map init event script to point to ours,
+    # so it runs as soon as the game starts.
+    world_map_init_patch = Output()
+    world_map_init_patch.put_u32(main_events[index_to_replace])
+    rom = rom.apply_patch(0x7050, world_map_init_patch.get_buffer())
+
+    # Finally, move the airship's start location to right outside of Coneria.
     airship_start = Output()
     airship_start.put_u32(0x918)
-    airship_start.put_u32(0x9e8)
+    airship_start.put_u32(0x998)
     rom = rom.apply_patch(0x65280, airship_start.get_buffer())
 
     return rom
