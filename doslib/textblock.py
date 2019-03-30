@@ -35,8 +35,6 @@ class TextBlock(object):
         return len(self.strings)
 
     def pack(self):
-        original_end = self.lut[len(self.lut) - 1] + len(self.strings[len(self.lut) - 1])
-
         text_block = []
         text_lut = Output()
 

@@ -17,7 +17,7 @@
 import array
 import sys
 
-from doslib.etextblock import EventTextBlock
+from doslib.event import EventTextBlock
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 
