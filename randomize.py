@@ -20,6 +20,7 @@ from random import seed, randint
 from doslib.etextblock import EventTextBlock
 from doslib.rom import Rom
 from ipsfile import load_ips_files
+from stream.output import Output
 
 BASE_PATCHES = [
     "data/DataPointerConsolidation.ips",
@@ -53,8 +54,22 @@ def main(argv):
     rom = rom.apply_patch(0x211770, patches.lut)
     rom = rom.apply_patch(Rom.pointer_to_offset(event_text_block.lut[0]), patches.data)
 
+    rom = enable_free_airship(rom)
+
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
+
+def enable_free_airship(rom: Rom) -> Rom:
+    map_init_events = list(rom.get_lut(0x7050, 0xD3))
+    main_events = rom.get_lut(0x7788, 0xbb7)
+
+    # Move the airship's start location to right outside of Coneria.
+    airship_start = Output()
+    airship_start.put_u32(0x918)
+    airship_start.put_u32(0x9e8)
+    rom = rom.apply_patch(0x65280, airship_start.get_buffer())
+
+    return rom
 
 if __name__ == "__main__":
     main(sys.argv[1:])
