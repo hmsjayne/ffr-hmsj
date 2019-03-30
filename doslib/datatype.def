@@ -45,3 +45,45 @@ class: EnemyStats
     drop_chance, 8
     padding, 8[3]
 
+module: map
+
+class: NPC
+    indentifier, 16
+    event, 16
+    x_pos, 16
+    y_pos, 16
+    appearance, 16
+    move_speed, 16
+    facing, 16
+    in_room, 16
+
+class: Chest
+    indentifier, 16
+    chest_id, 16
+    x_pos, 16
+    y_pos, 16
+    
+class: Tile
+    indentifier, 16
+    event, 16
+    x_pos, 16
+    y_pos, 16
+    
+class: Shop
+    indentifier, 16
+    event, 16
+    x_pos, 16
+    y_pos, 16
+    
+class: Sprite
+    indentifier, 16
+    event, 16
+    x_pos, 16
+    y_pos, 16
+    
+class: MapHeader
+    indentifier, 16
+    low_x, 16
+    low_y, 16
+    high_x, 16
+    high_y, 16

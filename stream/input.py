@@ -52,6 +52,16 @@ class Input(object):
             char = None
         return char
 
+    def peek_u8(self):
+        """Gets the next byte without altering the stream
+
+        :return: The byte, or None if the stream has ended."""
+        if self._index < len(self._stream):
+            char = self._stream[self._index]
+        else:
+            char = None
+        return char
+    
     def get_u16(self):
         """Gets a short (16 bits) from the stream
 
