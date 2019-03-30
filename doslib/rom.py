@@ -47,6 +47,19 @@ class Rom(object):
             end_offset += 1
         return self.rom_data[offset:end_offset + 1]
 
+    def get_stream(self, offset: int, end_marker: bytearray):
+        end_offset = offset
+        markers_found = 0
+
+        while markers_found < len(end_marker):
+            if self.rom_data[end_offset] == end_marker[markers_found]:
+                markers_found += 1
+            else:
+                markers_found = 0
+            end_offset += 1
+
+        return Input(self.rom_data[offset:end_offset])
+
     def apply_patch(self, offset: int, patch: bytearray):
         """Applies a patch to the rom.
 

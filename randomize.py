@@ -19,6 +19,7 @@ from random import seed, randint
 
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
+from doslib.maps import Maps
 from doslib.rom import Rom
 from ipsfile import load_ips_files
 from stream.output import Output
@@ -56,6 +57,8 @@ def main(argv):
     rom = rom.apply_patch(Rom.pointer_to_offset(event_text_block.lut[0]), patches.data)
 
     rom = enable_free_airship(rom)
+
+    maps = Maps(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 

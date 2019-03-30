@@ -40,6 +40,13 @@ class Input(object):
         """
         return not self._index < len(self._stream)
 
+    def size(self):
+        """Get the total size of the stream without consideration for how much has been read.
+
+        :return: Length of the stream in bytes.
+        """
+        return len(self._stream)
+
     def get_u8(self):
         """Gets a byte from the stream
 
@@ -61,7 +68,7 @@ class Input(object):
         else:
             char = None
         return char
-    
+
     def get_u16(self):
         """Gets a short (16 bits) from the stream
 
@@ -73,6 +80,19 @@ class Input(object):
 
             data = self._stream[self._index:self._index + 2]
             self._index += 2
+            return int.from_bytes(data, byteorder="little", signed=False)
+        else:
+            return None
+
+    def peek_u16(self):
+        """Gets the next short (16 bits) without altering the stream
+
+        :return: The byte, or None if the stream has ended."""
+        if self._index < len(self._stream):
+            if self._check_alignment:
+                self._ensure_halfword_aligned()
+
+            data = self._stream[self._index:self._index + 2]
             return int.from_bytes(data, byteorder="little", signed=False)
         else:
             return None
