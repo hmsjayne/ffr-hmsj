@@ -18,6 +18,30 @@ The directories/packages in the project are:
 
 - stream: library to support reading and writing of streams, used by `doslib`.
 
+## Key Item Distribution
+
+The Key items returned work like this. Suppose a Placement returned was:
+
+```
+[Placement(item='oxyale', location='king'),
+Placement(item='canoe', location='sara')]
+```
+
+This means:
+
+- Oxyale can be found at the location of the King of Cornelia.
+- The Canoe can be found by Sara, the Princess of Cornelia.
+
+This does not mean that the King will hand over Oxyale, or that the Princess will
+give the canoe. Rather it means that the NPCs that usually provide those items,
+in this case the Fairy and Sage (Lukahn in the randomizer, will be there and provide
+those items.
+
+This further means that going to the _Temple of Fiends_ will reveal that Garland has
+kidnapped Lukahn, and freeing him will have him provide the canoe to the party.
+
+At that point, the Fairy, in the King's spot, will provide Oxyale, now that their
+beloved sage has been rescued(?).
 
 ## Example of how to modify something, given a data type.
 

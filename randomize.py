@@ -22,7 +22,7 @@ from doslib.eventbuilder import EventBuilder
 from doslib.maps import Maps
 from doslib.rom import Rom
 from ipsfile import load_ips_files
-from keyitemsolver import solve_key_item_placement
+from ffr.keyitemsolver import solve_key_item_placement
 from stream.output import Output
 
 BASE_PATCHES = [
@@ -111,8 +111,19 @@ def enable_generous_lukahn(rom: Rom) -> Rom:
 
 def shuffle_key_items(rom: Rom) -> Rom:
     key_item_locations = solve_key_item_placement(randint(0, 0xffffffff))
+
+    # The Key items returned work like this. Suppose a Placement returned was
+    # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
+    # should be found in the King of Cornelia location.
+    #
+    # This does *NOT* mean the King of Cornelia will give you Oxyale, rather, it means the NPC
+    # that gives Oxyale (the Fairy) should be placed in the King's spot.
+    #
+    # Further, the Fairy in the King of Cornelia's spot, will be there at the start of the game, and
+    # won't need to be rescued from the Bottle. It *does* mean that the Fairy won't provide Oxyale
+    # until Garland is defeated and that NPC (or treasure) is itself rescued.
+
     print(f"KI solution: {key_item_locations}")
-    maps = Maps(rom)
 
     return rom
 
