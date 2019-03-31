@@ -12,20 +12,30 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from subprocess import run, PIPE
-from math import pow
 import json
+from collections import namedtuple
+from subprocess import run, PIPE
 
 """Note: this requires an installation of Clingo 4.5 or better"""
 
 
-def shuffle_key_items(seed: int):
-    command = ["clingo", "asp/KeyItemSolving.lp", "asp/KeyItemData.lp"]
-    command.append("--sign-def=3")
-    command.append("--seed=" + str(seed))
-    command.append("--outf=2")
+def solve_key_item_placement(seed: int):
+    command = [
+        "clingo", "asp/KeyItemSolving.lp", "asp/KeyItemData.lp",
+        "--sign-def=3",
+        "--seed=" + str(seed),
+        "--outf=2"
+    ]
+
     clingo_out = json.loads(run(command, stdout=PIPE).stdout)
     pairings = clingo_out['Call'][0]['Witnesses'][0]['Value']
 
     # All pairings are of the form "pair(item,location)" - need to parse the info
-    print(f"data: {pairings}")
+    Placement = namedtuple("Placement", ["item", "location"])
+
+    ki_placement = []
+    for pairing in pairings:
+        pairing = Placement(*pairing[5:len(pairing) - 1].split(","))
+        ki_placement.append(pairing)
+
+    return tuple(ki_placement)

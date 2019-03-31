@@ -22,7 +22,7 @@ from doslib.eventbuilder import EventBuilder
 from doslib.maps import Maps
 from doslib.rom import Rom
 from ipsfile import load_ips_files
-from key_item_shuffle import shuffle_key_items
+from keyitemsolver import solve_key_item_placement
 from stream.output import Output
 
 BASE_PATCHES = [
@@ -46,7 +46,6 @@ def main(argv):
         rom_seed = hex(randint(0, 0xffffffff))
 
     seed(rom_seed)
-    print(f"Random: {hex(randint(0, 0xffffffff))}")
 
     base_patch = load_ips_files(*BASE_PATCHES)
     rom = rom.apply_patches(base_patch)
@@ -59,10 +58,7 @@ def main(argv):
     rom = rom.apply_patch(Rom.pointer_to_offset(event_text_block.lut[0]), patches.data)
 
     rom = enable_free_airship(rom)
-
-    maps = Maps(rom)
-
-    shuffle_key_items(randint(0, 0xffffffff))
+    rom = shuffle_key_items(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
@@ -97,6 +93,14 @@ def enable_free_airship(rom: Rom) -> Rom:
     airship_start.put_u32(0x918)
     airship_start.put_u32(0x998)
     rom = rom.apply_patch(0x65280, airship_start.get_buffer())
+
+    return rom
+
+
+def shuffle_key_items(rom: Rom) -> Rom:
+    key_item_locations = solve_key_item_placement(randint(0, 0xffffffff))
+    print(f"KI solution: {key_item_locations}")
+    maps = Maps(rom)
 
     return rom
 
