@@ -45,6 +45,18 @@ class: EnemyStats
     drop_chance, 8
     padding, 8[3]
 
+class: Encounter
+    config, 8
+    unrunnable, 8
+    surprise_chance, 16
+    groups, EncounterGroup[4]
+
+class: EncounterGroup
+    enemy_id, 8
+    min_count, 8
+    max_count, 8
+    unused, 8
+
 module: map
 
 class: Npc

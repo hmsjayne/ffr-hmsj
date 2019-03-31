@@ -74,7 +74,7 @@ def main(argv):
     for module in modules:
         current_module = modules[module]
 
-        with open(f"{module}.py", 'w') as module_file:
+        with open(f"gen/{module}.py", 'w') as module_file:
             module_file.writelines(LICENSE_HEADER)
 
             for a_class in current_module:
@@ -96,12 +96,23 @@ def main(argv):
 
                         init_text += f"        self.{field_name} = []\n"
                         init_text += f"        for index in range({array_size}):\n"
-                        init_text += f"            self.{field_name}.append(stream.get_u{real_size}())\n"
+                        if real_size.isnumeric():
+                            init_text += f"            self.{field_name}.append(stream.get_u{real_size}())\n"
+                        else:
+                            init_text += f"            self.{field_name}.append({real_size}(stream))\n"
+
                         write_text += f"        for data in self.{field_name}:\n"
-                        write_text += f"            stream.put_u{real_size}(data)\n"
+                        if real_size.isnumeric():
+                            write_text += f"            stream.put_u{real_size}(data)\n"
+                        else:
+                            write_text += f"            data.write(stream)\n"
                     else:
-                        init_text += f"        self.{field_name} = stream.get_u{field_size}()\n"
-                        write_text += f"        stream.put_u{field_size}(self.{field_name})\n"
+                        if field_size.isnumeric():
+                            init_text += f"        self.{field_name} = stream.get_u{field_size}()\n"
+                            write_text += f"        stream.put_u{field_size}(self.{field_name})\n"
+                        else:
+                            init_text += f"        self.{field_name} = {field_size}(stream)\n"
+                            write_text += f"        self.{field_name}.write(stream)\n"
 
                 # Build the full class as a string
                 class_lines = [
