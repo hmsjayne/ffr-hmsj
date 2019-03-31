@@ -51,6 +51,14 @@ class EventBuilder(object):
         self._stream.put_u16(0xffff)
         self._stream.put_u32(addr)
 
+    def set_event_on_npc(self, npc_id: int, event_id: int):
+        self._stream.put_u8(0x30)
+        self._stream.put_u8(0x8)
+        self._stream.put_u8(0x1)
+        self._stream.put_u8(npc_id)
+        self._stream.put_u16(event_id)
+        self._stream.put_u16(0xffff)
+
     def event_end(self):
         self._stream.put_u8(0x0)
         self._stream.put_u8(0x4)

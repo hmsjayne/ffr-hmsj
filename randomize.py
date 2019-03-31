@@ -59,6 +59,8 @@ def main(argv):
     rom = rom.apply_patch(Rom.pointer_to_offset(event_text_block.lut[0]), patches.data)
 
     rom = enable_free_airship(rom)
+    rom = enable_generous_lukahn(rom)
+
     rom = shuffle_key_items(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
@@ -96,6 +98,16 @@ def enable_free_airship(rom: Rom) -> Rom:
     rom = rom.apply_patch(0x65280, airship_start.get_buffer())
 
     return rom
+
+
+def enable_generous_lukahn(rom: Rom) -> Rom:
+    # The "Give Canoe" Event (ID 0x1394) is normally on NPC 0xc (AKA, the "Canoe Sage").
+    # Since their sprite is kind of generic, it would be easier for spotting them outside of
+    # Crescent Lake if Lukahn was the one giving the item.
+    event = EventBuilder()
+    event.set_event_on_npc(0xd, 0x1394)
+
+    return rom.apply_patch(0x90f8, event.get_event())
 
 
 def shuffle_key_items(rom: Rom) -> Rom:
