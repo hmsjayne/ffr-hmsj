@@ -15,6 +15,7 @@
 #  limitations under the License.
 
 import sys
+from collections import namedtuple
 from random import seed, randint
 
 from doslib.event import EventTextBlock, EventTable

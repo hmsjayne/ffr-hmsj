@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from doslib.map import MapHeader, Tile, NPC, Chest, Sprite, Shop
+from doslib.map import MapHeader, Tile, Npc, Chest, Sprite, Shop
 from doslib.rom import Rom
 from stream.input import Input
 
@@ -46,7 +46,7 @@ class Map(object):
             elif data_type == 0x1:
                 self.tiles.append(Tile(stream))
             elif data_type == 0x2:
-                self.npcs.append(NPC(stream))
+                self.npcs.append(Npc(stream))
             elif data_type == 0x3:
                 self.chests.append(Chest(stream))
             elif data_type == 0x4:

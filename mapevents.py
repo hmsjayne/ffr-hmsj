@@ -17,7 +17,7 @@
 
 from struct import unpack, pack
 
-from doslib.map import NPC, Chest, Tile, Shop, Sprite, MapHeader
+from doslib.map import Npc, Chest, Tile, Shop, Sprite, MapHeader
 
 class MapEvents(object):
     '''Lotsa data to dump here; we'll get into that '''

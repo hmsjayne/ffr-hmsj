@@ -47,12 +47,12 @@ class: EnemyStats
 
 module: map
 
-class: NPC
+class: Npc
     indentifier, 16
     event, 16
     x_pos, 16
     y_pos, 16
-    appearance, 16
+    sprite_id, 16
     move_speed, 16
     facing, 16
     in_room, 16

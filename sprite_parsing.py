@@ -66,13 +66,13 @@ class Map_Events:
         new_tile = dict()
         new_tile['x_coord'] = data[4]
         new_tile['y_coord'] = data[6]
-        new_tile['event'] = data[2:4]
+        new_tile['event'] = data[2] | (data[3] << 8)
         new_tile['ptr'] = cur_ptr
         self.special_tiles.append(new_tile)
 
     def add_NPC(self, data, cur_ptr):
         new_NPC = dict()
-        new_NPC['event'] = data[2:4]
+        new_NPC['event'] = data[2] | (data[3] << 8)
         new_NPC['x_coord'] = data[4]
         new_NPC['y_coord'] = data[6]
         new_NPC['x_coord'] = data[4]
@@ -87,7 +87,7 @@ class Map_Events:
         new_sprite = dict()
         new_sprite['x_coord'] = data[4]
         new_sprite['y_coord'] = data[6]
-        new_sprite['event'] = data[2:4]
+        new_sprite['event'] = data[2] | (data[3] << 8)
         new_sprite['ptr'] = cur_ptr
         self.interactive_sprites.append(new_sprite)
 
@@ -109,16 +109,16 @@ class Map_Events:
         file.write("\nNPC Count: " + str(len(self.NPCs)) + "\n")
         for c in self.NPCs:
             file.write(
-                hex(c['ptr']) + " = NPC " + str(c['Sprite']) + " with event ID 0x" + c['event'].hex() + " at (" + str(
+                hex(c['ptr']) + " = NPC " + str(c['Sprite']) + " with event ID " + hex(c['event']) + " at (" + str(
                     c['x_coord']) + "," + str(c['y_coord']) + ")\n")
         file.write("\nTile Count: " + str(len(self.special_tiles)) + "\n")
         for c in self.special_tiles:
             file.write(
-                hex(c['ptr']) + " = Tile with event ID 0x" + c['event'].hex() + " at (" + str(c['x_coord']) + "," + str(
+                hex(c['ptr']) + " = Tile with event ID " + hex(c['event']) + " at (" + str(c['x_coord']) + "," + str(
                     c['y_coord']) + ")\n")
         file.write("\nSprite Count: " + str(len(self.interactive_sprites)) + "\n")
         for c in self.interactive_sprites:
-            file.write(hex(c['ptr']) + " = Sprite 0x" + c['event'].hex() + " at (" + str(c['x_coord']) + "," + str(
+            file.write(hex(c['ptr']) + " = Sprite" + hex(c['event']) + " at (" + str(c['x_coord']) + "," + str(
                 c['y_coord']) + ") \n")
         file.write("\n")
 
