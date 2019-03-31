@@ -45,7 +45,7 @@ def main(argv):
     else:
         rom_seed = hex(randint(0, 0xffffffff))
 
-    seed(seed)
+    seed(rom_seed)
     print(f"Random: {hex(randint(0, 0xffffffff))}")
 
     base_patch = load_ips_files(*BASE_PATCHES)
