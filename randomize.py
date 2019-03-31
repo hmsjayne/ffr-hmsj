@@ -22,6 +22,7 @@ from doslib.eventbuilder import EventBuilder
 from doslib.maps import Maps
 from doslib.rom import Rom
 from ipsfile import load_ips_files
+from key_item_shuffle import shuffle_key_items
 from stream.output import Output
 
 BASE_PATCHES = [
@@ -45,6 +46,7 @@ def main(argv):
         rom_seed = hex(randint(0, 0xffffffff))
 
     seed(seed)
+    print(f"Random: {hex(randint(0, 0xffffffff))}")
 
     base_patch = load_ips_files(*BASE_PATCHES)
     rom = rom.apply_patches(base_patch)
@@ -59,6 +61,8 @@ def main(argv):
     rom = enable_free_airship(rom)
 
     maps = Maps(rom)
+
+    shuffle_key_items(randint(0, 0xffffffff))
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 

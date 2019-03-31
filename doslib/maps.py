@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 from doslib.map import MapHeader, Tile, NPC, Chest, Sprite, Shop
 from doslib.rom import Rom
 from stream.input import Input
@@ -23,7 +24,6 @@ class Maps(object):
         map_lut = rom.get_lut(0x1E4F40, 124)
         for map_id, map_addr in enumerate(map_lut):
             map_stream = rom.get_stream(Rom.pointer_to_offset(map_addr), bytearray.fromhex("ffff"))
-            print(f"Map {hex(map_id)} is {map_stream.size()} bytes")
             self.maps.append(Map(map_id, map_stream))
 
 
