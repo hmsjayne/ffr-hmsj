@@ -38,6 +38,9 @@ class Output(object):
     def put_u32(self, data: int):
         self._stream.extend(int.to_bytes(data, 4, byteorder="little", signed=False))
 
+    def put_bytes(self, data: bytearray):
+        self._stream.extend(data)
+
     def _ensure_halfword_aligned(self):
         if len(self._stream) % 2 != 0:
             raise RuntimeError(f"Offset must be half-word aligned: {hex(len(self._stream))}")

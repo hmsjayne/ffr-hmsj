@@ -53,10 +53,7 @@ def main(argv):
 
     event_text_block = EventTextBlock(rom)
     event_text_block.shrink()
-    patches = event_text_block.pack()
-
-    rom = rom.apply_patch(0x211770, patches.lut)
-    rom = rom.apply_patch(Rom.pointer_to_offset(event_text_block.lut[0]), patches.data)
+    rom = event_text_block.pack(rom)
 
     rom = enable_free_airship(rom)
     rom = enable_generous_lukahn(rom)

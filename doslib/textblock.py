@@ -19,8 +19,9 @@ from stream.output import Output
 
 
 class TextBlock(object):
-    def __init__(self, rom: Rom, lut_addr: int, count: int):
-        self.lut = list(rom.get_lut(lut_addr, count))
+    def __init__(self, rom: Rom, lut_offset: int, count: int):
+        self.lut_offset = lut_offset
+        self.lut = list(rom.get_lut(lut_offset, count))
         self.strings = []
         for addr in self.lut:
             self.strings.append(rom.get_string(Rom.pointer_to_offset(addr)))
@@ -34,21 +35,26 @@ class TextBlock(object):
     def size(self):
         return len(self.strings)
 
-    def pack(self):
-        text_block = []
+    def pack(self, rom: Rom) -> Rom:
+        text_block = Output()
         text_lut = Output()
 
         next_addr = self.lut[0]
+        text_block_offset = Rom.pointer_to_offset(next_addr)
+
         for index, data in enumerate(self.strings):
             if data is not None:
                 text_lut.put_u32(next_addr)
-                text_block.extend(data)
+                text_block.put_bytes(data)
                 next_addr += len(data)
             else:
                 text_lut.put_u32(self.lut[0])
 
-        PackedTextBlock = namedtuple('PackedTextBlock', ["lut", "data"])
-        return PackedTextBlock(text_lut.get_buffer(), text_block)
+        patches = {
+            self.lut_offset: text_lut.get_buffer(),
+            text_block_offset: text_block.get_buffer()
+        }
+        return rom.apply_patches(patches)
 
     @staticmethod
     def _as_ascii(stream: Input, symbolic_names: bool = False):
