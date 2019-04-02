@@ -24,10 +24,12 @@ class EventBuilder(object):
     def add_label(self, label: str, addr=-1):
         if label not in self._labels:
             self._labels[label] = addr
+        return self
 
     def add_flag(self, name: str, flag_id: int):
         if name not in self._flags:
             self._flags[name] = flag_id
+        return self
 
     def set_flag(self, flag_name: str, condition: int):
         if flag_name not in self._flags:
@@ -37,6 +39,7 @@ class EventBuilder(object):
         self._stream.put_u8(0x4)
         self._stream.put_u8(self._flags[flag_name])
         self._stream.put_u8(condition)
+        return self
 
     def jump_to(self, label: str):
         if label not in self._labels:
@@ -50,6 +53,7 @@ class EventBuilder(object):
         self._stream.put_u8(0x8)
         self._stream.put_u16(0xffff)
         self._stream.put_u32(addr)
+        return self
 
     def set_event_on_npc(self, npc_id: int, event_id: int):
         self._stream.put_u8(0x30)
@@ -58,11 +62,13 @@ class EventBuilder(object):
         self._stream.put_u8(npc_id)
         self._stream.put_u16(event_id)
         self._stream.put_u16(0xffff)
+        return self
 
     def event_end(self):
         self._stream.put_u8(0x0)
         self._stream.put_u8(0x4)
         self._stream.put_u16(0xffff)
+        return self
 
-    def get_event(self):
+    def get_event(self) -> bytearray:
         return self._stream.get_buffer()
