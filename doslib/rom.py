@@ -47,16 +47,21 @@ class Rom(object):
             end_offset += 1
         return self.rom_data[offset:end_offset + 1]
 
-    def get_stream(self, offset: int, end_marker: bytearray):
-        end_offset = offset
-        markers_found = 0
+    def get_stream(self, offset: int, end_marker: bytearray = None, length: int = -1):
+        if end_marker is None and length > 0:
+            end_offset = offset + length
+        elif end_marker is not None:
+            end_offset = offset
+            markers_found = 0
 
-        while markers_found < len(end_marker):
-            if self.rom_data[end_offset] == end_marker[markers_found]:
-                markers_found += 1
-            else:
-                markers_found = 0
-            end_offset += 1
+            while markers_found < len(end_marker):
+                if self.rom_data[end_offset] == end_marker[markers_found]:
+                    markers_found += 1
+                else:
+                    markers_found = 0
+                end_offset += 1
+        else:
+            raise RuntimeError(f"Error: Either an end marker or length is required for a stream.")
 
         return Input(self.rom_data[offset:end_offset])
 

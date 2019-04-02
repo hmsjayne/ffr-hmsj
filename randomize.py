@@ -17,6 +17,7 @@
 import sys
 from random import seed, randint
 
+from doslib.ShopData import ShopData
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
 from doslib.maps import Maps
@@ -61,6 +62,10 @@ def main(argv):
     rom = enable_generous_lukahn(rom)
 
     rom = shuffle_key_items(rom)
+
+    # TODO: ...Something. Shuffle or whatever. At least they can be read and written out ;)
+    shops = ShopData(rom)
+    shops.write(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
