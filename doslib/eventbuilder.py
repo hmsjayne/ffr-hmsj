@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from __future__ import annotations
+
 from stream.output import Output
 
 
@@ -21,17 +23,17 @@ class EventBuilder(object):
         self._flags = {}
         self._stream = Output()
 
-    def add_label(self, label: str, addr=-1):
+    def add_label(self, label: str, addr=-1) -> EventBuilder:
         if label not in self._labels:
             self._labels[label] = addr
         return self
 
-    def add_flag(self, name: str, flag_id: int):
+    def add_flag(self, name: str, flag_id: int) -> EventBuilder:
         if name not in self._flags:
             self._flags[name] = flag_id
         return self
 
-    def set_flag(self, flag_name: str, condition: int):
+    def set_flag(self, flag_name: str, condition: int) -> EventBuilder:
         if flag_name not in self._flags:
             raise RuntimeError(f"Undefined flag: {flag_name}")
 
@@ -41,7 +43,7 @@ class EventBuilder(object):
         self._stream.put_u8(condition)
         return self
 
-    def jump_to(self, label: str):
+    def jump_to(self, label: str) -> EventBuilder:
         if label not in self._labels:
             raise RuntimeError(f"Undefined label: {label}")
 
@@ -55,7 +57,7 @@ class EventBuilder(object):
         self._stream.put_u32(addr)
         return self
 
-    def set_event_on_npc(self, npc_id: int, event_id: int):
+    def set_event_on_npc(self, npc_id: int, event_id: int) -> EventBuilder:
         self._stream.put_u8(0x30)
         self._stream.put_u8(0x8)
         self._stream.put_u8(0x1)
@@ -64,7 +66,7 @@ class EventBuilder(object):
         self._stream.put_u16(0xffff)
         return self
 
-    def event_end(self):
+    def event_end(self) -> EventBuilder:
         self._stream.put_u8(0x0)
         self._stream.put_u8(0x4)
         self._stream.put_u16(0xffff)
