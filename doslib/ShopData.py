@@ -11,6 +11,9 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
+from __future__ import annotations
+
 from doslib.rom import Rom
 from stream.input import Input
 from stream.output import Output
@@ -40,7 +43,6 @@ class ShopData(object):
         next_shop_addr = self.shop_data_pointers[0].pointer
         for index in range(51):
             new_shop_length = self.shop_inventories[index].write(shop_inventory)
-
             sdp = self.shop_data_pointers[index]
             sdp.contents = ((sdp.shop_graphic << 4) & 0xf0) | (new_shop_length & 0x0f)
             sdp.pointer = next_shop_addr
@@ -126,3 +128,58 @@ class ShopInventory(object):
             raise RuntimeError(f"Error: Too many items in shop: {written_length}")
 
         return written_length
+
+
+class ShopInventoryBuilder(object):
+    def __init__(self):
+        self._magic = []
+        self._armor = []
+        self._weapons = []
+        self._items = []
+
+    def add_magic(self, magic_id: int) -> ShopInventoryBuilder:
+        self._magic.append(magic_id)
+        return self
+
+    def add_armor(self, armor_id: int) -> ShopInventoryBuilder:
+        self._armor.append(armor_id)
+        return self
+
+    def add_weapon(self, weapon_in: int) -> ShopInventoryBuilder:
+        self._weapons.append(weapon_in)
+        return self
+
+    def add_item(self, item_id: int) -> ShopInventoryBuilder:
+        self._items.append(item_id)
+        return self
+
+    def build(self):
+        stream = Output()
+        written_length = 0
+        if len(self._magic) > 0:
+            for magic_id in self._magic:
+                stream.put_u8(magic_id)
+                written_length += 1
+
+        if len(self._armor) > 0:
+            stream.put_u8(0xfc)
+            for item_id in self._armor:
+                stream.put_u8(item_id)
+                written_length += 1
+
+        if len(self._weapons) > 0:
+            stream.put_u8(0xfd)
+            for item_id in self._weapons:
+                stream.put_u8(item_id)
+                written_length += 1
+
+        if len(self._items) > 0:
+            stream.put_u8(0xfe)
+            for item_id in self._items:
+                stream.put_u8(item_id)
+                written_length += 1
+
+        if written_length > 0xf:
+            raise RuntimeError(f"Error: Too many items in shop: {written_length}")
+
+        return ShopInventory(Input(stream.get_buffer()), written_length)

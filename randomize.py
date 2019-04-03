@@ -62,7 +62,7 @@ def main(argv):
 
     # TODO: ...Something. Shuffle or whatever. At least they can be read and written out ;)
     shops = ShopData(rom)
-    shops.write(rom)
+    rom = shops.write(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
