@@ -13,41 +13,43 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
-import sys
+from argparse import ArgumentParser
 from random import seed, randint
 
 from doslib.ShopData import ShopData
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
 from doslib.rom import Rom
+from ffr.flags import Flags
 from ffr.keyitemsolver import solve_key_item_placement
 from ipsfile import load_ips_files
 from stream.output import Output
 
 BASE_PATCHES = [
     "data/DataPointerConsolidation.ips",
-    "data/FF1EncounterToggle.ips",
     "data/ImprovedEquipmentStatViewing.ips",
     "data/NoEscape.ips",
-    "data/RandomDefault.ips",
     "data/RunningChange.ips",
     "data/StatusScreenExpansion.ips",
     "data/SpellLevelFix.ips"
 ]
 
 
-def main(argv):
-    rom = Rom(argv[0])
+def randomize(rom_path: str, flags: Flags, rom_seed: str):
+    rom = Rom(rom_path)
 
-    if len(argv) > 1:
-        rom_seed = argv[1]
-    else:
+    if rom_seed is None:
         rom_seed = hex(randint(0, 0xffffffff))
 
     seed(rom_seed)
 
-    base_patch = load_ips_files(*BASE_PATCHES)
+    patches_to_load = BASE_PATCHES
+    if flags.encounters == "toggle":
+        patches_to_load += "data/FF1EncounterToggle.ips"
+    if flags.default_party == "random":
+        patches_to_load += "data/RandomDefault.ips"
+
+    base_patch = load_ips_files(*patches_to_load)
     rom = rom.apply_patches(base_patch)
 
     event_text_block = EventTextBlock(rom)
@@ -57,7 +59,8 @@ def main(argv):
     rom = enable_free_airship(rom)
     rom = enable_generous_lukahn(rom)
 
-    rom = shuffle_key_items(rom)
+    if flags.key_item_shuffle == "shuffle":
+        rom = shuffle_key_items(rom)
 
     # TODO: ...Something. Shuffle or whatever. At least they can be read and written out ;)
     shops = ShopData(rom)
@@ -130,5 +133,32 @@ def shuffle_key_items(rom: Rom) -> Rom:
     return rom
 
 
+def main() -> int:
+    parser = ArgumentParser(description="Final Fantasy Dawn of Souls Randomizer")
+    parser.add_argument("rom", metavar="ROM file", type=str, help="The ROM file to randomize.")
+    parser.add_argument("--seed", dest="seed", nargs=1, type=str, action="append", help="Seed value to use")
+    parser.add_argument("--flags", dest="flags", nargs=1, type=str, action="append", required=True, help="Flags")
+    parsed = parser.parse_args()
+
+    # Ensure there's at most 1 seed.
+    if parsed.seed is not None:
+        seed_list = parsed.seed[0]
+        if len(seed_list) > 1:
+            parser.error("pass at most 1 value with --seed")
+            return -1
+        seed_value = seed_list[0]
+    else:
+        seed_value = None
+
+    # It's possible to pass multiple --flags parameters, so collect them together and parse them.
+    collected_flags = ""
+    for flags in parsed.flags:
+        collected_flags += f" {flags[0]}"
+    flags = Flags(collected_flags)
+
+    randomize(parsed.rom, flags, seed_value)
+    return 0
+
+
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
