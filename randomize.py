@@ -20,10 +20,9 @@ from random import seed, randint
 from doslib.ShopData import ShopData
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
-from doslib.maps import Maps
 from doslib.rom import Rom
-from ipsfile import load_ips_files
 from ffr.keyitemsolver import solve_key_item_placement
+from ipsfile import load_ips_files
 from stream.output import Output
 
 BASE_PATCHES = [

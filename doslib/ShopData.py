@@ -21,7 +21,7 @@ from stream.output import Output
 
 class ShopData(object):
     def __init__(self, rom: Rom):
-        data_lut_stream = rom.get_stream(0x1E070C, length=0x198)
+        data_lut_stream = rom.get_stream(0x1DFB04, length=0x198)
         self.shop_data_pointers = []
         self.shop_inventories = []
         for index in range(51):
