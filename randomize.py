@@ -16,7 +16,6 @@
 from argparse import ArgumentParser
 from random import seed, randint
 
-from doslib.ShopData import ShopData
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
 from doslib.rom import Rom
@@ -61,10 +60,6 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
 
     if flags.key_item_shuffle == "shuffle":
         rom = shuffle_key_items(rom)
-
-    # TODO: ...Something. Shuffle or whatever. At least they can be read and written out ;)
-    shops = ShopData(rom)
-    rom = shops.write(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 

@@ -99,3 +99,17 @@ class: MapHeader
     low_y, 16
     high_x, 16
     high_y, 16
+
+module: spells
+
+class: SpellData
+    usage, 8
+    target, 8
+    power, 16
+    elements, 16
+    type, 8
+    graphic_index, 8
+    accuracy, 8
+    level, 8
+    mp_cost, 16
+    price, 32
