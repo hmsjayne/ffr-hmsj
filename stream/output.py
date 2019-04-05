@@ -25,9 +25,9 @@ class Output(object):
     def size(self) -> int:
         """Gets the currently used size of the buffer in bytes.
 
-        :return: Number of bytes currently used or None if it's empty.
+        :return: Number of bytes currently used.
         """
-        return len(self._stream) if len(self._stream) > 0 else None
+        return len(self._stream)
 
     def put_u8(self, data: int):
         self._stream.append(data)

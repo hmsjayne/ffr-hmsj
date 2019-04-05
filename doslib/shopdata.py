@@ -42,13 +42,15 @@ class ShopData(object):
 
         next_shop_addr = self.shop_data_pointers[0].pointer
         for index in range(51):
+            start_size = shop_inventory.size()
+
             new_shop_length = self.shop_inventories[index].write(shop_inventory)
             sdp = self.shop_data_pointers[index]
             sdp.contents = ((sdp.shop_graphic << 4) & 0xf0) | (new_shop_length & 0x0f)
             sdp.pointer = next_shop_addr
             sdp.write(data_lut_stream)
 
-            next_shop_addr += shop_inventory.size()
+            next_shop_addr += (shop_inventory.size() - start_size)
 
         # Make a dictionary for the two parts so we only have to write the new Rom once.
         patches = {
