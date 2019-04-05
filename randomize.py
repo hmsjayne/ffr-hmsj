@@ -18,6 +18,7 @@ from random import seed, randint
 
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
+from doslib.maps import Maps
 from doslib.rom import Rom
 from ffr.flags import Flags
 from ffr.keyitemsolver import solve_key_item_placement
@@ -65,6 +66,9 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     if flags.shuffle_magic == "shuffle":
         shuffle_maigc = SpellShuffle(rom)
         rom = shuffle_maigc.write(rom)
+
+    maps = Maps(rom)
+    rom = maps.write(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
