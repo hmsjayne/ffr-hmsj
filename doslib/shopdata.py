@@ -53,6 +53,7 @@ class ShopData(object):
         # Make a dictionary for the two parts so we only have to write the new Rom once.
         patches = {
             0x1E070C: data_lut_stream.get_buffer(),
+            0x1dfb04: data_lut_stream.get_buffer(),
             Rom.pointer_to_offset(self.shop_data_pointers[0].pointer): shop_inventory.get_buffer()
         }
         return rom.apply_patches(patches)
