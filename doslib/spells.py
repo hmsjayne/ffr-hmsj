@@ -45,6 +45,9 @@ class Spells(object):
     def spell_data(self, index: int) -> SpellData:
         return self._spell_data[index]
 
+    def __getitem__(self, index):
+        return self._spell_data[index]
+
     @staticmethod
     def index_for_level(school: chr, level: int, index: int) -> int:
         school_offset = 1 if school.lower() == "w" else 65

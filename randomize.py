@@ -19,9 +19,9 @@ from random import seed, randint
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
 from doslib.rom import Rom
-from doslib.shopdata import ShopData
 from ffr.flags import Flags
 from ffr.keyitemsolver import solve_key_item_placement
+from ffr.spellshuffle import SpellShuffle
 from ipsfile import load_ips_files
 from stream.output import Output
 
@@ -59,11 +59,12 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     rom = enable_free_airship(rom)
     rom = enable_generous_lukahn(rom)
 
-    shops = ShopData(rom)
-    rom = shops.write(rom)
-
     if flags.key_item_shuffle == "shuffle":
         rom = shuffle_key_items(rom)
+
+    if flags.shuffle_magic == "shuffle":
+        shuffle_maigc = SpellShuffle(rom)
+        rom = shuffle_maigc.write(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 

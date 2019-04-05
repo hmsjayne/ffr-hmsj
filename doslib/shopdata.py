@@ -41,8 +41,8 @@ class ShopData(object):
         shop_inventory = Output()
 
         next_shop_addr = self.shop_data_pointers[0].pointer
+        start_size = 0
         for index in range(51):
-            start_size = shop_inventory.size()
 
             new_shop_length = self.shop_inventories[index].write(shop_inventory)
             sdp = self.shop_data_pointers[index]
@@ -50,12 +50,14 @@ class ShopData(object):
             sdp.pointer = next_shop_addr
             sdp.write(data_lut_stream)
 
+            # Because the size of the data varies by shop, we have to keep track of how
+            # large the output buffer was and move the pointer up by the difference.
             next_shop_addr += (shop_inventory.size() - start_size)
+            start_size = shop_inventory.size()
 
         # Make a dictionary for the two parts so we only have to write the new Rom once.
         patches = {
             0x1E070C: data_lut_stream.get_buffer(),
-            0x1dfb04: data_lut_stream.get_buffer(),
             Rom.pointer_to_offset(self.shop_data_pointers[0].pointer): shop_inventory.get_buffer()
         }
         return rom.apply_patches(patches)

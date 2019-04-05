@@ -48,3 +48,11 @@ class ShuffledList(object):
         :return: The original value.
         """
         return self._backing_data[index]
+
+    def original_index(self, index: int) -> int:
+        """Returns the original index, given a shuffled index value.
+
+        :param index: Index in the shuffled list
+        :return: The original index
+        """
+        return self._shuffled_indexes[index]

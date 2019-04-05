@@ -16,13 +16,17 @@
 class Flags(object):
     def __init__(self, flags_str: str):
         self.encounters = None
-        self.key_item_shuffle = None
         self.default_party = None
+
+        self.shuffle_magic = None
+        self.key_item_shuffle = None
 
         for flag in flags_str.split():
             if flag == "K":
                 self.key_item_shuffle = "shuffle"
             elif flag == "Et":
                 self.encounters = ""
+            elif flag == "Ms":
+                self.shuffle_magic = "shuffle"
             elif flag == "-who":
                 self.default_party = "random"
