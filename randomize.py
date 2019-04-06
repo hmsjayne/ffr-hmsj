@@ -13,6 +13,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import copy
 from argparse import ArgumentParser
 from random import seed, randint
 
@@ -46,9 +47,9 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
 
     patches_to_load = BASE_PATCHES
     if flags.encounters == "toggle":
-        patches_to_load += "data/FF1EncounterToggle.ips"
+        patches_to_load.append("data/FF1EncounterToggle.ips")
     if flags.default_party == "random":
-        patches_to_load += "data/RandomDefault.ips"
+        patches_to_load.append("data/RandomDefault.ips")
 
     base_patch = load_ips_files(*patches_to_load)
     rom = rom.apply_patches(base_patch)
@@ -81,7 +82,7 @@ def enable_free_airship(rom: Rom) -> Rom:
     event = EventBuilder() \
         .add_flag("garland_unlocked", 0x28) \
         .add_flag("show_airship", 0x15) \
-        .add_label("init_world_map", map_init_events[0]) \
+        .add_label("init_world_map", map_init_events.get_addr(0)) \
         .set_flag("garland_unlocked", 0x0) \
         .set_flag("show_airship", 0x0) \
         .jump_to("init_world_map") \
@@ -90,12 +91,12 @@ def enable_free_airship(rom: Rom) -> Rom:
 
     # Write the new event over the old one.
     coneria_soldiers_event_id = 0x138C
-    rom = rom.apply_patch(Rom.pointer_to_offset(main_events[coneria_soldiers_event_id]), event)
+    rom = rom.apply_patch(Rom.pointer_to_offset(main_events.get_addr(coneria_soldiers_event_id)), event)
 
     # Then, change the pointer of the world map init event script to point to ours,
     # so it runs as soon as the game starts.
     world_map_init_patch = Output()
-    world_map_init_patch.put_u32(main_events[coneria_soldiers_event_id])
+    world_map_init_patch.put_u32(main_events.get_addr(coneria_soldiers_event_id))
     rom = rom.apply_patch(0x7050, world_map_init_patch.get_buffer())
 
     # Finally, move the airship's start location to right outside of Coneria Castle.

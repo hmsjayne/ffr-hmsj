@@ -21,10 +21,10 @@ class EventTable(object):
         self._base_event_id = base_event_id
         self._lut = list(rom.get_lut(table_offset, table_size))
 
-    def __getitem__(self, event_id):
+    def get_addr(self, event_id: int) -> int:
         return self._lut[event_id - self._base_event_id]
 
-    def __setitem__(self, event_id, value):
+    def set_addr(self, event_id: int, value: int):
         self._lut[event_id - self._base_event_id] = value
 
 

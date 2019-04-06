@@ -25,7 +25,7 @@ class Flags(object):
             if flag == "K":
                 self.key_item_shuffle = "shuffle"
             elif flag == "Et":
-                self.encounters = ""
+                self.encounters = "toggle"
             elif flag == "Ms":
                 self.shuffle_magic = "shuffle"
             elif flag == "-who":
