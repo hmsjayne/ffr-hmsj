@@ -114,6 +114,21 @@ class Input(object):
         else:
             return None
 
+    def peek_u32(self):
+        """Gets the next word (32 bits) without altering the stream
+
+        :return: The byte, or None if the stream has ended."""
+        if self._index < len(self._stream):
+            if self._check_alignment:
+                self._ensure_word_aligned()
+
+            data = self._stream[self._index:self._index + 4]
+            return int.from_bytes(data, byteorder="little", signed=False)
+        elif self._index % 4 != 0:
+            raise RuntimeError(f"Offset must be word aligned: {hex(self._index)}")
+        else:
+            return None
+
     def unget_u8(self):
         """ Puts a the last byte read back into the stream."""
         if self._index > 0:

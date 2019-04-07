@@ -18,7 +18,8 @@ class Flags(object):
         self.encounters = None
         self.default_party = None
 
-        self.shuffle_magic = None
+        self.magic = None
+        self.treasures = None
         self.key_item_shuffle = None
 
         for flag in flags_str.split():
@@ -27,6 +28,8 @@ class Flags(object):
             elif flag == "Et":
                 self.encounters = "toggle"
             elif flag == "Ms":
-                self.shuffle_magic = "shuffle"
+                self.magic = "shuffle"
+            elif flag == "Ts":
+                self.treasures = "shuffle"
             elif flag == "-who":
                 self.default_party = "random"

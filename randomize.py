@@ -19,11 +19,12 @@ from random import seed, randint
 
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
-from doslib.maps import Maps
+from doslib.maps import Maps, TreasureChest, ItemChest
 from doslib.rom import Rom
 from ffr.flags import Flags
 from ffr.keyitemsolver import solve_key_item_placement
 from ffr.spellshuffle import SpellShuffle
+from ffr.treasures import treasure_shuffle
 from ipsfile import load_ips_files
 from stream.output import Output
 
@@ -46,9 +47,9 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     seed(rom_seed)
 
     patches_to_load = BASE_PATCHES
-    if flags.encounters == "toggle":
+    if flags.encounters is not None:
         patches_to_load.append("data/FF1EncounterToggle.ips")
-    if flags.default_party == "random":
+    if flags.default_party is not None:
         patches_to_load.append("data/RandomDefault.ips")
 
     base_patch = load_ips_files(*patches_to_load)
@@ -61,15 +62,18 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     rom = enable_free_airship(rom)
     rom = enable_generous_lukahn(rom)
 
-    if flags.key_item_shuffle == "shuffle":
+    if flags.key_item_shuffle is not None:
         rom = shuffle_key_items(rom)
 
-    if flags.shuffle_magic == "shuffle":
+    if flags.magic is not None:
         shuffle_maigc = SpellShuffle(rom)
         rom = shuffle_maigc.write(rom)
 
     maps = Maps(rom)
     rom = maps.write(rom)
+
+    if flags.treasures is not None:
+        rom = treasure_shuffle(rom)
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 

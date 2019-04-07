@@ -26,10 +26,10 @@ class Rom(object):
         else:
             raise RuntimeError("Pass only the path of the ROM to load")
 
-    def open_bytestream(self, offset: int, size: int = -1):
+    def open_bytestream(self, offset: int, size: int = -1, check_alignment: bool = True):
         if 0 <= offset < len(self.rom_data):
             data = self.rom_data[offset:] if size < 0 else self.rom_data[offset:(offset + size)]
-            return Input(data)
+            return Input(data, check_alignment=check_alignment)
         raise RuntimeError(f"Index out of bounds {hex(offset)} vs {len(self.rom_data)}")
 
     def get_lut(self, offset: int, count: int):

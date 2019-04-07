@@ -33,11 +33,16 @@ from stream.output import Output
 class Maps(object):
     def __init__(self, rom: Rom):
         self.maps = []
+        self.dummy_chests = []
 
         self._map_lut = rom.get_lut(0x1E4F40, 124)
         for map_id, map_addr in enumerate(self._map_lut):
             map_stream = rom.get_stream(Rom.pointer_to_offset(map_addr), bytearray.fromhex("ffff"))
-            self.maps.append(Map(map_id, map_stream))
+            map = Map(map_id, map_stream)
+            self.maps.append(map)
+
+            # Collect the dummy chests together
+            self.dummy_chests += map.dummy_chests
 
     def write(self, rom: Rom) -> Rom:
         lut = Output()
@@ -67,6 +72,7 @@ class Map(object):
         self.chests = []
         self.sprites = []
         self.shops = []
+        self.dummy_chests = []
 
         data_type = stream.peek_u16()
         while data_type != 0xffff:
@@ -90,6 +96,15 @@ class Map(object):
 
             data_type = stream.peek_u16()
 
+        # Some treasure chests are basically placeholders for events. We want to
+        # make a note of these chest IDs.
+        if len(self.chests) > 0 and len(self.sprites) > 0:
+            for index, chest in enumerate(self.chests):
+                for sprite in self.sprites:
+                    if chest.x_pos == sprite.x_pos and chest.y_pos == sprite.y_pos:
+                        self.dummy_chests.append(chest.chest_id)
+                        break
+
     def write(self, stream: Output):
         self.header.write(stream)
 
@@ -106,3 +121,40 @@ class Map(object):
 
         # Close the map at the end. :)
         stream.put_u16(0xffff)
+
+
+class TreasureChest(object):
+    @staticmethod
+    def read(stream: Input):
+        chest_data = stream.get_u32()
+        if chest_data & 0x80000000 == 0:
+            return MoneyChest(chest_data)
+        else:
+            return ItemChest(chest_data)
+
+
+class ItemChest(TreasureChest):
+    def __init__(self, chest_data: int):
+        self.item_type = chest_data & 0xff
+        self.item_id = (chest_data >> 8) & 0xffff
+        self.id = (chest_data >> 24) & 0xff
+
+    def __str__(self):
+        return f"{{item, type={self.item_type}, id={hex(self.item_id)}}}"
+
+    def write(self, stream: Output):
+        chest_data = (self.id << 24) | (self.item_id << 8) | (self.item_type & 0xff)
+        stream.put_u32(chest_data)
+
+
+class MoneyChest(TreasureChest):
+    def __init__(self, chest_data: int):
+        self.qty = chest_data & 0xffffff
+        self.id = (chest_data >> 24) & 0xff
+
+    def __str__(self):
+        return f"{{gil, amount={self.qty}}}"
+
+    def write(self, stream: Output):
+        chest_data = (self.id << 24) | self.qty
+        stream.put_u32(chest_data)
