@@ -74,3 +74,16 @@ class EventBuilder(object):
 
     def get_event(self) -> bytearray:
         return self._stream.get_buffer()
+
+    def set_npc_pose(self, npc_id: int, direction: int) -> EventBuilder:
+        self._stream.put_u8(0x21)
+        self._stream.put_u8(0x4)
+        self._stream.put_u8(npc_id)
+        self._stream.put_u8(direction)
+        return self
+
+    def wait_frames(self, number_of_frames: int) -> EventBuilder:
+        self._stream.put_u8(0x9)
+        self._stream.put_u8(0x4)
+        self._stream.put_u16(number_of_frames)
+        return self

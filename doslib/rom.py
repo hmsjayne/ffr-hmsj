@@ -65,6 +65,16 @@ class Rom(object):
 
         return Input(self.rom_data[offset:end_offset])
 
+    def get_event(self, offset: int):
+        end_offset = offset
+        last_cmd = -1
+        while last_cmd != 0:
+            cmd_len = self.rom_data[end_offset + 1]
+            last_cmd = self.rom_data[end_offset]
+            end_offset += cmd_len
+
+        return Input(self.rom_data[offset:end_offset])
+
     def apply_patch(self, offset: int, patch: bytearray):
         """Applies a patch to the rom.
 
@@ -88,7 +98,7 @@ class Rom(object):
         working_offset = 0
         for offset in sorted(patches.keys()):
             if working_offset > offset:
-                raise RuntimeError(f"Could not apply patch to {offset}; already at {working_offset}!")
+                raise RuntimeError(f"Could not apply patch to {hex(offset)}; already at {hex(working_offset)}!")
 
             # Check if there's missing data between our working position and the next patch
             if working_offset < offset:

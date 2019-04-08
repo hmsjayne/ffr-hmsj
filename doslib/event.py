@@ -14,6 +14,8 @@
 
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
+from stream.input import Input
+from stream.output import Output
 
 
 class EventTable(object):
@@ -50,3 +52,26 @@ class EventTextBlock(TextBlock):
                 # nothing, we'll update the pointer in the LUT to point to string 0, which will serve as a single
                 # placeholder string.
                 self.strings[index] = None
+
+
+class Event(object):
+    def __init__(self, stream: Input):
+        self.commands = []
+
+        last_cmd = -1
+        while last_cmd != 0:
+            cmd = [stream.get_u8()]
+            cmd_len = stream.get_u8()
+            cmd.append(cmd_len)
+
+            # 2 Bytes already read -- the command, and length
+            for params in range(cmd_len - 2):
+                cmd.append(stream.get_u8())
+
+            self.commands.append(cmd)
+            last_cmd = cmd[0]
+
+    def write(self, stream: Output):
+        for cmd in self.commands:
+            for data in cmd:
+                stream.put_u8(data)

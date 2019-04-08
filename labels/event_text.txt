@@ -1,0 +1,1280 @@
+0x0: 0\x00
+0x1: The King: The Warriors of Light have\ncome at last! How long we have waited\nfor this day to come!\nGarland is no longer the man I once\nknew...\n\nI beg of you. Please return my daughter\nto me quickly!\x00
+0x2: 0\x00
+0x3: The King: Sarah\u8166s thoughts are always\nwith you.\x00
+0x4: 0\x00
+0x5: 0\x00
+0x6: Sarah: This lute has been entrusted to\nthe princesses of Cornelia for many\ngenerations.\nWhen he abducted me, Garland took\nthis lute as well.\n\nI want you to have it. It may aid you in\nyour journey.\x00
+0x7: Sarah: If you wanted, you could...\nI mean, here in Cornelia...\n\nN-no. It\u8166s nothing.\n\n\nYou should make preparations for your\njourney. Restore light to the Crystals!\x00
+0x8: Bikke: Ye\u8166ve got cannon balls of steel\nto be takin\u8166 on the great pirate Bikke!\n\nKeelhaul \u8166em, boys!\x00
+0x9: 0\x00
+0xa: Bikke: I\u8166ve had meself a change of\nheart.\n\nI plan to buckle down and be the\nhardest worker in town.\n\nYe believe me...don\u8166t ye?\x00
+0xb: Healer: The prince has slept under\nAstos\u8166s curse for five years now.\n\nThere must be some medicine that can\nrouse the sleeping...but where?\x00
+0xc: C\x00
+0xd: Healer: Thanks to you, the prince has\nfinally awoken. You have my undying\ngratitude.\nYou\u8166ve brought peace back to Elfheim.\x00
+0xe: E\x00
+0xf: The Prince: I am awake and strong\nagain\u815dall because of you.\n\nThank you, Warriors of Light!\x00
+0x10: ZZZ...\x00
+0x11: The King: I was tricked by Astos, king\nof the dark elves, and now my castle\nhas fallen into ruin.\nIf I could only retrieve the crown from\nthe Marsh Cave, I would be able to\nrestore my castle.\nMight you bring me the crown?\x00
+0x12: The Prince: ZZZ...\x00
+0x13: Nerrick: Ach!!! There\u8166s a giant rock in\nma peth!\n\nAnd Ah\u8166m sae close tae openin up ma\ncanal, too!\n\nIf Ah had a wee bit o nitro pouder, Ah\ncould knap that rock in one pluff...\x00
+0x14: Smyth: Ah\u8166m sure ye\u8166ll put Excalibur tae\nguid uise.\x00
+0x15: Smyth: If only Ah could have some o the\nleegendary metal adamantite! Ah\u8166d be\nhabile tae make such a magical sword...\x00
+0x16: 0\x00
+0x17: Matoya: My eye...my eye!\n\n\n*thump*\nOuch!\n\nI can\u8166t see a blasted thing without my\ncrystal eye!\n\nWho could have stolen it from me?\x00
+0x18: Restore the Crystals to grace...\x00
+0x19: Chancellor: The dancing girl in town\nknows many odd bits of information.\n\nIf you stray from your path, try talking\nto her. She may know something that\ncan put you back on course.\x00
+0x1a: Matoya: You still here? I don\u8166t need you\nanymore, so be on your way!\n\nHmph! You\u8166re not even as attractive as\nI thought you\u8166d be...\x00
+0x1b: There is nothing I, the great genius\nDr. Unne, do not know!\n\nWhat!? You\u8166ve never heard of me!?\nInconceivable!\x00
+0x1c: 1C\x00
+0x1d: 1D\x00
+0x1e: 1E\x00
+0x1f: I am the Dragon King, Bahamut. I confer\nhonor upon those whose strength and\ncourage are true.\nReturn to me with a token of your\ncourage.\x00
+0x20: 0\x00
+0x21: You focus the light of the four\nshining crystals\u815dfire, earth, water,\nand wind\u815don the Black Crystal.\nThe flow of time surges and space\nbegins to warp!\n\nJust one step forward, and you will\ntravel back two thousand years in time!\x00
+0x22: The Black Crystal shines ominously.\nThe air hanging in the room seems\nslightly...distorted.\x00
+0x23: 0\x00
+0x24: Thanks for saving me! Has the oxyale\nhelped you out?\n\nIt\u8166ll never run out of air, so you can\nuse it to stay underwater as long as\nyou like!\x00
+0x25: I wanted to save the mermaids living on\nthe seafloor, so I made this submarine\nout of a barrel.\nBut when I went underwater, I started\nrunning out of air, and I couldn\u8166t\nbreathe.\nIt\u8166s totally useless. Even worse, it\u8166s\ndangerous. You\u8166d better keep away.\x00
+0x26: 0\x00
+0x27: ...I have BEEN waiting...\n\n\n...take this CUBE...\n...TIAmat...flying fortress...\n...please...\x00
+0x28: *buzz* *whirr*\x00
+0x29: You shall not pass!\x00
+0x2a: 2A\x00
+0x2b: 2B\x00
+0x2c: Four hundred years ago it was wind...\nTwo hundred years ago it was water...\nThen came earth and fire...\nThe four forces that make up the\nworld...\x00
+0x2d: You come bearing the crown, I see.\n\n\nYour fortitude cannot be questioned,\nindeed not...\n\nVery well, I shall grant you the right\nto undergo the trials. Go now. Sit upon\nthe throne.\nYour courage will be put to the test.\nIf true courage dwells within you, you\nwill find proof of it here.\x00
+0x2e: 2E\x00
+0x2f: 2F\x00
+0x30: 0\x00
+0x31: The king is searching for the prophesied\nWarriors of Light.\n\nTh-those crystals! Could it be...?\x00
+0x32: I\u8166ve been assigned the important task\nof defending Castle Cornelia!\n\nTo be honest, I\u8166m a little nervous.\x00
+0x33: Please, please save Lady Sarah!\x00
+0x34: Th-the Warriors of Light! I can\u8166t thank\nyou enough for saving Lady Sarah!\x00
+0x35: The beautiful lute handed down for\ngenerations to the princesses of\nCornelia is said to have a unique power.\nIt can shatter the gateway of evil.\x00
+0x36: Garland was once the greatest knight\nin the kingdom.\n\nBut power consumed him, and he lost\nsight of who he really was.\x00
+0x37: Her Majesty\u8166s overcome with grief\u815d\nshe\u8166s shut herself inside her chambers.\nPlease try not to upset her.\x00
+0x38: Oh, please... You must rescue the\nprincess.\x00
+0x39: Are you the...Warriors of Light? The\nones from Lukahn\u8166s prophecy?\x00
+0x3a: Please rescue Lady Sarah!\x00
+0x3b: I am Jayne, Queen of Cornelia. Please...\nplease bring my daughter...my Sarah...\nback to me safely.\x00
+0x3c: Jayne: I don\u8166t know how I could ever\nthank you for rescuing Sarah.\x00
+0x3d: My s-s-sister... I w-want my s-sister!\x00
+0x3e: My sister\u8166s back! And it\u8166s all thanks to\nyou guys, isn\u8166t it! I could just kiss you!\n\nMwah!\x00
+0x3f: Our reports say that Garland fled\nnorth\u815dwith the princess!\u815dto the Chaos\nShrine.\x00
+0x40: The time has come to use the key to\nopen the doors!\n\nThe equipment within is sure to help\nyou!\x00
+0x41: Our ancestors sealed weapons within\nthis treasure house four hundred years\nago...\nThey then gave the key to the elf king\nto hold until the coming of the Warriors\nof Light.\x00
+0x42: The treasure house has been bound\nby the mystic key.\x00
+0x43: The king truly believes in Lukahn\u8166s\nprophecy...that the Warriors of Light\nwill come to save the princess.\x00
+0x44: Sage Lukahn said something about\nfinding the crescent moon, then he just\nup and left town...\x00
+0x45: 0\x00
+0x46: 0\x00
+0x47: Hi there! I\u8166m a dancer! What\u8166s that? You\nwanna dance with me? Hee hee!\x00
+0x48: This is Cornelia, the city of dreams.\x00
+0x49: A witch named Matoya lives to the\nnorth of Cornelia.\x00
+0x4a: They say Matoya\u8166s peepers aren\u8166t too\nsharp.\n\nShe can\u8166t see a thing without her\ncrystal eye.\x00
+0x4b: I once lived far to the east of here in\nthe harbor city of Pravoka.\n\nThese days I hear it\u8166s turned into a\npirates\u8166 den.\x00
+0x4c: Kee! Kee!\x00
+0x4d: The curse of the Fiends changed us\ninto this form and prevented us from\nspeaking.\nThe light of the crystals has enabled\nus to speak again!\x00
+0x4e: The power the four Fiends were\nabsorbing from the Crystals was being\nfed into the past by the Black Crystal.\nThe one distorting the beautiful light\nof the Crystals is the one we\u8166ve been\nlooking for all along.\nThe true root of all evil lies just\nahead...\x00
+0x4f: Shine the light of the four crystals on\nthe Black Crystal in the center of the\nchamber!\nDoing so will open a time portal to this\nshrine as it existed two thousand years\nago.\x00
+0x50: The light...the light of the four we\u8166ve\nbeen seeking all this time!\n\nThat light will open the time portal!\n\n\nThe portal will transport you two\nthousand years into the past to the\nbeginning of the time loop.\x00
+0x51: We are Sky People. We came to this\nshrine in our attempt to locate the\nsource of the world\u8166s ruin.\nThat was four hundred years ago...\x00
+0x52: Because of you, we needn\u8166t fear the\npirates anymore!\n\nThank you so much!\x00
+0x53: I fled here from Melmond, a town far to\nthe west.\n\nIt is a truly pitiable sight... The earth\nrots, and monsters attack in the night.\n\nIs there nothing you can do to help?\x00
+0x54: They say there are elves living across\nthe sea!\n\nBut the elf prince has fallen into a\ndeep sleep and hasn\u8166t woken up...\x00
+0x55: Those blasted pirates! They\u8166re running\naround looting and pillaging like they\nown the place!\x00
+0x56: I don\u8166t think there are any ports to the\nnorth. A ship can only make landfall at\na port, you know.\x00
+0x57: Please help us!\x00
+0x58: There are many monsters in the Aldean\nSea. Best be careful!\x00
+0x59: Astos\u8166s curse has put our prince into\na deep sleep from which he cannot\nawake.\nPlease, will you not attempt to aid our\nslumbering prince?\x00
+0x5a: The prince has awoken! Thank you!\x00
+0x5b: The dwarves live in a cave on the\nwestern edge of the Aldean Sea.\n\nThey\u8166re a friendly bunch!\x00
+0x5c: The dark elf king, Astos, stole into the\ncastle and placed a curse on our\nprince.\nThen Astos carted away the castle\u8166s\ntreasures!\x00
+0x5d: I\u8166ve heard rumors of a witch who can\nbrew any potion you could imagine.\n\nLet\u8166s see... I think her name was\nMatoya.\x00
+0x5e: You have some jolt tonic? That should\nbe able to rouse the prince!\x00
+0x5f: We elves are the keepers of the key.\nWhen the Warriors of Light come, we\nshall entrust it to them.\x00
+0x60: A foul creature lives in the cave to the\nwest.\n\nThe rotting of the earth is its doing,\nI just know it.\x00
+0x61: I just don\u8166t know what we can do...\nPlease help our prince!\x00
+0x62: Our prince was meant to become the\nelf king, but what will happen now?\x00
+0x63: In a journey I once took to the west,\nI wandered into an ancient castle.\n\nNot a soul could be found inside\u815dand\nthe whole place gave me the creeps\u815d\nso I got out as fast as I could.\x00
+0x64: You\u8166ve defeated Astos and brought\npeace to Elfheim!\x00
+0x65: No one knows where Astos, king of the\ndark elves, has gone.\x00
+0x66: If the prince does not awaken, there\nwill be no elf king, and we will be at\nthe mercy of the dark elf\u8166s evil power.\x00
+0x67: Legend has it that an airship, a vessel\nthat can sail the skies, is buried\nsomewhere.\x00
+0x68: Weapons and armor made of mythril are\nsturdy and powerful. You should give\nthem a try. You\u8166d be surprised!\x00
+0x69: In the dark abyss above the crescent,\nto the north beyond the smoldering\nmountain, the levistone sleeps.\nSomething awaits you there...\x00
+0x6a: By the power of the levistone, a\ngreat sail rises into the sky from the\nsand sea below the crescent!\x00
+0x6b: I am a sage. When the time is right,\nthe future is revealed to me. I shall\nwait patiently until then.\x00
+0x6c: Ah\u8166m lookin for some levistone.\n\n\nIt\u8166s supposed tae be an amazin material\nthat actually floats in the air!\x00
+0x6d: That Nerrick, he\u8166s a great dwarf\u815dthe\nkynd ye can really leuk up tae.\x00
+0x6e: That soond? Aye, that\u8166s Nerrick. He\u8166s\nsmushin rocks in the back o the cave.\x00
+0x6f: 6F\x00
+0x70: Have ye blethered wi oor smith, Smyth?\nIn the smithy he is.\x00
+0x71: Wi a crystal eye, e\u8166en the blind can see.\n\n\nAh hear that the dark elf Astos pilked\nthe one belongin tae Matoya.\x00
+0x72: The earth has stairted tae rot. It began\nin the west, and nou the decay sprads...\x00
+0x73: The earth is back tae its savendie self!\nAh thank ye, Warriors o Licht!\x00
+0x74: When it comes tae defense, a guid\narmlet can be ivery bit as stoot as\nbody armor.\nYe shood try one oot sometime.\x00
+0x75: Have ye seen the canal yet? Ah tell ye,\nthat Nerrick\u8166s one leesome dwarf!\x00
+0x76: There micht hae been some nitro pouder\nin the castle treasure hoose way back\nwhen they sealed er up.\x00
+0x77: Lali-ho!\x00
+0x78: Front-words, back-wards, any way you\nsee! Such a strange spell to swish-\nswish-aree!\nTceles Nottub B.\nSwish-swish-aroo!\x00
+0x79: The earth is decaying, and it\u8166s all the\ndoing of the vampire that lives in the\nCavern of Earth.\nOur town is in such rotten shape\nbecause he\u8166s blocking the flow of\nthe power of earth.\nWill you stop him for us?\x00
+0x7a: Long ago, Melmond was a beautiful\ntown, blessed by the richness of the\nearth.\x00
+0x7b: The giant living in the cave eats rocks.\n\n\nHe\u8166ll eat just about any kind of rock,\nbut I hear he especially likes gems.\nHe can\u8166t get enough of them!\x00
+0x7c: The vampire is dead, yet the earth is\nstill decaying. What\u8166s going on?\n\nCould something else be causing it?\x00
+0x7d: I\u8166m just a farmer.\x00
+0x7e: The Cavern of Earth is to the south of\nMelmond, on a peninsula called the\nDevil\u8166s Tail.\nIt used to be the closer you got to that\ncave, the more fertile the soil. Now...\nNow it\u8166s a barren waste.\x00
+0x7f: The Earth Crystal must be shining\nagain!\x00
+0x80: The vampire attacked, destroying our\nchurch and leaving our city in shambles.\n\nIs there nothing we can do to stop the\nruination of the earth?\x00
+0x81: You aren\u8166t the Warriors of Light, are\nyou?\x00
+0x82: In the cave on the southern tip of this\ncontinent lives a man named Sadda.\nHe is a wise man who knows much.\x00
+0x83: The vampire is dead, yet the earth is\nstill decaying. What\u8166s going on?\x00
+0x84: Long ago, a prosperous civilization\nthrived in the northland.\n\nNow it\u8166s fallen into ruin.\x00
+0x85: If the Earth Crystal regains its glow,\nlife will return to the earth. The hills\nand valleys will again be green.\x00
+0x86: Warriors of Light...to you we owe our\nthanks. The earth is returning to\nnormal!\x00
+0x87: I\u8166ve heard that the ancients possessed\nsomething with the power to make a\nship float in the sky.\x00
+0x88: An airship! So they really DO exist!\x00
+0x89: Stop by my father\u8166s shop, okay?\x00
+0x8a: Well, you\u8166re certainly looking a lot\nspiffier than before!\x00
+0x8b: Watts is ma name. Ah\u8166ve gane aw the\nway here frae Duergar tae find oot the\nspringheid of the earth\u8166s decay.\x00
+0x8c: Twelve sages are we, guided to this\nland by the stars and prophecy.\x00
+0x8d: Four Great Crystals exist in this world.\nThe light that once shone within them\nis now lost...\nThe four Fiends of Chaos block the\npower of the Crystals, claiming it as\ntheir own.\x00
+0x8e: Fire, earth, water, and wind...\nThese are the four forces that compose\nour world.\x00
+0x8f: The source of the four forces are the\naltars scattered throughout the world.\n\nDefeat the Fiends that have taken root\nthere and lift up the crystal you carry\nto the altar.\nThe crystal should regain its brilliance.\x00
+0x90: The four Fiends plot to rule the world\nboth past and present.\n\nThe Fiend of Wind appeared four hundred\nyears ago, followed two hundred years\nlater by the Fiend of Water.\nTogether they laid waste to the\ncivilization in the north.\x00
+0x91: The Fiend of Earth rots the land...\x00
+0x92: Where the Fiend of Fire passes, all is\ncast into flame...\x00
+0x93: When all four Crystals shine once more,\nreturn here.\n\nAll will be revealed...\x00
+0x94: Bring the light of the four Crystals to\nus!\n\nWarriors of Light, only you can do this!\x00
+0x95: The volcano Mount Gulg rises to the\nwest of this town.\n\nThe Fiend of Fire long slept within its\npassages, but she has awoken two\nhundred years before her time.\nVanquish her before the world is\nconsumed in flame!\x00
+0x96: The four forces gather in the Chaos\nShrine, the geographic center of the\nfour altars.\nWith the forces again flowing freely,\nthe time to go to the Chaos Shrine and\nstrike the root of darkness has come!\x00
+0x97: The four Crystals shine once again!\n\n\nThe combined power of that light is the\nonly means of breaking through the wall\nof time.\nThe architect of this disaster is beyond\nthat wall, two thousand years in the\npast!\x00
+0x98: You would have no memory of this, but\nbefore you wandered into this land, time\nflowed properly for you.\nBut that flow of time has become\nwarped for you here, in this time.\x00
+0x99: The chain of time has become looped\nback upon itself...\n\nYou must travel back in time to the link\nin that chain that gave birth to this\ncycle of wrath\u815dand destroy it!\x00
+0x9a: The sequence of disasters that began\nfour hundred years ago...\n\nIt was triggered by events that\nhappened only a scant few days in our\npast.\nBut whoever set this in motion has now\nfled two thousand years into the past.\x00
+0x9b: I see time spiraling...\n\n\nWhatever went back two thousand\nyears in the past has brought the world\nto the brink of destruction.\nAnd now, two thousand years later, it\ntravels into the past again...\n\nA cycle of wrath without end...\x00
+0x9c: An ever-repeating two-thousand-year\ncycle... The warped destiny that gives\nbirth and rebirth to wrath...\nBut it\u8166s no more than an illusion...\na fantasy! And only the Warriors of\nLight can break the cycle!\x00
+0x9d: Warriors o Licht...this could nae have\nhappen wioot ye! The earth\u8166s smeddum\nand virr is comin back!\x00
+0x9e: Power must be turned toward its proper\nend.\x00
+0x9f: I\u8166ve been after the levistone for ten\nyears...\n\nThe cave to the north looks promising,\nbut I can\u8166t go...\n\nI\u8166d never hear the end of it from my\nwife.\x00
+0xa0: I am Lukahn.\n\n\nI see...a cycle of wrath...\nA dim light...guided by destiny...\n\nThat about which our entire future\nrevolves...\x00
+0xa1: My husband is always traveling, and\nin the little time he IS home, he sleeps\nall day!\nI think he needs to get his priorities\nstraight.\x00
+0xa2: Long ago, an ancient race known as the\nSky People used a language called\nLufenian.\nMy brother, Unne, would always talk\nabout it, telling me how he could speak\nit if he only had the Rosetta Stone.\x00
+0xa3: You have the Rosetta Stone!?\n\n\nYou must take it to my brother, Unne,\nimmediately!\x00
+0xa4: You ever hear of something called\noxyale?\x00
+0xa5: Are those legs REALLY yours?\x00
+0xa6: Look at my legs! Aren\u8166t they wonderful?\n\n\nI love having legs! Look! Look! Did you\nsee that move I just did!\x00
+0xa7: That Underhill fella from the caravan\nhad something awful weird for sale.\x00
+0xa8: They say that the shrine sank into the\nsea two hundred years ago.\n\nNow there are mermaids living there\u815d\nor so the story goes.\x00
+0xa9: Two hundred years ago, the Shrine of\nOnrac flourished. It brimmed with the\npower of water.\nI ask but one thing of you. Please,\nrestore that power to its former grace.\x00
+0xaa: The mystic power of the water has\nbeen revived! Now our kingdom will\nonce again flourish!\x00
+0xab: You have the look of a warrior about\nyou.\n\nI\u8166m a warrior myself, on a pilgrimage to\nthe Citadel of Trials to earn the\nrecognition of the Dragon King.\nI must return with a token proving my\nstrength and courage.\x00
+0xac: Amazing! Humans have been honored by\nthe Dragon King!\x00
+0xad: Out of me way! Son of a *hic*! I haven\u8166t\nbeen able to catch me a single fish!\n\nHow\u8166m I supposed to keep food on me\nplate and *hic* in me belly?\x00
+0xae: My father\u8166s with the caravan. Right\nnow they\u8166re over in the desert to the\nwest.\nThey usually pitch camp by the forest\nnear the north of the desert.\n\nI hope he comes home soon.\x00
+0xaf: Koppe\u8166s been spreading some nonsense\nstory about how he saw some shining\nthing fall out of the sky.\x00
+0xb0: The Sunken Shrine is said to be filled\nwith riches.\n\nSilver, gold, diamonds...even tablets\ndescribing lost languages and\ncivilizations, if you believe the legends.\x00
+0xb1: Hi, my name\u8166s Koppe. Hm? You want to\nhear about the shining object I saw?\n\nI think it came down somewhere near\nthe waterfall to the north.\n\nNo one believes me, but I think it was\nsome kind of mechanical creature!\x00
+0xb2: They say this used to be a beautiful\nvillage until about two hundred years\nago.\x00
+0xb3: Smyth: Nae so fast! Those are juist for\ndisplay! You canna fight wi em!\x00
+0xb4: If the light of the sea is lost, we will\nturn into sea foam, vanishing forever...\x00
+0xb5: If the light of the sea is not restored,\nwe will vanish as foam on the waves...\x00
+0xb6: While the Fiend of Water lives, the\nlight of the sea grows ever darker.\x00
+0xb7: Oh! My prayers have been answered!\x00
+0xb8: This is the uppermost level of the\nshrine.\n\nThe kraken, the Fiend of Water, nests\non its lowest level.\x00
+0xb9: Are those the crystals the legends\nspeak of? Just who are you?\x00
+0xba: Save the sea. Restore light to the\nWater Crystal.\x00
+0xbb: Thank you so much! Now the beauty\nthis stretch of sea once knew will\nsurely return!\x00
+0xbc: One of our friends went to see the\nworld above and hasn\u8166t returned.\n\nI wonder what she\u8166s doing now? I do\nhope she\u8166s alright...\x00
+0xbd: You can breathe underwater? How?\nHOW!?\x00
+0xbe: The Mirage Tower stands in the desert\non the continent to the east, right?\nWell, I saw someone go INTO the tower!\nI remember hearing the most lovely\nchiming sound...\x00
+0xbf: This door has been bound by the\nmystic key.\x00
+0xc0: This is Gaia. Outsiders often call our\ntown the Eye of the Hawk.\n\nTo our south is an ancient city known\nas the Wing of the Hawk.\x00
+0xc1: Have you visited the Wing of the Hawk?\nI can\u8166t understand a word they say\nthere.\x00
+0xc2: The legends say the Sky People could\nsoar through the sky and build castles\nabove the clouds.\x00
+0xc3: I saw a shining light flying to the west\nin the night sky! I KNOW I saw it!\x00
+0xc4: I DON\u8166T believe it! You\u8166re outsiders,\naren\u8166t you!? How did you make it this\nhigh up in the mountains?\nWhat, can you fly or something?\n\n\nNaw, that\u8166s impossible...right?\x00
+0xc5: There was a scholar studying the\nLufenian language, but I can\u8166t seem to\nrecall his name.\x00
+0xc6: They say a special water called oxyale\ngushes from the bottom of our spring.\nBut only faeries can draw it out.\x00
+0xc7: There\u8166s a tower in the Yahnikurm Desert\nthat no one can enter.\n\nSome people think it\u8166s nothing but a\nmirage, so it\u8166s called the Mirage Tower.\nNo one can say for sure, though.\x00
+0xc8: I caught the faerie, so I figure she\u8166s\nmine to do with as I please. What\u8166s the\nbig deal?\nSo I sold her to the caravan. So what?\x00
+0xc9: My dad was always telling me how the\ncastle to the west was a place to test\nyour courage.\x00
+0xca: Busy, busy, busy...\nSwish-swish-aree!\x00
+0xcb: That broom\u8166s always trying to weasel\nits way out of its chores. I don\u8166t know\nwhat to do with it!\x00
+0xcc: A faerie was living at our spring, but\nI haven\u8166t seen her lately.\n\nI wonder what\u8166s happened to her.\x00
+0xcd: Before you leave, legendary warriors,\ntake this chime with you.\n\nIt will grant you passage into the\nMirage Tower.\x00
+0xce: The Mirage Tower is our symbol.\x00
+0xcf: Four hundred years ago, we had built a\ncivilization of the highest order.\n\nEven beyond the skies we reached...\nBut that is naught but history now.\x00
+0xd0: Lu...pa...gamhi...dho?\x00
+0xd1: We are the Lufenians, the descendants\nof the race that once lived among the\nclouds\u815dthe Sky People.\nYou use a vessel you call an airship...\n\n\nIt was built by one of our ancestors...\na man by the name of Cid.\x00
+0xd2: The castle that floats high above the\nclouds was once the home of our\nancestors.\nThe Mirage Tower is the gateway to\nthat castle.\x00
+0xd3: We have a legend that has been passed\ndown through many generations.\n\nAccording to this legend, four hundred\nyears after the fall of the civilization\nin the sky, warriors bearing light will\ncome forth to save our people.\x00
+0xd4: We fought a life-and-death struggle\nwith Tiamat, the Fiend of Wind.\n\nBut our power was not enough...\nTo this day her lair remains in the\ncastle in the sky\u815dthe Flying Fortress.\x00
+0xd5: We placed our last hope in the five\nwarriors we sent out...\n\nIt\u8166s been said they fell victim to the\ncurse of the Fiends and were turned\ninto bats.\x00
+0xd6: We came to believe there was another\nentity controlling the four Fiends.\n\nTo ascertain its location, we sent out\nfive warriors, but much time has passed\nsince we heard from them.\nI hope no harm has befallen them...\x00
+0xd7: The Sky People would pass on their\nmemories from one generation to the\nnext through rituals.\nBut four hundred years is a very long\ntime, and those memories have begun\nto fade.\x00
+0xd8: The Light Bearers! Then the legend is\ntrue!\x00
+0xd9: This world is composed of four forces:\nfire, earth, water, and wind.\n\nOf these, we showed greatest prowess\nwith the power of wind.\n\nHigh in the sky, we set a castle afloat\namidst an azure sea of stars.\x00
+0xda: Tiamat blocks the power of wind, the\nsource of the Sky People\u8166s strength.\x00
+0xdb: Here lies Link.\x00
+0xdc: Could the mechanical beings our\nancestors created still function?\x00
+0xdd: The flying castle floats on a blue sea\nof stars beyond the sky.\x00
+0xde: ...our FRIEND left on a journey...\n...to the WEST...\n\n...he took the WARP cube...\n...and went to see our masTER...\x00
+0xdf: ...use the WARP cube to travel...\n...beyond the SKY...\n\n...it WILL take you to the...\n...flying FORtress...\x00
+0xe0: ...masTER!...\n...we have waited SO long...\x00
+0xe1: ...from this observation WINdow...\n...you can look out on...\n...the ENTIRE world...\x00
+0xe2: It is a rare thing to have humans visit\nus here.\n\nIf you are valiant warriors, you should\nspeak with Bahamut, our king.\x00
+0xe3: The dragons of the Cardian Islands have\nno love of senseless killing.\x00
+0xe4: Once, long ago, there was an age when\nman and dragon lived together.\x00
+0xe5: You do not fear me... You have some\nspine in you, human.\x00
+0xe6: Let\u8166s take a peek at your reflection in\nthe water...\n\nUgh! You\u8166re filthy! Wash up already!\x00
+0xe7: It is customary for a dragon to venture\nnortheast to the Citadel of Trials.\n\nThere, he must test his mettle by\nclaiming a token of courage from within.\x00
+0xe8: The form the token of courage takes\nchanges with the times. Do not let its\nappearance deceive you.\x00
+0xe9: Have you spoken with our king,\nBahamut?\n\nThe Dragon King confers a great honor\nupon the brave.\x00
+0xea: Only the truly brave can obtain a token\nof their courage.\x00
+0xeb: Once, long ago, the northland was filled\nwith beautiful shrines and towering\nmechanical castles.\nSo very long ago...\x00
+0xec: This is the chamber of Bahamut, the\nDragon King. Mind your tongue.\x00
+0xed: The Dragon King looks within to measure\na person\u8166s true courage.\x00
+0xee: You see a gravestone.\x00
+0xef: It\u8166s a well. It looks like you could climb\ninside, but you can\u8166t. Really.\x00
+0xf0: \u2530 obtained from the\nchest!\x00
+0xf1: You can\u8166t hold any more!\x00
+0xf2: The chest is empty.\x00
+0xf3: This is the Altar of Earth, from which\nthe power of earth flows forth.\x00
+0xf4: This is the Altar of Fire, from which\nthe power of fire flows forth.\x00
+0xf5: This is the Altar of Water, from which\nthe power of water flows forth.\x00
+0xf6: This is the Altar of Wind, from which\nthe power of wind flows forth.\x00
+0xf7: F7\x00
+0xf8: ...analyzing TIAmat...\n...no known WEAKNESS...\x00
+0xf9: The observation window looks out upon\nthe world.\n\nThe four forces of fire, earth, water,\nand wind appear as a mist converging\non a single point...\n...a point at the center of the four\nAltars. This must be the location of\nthe Chaos Shrine!\x00
+0xfa: FA\x00
+0xfb: FB\x00
+0xfc: FC\x00
+0xfd: FD\x00
+0xfe: What!? You understand the language\nthey speak in the Wing of the Hawk?\x00
+0xff: A stone slab is set in the floor.\nAn evil force seems to emanate from\nwithin.\x00
+0x100: Only they who have been granted\npermission may undergo the trials.\x00
+0x101: Arise, fallen warrior!\x00
+0x102: 0\x00
+0x103: Please come again!\x00
+0x104: It will cost \u2531 gil to resurrect\n\u2532. Will you pay?\x00
+0x105: Pleasant dreams!\x00
+0x106: You don\u8166t seem to have enough money.\x00
+0x107: Who would you like to raise?\x00
+0x108: There are none in need of my services.\nDo not lose heart, brave warriors.\x00
+0x109: You wish to resurrect \u2532?\x00
+0x10a: You obtain the lute.\x00
+0x10b: You obtain the crown.\x00
+0x10c: You obtain a levistone.\x00
+0x10d: You obtain a rat\u8166s tail.\x00
+0x10e: You obtain the Rosetta Stone.\x00
+0x10f: You obtain adamantite.\x00
+0x110: The king is searching for the prophesied\nWarriors of Light.\n\nTh-those crystals! You must see the\nking at once!\x00
+0x111: So why are you still here?\n\n\nWeren\u8166t you supposed to be crossing\nthat bridge to the north? You must\nreally wanna dance with me. Hee hee!\x00
+0x112: Pravoka is a port town. The pirates\nthere just might have a ship.\x00
+0x113: Have you been to the Western Keep?\n\n\nThey say the crown from the Marsh\nCave can restore the fallen keep...\x00
+0x114: Hey! Shouldn\u8166t you be taking that crown\nto the king of the Western Keep?\n\nThough, come to mention it, there does\nseem to be something strange going on\nthere...\x00
+0x115: Matoya\u8166s crystal eye was stolen and\nshe STILL hasn\u8166t gotten it back.\x00
+0x116: I bet you could use the jolt tonic to\nawaken the elf prince.\x00
+0x117: Rumor has it you can get into the\nlocked rooms in Castle Cornelia if you\nhave the mystic key.\x00
+0x118: Nerrick the dwarf has been looking for\npowerful explosives. I wonder what he\u8166s\ngonna use them for?\x00
+0x119: I don\u8166t know what else to tell ya...\nHow \u8166bout we have that dance?\nWhaddaya say?\x00
+0x11a: Have you met Matoya yet? She\u8166s been\nhaving a lot of trouble ever since she\nlost her eyesight.\nThey say she lives across the bridge,\nfar, far to the north.\x00
+0x11b: 11B\x00
+0x11c: 11C\x00
+0x11d: 11D\x00
+0x11e: 11E\x00
+0x11f: 11F\x00
+0x120: The King: Thank you for returning my\ndaughter to my side.\n\nThere can be no doubt that you are\nthe Warriors of Light from Lukahn\u8166s\nprophecy!\nYou should hear the prophecy in its\nentirety. Ahem. If I may...\n\n\u8168When darkness veils the world, four\n Warriors of Light shall come.\n\n\u8168If they cannot gather the shards of\n light, the darkness will consume all.\n\n\u8168The four Crystals will never shine\n again...\u8168\n\nNow, I hear that a Crystal can be found\non the continent to our north.\n\nRestoring light to the Crystals is our\nonly hope of ridding the world of the\nmonsters which plague it!\x00
+0x121: The King: Welcome, travelers. I am told\nyou carry crystals. Is this true?\x00
+0x122: It\u8166s just as Lukahn\u8166s prophecy foretold:\n\u8168When darkness veils the world, four\n Warriors of Light shall come.\u8168\x00
+0x123: Chancellor: Your Majesty, we cannot be\ncertain that these are the warriors\nforetold by the prophecy.\x00
+0x124: The King: Yet they stand before us\nwith the crystals. I cannot dismiss this\nas mere coincidence.\nCrystal bearers, there is a task I would\nask of you.\n\nWill you not rescue my daughter, Sarah?\x00
+0x125: Chancellor: Garland, a knight once in\nHis Majesty\u8166s service, has abducted\nPrincess Sarah.\nI ask for your aid in the name of His\nMajesty, the king of Cornelia.\n\nGarland has taken refuge in the Chaos\nShrine, which lies to our north.\n\nOf course, we did attempt to save the\nprincess ourselves...\n\nBut Garland is the finest swordsman in\nthe kingdom. We have none who can\nmatch him.\x00
+0x126: The King: I have heard that you wish to\njourney to the continent to our north.\n\nThe bridge leading north was lost long\nago, making passage impossible.\n\nIf you can rescue Sarah, I will have the\nbridge rebuilt as a sign of my gratitude.\n\nGo now, Warriors of Light, and do not\nfail me!\x00
+0x127: I will have the bridge to the north\nrebuilt, as I promised.\n\nI pray that you succeed in restoring\nlight to the four Crystals\u815dand to the\nworld.\x00
+0x128: You obtain nitro powder.\x00
+0x129: Sarah: Wait just a moment!\x00
+0x12a: 12A\x00
+0x12b: 12B\x00
+0x12c: 12C\x00
+0x12d: 12D\x00
+0x12e: 12E\x00
+0x12f: 12F\x00
+0x130: Garland: The king will have no choice\nbut to exchange the kingdom for his\ndaughter\u8166s life. Cornelia will be mine!\x00
+0x131: Who\u8166s there!? \n\n\nHmph. The king\u8166s lapdogs. Do you have\nany idea who you\u8166re messing with?\n\nYou really think you have what it takes\nto cross swords with ME? Very well...\n\nI, Garland, will knock you all down!!\x00
+0x132: You...you\u8166ve come to rescue me?\nI don\u8166t know how I can ever thank you...\n\nI am Sarah, princess of Cornelia.\n\n\nThat\u8166s the first time anyone\u8166s ever\ndefeated Garland.\n\nYou must allow me to show my\ngratitude. Please, accompany me to\nCastle Cornelia.\x00
+0x133: The door is locked.\x00
+0x134: 0\x00
+0x135: 0\x00
+0x136: 0\x00
+0x137: 0\x00
+0x138: 0\x00
+0x139: 0\x00
+0x13a: 13A\x00
+0x13b: 13B\x00
+0x13c: 13C\x00
+0x13d: 13D\x00
+0x13e: 13E\x00
+0x13f: 13F\x00
+0x140: Vampire: All things in this vorld are\ndestined to end in death...\n\nThe seal cannot be broken, and so the\nearth shall rot.\x00
+0x141: Vampire: You cannot alter destiny.\n\n\nMere mortals cannot kill the undying!\x00
+0x142: You obtain the Star Ruby.\x00
+0x143: I am he who feeds on the power of\nearth.\x00
+0x144: I will not be disturbed by mortal men.\nI am the lich...Fiend of Earth!\x00
+0x145: Who speaks to me?\x00
+0x146: 0\x00
+0x147: 0\x00
+0x148: 0\x00
+0x149: 0\x00
+0x14a: 14A\x00
+0x14b: 14B\x00
+0x14c: 14C\x00
+0x14d: 14D\x00
+0x14e: 14E\x00
+0x14f: 14F\x00
+0x150: Healer: This jolt tonic may be just\nwhat we need to break the curse and\nawaken the prince!\nI will try it at once!\x00
+0x151: Healer: Your Highness? Your Highness!\x00
+0x152: The Prince: I was having...a terrible\nnightmare... Am I still...dreaming?\x00
+0x153: You...you\u8166re the legendary warriors!\nSomething tells me I\u8166m not dreaming...\n\nI shall follow the legend as it has been\ntold to me and my forefathers.\n\nThe time for me to pass on the mystic\nkey to its rightful owners has come at\nlast.\x00
+0x154: You obtain the mystic key.\x00
+0x155: 0\x00
+0x156: 0\x00
+0x157: 0\x00
+0x158: 0\x00
+0x159: 0\x00
+0x15a: 15A\x00
+0x15b: 15B\x00
+0x15c: 15C\x00
+0x15d: 15D\x00
+0x15e: 15E\x00
+0x15f: 15F\x00
+0x160: 0\x00
+0x161: 0\x00
+0x162: 0\x00
+0x163: 0\x00
+0x164: 0\x00
+0x165: 0\x00
+0x166: 0\x00
+0x167: 0\x00
+0x168: 0\x00
+0x169: 0\x00
+0x16a: 16A\x00
+0x16b: 16B\x00
+0x16c: 16C\x00
+0x16d: 16D\x00
+0x16e: 16E\x00
+0x16f: 16F\x00
+0x170: You...you have oxyale.\x00
+0x171: You are the ones we\u8166ve been waiting\nfor.\x00
+0x172: Please save the mermaids!\x00
+0x173: Do you want to get in the barrel?\x00
+0x174: 0\x00
+0x175: 0\x00
+0x176: 0\x00
+0x177: 0\x00
+0x178: 0\x00
+0x179: 0\x00
+0x17a: 17A\x00
+0x17b: 17B\x00
+0x17c: 17C\x00
+0x17d: 17D\x00
+0x17e: 17E\x00
+0x17f: 17F\x00
+0x180: Hmph. You humans do impress... I would\nnot have thought to see you here.\x00
+0x181: But do you really think you can defeat\nthe Fiend of Water here in my own\ndomain?\nFools! These dark depths shall be your\ntomb!\x00
+0x182: 0\x00
+0x183: 0\x00
+0x184: 0\x00
+0x185: 0\x00
+0x186: 0\x00
+0x187: 0\x00
+0x188: 0\x00
+0x189: 0\x00
+0x18a: 18A\x00
+0x18b: 18B\x00
+0x18c: 18C\x00
+0x18d: 18D\x00
+0x18e: 18E\x00
+0x18f: 18F\x00
+0x190: Do you remember me? I was once known\nas a knight of Cornelia.\x00
+0x191: Two thousand years from now...you\nkilled me. I am Garland.\x00
+0x192: Oh, you did defeat me then.\n\n\nBut the four great forces saved me\nby sending me back through time!\x00
+0x193: Once here, I sent the four Fiends into\nthe future...\x00
+0x194: ...where they shall once again use the\nfour great forces to send me into the\npast!\x00
+0x195: In two thousand years, I will remember\nnone of this.\x00
+0x196: But I will be reborn again here.\n\n\nSo even as you die again and again,\nI shall return!\n\nBorn again into this endless circle that\nI have created!\x00
+0x197: 0\x00
+0x198: 0\x00
+0x199: 0\x00
+0x19a: 19A\x00
+0x19b: 19B\x00
+0x19c: 19C\x00
+0x19d: 19D\x00
+0x19e: 19E\x00
+0x19f: 19F\x00
+0x1a0: So you are the ones who defeated the\nFiend of Earth and roused Marilith from\nher slumber...\x00
+0x1a1: The power of the burning flame is mine\nand mine alone!\n\nThose who would oppose me shall burn\nin hellfire!\x00
+0x1a2: So you are the ones who defeated the\nthree Fiends of Earth, Water, and Wind\nand roused Marilith from her slumber...\x00
+0x1a3: So you are the ones who defeated the\nFiends of Earth and Wind and roused\nMarilith from her slumber...\x00
+0x1a4: So you are the ones who defeated the\nFiends of Earth and Water and roused\nMarilith from her slumber...\x00
+0x1a5: 1A5\x00
+0x1a6: 1A6\x00
+0x1a7: 1A7\x00
+0x1a8: 1A8\x00
+0x1a9: 1A9\x00
+0x1aa: 1AA\x00
+0x1ab: 1AB\x00
+0x1ac: 1AC\x00
+0x1ad: 1AD\x00
+0x1ae: 1AE\x00
+0x1af: 1AF\x00
+0x1b0: Well done, Warriors of Light. You have\ndefeated the Fiend of Earth and\nrestored the Crystal\u8166s light.\nSadly, this has drawn the notice of\nthe Fiend of Fire, who was not to have\nstirred for another two hundred years.\nTake this canoe, and go face the Fiend\nin Mount Gulg!\x00
+0x1b1: You obtain a canoe.\x00
+0x1b2: 1B2\x00
+0x1b3: 1B3\x00
+0x1b4: 1B4\x00
+0x1b5: 1B5\x00
+0x1b6: 1B6\x00
+0x1b7: 1B7\x00
+0x1b8: 1B8\x00
+0x1b9: 1B9\x00
+0x1ba: 1BA\x00
+0x1bb: 1BB\x00
+0x1bc: 1BC\x00
+0x1bd: 1BD\x00
+0x1be: 1BE\x00
+0x1bf: 1BF\x00
+0x1c0: You obtain oxyale.\x00
+0x1c1: You\u8166re the ones who rescued me from\nthat bottle!\n\nI\u8166m sorry about running away, but I was\njust so scared...\n\nI\u8166ll get you some oxyale from the bottom\nof the spring to make up for it, okay?\x00
+0x1c2: Air will flow out of that water for as\nlong as you have it!\x00
+0x1c3: 1C3\x00
+0x1c4: 1C4\x00
+0x1c5: 1C5\x00
+0x1c6: 1C6\x00
+0x1c7: 1C7\x00
+0x1c8: 1C8\x00
+0x1c9: 1C9\x00
+0x1ca: 1CA\x00
+0x1cb: 1CB\x00
+0x1cc: 1CC\x00
+0x1cd: 1CD\x00
+0x1ce: 1CE\x00
+0x1cf: 1CF\x00
+0x1d0: Bahamut: Long has it been since men\nof courage stood before me.\n\nYour bravery would seem worthy of\nconsideration.\x00
+0x1d1: The rat\u8166s tail you carry is a fitting\ntoken of courage and strength...\x00
+0x1d2: So be it... I shall honor you with titles\nbefitting your valor.\x00
+0x1d3: 1D3\x00
+0x1d4: 1D4\x00
+0x1d5: 1D5\x00
+0x1d6: 1D6\x00
+0x1d7: 1D7\x00
+0x1d8: 1D8\x00
+0x1d9: 1D9\x00
+0x1da: 1DA\x00
+0x1db: 1DB\x00
+0x1dc: 1DC\x00
+0x1dd: 1DD\x00
+0x1de: 1DE\x00
+0x1df: 1DF\x00
+0x1e0: Nerrick: Nitro pouder!\n\n\nThe explosive force in this pouder will\nhae mah canal open in noo time flat!\n\nAh owe ye, kids!\x00
+0x1e1: Nou we can bluiter this rock tae\nsmithereens!\x00
+0x1e2: 1E2\x00
+0x1e3: 1E3\x00
+0x1e4: Thare we go!\x00
+0x1e5: What are ye aw standin\u8166 aroon for?\n\n\nThat pouder\u8166s set tae blaw! Unless ye\nplan on goin wi it, ye\u8166d better gie oot\nwhilst ye can!\x00
+0x1e6: 1E6\x00
+0x1e7: 1E7\x00
+0x1e8: Ah canna wait tae see what lies oot\nthere ayunt that canal!\x00
+0x1e9: Smyth: Is this...adamantite!?\x00
+0x1ea: Awricht! Ah\u8166ll uise this tae make ye the\nfinest sword ye\u8166ll e\u8166er wield!\x00
+0x1eb: Duin! In aw ma years Ah\u8166ve ne\u8166er crafted\na finer sword!\x00
+0x1ec: Go on, take her. She\u8166s yours!\x00
+0x1ed: You obtain Excalibur.\x00
+0x1ee: 1EE\x00
+0x1ef: 1EF\x00
+0x1f0: The King: Muwahaha!\n\n\nYou fools fell right into my trap!\n\n\nI AM Astos, king of the dark elves!\x00
+0x1f1: Astos: With the combined power of the\ncrown you now hold and the crystal eye\nI already possess...\nI will become the TRUE elf king!\x00
+0x1f2: It is useless to resist me! I can take\nwhat is mine by sheer force!\x00
+0x1f3: You obtain the crystal eye.\x00
+0x1f4: 1F4\x00
+0x1f5: 1F5\x00
+0x1f6: 1F6\x00
+0x1f7: 1F7\x00
+0x1f8: 1F8\x00
+0x1f9: 1F9\x00
+0x1fa: 1FA\x00
+0x1fb: 1FB\x00
+0x1fc: 1FC\x00
+0x1fd: 1FD\x00
+0x1fe: 1FE\x00
+0x1ff: 1FF\x00
+0x200: The lich, Marilith, the kraken...\n\n\nYou have defeated three Fiends and\nreached my lofty perch.\x00
+0x201: More the better... May the image of\nTiamat, the Fiend of Wind, be the last\nto burn in your eyes!\x00
+0x202: The lich, Marilith...\n\n\nYou have defeated two Fiends and\nreached my lofty perch.\x00
+0x203: The lich, the kraken...\n\n\nYou have defeated two Fiends and\nreached my lofty perch.\x00
+0x204: You have defeated the lich and reached\nmy lofty perch.\x00
+0x205: 0\x00
+0x206: 0\x00
+0x207: 0\x00
+0x208: 0\x00
+0x209: 0\x00
+0x20a: 20A\x00
+0x20b: 20B\x00
+0x20c: 20C\x00
+0x20d: 20D\x00
+0x20e: 20E\x00
+0x20f: 20F\x00
+0x210: Matoya: *thump*\nOuch!\x00
+0x211: My eye...my eye!\x00
+0x212: I can\u8166t see a blasted thing without my\ncrystal eye!\x00
+0x213: Who could have stolen it from me?\x00
+0x214: Matoya: Oh, what\u8166s this? My crystal\neye? Give it here!\n\nDon\u8166t worry, I have something to give\nyou in exchange. Take this potion.\n\nIt\u8166s the most amazing potion in my\nentire collection!\x00
+0x215: Ahh! I can see! I can see again!\x00
+0x216: You obtain jolt tonic.\x00
+0x217: You have star ruby!?\n\n\nGive me star ruby and I let you pass!\x00
+0x218: *crunch* *munch*\n\n\nMmmm! Nothing tastier than rubies!\x00
+0x219: Sadda: So you are the ones who\ndefeated the vampire, eh?\n\nBut he was only a servant... The beast\ncorrupting the Earth Crystal lurks far\ndeeper within the cavern.\nHere. Take this staff with you and use\nit behind the vampire\u8166s chamber!\x00
+0x21a: You obtain the earth rod.\x00
+0x21b: 21B\x00
+0x21c: 21C\x00
+0x21d: 21D\x00
+0x21e: 21E\x00
+0x21f: 21F\x00
+0x220: And just what be ye doing \u8166ere? Ye\nwouldn\u8166t be lookin\u8166 to make trouble with\nBikke\u8166s Bikkeneers, would ye?\x00
+0x221: Aye-aye, Cap\u8166n! We\u8166ll make their bones\ngo crunch!\x00
+0x222: Bikke: I be most sorry, young masters.\nI\u8166ll be makin\u8166 no more fuss, I swear.\n\nI want ye to take me ship fer yer\ntroubles. Can ye find it in yer heart\nto fergive an old pirate?\x00
+0x223: 0\x00
+0x224: You obtain a ship.\x00
+0x225: I would be most happy to teach you\nabout equipment. Would you care to\nlisten?\x00
+0x226: Equipment can be split into two\ncategories: weapons and armor.\n\nEquipping a weapon will increase your\nAttack rating.\n\nThere are four types of armor: shields,\nhelms, gloves, and body armor.\n\nAny armor you wear on your body,\nincluding armlets, is classified as body\narmor.\nShields are held in one hand, while\nhelms are worn on the head.\n\nRemember that the weapons and armor\nyou find won\u8166t do you any good unless\nyou equip them from the main menu.\nSelecting \u8168Optimal\u8168 will automatically\nequip the strongest weapons and armor\nin your inventory.\x00
+0x227: I\u8166ve been known to give quite a lecture\non the use of magic. Have a listen?\x00
+0x228: There are two schools of magic: black\nand white.\n\nWhite magic is comprised of healing and\ndefensive spells, while black magic\nspells are of the offensive variety.\nEach level of black and white magic\ncontains four distinct spells.\n\nHowever, any given character can only\nlearn three of the four spells of a\nparticular magic level.\nYou can use the \u8168Discard\u8168 command to\nwipe your memory of any spell you\u8166ve\npreviously learned.\nIf you want to relearn a spell you\npreviously discarded, you can do that,\ntoo.\nTry to choose a combination of spells\nthat works well with your fighting\nstyle.\x00
+0x229: If you need to know about items, you\u8166ve\ncertainly come to the right person! As\nlong as you\u8166re here, why not hear, eh?\x00
+0x22a: It never hurts to carry a lot of potions,\nantidotes, and the like with you.\n\nStocking up on items in advance will\nhelp you conserve your magic for the\ntimes you need it most.\nNow let\u8166s move on to sleeping bags,\ntents, and cottages, shall we?\n\nThese three splendid items allow you to\nrestore your HP and MP. You can only\nuse them outdoors, though.\nIn addition to these traditional items,\ncertain pieces of equipment may be used\nas items as well.\nThe only way to know if a given piece\nof equipment has a use is to try it out,\nso experimentation is the key.\nIn the course of your travels, you will\ncome across unique item types that are\nknown as \u8168key items.\u8168\nSome key items have an effect when\nused in an important location.\x00
+0x22b: Would you like to tarry for just a\nmoment to hear about monsters?\x00
+0x22c: There are many different types of\nmonsters, and different types have\ndifferent weaknesses.\nFinding a monster\u8166s weakness will help\nyou gain the upper hand in battle.\n\nFor example, aquatic monsters are\nsusceptible to lightning.\n\nCasting Thunder on these monsters\nwill deal particularly heavy damage.\n\nSome weapons are also more effective\nagainst certain monsters.\x00
+0x22d: Y-you win...\x00
+0x22e: 22E\x00
+0x22f: 22F\x00
+0x230: Unne: Just a moment. Let me see that\ntablet...\x00
+0x231: This...this is the Rosetta Stone!\x00
+0x232: This makes it possible to decipher\nLufenian!\x00
+0x233: Hmm... Yes, of course! THAT\u8166S what\nthat was! It all makes sense!\x00
+0x234: Here, allow me to express my gratitude\nby teaching you Lufenian.\x00
+0x235: There! Now you can speak Lufenian, too!\x00
+0x236: 0\x00
+0x237: 0\x00
+0x238: 0\x00
+0x239: 0\x00
+0x23a: 23A\x00
+0x23b: 23B\x00
+0x23c: 23C\x00
+0x23d: 23D\x00
+0x23e: 23E\x00
+0x23f: 23F\x00
+0x240: You obtain the chime.\x00
+0x241: You obtain the warp cube.\x00
+0x242: 0\x00
+0x243: 0\x00
+0x244: 0\x00
+0x245: 0\x00
+0x246: 0\x00
+0x247: 0\x00
+0x248: 0\x00
+0x249: 0\x00
+0x24a: 24A\x00
+0x24b: 24B\x00
+0x24c: 24C\x00
+0x24d: 24D\x00
+0x24e: 24E\x00
+0x24f: 24F\x00
+0x250: You\u8166ll be needing a ship if you want to\nbe able to move about more freely.\n\nIf you have trouble obtaining one\nthrough normal means, you could always\n\u8168borrow\u8168 a pirate ship...\x00
+0x251: I believe you could cross rivers if you\nhad something like a canoe.\n\nYes, I believe I heard the sages of\nCrescent Lake saying something about\nthat.\x00
+0x252: By the by, have you ever heard of a\nship that can sail through the air?\n\nThe levistone, spoken of by the elven\nsages, has something to do with it...\x00
+0x253: There\u8166s just one thing holding you back\nfrom being truly exalted Warriors of\nLight...\nYou need more dignified titles. Have you\ngiven any thought to that?\n\nThere\u8166s a dragon in Onrac who\u8166s very\nup on his titles.\x00
+0x254: So you\u8166ve been to the Citadel of Trials,\nbut you still don\u8166t have your token of\ncourage?\x00
+0x255: Carrying around a rat\u8166s tail, are we?\n\n\nWell, I suppose it\u8166s better than nothing.\nMaybe it\u8166s time to go pay a visit to the\nDragon King.\x00
+0x256: By the by, I\u8166ve been thinking that\n\u8168crescent\u8168 may not be referring to the\nmoon after all.\nI have a hunch that it might be\ndescribing the body of water around the\ntown of Crescent Lake.\n...Just a hunch, mind you.\x00
+0x257: I\u8166m afraid there\u8166s nothing more I can tell\nyou at the moment.\n\nRestoring light to one of the Crystals\njust might make something happen\u815dbut\nwho knows?\x00
+0x258: 0\x00
+0x259: 0\x00
+0x25a: 25A\x00
+0x25b: 25B\x00
+0x25c: 25C\x00
+0x25d: 25D\x00
+0x25e: 25E\x00
+0x25f: 25F\x00
+0x260: Orders from His Majesty. We\u8166re to do\nour part to fulfill Lukahn\u8166s prophecy!\x00
+0x261: 0\x00
+0x262: 0\x00
+0x263: 0\x00
+0x264: 0\x00
+0x265: What does this bridge have to do with\nthe prophecy?\x00
+0x266: The four Warriors of Light are here...\nThey\u8166re here in Cornelia!\x00
+0x267: 0\x00
+0x268: 0\x00
+0x269: 0\x00
+0x26a: 26A\x00
+0x26b: 26B\x00
+0x26c: 26C\x00
+0x26d: 26D\x00
+0x26e: 26E\x00
+0x26f: 26F\x00
+0x270: You obtain an airship.\x00
+0x271: 0\x00
+0x272: Please, come in! We charge \u2531 gil\nper night. Would you like to stay?\x00
+0x273: 0\x00
+0x274: 0\x00
+0x275: 0\x00
+0x276: 0\x00
+0x277: 0\x00
+0x278: 0\x00
+0x279: 0\x00
+0x27a: 27A\x00
+0x27b: 27B\x00
+0x27c: 27C\x00
+0x27d: 27D\x00
+0x27e: 27E\x00
+0x27f: 27F\x00
+0x280: This is the Earthgift Shrine.\n\n\nLang ago ye could enter, but the way\u8166s\nbeen shut syne the land began tae\ndecay.\x00
+0x281: The stink went away, sae Ah took a\nkeek inside. It was lippin ower with\ngruesome monsters!\nAh\u8166d stay oot if Ah were ye.\x00
+0x282: This place is known as the Hellfire\nChasm.\n\nElves who would be king once proved\ntheir worth by seeking out treasure\ndeep within.\nNow it is sealed off to all, it seems...\x00
+0x283: The heat surrounding the door is gone!\n\n\nBut now that our prince has become\nking, no one is likely to enter any time\nsoon.\x00
+0x284: Yipes! Peoples!\n\n\nY-you aren\u8166t going to hurt me?\nThen maybe I can tell you a little about\nthis place.\nThis cavern is known as the Lifespring\nGrotto.\n\nLong ago, men and mermaids who fell\nin love could live here together in\npeace.\x00
+0x285: The water flowing from the grotto is\npure once more.\n\nWho knows? Maybe someday I\u8166ll fall\nin love with a man and come to live\nhere...\x00
+0x286: This is Whisperwind Cove. Our forebears\nentrusted many treasures to its depths.\n\nNow sealed for many ages, it is become\na lonely place.\x00
+0x287: Tiamat\u8166s defeat in the Flying Fortress\nhas shattered the seal on the cavern!\n\nShe must have sealed it out of fear\nof our forebears\u8166 powers.\x00
+0x288: ????: You\u8166ve done well to come this\nfar...but you will go no further!\x00
+0x289: ????: So, you\u8166ve managed to reach\nthese depths. I commend you.\n\nBut your journey ends here, I\u8166m afraid.\x00
+0x28a: ????: There are none who can stop\nme in all of creation!\n\nYou, too, shall fall before me!\x00
+0x28b: ????: In me are all things great and\nsmall extinguished.\n\nDie now, Warriors of Light!\x00
+0x28c: ????: Oooohh...\n\n\nWhat a treat! What a treat to be the\none to send you to your graves!\n\nPerish knowing that it was Scarmiglione\nwho fed your corpses to the earth!\x00
+0x28d: Scarmiglione: You\u8166ve given me a fine\ndeath! Indeed you have!\n\nAnd only in death can you know the true\nterror of Scarmiglione!\x00
+0x28e: ????: You\u8166re just in time, my little\nplaymates...\n\nI get so lonely here... Won\u8166t you keep\nme company?\x00
+0x28f: ????: I suppose I underestimated you.\nI didn\u8166t think you would make it this\nfar.\nNo matter. Barbariccia\u8166s winds shall\ncut you down!\x00
+0x290: ????: I am Rubicante. Let us measure\nyour worth, warriors, in the crucible of\nmy flames.\x00
+0x291: 0\x00
+0x292: ????: Interlopers... \x00
+0x293: ????: A thousand years it has been\nsince a challenger stood before me.\n\nShow me the power you possess.\nDefeat me if you can.\x00
+0x294: ????: I am that which follows Omega...\x00
+0x295: ????: Fungahhh!\x00
+0x296: ????: Uwee hee hee! What have we\nhere? I\u8166m warning you, I\u8166m armed...\n\nEight-armed, that is!\nUwee hee hee!\x00
+0x297: ????: I will usher you into the next\nworld... \x00
+0x298: ????: Grraaaahhhh!\x00
+0x299: Thule: Not all places can be reached by\nboat.\n\nAnd it\u8166s the treasures in those places\nthat I just can\u8166t get to!\n\nYou can supposedly reach them with a\ncanoe or an airship...\n\nI\u8166ve also heard that using a levistone\nat the oasis in the desert can raise\nan airship from the sands.\nBut that doesn\u8166t do me much good,\nsince I can\u8166t find a bloody levistone!\x00
+0x29a: I will never surrender my kingdom!\nNone shall stand in my way!\x00
+0x29b: What...what manner of treachery is\nthis? My armies...defeated... \x00
+0x29c: My soul is bound to that of my king.\x00
+0x29d: I will love you always...my liege... \x00
+0x29e: We\u8166re under attack!\x00
+0x29f: I stand between my country and all who\nwould do it harm.\x00
+0x2a0: Being forced to live on like this...\nIt\u8166s too much.\x00
+0x2a1: Please...kill me... \x00
+0x2a2: Why has this happened?\x00
+0x2a3: Dark Bahamut: Welcome.\n\n\nHere the bold are tested to see\nwhether they are fit to advance\nbeyond.\nIf you would proceed, you must first\nface my disciples.\n\n\u2573: \u2564\n\u2573: \u2564\n\u2573: \u2564\nDefeat them and you may pass.\nSpeak to me again if you wish to know\nhow many you\u8166ve defeated.\x00
+0x2a4: Dark Bahamut: These still remain:\n\n\n\u2573: \u2564\n\u2573: \u2564\n\u2573: \u2564\x00
+0x2a5: Dark Bahamut: I see that you are indeed\nworthy of proceeding.\n\nYou are free to pass.\n\n\nBut remember this:\nThe real trial is only just beginning.\x00
+0x2a6: Dark Bahamut: What?\nDo you fear what is to come?\x00
+0x2a7: It is rare that we have human visitors.\x00
+0x2a8: I am still but a novice. I must earn\nMaster Bahamut\u8166s favor soon.\x00
+0x2a9: May your future be bathed in light.\x00
+0x2aa: I worry about the family I left in the\nworld above... \x00
+0x2ab: Returning to the world above every\nnow and then might not be such a bad\nthing!\x00
+0x2ac: Help...us...\n\n\nThat monstrosity beyond the bridge\ntransformed us into the grotesque\nforms you see now.\nIf you can defeat it, we should revert\nto our former selves!\n\nPlease...heed our plea!\x00
+0x2ad: You must defeat it... \nThere is no other way.\x00
+0x2ae: Please...wait... \x00
+0x2af: Help...us. Please...help us... \x00
+0x2b0: It...hurts... \nSomeone...please help... \x00
+0x2b1: The agony...\x00
+0x2b2: Why is this...happening?\nWe\u8166ve done...nothing...wrong... \x00
+0x2b3: ...\x00
+0x2b4: You saved us! Look...\n\n\nFlowers blanket the village with\nsplendor once more.\n\nPlease, rest here a while before moving\non.\x00
+0x2b5: Who wants to go on living in a rotting\nbody? Count me out!\x00
+0x2b6: Oh, thank you ever so much!\x00
+0x2b7: I dunno, maybe being immortal ain\u8166t so\nbad!\x00
+0x2b8: I can go to church again!\nThank you!\x00
+0x2b9: I felt like I wasn\u8166t even alive.\x00
+0x2ba: Why don\u8166t you try being undead\nsometime?\x00
+0x2bb: Whew, you got us out of quite a pinch!\x00
+0x2bc: You\u8166ve restored peace to our village.\nThank you so much!\x00
+0x2bd: Where did the Phantom Train come\nfrom?\x00
+0x2be: Hmm, why did the Phantom Train appear\nin our village?\n\nI don\u8166t think I\u8166ll be able to rest in peace\nuntil I find out.\x00
+0x2bf: Thank you so much.\x00
+0x2c0: I can finally walk like normal again.\x00
+0x2c1: So them zombie whatchits don\u8166t die,\nhuh?\x00
+0x2c2: That was fun while it lasted, but this\nis none too bad either!\x00
+0x2c3: *cough* *cough*\n\n\nI must\u8166ve been eating something really\nnasty... \x00
+0x2c4: The flowers look absolutely lovely this\nyear, don\u8166t they?\x00
+0x2c5: Flowers, flowers, FLOWERS!\x00
+0x2c6: I feel like I just woke up from a\nnightmare.\x00
+0x2c7: The flowers smell so sweet.\x00
+0x2c8: Ahhh! The knot in my shoulder is finally\ngone!\x00
+0x2c9: You\u8166re the ones who saved us, right?\nThank you!\x00
+0x2ca: It was a bit dodgy there for a bit.\nI wasn\u8166t quite sure how things would\nturn out!\x00
+0x2cb: Even though I couldn\u8166t move, I was still\naware of everything that was going on.\nPretty neat, huh?\x00
+0x2cc: Hmm, why did the Phantom Train appear\nin our village?\n\nI don\u8166t think I\u8166ll be able to sleep at\nnight until I find out.\x00
+0x2cd: Thank you so much for saving us!\nOh, I\u8166m afraid words aren\u8166t enough to\nexpress my gratitude.\nPlease come back and visit anytime!\x00
+0x2ce: All these beautiful flowers... \nIt\u8166s so soothing.\x00
+0x2cf: So this place was a graveyard until a\nlittle while ago? Well I\u8166ll be...\x00
+0x2d0: All I remember is suddenly being\nenveloped in light...\x00
+0x2d1: I sure hope we never see the Phantom\nTrain around here again!\x00
+0x2d2: ...?\x00
+0x2d3: What in the world happened?\x00
+0x2d4: ...FRIEND malfunctioning... \n...currently lacking...TWO...\n...parts...\n...reQUEST search for PARTS...\x00
+0x2d5: ...currently lacking...ONE...\n...part...\x00
+0x2d6: ...friend rePAIRED... \n...thank you VERY much for DOING...\n...the jobs that NOBODY wants to...\x00
+0x2d7: ...friend rePAIRED... \n...SO happy... \x00
+0x2d8: ...\x00
+0x2d9: ...where is masTER... \x00
+0x2da: *buzz* *whirr*\x00
+0x2db: Chit-chit-snook.\x00
+0x2dc: Snook-snook-chit.\x00
+0x2dd: Snook! Snook!\x00
+0x2de: Snook... Chit-chit... \x00
+0x2df: Chit-chit-snook.\x00
+0x2e0: Snook-chit-snook!\x00
+0x2e1: Chit-chit-snook.\x00
+0x2e2: S-s-s-snook!\x00
+0x2e3: Snook-snook? Chit-chit!\x00
+0x2e4: Snook. Chit-snook... \x00
+0x2e5: Snook-snook! Snook!\x00
+0x2e6: Snook. Chit-chit.\x00
+0x2e7: Snook-chit-chit-snook.\x00
+0x2e8: Chit-snook... \x00
+0x2e9: Snook! Chit-snook-snook!\x00
+0x2ea: Snook-snook?\x00
+0x2eb: My precious giant beavers have all\nescaped!\n\nI hate to impose, but could you talk\nto them for me?\n\nI need you to lead \U00253264 to the room\non the right and \U00253264 to the room\non the left.\nCome see me once you\u8166re done.\x00
+0x2ec: That\u8166s \U00253264 to the room on the right\nand \U00253264 to the room on the left.\nAre you done already?\x00
+0x2ed: Well, let\u8166s see...\x00
+0x2ee: Oh, well done! Well done!\nYou certainly know how to handle\nbeavers! Now it\u8166s my turn to help!\x00
+0x2ef: No, no, no, that\u8166s not right at all!\nI\u8166m afraid you\u8166ll have to try again.\x00
+0x2f0: If I have any more beaver trouble,\nyou\u8166ll be the first to know!\x00
+0x2f1: 0\x00
+0x2f2: 0\x00
+0x2f3: 0\x00
+0x2f4: 0\x00
+0x2f5: 0\x00
+0x2f6: 0\x00
+0x2f7: 0\x00
+0x2f8: 0\x00
+0x2f9: 0\x00
+0x2fa: 0\x00
+0x2fb: 0\x00
+0x2fc: 0\x00
+0x2fd: 0\x00
+0x2fe: 0\x00
+0x2ff: 0\x00
+0x300: 0\x00
+0x301: 0\x00
+0x302: 0\x00
+0x303: 0\x00
+0x304: 0\x00
+0x305: 0\x00
+0x306: 0\x00
+0x307: 0\x00
+0x308: 0\x00
+0x309: 0\x00
+0x30a: 0\x00
+0x30b: 0\x00
+0x30c: 0\x00
+0x30d: 0\x00
+0x30e: 0\x00
+0x30f: 0\x00
+0x310: 0\x00
+0x311: 0\x00
+0x312: 0\x00
+0x313: 0\x00
+0x314: 0\x00
+0x315: 0\x00
+0x316: 0\x00
+0x317: 0\x00
+0x318: 0\x00
+0x319: 0\x00
+0x31a: 0\x00
+0x31b: 0\x00
+0x31c: 0\x00
+0x31d: 0\x00
+0x31e: 0\x00
+0x31f: 0\x00
+0x320: 0\x00
+0x321: Welcome to our village, Fey\u815d\n\n\nOh, it\u8166s you! Thanks for helping me out!\x00
+0x322: We can live in the world above no more.\x00
+0x323: Humans, monsters... Enough is enough!\x00
+0x324: Aiiieee! Humans!?\n\n\nFirst monsters and now this...\nOur village grows more dangerous by\nthe day!\nI fear we may have to leave again\nsomeday soon... \x00
+0x325: Oxyale is the water of life. We can\u8166t\nbe giving it out to just anyone.\x00
+0x326: Isn\u8166t it lovely here by the water\u8166s\nedge?\x00
+0x327: The children really want to venture\ninto the outside world.\n\nJust the other day one child who had\nleft was captured by a human.\n\nFortunately, she\u8166s safe now. The\nWarriors of Light came to her rescue.\x00
+0x328: Everyone says they feel safe here.\nBut we mustn\u8166t let ourselves grow too\ncomplacent.\x00
+0x329: Maybe I\u8166ll go see the outside world for\nmyself...\n\nJust think of all the new experiences\nthat could be waiting!\x00
+0x32a: The outside world? I\u8166d be lying if I said\nI wasn\u8166t a teensy bit curious.\x00
+0x32b: How did it come to this? Why must we\nlive here in such isolation?\x00
+0x32c: Welcome to our village, Feyhome.\nThere are many of us here, as you\u8166ll\nsee!\nAmong us you\u8166ll surely find some willing\nto help you, oh yes!\n\nBut do watch out. Tricksy ones await\nyou, too.\n\nWhich is which? That one or this?\nTalk to them and you will know, oh yes!\x00
+0x32d: My, you look exhausted!\x00
+0x32e: Feeling any better?\nOf course you are!\x00
+0x32f: Oh, dear. You look dreadful... \nChin up and off you go!\x00
+0x330: Off with you now! Chin up!\x00
+0x331: You\u8166ve got things a bit too easy, if you\nask me. That won\u8166t do!\x00
+0x332: Learned your lesson yet?\x00
+0x333: Look at you, all ship and shape.\nWhere\u8166s the fun in that?\x00
+0x334: Put some wind in your sails, did I?\x00
+0x335: Hey! Listen!\n\n\nI found a hidden staircase while I was\nplaying!\x00
+0x336: I\u8166m the living end, aren\u8166t I?\nTee hee hee!\x00
+0x337: I\u8166m researching whether a certain branch\nof psychology can be adapted and\napplied to monsters.\nAfter all, monsters are people too.\x00
+0x338: My research on darkness and light could\nprove vital to saving the world.\n\nPlease, no interruptions!\n\n\nWait just a moment. No, it can\u8166t be...\nAre you...the Warriors of Light?\n\nThis is incredible! We must tell the\nothers at once!\x00
+0x339: What exactly IS the kraken? And, more\nto the point, how might one go about\ndefeating it?\nI don\u8166t know! I just don\u8166t know!\x00
+0x33a: If I could only find a way to create\nadamantite, I\u8166d be rich!\n\nUwahahahaha!\x00
+0x33b: Hmmm. I see...\x00
+0x33c: Well, you see... That is to say...\nActually, strike that. Ahem. It will be\na tremendous success.\nI think...\x00
+0x33d: Now, where was that... \x00
+0x33e: The sun will surely rise tomorrow.\nI\u8166m certain it will!\x00
+0x33f: The waxing and waning of the moon is a\nmost peculiar phenomenon.\n\nIt influences the very seas themselves!\x00
+0x340: I COULD get out of your way...\x00
+0x341: Destiny lays a unique path before each\nof us. We have no choice but to follow\nit.\nWhere will your path lead you?\x00
+0x342: Pardon? You want to know what I was\nresearching?\n\nSometimes I have trouble remembering\nmyself... \x00
+0x343: It must be here somewhere! It must!\nHrm? What must be here, you ask?\n\nWhy, the reason the Crystals shine,\nof course!\x00
+0x344: *flip* *flip*\x00
+0x345: I do hope Unne is doing well... \x00
+0x346: Peace will return again. It will.\n\n\nThe results of my research are\nincontrovertible.\x00
+0x347: Yes? Do you need something? I haven\u8166t\ngot all day. If you need something,\nspeak up!\x00
+0x348: Tomorrow. Yesterday. Between the two\nlies today.\n\nThat there is a today means, by\nextension, that tomorrow and yesterday\nmust exist as well.\x00
+0x349: I\u8166ve been looking into the prophecies\nof the sages in Elfheim.\n\nIt\u8166s quite astounding, actually. Their\nprophecies have an uncanny tendency\nto come true.\x00
+0x34a: We can do it. We have the capability.\n\n\nAs long as we believe in ourselves,\nthere\u8166s nothing we can\u8166t accomplish!\x00
+0x34b: Love... There is no greater mystery\nknown to us.\n\nWhat in the world IS that confounded\nemotion?\x00
+0x34c: That\u8166s impossible! It has no conceivable\nbasis in reality!\x00
+0x34d: Have you ever seen a ghost?\n\n\nThe reasons why they appear remain\nshrouded in mystery.\x00
+0x34e: Scholars are prone to focus on one\nthing to the exclusion of all else.\x00
+0x34f: Wait... Wait for it... *sigh*\nI\u8166ve forgotten what I was just thinking\nabout!\nUmm...what was it? I can\u8166t remember!\x00
+0x350: Hmm... Now I see!\x00
+0x351: How odd. This isn\u8166t my study...\nWell, no matter.\n\nThe things I must do must still be done.\x00
+0x352: Yes, that\u8166s right. No doubt about it.\x00
+0x353: A mysterious power seems to be\ngathering...\n\nWe must investigate it quickly, before\nsomething terrible befalls us.\x00
+0x354: Move? I\u8166ll do no such thing!\nThere\u8166s a book I need up this way.\n\nI won\u8166t let you interfere with my\nresearch!\x00
+0x355: I\u8166ve no doubt that this peace will be a\nlasting one.\n\nI suppose I\u8166m now free to carry on my\nstudies.\x00
+0x356: I\u8166ve spent a hundred years looking for a\nway to use white and black magic\ntogether.\nMy research has yet to bear any fruit.\n\n\nWill my childhood dream go forever\nunfulfilled?\x00
+0x357: Pestering, pestering, pestering pest!\x00
+0x358: Get out of your way?\nHmmm, I don\u8166t think so!\x00
+0x359: Where are you going? Hm?\nWhat did you say?\x00
+0x35a: Nothing to see here.\nMove along, move along.\x00
+0x35b: No trespassing!\nDon\u8166t take another step!\x00
+0x35c: What are you doing here?\nShoo! Shoo!\x00
+0x35d: Whaddaya think you\u8166re doin\u8166?\nHuh? You want through here?\nAre you crazy?\x00
+0x35e: How would you like to live here with\nus? Forever and ever...\x00
+0x35f: A journey without a companion is like\na world without compassion. So, uh,\nwhy not live here with us?\x00
+0x360: Where do you think you\u8166re going?\nYou\u8166re not allowed through here!\x00
+0x361: What\u8166s over there? You wanna know\nwhat\u8166s over there? Well, I can\u8166t tell\nyou what\u8166s over there!\x00
+0x362: This area is restricted.\nAuthorized personnel only.\x00
+0x363: No entry until you\u8166ve seen the\nreceptionist. Of course, there is no\nreceptionist... \x00
+0x364: Look, it\u8166s nothing personal.\nThey order me to not let anyone\nthrough, so I don\u8166t.\nSo, can I ask you to turn around and\nhead back?\x00
+0x365: Hold it! Shoes off right now!\n\n\nNot that you\u8166ll be allowed in any\nfurther anyway...\x00
+0x366: This is private property.\nTrespassers will be burninated.\x00
+0x367: None shall pass.\x00
+0x368: Psst! You should turn back while you\nstill can. How do I know?\n\nBecause that\u8166s what they told me to\nsay!\x00
+0x369: Go. No. Further.\x00
+0x36a: Bad adventurers!\nYou\u8166re not supposed to be here!\nBad, bad adventurers!\x00
+0x36b: Construction up ahead.\nPlease take an alternate route.\x00
+0x36c: Simon says, \u8168Stand still!\u8168\nHey, you moved! You lose! You lose!\x00
+0x36d: Sorry, you can\u8166t go any further.\nYou might as well just give up now.\x00
+0x36e: Just what do you think you\u8166re doing,\nchildren? Back to your seats! Move it!\x00
+0x36f: Remember, I\u8166m only asking this as a\npersonal favor. Okay?\n\nPlease! Don\u8166t go on! I\u8166m begging you!\nBEGGING YOU!\x00
+0x370: I wanted to ask you something.\nI\u8166m afraid it may take a while, though.\nIs that okay? It is? Wonderful!\x00
+0x371: So, you are the crystal bearers...\n\n\nGreat misfortune shall befall you\nshould you proceed.\n\nI implore you, stop now, before it is\ntoo late.\x00
+0x372: G-g-go no further, I b-b-beg of you.\x00
+0x373: Let\u8166s see, what was it? Oh, right.\n\n\nGo no further! Danger awaits! Ooh!\x00
+0x374: Beware falling rocks!\nYou must turn back now!\x00
+0x375: Yes, what is it?\nYou wish to go on?\x00
+0x376: You are not permitted to proceed any\nfarther. Accept fate, do not fight it.\x00
+0x377: 0\x00
+0x378: One, two! One, two! All together now!\nOne, two! One, two!\x00
+0x379: Don\u8166t you want to dance? It feels so\ngreat to work up a sweat!\x00
+0x37a: 0\x00
+0x37b: Hey, you wanna watch me dance?\nNot so fast! You have to come see me\nonstage!\x00
+0x37c: I made it into the Crystal Company!\nIf I work hard enough, I\u8166ll be a star!\x00
+0x37d: I\u8166m hoping to play the princess of\nCornelia in \u8168I Want to Be Your Canary\u8168!\x00
+0x37e: I have to keep practicing if I want to\nclear the Tantalus Theatre Troupe\ntryouts!\x00
+0x37f: Ugh, I can\u8166t get it right no matter how\nmany times I try! Maybe I just don\u8166t\nhave what it takes...\x00
+0x380: This dance is intense, really intense!\nThis is what dancing is all about, right?\x00
+0x381: Dancing soothes the soul.\x00
+0x382: Have you heard of the Tantalus\nTheatre Troupe?\x00
+0x383: I\u8166ve gotta improve...\x00
+0x384: C\u8166mon, let\u8166s dance!\x00
+0x385: Excuse me, I\u8166m trying to practice my\nwaltz.\x00
+0x386: I just can\u8166t seem to master the tango.\x00
+0x387: I\u8166m trying to dance to the blues...and it\nain\u8166t easy!\x00
+0x388: Do you mind? I\u8166m practicing the rhumba\nhere!\x00
+0x389: Do you know the samba?\x00
+0x38a: I just started practicing the salsa\nyesterday.\x00
+0x38b: The flamenco is such a sultry dance,\ndon\u8166t you think?\x00
+0x38c: When you dance, you just have to let\nyourself go!\x00
+0x38d: What do you think of my dancing?\x00
+0x38e: Dancing is my reason for living.\nI\u8166m not stopping now!\x00
+0x38f: I\u8166m getting pretty sick of dancing!\x00
+0x390: The mambo is all in the hips.\x00
+0x391: I\u8166m trying to tap dance my way to the\ntop!\x00
+0x392: Jazz isn\u8166t half bad!\x00
+0x393: You\u8166ve gotta be limber to limbo.\x00
+0x394: 0\x00
+0x395: Doesn\u8166t dancing the hula put you in a\ntropical mood? Maybe it\u8166s just me...\x00
+0x396: I wonder how much longer I can keep\ndancing like this...\x00
+0x397: The ability to draw on both black and\nwhite magic is the red mage\u8166s specialty.\n\nOf course, it also takes that much more\nwork.\x00
+0x398: What? You mean I can\u8166t use the best\nwhite magic spells?\x00
+0x399: What? You mean I can\u8166t use the best\nblack magic spells?\x00
+0x39a: I want to be able to cast both black\nAND white magic.\x00
+0x39b: I\u8166m looking for a way to shorten our\nspell incantations.\x00
+0x39c: I never miss a fencing lesson.\x00
+0x39d: We\u8166re sometimes mistaken for fighters,\nbut we\u8166re mages through and through.\x00
+0x39e: Another class of spells known as blue\nmagic is said to exist...\x00
+0x39f: I think I\u8166m much more fit for combat\nthan any black wizard.\x00
+0x3a0: Though there are red mages, there\u8166s\nno such thing as red magic.\x00
+0x3a1: \u8168To fight, to support, and to protect.\u8168\nThat\u8166s my motto.\x00
+0x3a2: It seems there is something you might\ncall a \u8168magic level.\u8168\n\nBut how does one advance it quickly?\nI just don\u8166t know...\x00
+0x3a3: We\u8166re playing hide-and-seek, but\nthere\u8166s this one kid I can\u8166t find\nanywhere...\nI know! You should help me look!\nIf you find him for me, I\u8166ll tell you\nsomething real important!\x00
+0x3a4: We\u8166re playing hide-and-seek, but there\u8166s\nthis one kid I can\u8166t find ANYwhere...\n\nI know! You should help me look!\nIf you find him for me, I\u8166ll tell you\nsomething real important!\nI guess you\u8166ll need to know what he\nlooks like, huh? Let\u8166s see...\n\nHe\u8166s a kid with black hair! Come lemme\nknow once you find him!\x00
+0x3a5: We\u8166re playing hide-and-seek, but there\u8166s\nthis one kid I can\u8166t find ANYwhere...\n\nI know! You should help me look!\nIf you find him for me, I\u8166ll tell you\nsomething real important!\nI guess you\u8166ll need to know what he\nlooks like, huh? Let\u8166s see...\n\nHe\u8166s a kid with blue hair! Come lemme\nknow once you find him!\x00
+0x3a6: We\u8166re playing hide-and-seek, but there\u8166s\nthis one kid I can\u8166t find ANYwhere...\n\nI know! You should help me look!\nIf you find him for me, I\u8166ll tell you\nsomething real important!\nI guess you\u8166ll need to know what he\nlooks like, huh? Let\u8166s see...\n\nHe\u8166s a kid with red hair! Come lemme\nknow once you find him!\x00
+0x3a7: Really? He was hiding THERE? Thanks!\x00
+0x3a8: Oh! There\u8166s a stairway over there in the\ncorner. You can use it if you want to!\x00
+0x3a9: What!? You\u8166re IT?\nShucks, you found me.\x00
+0x3aa: Aw, you found me.\x00
+0x3ab: Three cheers for Toy Town!\x00
+0x3ac: Mommy? Daddy?\nWhere are you!?\x00
+0x3ad: Mecha-Bahamut is SO cool!\x00
+0x3ae: I bought me a 1/144 scale model of an\nairship. When I grow up, I\u8166m gonna get me\na real one!\x00
+0x3af: Do you have a Trance Kuja action\nfigure?\n\nIt\u8166s the last one I need to complete the\nset!\x00
+0x3b0: My dad\u8166s REALLY rich. Maybe I\u8166ll have\nhim buy me this whole town.\x00
+0x3b1: Woohoo! I won! I won!\x00
+0x3b2: There\u8166s no swing!\nI wanna swing!\x00
+0x3b3: I\u8166m tired of this place. I wanna go\nsomewhere FUN, but I can\u8166t find the\nway out.\x00
+0x3b4: Toy Town, huh? Meh, it\u8166s just some\nplace they made up to fool us kids.\x00
+0x3b5: What IS this place...\nOooh, I want what he\u8166s playin\u8166 with!\x00
+0x3b6: I...I l-lost my t-t-toy...\x00
+0x3b7: Pardon me. Do you know where they sell\ncards?\x00
+0x3b8: Hang on, what was I looking for\nagain?\n\nI\u8166ve seen so many different things now,\nI forgot!\x00
+0x3b9: I wonder if they still have those\nMatoya pinups everybody\u8166s talkin\u8166\nabout...\x00
+0x3ba: I woke up, and I was here... If I don\u8166t\nget back soon, I\u8166ll be late for class.\x00
+0x3bb: Graduate from a good school, find a\ngood job... That\u8166s all I ever hear outta\nmy mom.\x00
+0x3bc: Lately I\u8166ve been forgettin\u8166 something\nreal important. At least, I think I am.\nI wonder what it is...\x00
+0x3bd: Maybe it\u8166s time I headed home. But it\nlooks like it still won\u8166t be dark for a\nwhile... What should I do?\x00
+0x3be: What time is it? I feel like I\u8166ve been\nplaying forever, but it still isn\u8166t\ngetting dark.\x00
+0x3bf: I went into a toy store, but nobody was\nthere. I guess all the grown-ups are\nbusy.\x00
+0x3c0: I gotta have it!\nI REALLY gotta have it!\x00
+0x3c1: I\u8166ve been lookin\u8166 for that toy for AGES.\nNext time I see my grandma, I\u8166m gonna\nbeg her to get it for me.\x00
+0x3c2: Toys here, toys there, toys everywhere!\x00
+0x3c3: Ugh, I\u8166m always gettin\u8166 lost. I wonder\nif they sell maps to this place... \x00
+0x3c4: Go in this house, come out that house.\nGo in that house, come out this house.\nI love this place!\x00
+0x3c5: Forget toys. I like fishing!\nFishing\u8166s way more fun!\x00
+0x3c6: Maybe it\u8166s time I went home.\x00
+0x3c7: I wonder where me mum and dad went.\nEh, whatever.\x00
+0x3c8: Toys, toys, toys!\nToys are the bestest thing ever!\x00
+0x3c9: How come an ace beats a king?\nI don\u8166t get it.\x00
+0x3ca: I\u8166ve been having these weird thoughts\nlately...\n\nLike how did I end up in this town?\x00
+0x3cb: Toy Town? It\u8166s just something they\nmade up to fool us kids.\x00
+0x3cc: What!? You\u8166re IT?\nShucks, you found me.\x00
+0x3cd: Aw, you found me.\x00
+0x3ce: Mmm... Bonnie tasty!\n\n\nAye? If ye want a carobo that badly,\njuist ask for it!\x00
+0x3cf: Weel? Bonnie tasty, nae?\x00
+0x3d0: Och, Ah\u8166m verra hungert! Ah sure could\ngae for a carobo right aboot nou.\x00
+0x3d1: Aha! Ah knaw a carobo when Ah see one!\nAnd there\u8166s naething Ah like better!\n\nYe\u8166ll gie it ower, will ye no?\x00
+0x3d2: Thank ye kindly. In return, lat me gie ye\nan auld ocarina Ah wrought.\x00
+0x3d3: Och, hou Ah want tae eat a carobo!\x00
+0x3d4: That carobo was awfie guid!\x00
+0x3d5: Ah\u8166ve taken tae instruments lately. If\nye find anything oot o the ordinary, let\nme hae it, eh?\x00
+0x3d6: Losh! That\u8166s a raither rare instrument\nye\u8166ve got there! Ye\u8166re gaunny let me\nhae it, are ye?\x00
+0x3d7: Great! It\u8166s pairt o ma instrument\ncollection nou. Ach, where\u8166s ma\nmanners?\nThis is a wee something from a\ncollection Ah had a lang time ago.\x00
+0x3d8: Crivens, what a nippit wratch!\x00
+0x3d9: That ocarina ye gave me is the brawest\npiece in ma collection!\x00
+0x3da: Ah want tae reconstruct a ship built\nlang ago by a Lufenian cawed Cid.\nA ship that could sail the skies!\nAh juist dinnae hae the pairts Ah need.\nThink ye could help me find thaim?\x00
+0x3db: Megstie me! That\u8166s a cogwheel! Ye\u8166re\ngaunny let me hae it, aye?\x00
+0x3dc: Thanks! Ah\u8166m sae grateful! Nou Ah\u8166m\none step claiser tae ma dream o\nreconstructing the airship!\nThere\u8166s something Ah want ye tae hae.\n\n\nAh\u8166ve been uising it tae gaither ore for\nairship pairts, but Ah dinnae think Ah\u8166ll\nbe needing it anymair.\x00
+0x3dd: When Ah finish ma airship, ye\u8166re no ridin\noan it!\x00
+0x3de: Thanks to ye, Ah\u8166ll hae that airship\nfinished in no time!\x00
+0x3df: Ah heard Nerrick, a braw dwarf Ah hold\nin highest regard, has howkit a canal.\n\nNou Ah want tae howk a canal, too!\n\n\nBut, Ah\u8166ve got naething tae howk with!\nWhere dae ye suppose Ah could find\nsome tools aroon here?\x00
+0x3e0: Why, that\u8166s a pickaxe!\n\n\nAh\u8166ll trade ye Nerrick\u8166s autograph,\nwhich Ah treisur mair than life itsel,\nfor yer pickaxe. What dae ye say?\x00
+0x3e1: Nou Ah can stairt howking ma ain canal!\x00
+0x3e2: Awa with ye! If Ah make a name for\nmasel someday, ye\u8166re no getting ma\nsignature!\x00
+0x3e3: Ah set aff tae howk masel a proper\ncanal, but Ah couldnae find a place tae\nhowk.\x00
+0x3e4: There\u8166s a lad by the name o Nerrick who\nwirked oan a canal. Ah heard he came\nroon a while ago.\nAh wanted tae get his autograph, but\nAh missed him! Ah shuir wish Ah\u8166d got it\nthen.\x00
+0x3e5: Ye\u8166ve got Nerrick\u8166s autograph! Will ye\nlet me hae it, lads?\x00
+0x3e6: Thank ye!\n\n\nThe witch Matoya gae me this medicine\na lang time ago. Take it. Muckle guid\nmay it dae ye.\x00
+0x3e7: Och, Ah really want that signature!\x00
+0x3e8: What, ye\u8166re freends wi Nerrick? Are ye\npullin ma leg?\x00
+0x3e9: Och, ma stamack hurts!\x00
+0x3ea: Ah\u8166m beggin ye! Ye\u8166ve got tae gie me\nthat medicine!\x00
+0x3eb: Oh, ma stamack\u8166s feelin better awready!\nAh\u8166m sae thankrif, Ah want ye tae hae\nthese tools. That\u8166s right, tools!\x00
+0x3ec: Dinnae be a nittie! Juist lat me hae it,\neh?\x00
+0x3ed: Ah\u8166ve learned a lesson. No more eatin\nwhat Ah find oan the groon.\x00
+0x3ee: We dwarfs are cannie with wir hauns.\nWe can craift juist aboot anything.\n\nBut sin Ah broke ma tools, Ah cannae\ncraift a thing.\x00
+0x3ef: Ye\u8166ve brought these tools for me, hae\nye no?\x00
+0x3f0: Ah\u8166ve seen brawer tools, but Ah cannae\ncompleen.\n\nHere, Ah foon this earlier the day.\nTake ye it, nou.\x00
+0x3f1: Och, ma mistake, then.\x00
+0x3f2: These tools are the brawest!\n\n\nThey\u8166re even easier tae uise than ma\nauld anes!\x00
+0x3f3: Ah\u8166ve really gaun doun the brae!\nAh lost the only key tae ma hoose, and\nnou Ah cannae get through ma ain door!\nWhere could the blastit thing be?\x00
+0x3f4: That luiks like ma key!\n\n\nSae ye foond it and brought it back tae\nme?\x00
+0x3f5: At lang and last Ah can gae in ma ain\nhoose again! Thank ye!\n\nTake this as a token o yer freendship\nwi the dwarfs!\x00
+0x3f6: C\u8166moan nou, gie it back tae me!\x00
+0x3f7: By the way, ye may have met a quiet\nlad in toun.\n\nHe willnae speak tae anybodie no\ncarrying oor token o freendship. Ah\nknaw he\u8166ll talk tae ye nou.\x00
+0x3f8: ...\x00
+0x3f9: A cat whisker? The dwarfish sign o\nfreendship!\n\nHere\u8166s a ruby for yer whisker!\x00
+0x3fa: Nou that ye hae a star ruby, mebbe ye\nshould gae talk tae the giant.\x00
+0x3fb: The putrid stench of decaying earth\nhangs heavy on the air...\x00
+0x3fc: The statue radiates a searing heat...\x00
+0x3fd: Fetid water seeps from the statue...\x00
+0x3fe: The statue resonates with the eerie\nhowling of wind...\x00
+0x3ff: You hear a lock spring in the\ndistance... \x00
+0x400: From some source unseen, the scent\nof flowers is carried to you on the\nbreeze...\x00
+0x401: It seems to be missing some parts.\x00
+0x402: You find nothing of use.\x00
+0x403: You obtain the \u2530!\x00
+0x404: Goblin: We be nothin\u8166 more than cannon\nfodder...\n\nNever \u8166ave the chance to show what\nwe\u8166re really made of.\x00
+0x405: Goblin Guard: Custom-made, me knife\nis!\n\nDon\u8166t be gettin\u8166 it in yer head that this\nis any ordinary ol\u8166 knife... Ye get me\nmeaning?\x00
+0x406: Crazy Horse: Oh, how I wish I\u8166d been\nborn a human...\n\nIf I could do it all again, I\u8166m certain\nI could live a splendid two-legged life!\x00
+0x407: Skeleton: Even a body like this can\nsuffer pain.\n\nSo just between you and me, I really\ndon\u8166t make much of a fighter.\x00
+0x408: Ogre: Me want use magic, too.\n\n\nMe try and try, but me not learn... \x00
+0x409: Ghoul: The pain...the terrible pain... \nMy flesh is rotting off my bones... \x00
+0x40a: Sahagin: I went out to catch a glimpse\nof our clan\u8166s princess... What a mistake.\x00
+0x40b: Gargoyle: To be tired. To think about\nfinding a place to rest my wings.\x00
+0x40c: Piscodemon: I really wanted to use\nmagic...\x00
+0x40d: Mummy: I go to all that trouble to rise\nfrom the dead, and for what?\n\nI end up getting sent to this place.\nPfft!\x00
+0x40e: Medusa: I\u8166ll turn to stone if I see my\nown face, so I can\u8166t look into a mirror...\n\nTell me...what do I look like?\x00
+0x40f: Troll: The drumming...\nThe pounding...\nThe throbbing...\nMy head is killing me!\x00
+0x410: Minotaur: Everywhere I go, people are\nalways making fun of me.\n\nSo what if I can\u8166t use magic?\nReal half-men fight with muscle!\x00
+0x411: Hill Gigas: Those fancy elemental names\nare all pomp and no circumstance.\n\nI, on the other hand, am a gigas\u8166s gigas.\x00
+0x412: Dark Wizard: People are always getting\nme confused with Dark Fighter.\x00
+0x413: Ghost: Please, stop! Anything but Dia,\nI beg you!\x00
+0x414: Clay Golem: I am a fearsome sight, no?\nSure, my body\u8166s made of clay, but still!\x00
+0x415: Black Knight: Once I was a knight who\nserved his kingdom proudly...\x00
+0x416: Vampire: It...it\u8166s you! I vill have my\nrevenge!\x00
+0x417: Vampire: Forgive me, Lich...\x00
+0x418: Astos: You! Give me back my treasure!\x00
+0x419: Astos: The curse of Astos will follow\nyou to your dying day!\x00
+0x41a: You walk among the wandering souls\nof those who cannot find true rest.\n\nWarriors of Light, will you not heed\nthe flickers of their tongues?\x00
+0x41b: You\u8166ve done it! You\u8166ve helped ferry\nthese souls to the shore of eternal\nrest.\nThank you, Warriors of Light.\x00
+0x41c: You can return to the surface here.\nDo you wish to leave?\x00
+0x41d: You hand over the parts you\u8166ve found.\x00
+0x41e: A strange force bars the door... \x00
+0x41f: Dark Bahamut: These still remain:\n\u2573: \u2564\n\u2573: \u2564\x00
+0x420: Dark Bahamut: These still remain:\n\u2573: \u2564\x00
+0x421: The party\u8166s HP is fully restored!\x00
+0x422: The party\u8166s MP is fully restored!\x00
+0x423: The party\u8166s HP is reduced to 1!\x00
+0x424: The party\u8166s MP is reduced to 0!\x00
+0x425: Each o these dwarfs has is own set o\nproblems.\n\nIf ye scart their backs, mebbe they\u8166ll\nscart yers in retour?\n\nYe might start off by givin a hark tae\nwhat they hae tae say.\x00
+0x426: Send this beaver back out?\x00
+0x427: I keep running into this big man lately.\x00
+0x428: I haven\u8166t seen that big man in a while.\x00
+0x429: I like it here, don\u8166t get me wrong, but it\nis nice to do a little sunbathing every\nnow and then.\x00
+0x42a: People? Here? How odd... It isn\u8166t often\nthat anyone besides mermaids comes to\nour village.\x00
+0x42b: You do realize you\u8166re underwater, right?\nHow come you haven\u8166t gone belly-up\nyet?\nOxyale, huh? What will they think of\nnext?\x00
+0x42c: That big guy is great! You little guys\nare great! Everybody is great!\x00
+0x42d: Do you like our village? It\u8166s nice to live\nin such a quiet, peaceful place.\x00
+0x42e: The other day, I saw a barrel swimming\nthrough the ocean. But that couldn\u8166t\nbe...could it?\x00
+0x42f: My friend in the Sunken Shrine said the\nWarriors of Light came!\n\nWhat? You\u8166re the Warriors of Light!?\x00
+0x430: Are you...people? What are you doing\nhere?\x00
+0x431: The force of water was greatly\nweakened, but it seems to have\nrecovered now.\nWhat a relief!\x00
+0x432: I wish I\u8166D been born with red fins...\x00
+0x433: They say an enormous monster was\nliving in the Sunken Shrine. I hope\neverything turned out okay...\x00
+0x434: Are those THE crystals!?\nWow, the Warriors of Light sure are\nyounger than I expected.\x00
+0x435: Can you imagine a place more peaceful?\nWhy not live here with us?\x00
+0x436: I\u8166ve heard that there are other places\nwhere mermaids live, too.\x00
+0x437: Our village is peaceful, but it\u8166s not\nvery exciting.\x00
+0x438: Have I seen anyone suspicious?\nHave I ever!\n\nThis guy wanted to know if there was a\ntreasure chest inside. When I said yes,\nhe barged right in!\nWell, as soon as he rushed in, I locked\nthe door behind him. But I can\u8166t keep him\nlocked up forever...\nWould you help me chase him out of\nthere?\x00
+0x439: I\u8166m counting on you!\x00
+0x43a: Hmph! Some help you are!\x00
+0x43b: This is my favorite cave. I feel at peace\nhere.\x00
+0x43c: I wonder what it\u8166s like up there on land.\nI\u8166d love to see it someday.\x00
+0x43d: This door won\u8166t budge. It\u8166s been like\nthis for a little while now.\n\nCome to think of it, I haven\u8166t been able\nto get in since that dangerous-looking\nman showed up.\x00
+0x43e: Suddenly the door opens normally again.\nHow very odd...\x00
+0x43f: A strange man carrying a big halberd\ncame running through a minute ago.\n\nHe was shouting, \u8168How do I get out of\nhere?\u8168 So I told him about the warp\nzone inside.\nHonestly, men these days just don\u8166t\nknow how to address a lady!\n\nWhat\u8166s that? Unlock the door?\nAlright, alright, I heard you...\x00
+0x440: Aren\u8166t you going to go in?\x00
+0x441: This is the mermaid village of Seahold.\n\n\nA strange man carrying a halberd\narrived not long ago.\n\nApparently he\u8166s looking for a sword of\nmatchless power.\n\nSince our village is connected to the\nsea, all sorts of things wash up here.\nPerhaps that sword is among them.\nWhere is he now? Hmm. There\u8166s a\npink mermaid in a room to the north.\nTry asking her.\x00
+0x442: This is the mermaid village of Seahold.\n\n\nA strange man carrying a halberd\narrived not long ago.\n\nApparently he\u8166s looking for a sword of\nmatchless power.\n\nSince our village is connected to the\nsea, all sorts of things wash up here.\nPerhaps that sword is among them.\nWhere is he now? Hmm. If you head\nnorth, you\u8166ll find a place with several\npillars standing in a diagonal row.\nThere should be a darling blue mermaid\nthere. Try asking her.\x00
+0x443: Welcome to Seahold, village of\nmermaids! Stay as long as you like!\x00
+0x444: A strange man with a halberd? Yeah,\nI know who you\u8166re talking about. He\nstands out, you know?\nHead outside and go south. You should\nfind a pink mermaid in a big room down\nthere. She oughta know where he is!\nShe\u8166s my little sister, so be nice, you\nhear?\x00
+0x445: I\u8166m off to play at the water\u8166s edge!\nYou should come, too!\x00
+0x446: There\u8166s this spot to the north with a\nbunch of pillars lined up in a diagonal\nsort of row, right?\nWell, I was over there chatting with a\nfriend, and rather enjoying myself, I\nmight add.\nThen, all of a sudden, a man with a\nhalberd appeared out of nowhere!\n\nHe asked my friend something, but I\ncan\u8166t recall what it was...\n\nI\u8166ll bet she\u8166s there today, too, if you\nwant to talk to her. She\u8166s a cute, blue\nmermaid. You can\u8166t miss her!\x00
+0x447: A suspicious-looking man? He was here!\nI saw him!\n\nWhen I said I hadn\u8166t seen what he was\nlooking for, he looked really broken up\nabout it.\nI felt so bad for him that I told him\nabout all the stuff that washes up at\nthe open area in the middle of town.\nThen he just ran off, happy as can be!\x00
+0x448: That big fellow is gone. Too bad...\nI wanted to be friends.\x00
+0x449: So here I was, talking with my friend,\nwhen this guy with a halberd comes out\nof nowhere.\n\u8168The legendary sword! Where is it?\u8168\nhe asks us. Well, I don\u8166t know where\nany legendary sword is.\nSo I tell him that a lot of stuff washes\nup at the open area in the middle of\ntown, and off he runs.\nThere\u8166s a mermaid who tidies up all the\nthings that collect there. She\u8166s\nprobably over there right now.\nTry asking her if she knows anything,\nokay?\x00
+0x44a: If it\u8166s that suspicious fella you\u8166re\nafter, he was right over there until a\nlittle while ago.\nI don\u8166t think he found what he was\nlooking for, because he ran off right\naway.\nHe was heading south, so I\u8166ll bet you\ncan find him down that way.\n\nThere\u8166s a pink mermaid in a room down\nthere. Talk to her. She might know\nmore!\x00
+0x44b: A weird fella with a big halberd?\n\n\nHe picked something up and left. It\nlooked like he was heading out of the\nvillage.\nHe was going on about how he\u8166d found\nthe ultimate sword, or something like\nthat.\nHrm? The way out? It\u8166s in a room in the\nnortheast corner of the village.\x00
+0x44c: The lapping of the waves feels so good.\nI could just take a nap right here.\x00
+0x44d: I don\u8166t know if it was a legendary\nsword, but I do remember something\nthat looked like a blade.\nIt drifted down into a hollow just a\nlittle way down that narrow path over\nthere.\nAnd that\u8166s exactly what I told the\nweirdo carrying that big halberd when\nhe asked.\nI wonder if he\u8166s still searching for that\nblade.\x00
+0x44e: I don\u8166t know if it contained a legendary\nsword, but a treasure chest washed up\nin a room northwest of here.\nYou can probably find out what\u8166s inside\nif you head over there!\n\nOh, a man was here earlier shouting,\n\u8168The legendary sword! Where is it?\u8168\n\nIs he a friend of yours?\x00
+0x44f: A whole new batch of stuff washed up\ntoday. You never know what\u8166ll wash up\nnext. It\u8166s so exciting!\x00
+0x450: It looks like a broken robot...\x00
+0x451: ????: I\u8166ve finally found it! The object\nof my search\u815da weapon without peer!\n\nEh? Who\u8166s there? You\u8166re after my\nsword, aren\u8166t you!\n\nLet\u8166s see how you handle the mighty\nme! And by me, I mean Gilgamesh!!\nAnd by handle, I mean DIE!!!\x00
+0x452: ????: Hahaha! I\u8166m afraid the contents\nof this chest are already in my\npossession! Ha!\nAnd thanks to you, the route of my\negress is clear!\n\nBut before I go, I think I\u8166ll test the\npower of Excalibur on, oh...YOU!\x00
+0x453: ????: At long last! The ultimate\nsword...is...MINE!\n\nNow I can finally go home!\n\n\nHey! Where did YOU come from?\n\n\nOh, you mean you were looking for\nExcalibur, too?\n\nHow rude of me. I mean, the four\nof you came all this way... Of course\nI\u8166ll let you have the sword.\n...\n\n\nI\u8166d say you\u8166ve been hitting the oxyale\na bit hard if you believed THAT!\x00
+0x454: Y\u8166all are messin\u8166 up our line dance\npractice! Get out of the way!\x00
+0x455: One, two! One, two!\x00
+0x456: There must be a bigger place where we\ncan practice...\x00
+0x457: You can\u8166t stand THERE! You\u8166ll ruin the\nline!\x00
+0x458: And lift, and turn, and flex...\x00
+0x459: I don\u8166t believe this...! Just LOOK at the\nbackup you\u8166re causing!\x00
+0x45a: Whoa. My head is really spinning...\x00
+0x45b: These traditional dances are pretty\ntough.\x00
+0x45c: Dancing comes from the heart, so you\nmust put your heart into your dancing!\x00
+0x45d: I want to be a singing, dancing\nsuperstar!\x00
+0x45e: I started dancing when I was a kid.\nI guess it\u8166s been, what, fifty years?\x00
+0x45f: The stage! It calls to me, darling!\x00
+0x460: Dancing is a great way to relieve\nstress!\x00
+0x461: I\u8166ll bet my dancing could even charm\nmonsters. Heh heh heh.\x00
+0x462: The dancing world can be really\ncutthroat!\x00
+0x463: You should consider changing jobs to\nbecome a dancer!\x00
+0x464: Out of my way! Out of my way!\x00
+0x465: Are you new at this? I can give you\nsome lessons!\x00
+0x466: Sometimes I want to forget about\neverything else and just dance!\x00
+0x467: This is where I belong. Dancing means\nthe world to me!\x00
+0x468: This is our rehearsal room.\x00
+0x469: There\u8166s another rehearsal room next\ndoor.\x00
+0x46a: Everyone seems so dedicated...\nI really have to give it my all!\x00
+0x46b: This is the walking course. If you want\nto be a dancer, you have to start by\ntoning those leg muscles.\x00
+0x46c: Some black magic for you?\x00
+0x46d: Is it white magic you seek?\x00
+0x46e: Need any weapons?\x00
+0x46f: Need some armor?\x00
+0x470: Interest you in some supplies?\x00
+0x471: 0\x00
+0x472: 0\x00
+0x473: 0\x00
+0x474: 0\x00
+0x475: 0\x00
+0x476: 0\x00
+0x477: 0\x00
+0x478: 0\x00
+0x479: 0\x00
+0x47a: 47A\x00
+0x47b: 47B\x00
+0x47c: 47C\x00
+0x47d: 47D\x00
+0x47e: 47E\x00
+0x47f: 47F\x00
+0x480: 0\x00
+0x481: 0\x00
+0x482: 0\x00
+0x483: 0\x00
+0x484: 0\x00
+0x485: 0\x00
+0x486: 0\x00
+0x487: 0\x00
+0x488: 0\x00
+0x489: 0\x00
+0x48a: 48A\x00
+0x48b: 48B\x00
+0x48c: 48C\x00
+0x48d: 48D\x00
+0x48e: 48E\x00
+0x48f: 48F\x00
+0x490: 0\x00
+0x491: 0\x00
+0x492: 0\x00
+0x493: 0\x00
+0x494: 0\x00
+0x495: 0\x00
+0x496: 0\x00
+0x497: 0\x00
+0x498: 0\x00
+0x499: 0\x00
+0x49a: 49A\x00
+0x49b: 49B\x00
+0x49c: 49C\x00
+0x49d: 49D\x00
+0x49e: 49E\x00
+0x49f: 49F\x00
+0x4a0: 4A0\x00
+0x4a1: 4A1\x00
+0x4a2: 4A2\x00
+0x4a3: 4A3\x00
+0x4a4: 4A4\x00
+0x4a5: 4A5\x00
+0x4a6: 4A6\x00
+0x4a7: 4A7\x00
+0x4a8: 4A8\x00
+0x4a9: 4A9\x00
+0x4aa: 4AA\x00
+0x4ab: 4AB\x00
+0x4ac: 4AC\x00
+0x4ad: 4AD\x00
+0x4ae: 4AE\x00
+0x4af: 4AF\x00
+0x4b0: 4B0\x00
+0x4b1: 4B1\x00
+0x4b2: 4B2\x00
+0x4b3: 4B3\x00
+0x4b4: 4B4\x00
+0x4b5: 4B5\x00
+0x4b6: 4B6\x00
+0x4b7: 4B7\x00
+0x4b8: 4B8\x00
+0x4b9: 4B9\x00
+0x4ba: 4BA\x00
+0x4bb: 4BB\x00
+0x4bc: 4BC\x00
+0x4bd: 4BD\x00
+0x4be: 4BE\x00
+0x4bf: 4BF\x00
+0x4c0: 4C0\x00
+0x4c1: 4C1\x00
+0x4c2: 4C2\x00
+0x4c3: 4C3\x00
+0x4c4: 4C4\x00
+0x4c5: 4C5\x00
+0x4c6: 4C6\x00
+0x4c7: 4C7\x00
+0x4c8: 4C8\x00
+0x4c9: 4C9\x00
+0x4ca: 4CA\x00
+0x4cb: 4CB\x00
+0x4cc: 4CC\x00
+0x4cd: 4CD\x00
+0x4ce: 4CE\x00
+0x4cf: 4CF\x00
+0x4d0: 4D0\x00
+0x4d1: 4D1\x00
+0x4d2: 4D2\x00
+0x4d3: 4D3\x00
+0x4d4: 4D4\x00
+0x4d5: 4D5\x00
+0x4d6: 4D6\x00
+0x4d7: 4D7\x00
+0x4d8: 4D8\x00
+0x4d9: 4D9\x00
+0x4da: 4DA\x00
+0x4db: 4DB\x00
+0x4dc: 4DC\x00
+0x4dd: 4DD\x00
+0x4de: 4DE\x00
+0x4df: 4DF\x00
+0x4e0: 4E0\x00
+0x4e1: 4E1\x00
+0x4e2: 4E2\x00
+0x4e3: 4E3\x00
+0x4e4: 4E4\x00
+0x4e5: 4E5\x00
+0x4e6: 4E6\x00
+0x4e7: 4E7\x00
+0x4e8: 4E8\x00
+0x4e9: 4E9\x00
+0x4ea: 4EA\x00
+0x4eb: 4EB\x00
+0x4ec: 4EC\x00
+0x4ed: 4ED\x00
+0x4ee: 4EE\x00
+0x4ef: 4EF\x00
+0x4f0: 4F0\x00
+0x4f1: 4F1\x00
+0x4f2: 4F2\x00
+0x4f3: 4F3\x00
+0x4f4: 4F4\x00
+0x4f5: 4F5\x00
+0x4f6: 4F6\x00
+0x4f7: 4F7\x00
+0x4f8: 4F8\x00
+0x4f9: 4F9\x00
+0x4fa: 4FA\x00
+0x4fb: 4FB\x00
+0x4fc: 4FC\x00
+0x4fd: 4FD\x00
+0x4fe: 4FE\x00
+0x4ff: 4FF\x00
