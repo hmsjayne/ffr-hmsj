@@ -125,6 +125,16 @@ def enable_generous_lukahn(rom: Rom) -> Rom:
 
 def shuffle_key_items(rom: Rom) -> Rom:
     key_item_locations = solve_key_item_placement(randint(0, 0xffffffff))
+    
+    item_data = {
+        "bridge": ('flag',0x02),
+        "ship": ('flag', 0x05),
+        "canal": ('flag', 0x0b),
+        "earth": ('flag', 0x11),
+        "fire": ('flag', 0x13),
+        "water": ('flag', 0x1d),
+        "air": ('flag', 0x22)
+    }
 
     # The Key items returned work like this. Suppose a Placement returned was
     # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
@@ -136,8 +146,13 @@ def shuffle_key_items(rom: Rom) -> Rom:
     # Further, the Fairy in the King of Cornelia's spot, will be there at the start of the game, and
     # won't need to be rescued from the Bottle. It *does* mean that the Fairy won't provide Oxyale
     # until Garland is defeated and that NPC (or treasure) is itself rescued.
-
-    print(f"KI solution: {key_item_locations}")
+    
+    locations = Maps(rom)
+    
+    for s in key_item_locations:
+        print(s.item)
+        
+    #print(f"KI solution: {key_item_locations}")
 
     return rom
 
