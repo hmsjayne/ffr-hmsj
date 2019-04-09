@@ -182,7 +182,7 @@ def decompile(addr):
             cmd_str = f"remove_trigger {hex(event_id)} :: {cmd_str}"
         elif cmd == 0x30:
             npc_id = rom_data[addr + 3]
-            event_id = array.array("H", rom_data[addr + 2:addr + 4])[0]
+            event_id = array.array("H", rom_data[addr + 4:addr + 6])[0]
             cmd_str = f"set_event_on_npc {hex(npc_id)}, {hex(event_id)} :: {cmd_str}"
         elif cmd == 0x37:
             sub_cmd = rom_data[addr + 2]

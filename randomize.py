@@ -19,6 +19,7 @@ from random import seed, randint
 
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
+from doslib.gen.classes import JobClass
 from doslib.maps import Maps, TreasureChest, ItemChest
 from doslib.rom import Rom
 from ffr.flags import Flags
@@ -74,6 +75,23 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
 
     if flags.treasures is not None:
         rom = treasure_shuffle(rom)
+
+    if flags.debug is not None:
+        class_stats_stream = rom.open_bytestream(0x1E1354, 96)
+        class_stats = []
+        while not class_stats_stream.is_eos():
+            class_stats.append(JobClass(class_stats_stream))
+
+        class_out_stream = Output()
+        for job_class in class_stats:
+            # Set the starting weapon and armor for all classes to something
+            # very fair and balanced: Masamune + Diamond Armlet. :)
+            job_class.weapon_id = 0x28
+            job_class.armor_id = 0x0e
+
+            # Write the (very balanced) new data out
+            job_class.write(class_out_stream)
+        rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
