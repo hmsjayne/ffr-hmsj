@@ -113,3 +113,21 @@ class: SpellData
     level, 8
     mp_cost, 16
     price, 32
+
+module: classes
+
+class: JobClass
+    base_hp, 16
+    base_mp, 16
+    starting_spell_level, 8
+    base_strength, 8
+    base_agility, 8
+    base_intellect, 8
+    base_stamina, 8
+    base_luck, 8
+    base_accuracy, 8
+    base_evade, 8
+    base_mdef, 8
+    weapon_id, 8
+    armor_id, 8
+    unused, 8

@@ -22,6 +22,8 @@ class Flags(object):
         self.treasures = None
         self.key_item_shuffle = None
 
+        self.debug = None
+
         for flag in flags_str.split():
             if flag == "K":
                 self.key_item_shuffle = "shuffle"
@@ -33,3 +35,5 @@ class Flags(object):
                 self.treasures = "shuffle"
             elif flag == "-who":
                 self.default_party = "random"
+            elif flag == "-hax":
+                self.debug = "iddqd"
