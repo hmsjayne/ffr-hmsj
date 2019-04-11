@@ -152,9 +152,116 @@ def shuffle_key_items(rom: Rom) -> Rom:
         "earth": ('flag', 0x11),
         "fire": ('flag', 0x13),
         "water": ('flag', 0x1d),
-        "air": ('flag', 0x22)
+        "air": ('flag', 0x22),
+        "lute": ('item', 0x00),
+        "crown": ('item', 0x01),
+        "crystal": ('item', 0x02),
+        "jolt_tonic": ('item', 0x03),
+        "key": ('item', 0x04),
+        "nitro_powder": ('item', 0x05),
+        "adamant": ('item', 0x06),
+        "slab": ('item', 0x07),
+        "ruby": ('item', 0x08),
+        "rod": ('item', 0x09),
+        "levistone" : ('item', 0x0a),
+        "chime": ('item',0x0b),
+        "tail": ('item',0x0c),
+        "cube": ('item', 0x0d),
+        "bottle": ('item',0x0e),
+        "oxyale": ('item',0x0f),
+        "canoe": ('item', 0x10),
+        "excalibur": ('item', 0x11),
+        "gear": ('item', 0xFF),
+    }
+    
+    item_sprite = {
+        "bridge": 0x22, #King
+        "lute": 0x00, #Princess Sarah
+        "ship": 0x45,
+        "canal": 0x3B,
+        "earth": 0x51,
+        "fire": 0x52,
+        "water": 0x50,
+        "air": 0x4F,
+        "crown": 0x94, #Black Wizard (Black)
+        "crystal": 0x47,
+        "jolt_tonic": 0x37,
+        "key": 0x31,
+        "nitro_powder": 0x0D, #Soldier
+        "adamant": 0x59,
+        "slab": 0x1B, #Mermaid
+        "ruby": 0x58, #The Ruby Sprite
+        "rod": 0x39,
+        "levistone": 0x57,
+        "chime": 0x21,
+        "tail": 0x25, #A Bat - any better ideas?
+        "cube": 0x2B, #Sadly, no 0x9S exists
+        "bottle": 0x44,
+        "oxyale": 0x29,
+        "canoe": 0x38,
+        "excalibur": 0x3C,
+        "gear": 0xFF
+    }
+    
+    location_event_ids = {
+        "lich": 0x13B3,
+        "kary": 0x13A8,
+        "kraken": 0x13A3,
+        "tiamat": 0x13BB,
+        "sara": 0x13A7,
+        "king": 0x138B, #This is also, like, fighting Garland and stuff. It big.
+        "bikke": 0x13B5,
+        "marsh": 0x1398,
+        "locked_cornelia": 0x13AD,
+        "vampire": 0x13B7,
+        "sarda": 0x13B8,
+        "ice": 0x139F,
+        "caravan": 0xFFFF,
+        "astos": 0x1390,
+        "matoya": 0x1391,
+        "elf": 0x139A,
+        "ordeals": 0x13AD,
+        "waterfall": 0x13BD,
+        "fairy": 0x138F,
+        "mermaids": 0x13B4,
+        "lefien": 0x1395,
+        "smith": 0x139D,
+        "lukahn": 0x1394,
+        "sky2": 0x138D,
+        "desert": 0xFFFF,
+    }
+    
+    #This one's a *little* hacky - if it has 1 
+    location_map_objects = {
+        "lich": [(0x05,10)],
+        "kary": [(0x2E,0)],
+        "kraken": [(0x17,0)],
+        "tiamat": [(0x60,0)],
+        "sara": [(0x1F,6),(0x39,3)],
+        "king": [(0x39,2)],
+        "bikke": [(0x62,2)],
+        "marsh": [(0x5B,5,0)],
+        "locked_cornelia": [(0x38,2,2)],
+        "vampire": [(0x03,1,0)],
+        "sarda": [(0x37,0)],
+        "ice": [(0x44,0)],
+        "caravan": [(0x73,0)],
+        "astos": [(0x58,0)],
+        "matoya": [(0x61,4)],
+        "elf": [(0x06,7)],
+        "ordeals": [(0x4F,8,0)],
+        "waterfall": [(0x53,0)],
+        "fairy": [(0x47,11)],
+        "mermaids": [(0x1E,0,12)],
+        "lefien": [(0x70,11)],
+        "smith": [(0x57,4)],
+        "lukahn": [(0x2F,13)],
+        "sky2": [(0x5D,0)],
+        "desert": [None]
     }
 
+    #Chime Lupa-ian is 0xB
+    
     # The Key items returned work like this. Suppose a Placement returned was
     # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
     # should be found in the King of Cornelia location.
@@ -169,9 +276,11 @@ def shuffle_key_items(rom: Rom) -> Rom:
     locations = Maps(rom)
 
     for s in key_item_locations:
-        print(s.item)
-
-    # print(f"KI solution: {key_item_locations}")
+        replace_item_event(item_data[s.item],location_event_id[s.location])
+        replace_map_sprite(item_sprite[s.item],location_map_objects[s.location])
+        print(s.location)
+        
+    #print(f"KI solution: {key_item_locations}")
 
     return rom
 
