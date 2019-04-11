@@ -133,9 +133,59 @@ def shuffle_key_items(rom: Rom) -> Rom:
         "earth": ('flag', 0x11),
         "fire": ('flag', 0x13),
         "water": ('flag', 0x1d),
-        "air": ('flag', 0x22)
+        "air": ('flag', 0x22),
+        "lute": ('item', 0x00),
+        "crown": ('item', 0x01),
+        "crystal": ('item', 0x02),
+        "jolt_tonic": ('item', 0x03),
+        "key": ('item', 0x04),
+        "nitro_powder": ('item', 0x05),
+        "adamant": ('item', 0x06),
+        "slab": ('item', 0x07),
+        "ruby": ('item', 0x08),
+        "rod": ('item', 0x09),
+        "levistone" : ('item', 0x0a),
+        "chime": ('item',0x0b),
+        "tail": ('item',0x0c),
+        "cube": ('item', 0x0d),
+        "bottle": ('item',0x0e),
+        "oxyale": ('item',0x0f),
+        "canoe": ('item', 0x10),
+        "excalibur": ('item', 0x11),
+        "gear": ('item', 0xFF)
+    }
+    
+    item_sprite = {
+        "bridge": 0x22, #King
+        "lute": 0x00, #Princess Sarah
+        "ship": 0x45,
+        "canal": 0x3B,
+        "earth": 0x51,
+        "fire": 0x52,
+        "water": 0x50,
+        "air": 0x4F,
+        "crown": 0x94, #Black Wizard (Black)
+        "crystal": 0x47,
+        "jolt_tonic": 0x37,
+        "key": 0x31,
+        "nitro_powder": 0x0D, #Soldier
+        "adamant": 0x59,
+        "slab": 0x1B, #Mermaid
+        "ruby": 0x58, #The Ruby Sprite
+        "rod": 0x39,
+        "levistone": 0x57,
+        "chime": 0x21,
+        "tail": 0x25, #A Bat - any better ideas?
+        "cube": 0x2B, #Sadly, no 0x9S exists
+        "bottle": 0x44,
+        "oxyale": 0x29,
+        "canoe": 0x38,
+        "excalibur": 0x3C,
+        "gear": 0x5A #The sprite used for XCal seems appropriate here
     }
 
+    #Chime Lupa-ian is 0xB
+    
     # The Key items returned work like this. Suppose a Placement returned was
     # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
     # should be found in the King of Cornelia location.
