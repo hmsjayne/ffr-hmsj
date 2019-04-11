@@ -170,7 +170,7 @@ def shuffle_key_items(rom: Rom) -> Rom:
         "oxyale": ('item',0x0f),
         "canoe": ('item', 0x10),
         "excalibur": ('item', 0x11),
-        "gear": ('item', 0xFF)
+        "gear": ('item', 0xFF),
     }
     
     item_sprite = {
@@ -199,7 +199,64 @@ def shuffle_key_items(rom: Rom) -> Rom:
         "oxyale": 0x29,
         "canoe": 0x38,
         "excalibur": 0x3C,
-        "gear": 0x5A #The sprite used for XCal seems appropriate here
+        "gear": 0xFF
+    }
+    
+    location_event_ids = {
+        "lich": 0x13B3,
+        "kary": 0x13A8,
+        "kraken": 0x13A3,
+        "tiamat": 0x13BB,
+        "sara": 0x13A7,
+        "king": 0x138B, #This is also, like, fighting Garland and stuff. It big.
+        "bikke": 0x13B5,
+        "marsh": 0x1398,
+        "locked_cornelia": 0x13AD,
+        "vampire": 0x13B7,
+        "sarda": 0x13B8,
+        "ice": 0x139F,
+        "caravan": 0xFFFF,
+        "astos": 0x1390,
+        "matoya": 0x1391,
+        "elf": 0x139A,
+        "ordeals": 0x13AD,
+        "waterfall": 0x13BD,
+        "fairy": 0x138F,
+        "mermaids": 0x13B4,
+        "lefien": 0x1395,
+        "smith": 0x139D,
+        "lukahn": 0x1394,
+        "sky2": 0x138D,
+        "desert": 0xFFFF,
+    }
+    
+    #This one's a *little* hacky - if it has 1 
+    location_map_objects = {
+        "lich": [(0x05,10)],
+        "kary": [(0x2E,0)],
+        "kraken": [(0x17,0)],
+        "tiamat": [(0x60,0)],
+        "sara": [(0x1F,6),(0x39,3)],
+        "king": [(0x39,2)],
+        "bikke": [(0x62,2)],
+        "marsh": [(0x5B,5,0)],
+        "locked_cornelia": [(0x38,2,2)],
+        "vampire": [(0x03,1,0)],
+        "sarda": [(0x37,0)],
+        "ice": [(0x44,0)],
+        "caravan": [(0x73,0)],
+        "astos": [(0x58,0)],
+        "matoya": [(0x61,4)],
+        "elf": [(0x06,7)],
+        "ordeals": [(0x4F,8,0)],
+        "waterfall": [(0x53,0)],
+        "fairy": [(0x47,11)],
+        "mermaids": [(0x1E,0,12)],
+        "lefien": [(0x70,11)],
+        "smith": [(0x57,4)],
+        "lukahn": [(0x2F,13)],
+        "sky2": [(0x5D,0)],
+        "desert": [None]
     }
 
     #Chime Lupa-ian is 0xB
@@ -218,7 +275,9 @@ def shuffle_key_items(rom: Rom) -> Rom:
     locations = Maps(rom)
     
     for s in key_item_locations:
-        print(s.item)
+        replace_item_event(item_data[s.item],location_event_id[s.location])
+        replace_map_sprite(item_sprite[s.item],location_map_objects[s.location])
+        print(s.location)
         
     #print(f"KI solution: {key_item_locations}")
 
