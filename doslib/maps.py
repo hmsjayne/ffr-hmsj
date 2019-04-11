@@ -24,6 +24,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from __future__ import annotations
+
 from doslib.gen.map import MapHeader, Tile, Npc, Chest, Sprite, Shop
 from doslib.rom import Rom
 from stream.input import Input
@@ -32,17 +34,23 @@ from stream.output import Output
 
 class Maps(object):
     def __init__(self, rom: Rom):
-        self.maps = []
+        self._maps = []
         self.dummy_chests = []
 
         self._map_lut = rom.get_lut(0x1E4F40, 124)
         for map_id, map_addr in enumerate(self._map_lut):
             map_stream = rom.get_stream(Rom.pointer_to_offset(map_addr), bytearray.fromhex("ffff"))
             map = Map(map_id, map_stream)
-            self.maps.append(map)
+            self._maps.append(map)
 
             # Collect the dummy chests together
             self.dummy_chests += map.dummy_chests
+
+    def get_map(self, map_id: int) -> Map:
+        return self._maps[map_id]
+
+    def get_map_offset(self, map_id: int) -> int:
+        return Rom.pointer_to_offset(self._map_lut[map_id])
 
     def write(self, rom: Rom) -> Rom:
         lut = Output()
@@ -50,7 +58,7 @@ class Maps(object):
 
         next_map_addr = self._map_lut[0]
         data_size = 0
-        for map in self.maps:
+        for map in self._maps:
             lut.put_u32(next_map_addr)
             map.write(data)
 

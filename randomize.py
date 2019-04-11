@@ -13,17 +13,17 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import copy
+
 from argparse import ArgumentParser
 from random import seed, randint
 
 from doslib.event import EventTextBlock, EventTable
 from doslib.eventbuilder import EventBuilder
 from doslib.gen.classes import JobClass
-from doslib.maps import Maps, TreasureChest, ItemChest
+from doslib.maps import Maps
 from doslib.rom import Rom
 from ffr.flags import Flags
-from ffr.keyitemsolver import solve_key_item_placement
+from ffr.keyitemsolver import KeyItemPlacement, solve_key_item_placement
 from ffr.spellshuffle import SpellShuffle
 from ffr.treasures import treasure_shuffle
 from ipsfile import load_ips_files
@@ -64,7 +64,8 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     rom = enable_generous_lukahn(rom)
 
     if flags.key_item_shuffle is not None:
-        rom = shuffle_key_items(rom)
+        placement = KeyItemPlacement(rom, rom_seed)
+        rom = placement.rom
 
     if flags.magic is not None:
         shuffle_maigc = SpellShuffle(rom)
@@ -143,9 +144,9 @@ def enable_generous_lukahn(rom: Rom) -> Rom:
 
 def shuffle_key_items(rom: Rom) -> Rom:
     key_item_locations = solve_key_item_placement(randint(0, 0xffffffff))
-    
+
     item_data = {
-        "bridge": ('flag',0x02),
+        "bridge": ('flag', 0x02),
         "ship": ('flag', 0x05),
         "canal": ('flag', 0x0b),
         "earth": ('flag', 0x11),
@@ -271,9 +272,9 @@ def shuffle_key_items(rom: Rom) -> Rom:
     # Further, the Fairy in the King of Cornelia's spot, will be there at the start of the game, and
     # won't need to be rescued from the Bottle. It *does* mean that the Fairy won't provide Oxyale
     # until Garland is defeated and that NPC (or treasure) is itself rescued.
-    
+
     locations = Maps(rom)
-    
+
     for s in key_item_locations:
         replace_item_event(item_data[s.item],location_event_id[s.location])
         replace_map_sprite(item_sprite[s.item],location_map_objects[s.location])

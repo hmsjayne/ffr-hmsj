@@ -14,6 +14,8 @@
 
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
+from stream.input import Input
+from stream.output import Output
 
 
 class EventTable(object):
@@ -50,3 +52,63 @@ class EventTextBlock(TextBlock):
                 # nothing, we'll update the pointer in the LUT to point to string 0, which will serve as a single
                 # placeholder string.
                 self.strings[index] = None
+
+
+class Event(object):
+    def __init__(self, stream: Input):
+        self.commands = []
+
+        last_cmd = -1
+        while last_cmd != 0:
+            cmd = [stream.get_u8()]
+            cmd_len = stream.get_u8()
+            cmd.append(cmd_len)
+
+            # 2 Bytes already read -- the command, and length
+            for params in range(cmd_len - 2):
+                cmd.append(stream.get_u8())
+
+            self.commands.append(EventCommand(cmd))
+            last_cmd = cmd[0]
+
+    def write(self, stream: Output):
+        for cmd in self.commands:
+            for data in cmd:
+                stream.put_u8(data)
+
+
+class EventCommand(list):
+    def cmd(self) -> int:
+        return self[0]
+
+    def size(self) -> int:
+        return self[1]
+
+    def get_u16(self, index: int) -> int:
+        if index % 2 == 0:
+            return self[index] | (self[index + 1] << 8)
+        raise RuntimeError(f"Event parameters are always word aligned")
+
+    def get_u32(self, index: int) -> int:
+        if index % 4 == 0:
+            return self[index] | (self[index + 1] << 8) | (self[index + 2] << 16) | (self[index + 3] << 24)
+        raise RuntimeError(f"Event parameters are always word aligned")
+
+    def put_u16(self, index: int, value: int):
+        if index % 2 == 0:
+            self[index] = value & 0xff
+            self[index + 1] = (value >> 8) & 0xff
+        else:
+            raise RuntimeError(f"Event parameters are always word aligned")
+
+    def put_u32(self, index: int, value: int):
+        if index % 4 == 0:
+            self[index] = value & 0xff
+            self[index + 1] = (value >> 8) & 0xff
+            self[index + 2] = (value >> 16) & 0xff
+            self[index + 3] = (value >> 24) & 0xff
+        else:
+            raise RuntimeError(f"Event parameters are always word aligned")
+
+    def __str__(self) -> str:
+        return "[" + ",".join(format(x, "02x") for x in self) + "]"

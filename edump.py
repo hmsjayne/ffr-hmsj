@@ -86,6 +86,9 @@ def decompile(addr):
             cmd_str = f"end_event :: {cmd_str}"
         elif cmd == 0x1:
             cmd_str = f"nop :: {cmd_str}"
+        elif cmd == 0x3:
+            map_id = rom_data[addr + 3]
+            cmd_str = f"load_map {hex(map_id)} :: {cmd_str}"
         elif cmd == 0x5:
             event_string_id = array.array("H", rom_data[addr + 2:addr + 4])[0]
             cmd_str = f"load_text {hex(event_string_id)} :: {cmd_str}\n{event_text[event_string_id]}"
@@ -95,7 +98,7 @@ def decompile(addr):
             else:
                 cmd_str = f"close_dialog, wait :: {cmd_str}"
         elif cmd == 0x9:
-            time_to_wait = array.array("H", rom_data[addr + 4:addr + 6])[0]
+            time_to_wait = array.array("H", rom_data[addr + 2:addr + 4])[0]
             cmd_str = f"wait_frames {time_to_wait} :: {cmd_str}"
         elif cmd == 0x0c:
             # Jump command
@@ -165,10 +168,17 @@ def decompile(addr):
             sprite_id = rom_data[addr + 2]
             frame = rom_data[addr + 3]
             cmd_str = f"set_animation_frame {hex(sprite_id)}, frame={frame} :: {cmd_str}"
+        elif cmd == 0x21:
+            sprite_id = rom_data[addr + 2]
+            pose = rom_data[addr + 3]
+            cmd_str = f"set_npc_pose {hex(sprite_id)}, pose={pose} :: {cmd_str}"
         elif cmd == 0x26:
             cmd_str = f"face_party {DIRECTIONS[rom_data[addr + 2]]} :: {cmd_str}"
         elif cmd == 0x27:
             cmd_str = f"show_dialog :: {cmd_str}"
+        elif cmd == 0x2b:
+            battle = rom_data[addr + 2]
+            cmd_str = f"begin_battle {hex(battle)} :: {cmd_str}"
         elif cmd == 0x2d and cmd_len == 0x8:
             # 0x2d variant with alternate
             jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
