@@ -82,7 +82,9 @@ def main(argv):
 
                 # First, text for __init__ block.
                 init_text = ""
-                # Next, text for write block.
+                # Next, text for making a new instance of the object.
+                new_init_text = ""
+                # Finally, text for write block.
                 write_text = ""
 
                 for field_text in current_class:
@@ -94,12 +96,13 @@ def main(argv):
                         real_size = field_size[0:field_size.find("[")]
                         array_size = field_size[field_size.find("[") + 1:field_size.find("]")]
 
-                        init_text += f"        self.{field_name} = []\n"
-                        init_text += f"        for index in range({array_size}):\n"
+                        init_text += f"            self.{field_name} = []\n"
+                        new_init_text += f"            self.{field_name} = []\n"
+                        init_text += f"            for index in range({array_size}):\n"
                         if real_size.isnumeric():
-                            init_text += f"            self.{field_name}.append(stream.get_u{real_size}())\n"
+                            init_text += f"                self.{field_name}.append(stream.get_u{real_size}())\n"
                         else:
-                            init_text += f"            self.{field_name}.append({real_size}(stream))\n"
+                            init_text += f"                self.{field_name}.append({real_size}(stream))\n"
 
                         write_text += f"        for data in self.{field_name}:\n"
                         if real_size.isnumeric():
@@ -108,16 +111,22 @@ def main(argv):
                             write_text += f"            data.write(stream)\n"
                     else:
                         if field_size.isnumeric():
-                            init_text += f"        self.{field_name} = stream.get_u{field_size}()\n"
+                            init_text += f"            self.{field_name} = stream.get_u{field_size}()\n"
+                            new_init_text += f"            self.{field_name} = 0\n"
                             write_text += f"        stream.put_u{field_size}(self.{field_name})\n"
                         else:
-                            init_text += f"        self.{field_name} = {field_size}(stream)\n"
+                            init_text += f"            self.{field_name} = {field_size}(stream)\n"
+                            new_init_text += f"            self.{field_name} = {field_size}()\n"
                             write_text += f"        self.{field_name}.write(stream)\n"
 
                 # Build the full class as a string
                 class_lines = [
                     f"class {a_class}(object):\n",
-                    f"    def __init__(self, stream: Input):\n{init_text}\n",
+                    f"    def __init__(self, stream: Input = None):\n"
+                    f"        if stream is None:\n"
+                    f"{new_init_text}\n"
+                    f"        else:\n"
+                    f"{init_text}\n",
                     f"    def write(self, stream: Output):\n{write_text}\n\n"
                 ]
                 module_file.writelines(class_lines)
