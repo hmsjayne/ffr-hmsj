@@ -131,6 +131,35 @@ class KeyItemPlacement(object):
             "excalibur": 0x3C,
             "gear": 0xFF
         }
+        
+        self.vanilla_rewards = {
+            "lich": ('flag', 0x11),
+            "kary": ('flag', 0x13),
+            "kraken": ('flag', 0x1d),
+            "tiamat": ('flag', 0x22),
+            "sara": ('item', 0x00),
+            "king": ('flag', 0x02),
+            "bikke": ('flag', 0x05),
+            "marsh": ('item', 0x01),
+            "locked_cornelia": ('item', 0x05),
+            "nerrick": ('flag', 0x0b),
+            "vampire": ('item', 0x08),
+            "sarda": ('item', 0x09),
+            "ice": ('item', 0x0a),
+            "caravan": ('item', 0x0e),
+            "astos": ('item', 0x02),
+            "matoya": ('item', 0x03),
+            "elf": ('item', 0x04),
+            "ordeals": ('item', 0x0c),
+            "waterfall": ('item', 0x0d),
+            "fairy": ('item', 0x0f),
+            "mermaids": ('item', 0x07),
+            "lefien": ('item', 0x0b),
+            "smith": ('item', 0x11),
+            "lukahn": ('item', 0x10),
+            "sky2": ('item', 0x06),
+            "desert": ('item', 0xFF),
+        }
 
         self.location_event_id = {
             "lich": 0x13B3,
@@ -173,7 +202,7 @@ class KeyItemPlacement(object):
             "bikke": [(0x62, 2)],
             "marsh": [(0x5B, 5, 0)],
             "locked_cornelia": [(0x38, 2, 2)],
-            "nerrick": [(0x38,9)],
+            "nerrick": [(0x57,11)],
             "vampire": [(0x03, 1, 0)],
             "sarda": [(0x37, 0)],
             "ice": [(0x44, 0)],
@@ -237,9 +266,10 @@ class KeyItemPlacement(object):
         # until Garland is defeated and that NPC (or treasure) is itself rescued.
         sara_sprite = None
         king_sprite = None
+        new_events = dict()
         for placement in key_item_locations:
             print(f"Placement: {placement}")
-            self._replace_item_event(self.item_data[placement.item],self.location_event_id[placement.location])
+            self._replace_item_event(self.item_data[placement.item], self.location_event_id[placement.location],self.vanilla_rewards[placement.location])
             self._replace_map_sprite(self.item_sprite[placement.item],self.location_map_objects[placement.location])
             if placement.location == "sara":
                 sara_sprite = self.item_sprite[placement.item]
@@ -249,8 +279,29 @@ class KeyItemPlacement(object):
         self.rom = self._placement_king(king_sprite, sara_sprite)
         self.rom = self.maps.write(self.rom)
 
-    def _replace_item_event(self, item_id:int, event_id:int):
+    def _replace_item_event(self, item_id, event_id:int, vanilla):
         """Replace the item given in Event event_id with item_id"""
+        """We won't worry about dialog for now"""
+        if event_id == 0xFFFF:
+            return
+        event_ptr = Rom.pointer_to_offset(self.events.get_addr(event_id))
+        event = Event(self.rom.get_event(event_ptr))
+        replacement = EventRewriter(event)
+        new_reward = None
+        vanilla_reward = None
+        if item_id[0] == 'flag':
+            new_reward = Reward(flag=item_id[1],mask=0x0)
+        else:
+            new_reward = Reward(item=item_id[1])
+        if vanilla[0] == 'flag':
+            vanilla_reward = Reward(flag=vanilla[1],mask=0x0)
+        else:
+            vanilla_reward = Reward(item=vanilla[1])
+        replacement.replace_reward(vanilla_reward, new_reward)
+        
+        event_output = Output()
+        replacement.rewrite().write(event_output)
+        self.rom = self.rom.apply_patches({event_ptr: event_output.get_buffer()})
     
     def _replace_map_sprite(self, new_sprite:int, locations_to_edit):
         for loc in locations_to_edit:
@@ -285,8 +336,6 @@ class KeyItemPlacement(object):
         # - 2: The King of Cornelia
         # - 3: Pricess Sara in the throne room.
         replacement.visiting_npc(6, 2, 3)
-
-        replacement.replace_reward(Reward(flag=0x2, mask=0x0), Reward(item=0x1))
 
         event_output = Output()
         replacement.rewrite().write(event_output)
