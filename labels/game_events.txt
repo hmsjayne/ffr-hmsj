@@ -1,0 +1,69 @@
+0x1388: (Normal chest)
+0x1389: Cornelia Inn
+0x138A: Chapel priests
+0x138B: Confronting Garland (and Sarah rescue?)
+0x138C: (For Cornelian soldiers who teleport you to the King)
+0x138D: Adamantite obtaining
+0x138E: Airship rises from Ryukahn Desert
+0x138F: Fairy gets Oxyale
+0x1390: Confronting Astos
+0x1391: Giving Crystal Eye to Matoya
+0x1392: Bridge rebuilding scene(?)
+0x1393: Nerrick uses Nitro Powder
+0x1394: Receive Canoe
+0x1395: Receive Chime
+0x1396: Class change!
+0x1397: (Use Cottage)
+0x1398: Crown chest
+0x1399: Feed Star Ruby to Giant
+0x139A: Give Jolt Tonic to Healer
+0x139B: (Nothing)
+0x139C: Pause, slow white fadein/out
+0x139D: Give Adamantite to Smyth
+0x139E: Fairy released from bottle
+0x139F: Levistone obtaining
+0x13A0: Unlock Black Crystal
+0x13A1: Sub Engineer fades away...
+0x13A2: Barrel submarine (Onrac)
+0x13A3: Confronting Kraken
+0x13A4: Confronting Chaos
+0x13A5: Unne deciphers Rosetta Stone
+0x13A6: Flying Fortress's Observation Window
+0x13A7: Receive Lute
+0x13A8: Confronting Marilith
+0x13A9: Matoya's Plight
+0x13AA: Rat Tail chest
+0x13AB: Lute breaks seal
+0x13AC: (Nothing)
+0x13AD: Nitro Powder chest
+0x13AE: (Nothing)
+0x13AF: Citadel of Trials greeter
+0x13B0: (Nothing)
+0x13B1: "Lali-Ho!" Dwarf
+0x13B2: Barrel Submarine (Sunken Shrine)
+0x13B3: Confronting Lich
+0x13B4: Rosetta Stone chest
+0x13B5: Confronting Bikke
+0x13B6: (Using Sleeping Bag)
+0x13B7: Star Ruby chest
+0x13B8: Receive Earth Rod
+0x13B9: (Nothing)
+0x13BA: (Using Tent)
+0x13BB: Confronting Tiamat
+0x13BC: Confronting Vampire
+0x13BD: Robot gives Warp Cube
+0x13BE: Pravoka Inn
+0x13BF: Elfheim Inn
+0x13C0: Melmond Inn
+0x13C1: Crescent Lake Inn
+0x13C2: Onrac Inn
+0x13C3: Gaia Inn
+0x13C4: (Warp event)
+0x13C5: (Exit event)
+0x13C6: Mirage Tower/Flying Fort warp
+0x13C7: Warp out with effects
+0x13C8: Citadel of Trials teleporter effect
+0x13C9: Flying Fortress teleporter effect
+0x13CA: Ice Cave pit effect
+0x13CB: Sarah stops you leaving to give Lute
+0x13CC: Surface Return teleporter effect

@@ -232,6 +232,15 @@ def decompile(addr):
     return working
 
 
+def decompile_event(event_id: int):
+    # Decompile the event in a function so it can recurse.
+    addr = lookup_event(event_id)
+    event_code = decompile(addr)
+
+    for key, value in sorted(event_code.items(), key=lambda x: x[0]):
+        print("{:x}: {}".format(key, value))
+
+
 def main(argv):
     if len(argv) != 2:
         raise ValueError("Please pass ROM path and event ID parameters")
@@ -243,6 +252,28 @@ def main(argv):
     if argv[1] == "--strings":
         for idx, estr in enumerate(event_text):
             print(f"({idx}) @ {hex(event_text.lut[idx])}: {estr}")
+    elif argv[1] == "--all":
+        with open("labels/locations.txt", "r") as f:
+            locations = f.readlines()
+            for loc in locations:
+                loc = loc.rstrip().lstrip()
+                data = loc.split()
+                index = int(data[0], 0)
+
+                print(f"Map init event {loc}")
+                decompile_event(index)
+                print(f"\n* * *\n")
+
+        with open("labels/game_events.txt", "r") as f:
+            events = f.readlines()
+            for event in events:
+                event = event.rstrip().lstrip()
+                data = event.split(":")
+                index = int(data[0], 0)
+
+                print(f"Main game event {event}")
+                decompile_event(index)
+                print(f"\n* * *\n")
     else:
         if argv[1].startswith("0x"):
             event_id = int(argv[1], 0)
@@ -250,11 +281,7 @@ def main(argv):
             event_id = int(argv[1], 16)
 
         # Decompile the event in a function so it can recurse.
-        addr = lookup_event(event_id)
-        event_code = decompile(addr)
-
-        for key, value in sorted(event_code.items(), key=lambda x: x[0]):
-            print("{:x}: {}".format(key, value))
+        decompile_event(event_id)
 
 
 if __name__ == "__main__":
