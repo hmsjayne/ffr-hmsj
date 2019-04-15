@@ -164,6 +164,26 @@ def decompile(addr):
                 cmd_str = f"hide_leader :: {cmd_str}"
             else:
                 cmd_str = f"show_leader :: {cmd_str}"
+        elif cmd == 0x1b:
+            if rom_data[addr + 2] == 0:
+                cmd_name = "fade_in"
+            else:
+                cmd_name = "fade_out"
+            what_to_fade_code = array.array("H", rom_data[addr + 4:addr + 6])[0]
+            if what_to_fade_code == 0xffff:
+                what_to_fade = "screen"
+            elif what_to_fade_code == 0xff00:
+                what_to_fade = "npcs"
+            elif what_to_fade_code == 0x8EFF:
+                what_to_fade = "all_but_player"
+            elif what_to_fade_code == 0x7100:
+                what_to_fade = "player"
+            elif what_to_fade_code == 0x00ff:
+                what_to_fade = "map"
+            else:
+                what_to_fade = f"??{hex(what_to_fade_code)}??"
+
+            cmd_str = f"{cmd_name} {what_to_fade} time={rom_data[addr + 3]}, amount={rom_data[addr + 6]} :: {cmd_str}"
         elif cmd == 0x1f:
             sprite_id = rom_data[addr + 2]
             frame = rom_data[addr + 3]
@@ -219,6 +239,10 @@ def decompile(addr):
             # Another jump command
             jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
             jumps.append(jump_target)
+        elif cmd == 0x63:
+            jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
+            jumps.append(jump_target)
+            cmd_str = f"jump_if_no {hex(jump_target)} :: {cmd_str}"
 
         working[addr] = cmd_str
 
