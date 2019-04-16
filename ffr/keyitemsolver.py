@@ -334,7 +334,7 @@ class KeyItemPlacement(object):
             "sara": 0x10a,
             "bikke": 0x224,
             "marsh": 0x10b,
-            "astos": 0x10b,
+            "astos": 0x1f3,
             "matoya": 0x216,
             "elf": 0x154,
             "locked_cornelia": 0x128,
