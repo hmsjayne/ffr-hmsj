@@ -75,7 +75,7 @@ class KeyItemPlacement(object):
         self.event_text_block = EventTextBlock(rom)
         
         self.item_data = {
-            "bridge": ('flag', 0x02),
+            "bridge": ('flag', 0x03),
             "ship": ('flag', 0x05),
             "canal": ('flag', 0x0b),
             "earth": ('flag', 0x11),
