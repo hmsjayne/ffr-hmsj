@@ -133,6 +133,15 @@ class EventRewriter(object):
                     if command[2] == self._set_flag[0]:
                         command[2] = self._set_flag[1]
                 new_commands.append(command)
+            elif op == EventRewriter.GIVE_ITEM_CMD:
+                if command.size() == 4 and command[2] == 0x0:
+                    if self._give_item is None:
+                        command[0] = EventRewriter.NOP_CMD
+                        command[2] = 0xff
+                        command[3] = 0xff
+                    else:
+                        command[3] = self._give_item
+                new_commands.append(command)
             else:
                 new_commands.append(command)
 
@@ -146,7 +155,7 @@ class EventRewriter(object):
         # This really needs to be done better, but, as a hack, it should work for now?
         nops = []
         nops_required = int(command.size() / 4)
-        if self._give_item is not None:
+        if self._give_item is not None and not self._gives_item:
             give_cmd = EventCommand([EventRewriter.GIVE_ITEM_CMD, 0x4, 0x0, self._give_item])
             nops.append(give_cmd)
 
@@ -162,9 +171,10 @@ class EventRewriter(object):
         return nops
 
     DIALOG_COMMANDS = [0x5, 0x27, 0x6]
+
+    NOP_CMD = 0x1
     SET_ANI_FRAME_CMD = 0x1F
     SET_POSE_CMD = 0x21
-
     SET_FLAG_CMD = 0x2d
     GIVE_ITEM_CMD = 0x37
 
