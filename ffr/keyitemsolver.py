@@ -73,8 +73,60 @@ class KeyItemPlacement(object):
         self.rom = rom
         self.maps = Maps(rom)
         self.events = EventTable(rom, 0x7788, 0xbb7, base_event_id=0x1388)
+        self.map_events = EventTable(rom, 0x7050, 0xD3, base_event_id=0x0)
         self.event_text_block = EventTextBlock(rom)
 
+        self.flag_index = {
+            "bridge": 0x03,
+            "lute": 0x04,
+            "ship": 0x05,
+            "crown": 0x06,
+            "crystal": 0x07,
+            "jolt_tonic": 0x08,
+            "key": 0x09,
+            "nitro_powder": 0x0A,
+            "canal": 0x0B,
+            "ruby": 0x0D,
+            "rod": 0x0F,
+            "earth": 0x11,
+            "canoe": 0x12,
+            "fire": 0x13,
+            "levistone": 0x14,
+            "tail": 0x17,
+            "class_change": 0x18,
+            "oxyale": 0x1a,
+            "slab": 0x1c,
+            "water": 0x1d,
+            "lufienish": 0x1e,
+            "chime": 0x1f,
+            "cube": 0x20,
+            "adamant": 0x21,
+            "air": 0x22,
+            "excalibur": 0x23
+        }
+        
+        self.item_index = {
+            "lute": 0x00,
+            "crown": 0x01,
+            "crystal": 0x02,
+            "jolt_tonic": 0x03,
+            "key": 0x04,
+            "nitro_powder": 0x05,
+            "adamant": 0x06,
+            "slab": 0x07,
+            "ruby": 0x08,
+            "rod": 0x09,
+            "levistone": 0x0a,
+            "chime": 0x0b,
+            "tail": 0x0c,
+            "cube": 0x0d,
+            "bottle": 0x0e,
+            "oxyale": 0x0f,
+            "canoe": 0x10,
+            "excalibur": 0x11,
+            "gear": 0xFF,
+        }
+        
         self.item_data = {
             "bridge": ('flag', 0x03),
             "ship": ('flag', 0x05),
@@ -103,34 +155,34 @@ class KeyItemPlacement(object):
             "excalibur": ('item', 0x11),
             "gear": ('item', 0xFF),
         }
-
-        self.item_sprite = {
-            "bridge": 0x22,  # King
-            "lute": 0x00,  # Princess Sarah
-            "ship": 0x45,
-            "canal": 0x3B,
-            "earth": 0x51,
-            "fire": 0x52,
-            "water": 0x50,
-            "air": 0x4F,
-            "crown": 0x94,  # Black Wizard (Black)
-            "crystal": 0x47,
-            "jolt_tonic": 0x37,
-            "key": 0x31,
-            "nitro_powder": 0x0D,  # Soldier
-            "adamant": 0x59,
-            "slab": 0x1B,  # Mermaid
-            "ruby": 0x58,  # The Ruby Sprite
-            "rod": 0x39,
-            "levistone": 0x57,
-            "chime": 0x21,
-            "tail": 0x25,  # A Bat - any better ideas?
-            "cube": 0x2B,  # Sadly, no 0x9S exists
-            "bottle": 0x44,
-            "oxyale": 0x29,
-            "canoe": 0x38,
-            "excalibur": 0x3C,
-            "gear": 0xFF
+        
+        self.vanilla_flags = {
+            "king": 0x02,
+            "sara": 0x04,
+            "bikke": 0x05,
+            "marsh": 0x06,
+            "astos": 0x07,
+            "matoya": 0x08,
+            "elf": 0x09,
+            "locked_cornelia": 0x0A,
+            "nerrick": 0x0B,
+            "vampire": 0x0D,
+            "sarda": 0x0F,
+            "lich": 0x11,
+            "lukahn": 0x12,
+            "kary": 0x13,
+            "ice": 0x14,
+            "ordeals": 0x17,
+            "bahamut": 0x18,
+            "fairy": 0x1a,
+            "mermaids": 0x1c,
+            "kraken": 0x1d,
+            "unne": 0x1e,
+            "lefien": 0x1f,
+            "waterfall": 0x20,
+            "sky2": 0x21,
+            "tiamat": 0x22,
+            "smith": 0x23
         }
 
         self.vanilla_rewards = {
@@ -161,7 +213,7 @@ class KeyItemPlacement(object):
             "sky2": ('item', 0x06),
             "desert": ('item', 0xFF),
         }
-
+        #-------
         self.location_event_id = {
             "lich": 0x13B3,
             "kary": 0x13A8,
@@ -190,7 +242,64 @@ class KeyItemPlacement(object):
             "sky2": 0x138D,
             "desert": 0xFFFF,
         }
+        
+        self.item_sprite = {
+            "bridge": 0x22,  # King
+            "lute": 0x00,  # Princess Sarah
+            "ship": 0x45,
+            "canal": 0x3B,
+            "earth": 0x51,
+            "fire": 0x52,
+            "water": 0x50,
+            "air": 0x4F,
+            "crown": 0x94,  # Black Wizard (Black)
+            "crystal": 0x47,
+            "jolt_tonic": 0x37,
+            "key": 0x31,
+            "nitro_powder": 0x0D,  # Soldier
+            "adamant": 0x59,
+            "slab": 0x1B,  # Mermaid
+            "ruby": 0x58,  # The Ruby Sprite
+            "rod": 0x39,
+            "levistone": 0x57,
+            "chime": 0x21,
+            "tail": 0x25,  # A Bat - any better ideas?
+            "cube": 0x2B,  # Sadly, no 0x9S exists
+            "bottle": 0x44,
+            "oxyale": 0x29,
+            "canoe": 0x38,
+            "excalibur": 0x3C,
+            "gear": 0xFF
+        }
 
+        self.map_check_index = {
+            "lich": 0x05,
+            "kary": 0x2E,
+            "kraken": 0x17,
+            "tiamat": 0x60,
+            "sara": 0x39,
+            "king": 0x39,
+            "bikke": 0x62,
+            "marsh": 0x5B,
+            "locked_cornelia": 0x38,
+            "nerrick": 0x57,
+            "vampire": 0x03,
+            "sarda": 0x37,
+            "ice": 0x44,
+            "caravan": 0x73,
+            "astos": 0x58,
+            "matoya": 0x61,
+            "elf": 0x06,
+            "ordeals": 0x4F,
+            "waterfall": 0x53,
+            "fairy": 0x47,
+            "mermaids": 0x1E,
+            "lefien": 0x70,
+            "smith": 0x57,
+            "lukahn": 0x2F,
+            "sky2": 0x5D
+        }
+        
         # This one's a *little* hacky - each item of the array is a tuple
         # or 3ple: tuples are other NPCs, and 3ples are chests
         self.location_map_objects = {
@@ -224,6 +333,11 @@ class KeyItemPlacement(object):
 
         self._do_placement(clingo_seed)
 
+    def _idx_to_array(self, x:int):
+        lil = x % 0x100
+        big = (x - lil) / 0x100
+        return [lil,big]
+        
     def _solve_placement(self, seed: int) -> tuple:
         """Create a random distribution for key items (KI).
 
@@ -270,8 +384,7 @@ class KeyItemPlacement(object):
         new_events = dict()
         for placement in key_item_locations:
             print(f"Placement: {placement}")
-            self._replace_item_event(self.item_data[placement.item], self.location_event_id[placement.location],
-                                     self.vanilla_rewards[placement.location])
+            self._replace_item_event(placement.item,placement.location)
             self._replace_map_sprite(self.item_sprite[placement.item], self.location_map_objects[placement.location])
             if placement.location == "sara":
                 sara_sprite = self.item_sprite[placement.item]
@@ -279,32 +392,67 @@ class KeyItemPlacement(object):
                 king_sprite = self.item_sprite[placement.item]
 
         self.rom = self._placement_king(king_sprite, sara_sprite)
+        self._remove_bridge_trigger()
         self.rom = self.maps.write(self.rom)
 
-    def _replace_item_event(self, item_id, event_id: int, vanilla):
-        """Replace the item given in Event event_id with item_id"""
-        """We won't worry about dialog for now"""
-        if event_id == 0xFFFF:
+    def _remove_bridge_trigger(self):
+        tiles = self.maps._maps[0x38].tiles
+        for t in tiles:
+            if not t.event == 0x100:
+                t.event = 0x0
+        
+    def _replace_item_event(self, item: str, location: str):
+        """So, we take in the item and the location of said item"""
+        """And take our time calling up the needed data here"""
+        """In particular, there's two events that need to be fixed:"""
+        """One is indexed the same as the map, and needs to look at """
+        map_id = None
+        event_id = None
+        if location in self.map_check_index:
+            map_id = self.map_check_index[location]
+        if location in self.location_event_id:
+            event_id = self.location_event_id[location]
+        
+        if item == "bottle" or location == "desert":
             return
-        event_ptr = Rom.pointer_to_offset(self.events.get_addr(event_id))
-        event = Event(self.rom.get_event(event_ptr))
-
-        replacement = EventRewriter(event)
-        new_reward = None
-        vanilla_reward = None
-        if item_id[0] == 'flag':
-            new_reward = Reward(flag=item_id[1], mask=0x0)
-        else:
-            new_reward = Reward(item=item_id[1])
-        if vanilla[0] == 'flag':
-            vanilla_reward = Reward(flag=vanilla[1], mask=0x0)
-        else:
-            vanilla_reward = Reward(item=vanilla[1])
-        replacement.replace_reward(vanilla_reward, new_reward)
-
-        event_output = Output()
-        replacement.rewrite().write(event_output)
-        self.rom = self.rom.apply_patches({event_ptr: event_output.get_buffer()})
+        
+        if not map_id == None:
+            #print(map_id)
+            map_event_ptr = Rom.pointer_to_offset(self.map_events.get_addr(map_id))
+            map_event = Event(self.rom.get_event(map_event_ptr))
+            replacement = EventRewriter(map_event)
+            
+            new_item_flag = self.flag_index[item]
+            old_item_flag = self.vanilla_flags[location]
+            replacement.replace_chest()
+            replacement.replace_conditional(old_item_flag,new_item_flag)
+            
+            map_output = Output()
+            replacement.rewrite().write(map_output)
+            self.rom = self.rom.apply_patches({map_event_ptr: map_output.get_buffer()})
+        if not event_id == None:
+            event_ptr = Rom.pointer_to_offset(self.events.get_addr(event_id))
+            event = Event(self.rom.get_event(event_ptr))
+            replacement = EventRewriter(event)
+            
+            item_id = self.item_data[item]
+            vanilla = self.vanilla_rewards[location]
+            new_reward = None
+            vanilla_reward = None
+            if item_id[0] == 'flag':
+                new_reward = Reward(flag=item_id[1], mask=0x0)
+            else:
+                new_reward = Reward(item=item_id[1])
+            if vanilla[0] == 'flag':
+                vanilla_reward = Reward(flag=vanilla[1], mask=0x0)
+            else:
+                vanilla_reward = Reward(item=vanilla[1])
+            replacement.replace_reward(vanilla_reward, new_reward)
+            replacement.replace_flag(self.vanilla_flags[location],self.flag_index[item])
+            
+            event_output = Output()
+            replacement.rewrite().write(event_output)
+            self.rom = self.rom.apply_patches({event_ptr: event_output.get_buffer()})
 
     def _replace_map_sprite(self, new_sprite: int, locations_to_edit):
         for loc in locations_to_edit:

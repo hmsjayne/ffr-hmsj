@@ -18,7 +18,6 @@ import copy
 
 from doslib.event import Event, EventCommand
 
-
 class Reward(object):
     def __init__(self, flag: int = None, mask: int = None, item: int = None):
         if flag is not None and item is None:
@@ -53,6 +52,12 @@ class EventRewriter(object):
 
         self._reward_cmd = EventCommand([-1, 4, 0, 0])
         self._reward_replacement = None
+        
+        self._replace_conditional = False
+        self._replacement_conditions = []
+        
+        self._chest_to_npc = False
+        self._chest_change_to_update = []
 
         self._set_flag = (-1, -1)
         self._give_item = None
@@ -70,6 +75,13 @@ class EventRewriter(object):
         for sprite_index in sprite_indices:
             self._visiting_npcs.append(sprite_index)
 
+    def replace_conditional(self, old_flag: int, new_flag: int):
+        self._replace_conditional = True
+        self._replacement_conditions.append([old_flag,new_flag])
+            
+    def replace_chest(self):
+        self._chest_to_npc = True
+            
     def rewrite_dialog(self, original_dialog: int, replacement_dialog: int):
         self._replace_dialog[original_dialog] = replacement_dialog
 
@@ -137,6 +149,14 @@ class EventRewriter(object):
                     new_commands.append(self._reward_replacement.get_cmd())
                 else:
                     new_commands.append(command)
+            elif op == 0x36 and self._chest_to_npc:
+                command[0] = 0x2E
+                new_commands.append(command)
+            elif op == EventRewriter.SET_FLAG_CMD and command.size() == 0x8 and self._replace_conditional:
+                for flags in self._replacement_conditions:
+                    if command[2] == flags[0]:
+                        command[2] = flags[1]
+                new_commands.append(command)
             else:
                 new_commands.append(command)
 

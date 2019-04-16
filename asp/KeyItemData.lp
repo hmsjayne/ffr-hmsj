@@ -59,6 +59,7 @@ requires(lukahn,earth).
 requires(astos,crown).
 requires(matoya,crystal).
 requires(elf,jolt_tonic).
+requires(key,locked_cornelia).
 requires(nerrick,nitro_powder).
 requires(desert,levistone).
 requires(ordeals,canoe).
@@ -69,9 +70,12 @@ requires(sky2,sky_access).
 requires(smith,adamant).
 requires(waterfall,canoe).
 
-%Fprce fiends to be Vanilla
+%Force fiends to be Vanilla
 pair(earth,lich).
 pair(fire,kary).
 pair(water,kraken).
 pair(air,tiamat).
+
+%Debug stuff for PuwP
+pair(bottle,caravan).
 pair(gear,desert).

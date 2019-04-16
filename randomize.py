@@ -155,11 +155,11 @@ def shuffle_key_items(rom: Rom) -> Rom:
     # until Garland is defeated and that NPC (or treasure) is itself rescued.
 
     locations = Maps(rom)
-    # key_item_locations = solve_key_item_placement(randint(0, 0xffffffff), locations)
+    #key_item_locations = solve_key_item_placement(randint(0, 0xffffffff), locations)
     key_item_locations = KeyItemPlacement(rom, randint(0, 0xffffffff))
-
+    
     key_item_locations.maps.write(rom)
-
+    
     # print(f"KI solution: {key_item_locations}")
 
     return rom
