@@ -18,6 +18,7 @@ import copy
 
 from doslib.event import Event, EventCommand
 
+
 class EventRewriter(object):
     def __init__(self, event: Event):
         self._replace_dialog = {}
@@ -30,7 +31,7 @@ class EventRewriter(object):
 
         self._replace_conditional = False
         self._replacement_conditions = []
-        
+
         self._chest_to_npc = False
         self._chest_change_to_update = []
 
@@ -52,11 +53,11 @@ class EventRewriter(object):
 
     def replace_conditional(self, old_flag: int, new_flag: int):
         self._replace_conditional = True
-        self._replacement_conditions.append([old_flag,new_flag])
-            
+        self._replacement_conditions.append([old_flag, new_flag])
+
     def replace_chest(self):
         self._chest_to_npc = True
-            
+
     def rewrite_dialog(self, original_dialog: int, replacement_dialog: int):
         self._replace_dialog[original_dialog] = replacement_dialog
 
@@ -115,12 +116,6 @@ class EventRewriter(object):
                         new_commands.extend(self._cmd_as_nop(command))
                 else:
                     new_commands.append(command)
-            elif op == EventRewriter.SET_FLAG_CMD and command.size() == 4:
-                if command[3] == self._replace_flag[0]:
-                    new_command = EventCommand([EventRewriter.SET_FLAG_CMD, 0x4, self._replace_flag[1], 0x0])
-                    new_commands.append(new_command)
-                else:
-                    new_commands.append(command)
             elif op == 0x36 and self._chest_to_npc:
                 command[0] = 0x2E
                 new_commands.append(command)
@@ -129,9 +124,9 @@ class EventRewriter(object):
                     for flags in self._replacement_conditions:
                         if command[2] == flags[0]:
                             command[2] = flags[1]
-                elif command.size() == 0x4 and not self._set_flag == (-1, -1):
-                    if command[2] == self._set_flag[0]:
-                        command[2] = self._set_flag[1]
+                elif command.size() == 0x4 and not self._replace_flag == (-1, -1):
+                    if command[2] == self._replace_flag[0]:
+                        command[2] = self._replace_flag[1]
                 new_commands.append(command)
             elif op == EventRewriter.GIVE_ITEM_CMD:
                 if command.size() == 4 and command[2] == 0x0:

@@ -414,21 +414,21 @@ class KeyItemPlacement(object):
         if item == "bottle" or location == "desert":
             return
 
-        if not map_id == None:
+        if map_id is not None:
             # print(map_id)
             map_event_ptr = Rom.pointer_to_offset(self.map_events.get_addr(map_id))
             map_event = Event(self.rom.get_event(map_event_ptr))
             replacement = EventRewriter(map_event)
 
-            new_item_flag = self.flag_index[item]
             old_item_flag = self.vanilla_flags[location]
+            new_item_flag = self.flag_index[item]
             replacement.replace_chest()
             replacement.replace_conditional(old_item_flag, new_item_flag)
 
             map_output = Output()
             replacement.rewrite().write(map_output)
             self.rom = self.rom.apply_patches({map_event_ptr: map_output.get_buffer()})
-        if not event_id == None:
+        if event_id is not None:
             event_ptr = Rom.pointer_to_offset(self.events.get_addr(event_id))
             event = Event(self.rom.get_event(event_ptr))
             replacement = EventRewriter(event)
