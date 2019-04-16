@@ -329,6 +329,64 @@ class KeyItemPlacement(object):
             "desert": [None]
         }
 
+        self.vanilla_dialog_keys = {
+            "king": 0x127,
+            "sara": 0x10a,
+            "bikke": 0x224,
+            "marsh": 0x10b,
+            "astos": 0x10b,
+            "matoya": 0x216,
+            "elf": 0x154,
+            "locked_cornelia": 0x128,
+            "nerrick": 0x1e8,
+            "vampire": 0x142,
+            "sarda": 0x21a,
+            "lich": -1,
+            "lukahn": 0x1b1,
+            "kary": -1,
+            "ice": 0x10c,
+            "ordeals": 0x10d,
+            "bahamut": 0x1d2,
+            "fairy": 0x1c0,
+            "mermaids": 0x10e,
+            "kraken": -1,
+            "unne": 0x235,
+            "lefien": 0x240,
+            "waterfall": 0x241,
+            "sky2": 0x10f,
+            "tiamat": -1,
+            "smith": 0x1ed
+        }
+
+        self.dialog_keys = {
+            "bridge": 0x127,
+            "lute": 0x10a,
+            "ship": 0x224,
+            "crown": 0x10b,
+            "crystal": 0x1f3,
+            "jolt_tonic": 0x216,
+            "key": 0x154,
+            "nitro_powder": 0x128,
+            "canal": 0x1e8,
+            "ruby": 0x142,
+            "rod": 0x21a,
+            "earth": -1,
+            "canoe": 0x1b1,
+            "fire": -1,
+            "levistone": 0x10c,
+            "tail": 0x10d,
+            "class_change": 0x1d2,
+            "oxyale": 0x1c0,
+            "slab": 0x10e,
+            "water": -1,
+            "lufienish": 0x235,
+            "chime": 0x240,
+            "cube": 0x241,
+            "adamant": 0x10f,
+            "air": -1,
+            "excalibur": 0x1ed
+        }
+
         self._do_placement(clingo_seed)
 
     def _idx_to_array(self, x: int):
@@ -395,9 +453,10 @@ class KeyItemPlacement(object):
 
     def _remove_bridge_trigger(self):
         tiles = self.maps._maps[0x38].tiles
-        for t in tiles:
-            if not t.event == 0x100:
-                t.event = 0x0
+        for tile in tiles:
+            if tile.event == 0x1392:
+                # Remove the bridge building cut-scene trigger.
+                tile.event = 0x0
 
     def _replace_item_event(self, item: str, location: str):
         """So, we take in the item and the location of said item"""
@@ -422,6 +481,7 @@ class KeyItemPlacement(object):
 
             old_item_flag = self.vanilla_flags[location]
             new_item_flag = self.flag_index[item]
+
             replacement.replace_chest()
             replacement.replace_conditional(old_item_flag, new_item_flag)
 
@@ -434,11 +494,16 @@ class KeyItemPlacement(object):
             replacement = EventRewriter(event)
 
             item_id = self.item_data[item]
-            vanilla = self.vanilla_rewards[location]
             replacement.replace_flag(self.vanilla_flags[location], self.flag_index[item])
 
             if item_id[0] != 'flag':
                 replacement.give_item(item_id[1])
+
+            old_dialog = self.vanilla_dialog_keys[location]
+            new_dialog = self.dialog_keys[item]
+
+            if old_dialog != -1 and new_dialog != -1:
+                replacement.rewrite_dialog(old_dialog, new_dialog)
 
             event_output = Output()
             replacement.rewrite().write(event_output)
@@ -446,7 +511,7 @@ class KeyItemPlacement(object):
 
     def _replace_map_sprite(self, new_sprite: int, locations_to_edit):
         for loc in locations_to_edit:
-            if loc == None:
+            if loc is None:
                 """Do nothing"""
             elif len(loc) == 2:  # An NPC to replace
                 self.maps._maps[loc[0]].npcs[loc[1]].sprite_id = new_sprite
@@ -465,22 +530,6 @@ class KeyItemPlacement(object):
                 self.maps._maps[loc[0]].npcs.append(Npc(Input(new_npc)))
 
     def _placement_king(self, king_sprite_id: int, kidnapped_sprite_id: int) -> Rom:
-        garland_event_offset = Rom.pointer_to_offset(self.events.get_addr(0x138B))
-
-        king_event = Event(self.rom.get_event(garland_event_offset))
-        replacement = EventRewriter(king_event)
-        replacement.include_dialogs(0x131)
-        replacement.rewrite_dialog(0x127, 0x10b)
-
-        # NPC indecies are:
-        # - 6: Princess Sara's slot
-        # - 2: The King of Cornelia
-        # - 3: Pricess Sara in the throne room.
-        replacement.visiting_npc(6, 2, 3)
-
-        event_output = Output()
-        replacement.rewrite().write(event_output)
-
         # Princess Sara has a unique sprite pose of her lying down, which is
         # set by the map init routine for the Chaos Shrine (map ID 0x1f).
         # The easy way around this is to change the command to just say "face down/south".
@@ -506,7 +555,6 @@ class KeyItemPlacement(object):
 
         patches = {
             0x813c: make_npc_face_south,
-            garland_event_offset: event_output.get_buffer(),
             maps.get_map_offset(0x1f): chaos_shrine_out.get_buffer(),
             maps.get_map_offset(0x39): cornelia_castle_2f_out.get_buffer()
         }

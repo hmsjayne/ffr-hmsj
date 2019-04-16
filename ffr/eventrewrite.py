@@ -94,6 +94,7 @@ class EventRewriter(object):
                 if self._should_skip_dialog:
                     new_commands.extend(self._cmd_as_nop(command))
                 else:
+                    print(f"Keeping dialog: {command}")
                     new_commands.append(command)
             elif op == EventRewriter.SET_ANI_FRAME_CMD:
                 npc_index = command[2]
