@@ -18,28 +18,6 @@ import copy
 
 from doslib.event import Event, EventCommand
 
-class Reward(object):
-    def __init__(self, flag: int = None, mask: int = None, item: int = None):
-        if flag is not None and item is None:
-            self._flag = flag
-            self._mask = mask
-            self._item = None
-        elif flag is None and item is not None:
-            self._item = item
-            self._flag = None
-        else:
-            raise RuntimeError(f"Invalid reward: flag={hex(flag)}, mask={hex(mask)}, item={hex(item)}")
-
-    def is_flag(self):
-        return self._flag is not None
-
-    def get_cmd(self):
-        if self.is_flag():
-            return EventCommand([0x2d, 0x4, self._flag, self._mask])
-        else:
-            return EventCommand([0x37, 0x4, 0x0, self._item])
-
-
 class EventRewriter(object):
     def __init__(self, event: Event):
         self._replace_dialog = {}
@@ -50,16 +28,13 @@ class EventRewriter(object):
 
         self._should_skip_dialog = True
 
-        self._reward_cmd = EventCommand([-1, 4, 0, 0])
-        self._reward_replacement = None
-        
         self._replace_conditional = False
         self._replacement_conditions = []
         
         self._chest_to_npc = False
         self._chest_change_to_update = []
 
-        self._set_flag = (-1, -1)
+        self._replace_flag = (-1, -1)
         self._give_item = None
 
         self._gives_item = False
@@ -90,12 +65,8 @@ class EventRewriter(object):
             self._replace_with_pose[npc_index] = {}
         self._replace_with_pose[npc_index][frame] = pose
 
-    def replace_reward(self, original: Reward, replacement: Reward):
-        self._reward_cmd = original.get_cmd()
-        self._reward_replacement = replacement
-
     def replace_flag(self, original: int, replacement: int):
-        self._set_flag = (original, replacement)
+        self._replace_flag = (original, replacement)
 
     def give_item(self, event_item_id: int):
         self._give_item = event_item_id
@@ -144,9 +115,10 @@ class EventRewriter(object):
                         new_commands.extend(self._cmd_as_nop(command))
                 else:
                     new_commands.append(command)
-            elif op == self._reward_cmd.cmd():
-                if command == self._reward_cmd:
-                    new_commands.append(self._reward_replacement.get_cmd())
+            elif op == EventRewriter.SET_FLAG_CMD and command.size() == 4:
+                if command[3] == self._replace_flag[0]:
+                    new_command = EventCommand([EventRewriter.SET_FLAG_CMD, 0x4, self._replace_flag[1], 0x0])
+                    new_commands.append(new_command)
                 else:
                     new_commands.append(command)
             elif op == 0x36 and self._chest_to_npc:
@@ -166,9 +138,22 @@ class EventRewriter(object):
 
     def _cmd_as_nop(self, command: EventCommand):
         """Returns a set of NOP commands that are the same size as this command."""
+
+        # This really needs to be done better, but, as a hack, it should work for now?
         nops = []
+        nops_required = int(command.size() / 4)
+        if self._give_item is not None:
+            give_cmd = EventCommand([EventRewriter.GIVE_ITEM_CMD, 0x4, 0x0, self._give_item])
+            nops.append(give_cmd)
+
+            # Only give it once.
+            self._give_item = None
+
+            # Since we used a command, one NOP isn't needed
+            nops_required -= 1
+
         nop = EventCommand([0x1, 0x4, 0xff, 0xff])
-        for count in range(int(command.size() / 4)):
+        for count in range(nops_required):
             nops.append(nop)
         return nops
 

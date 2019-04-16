@@ -23,18 +23,16 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-import copy
 import json
 from collections import namedtuple
-from random import seed, randint
 from subprocess import run, PIPE
 
 from doslib.event import EventTable, EventTextBlock, Event
 from doslib.eventbuilder import EventBuilder
-from doslib.maps import Maps
 from doslib.gen.map import Npc
+from doslib.maps import Maps
 from doslib.rom import Rom
-from ffr.eventrewrite import EventRewriter, Reward
+from ffr.eventrewrite import EventRewriter
 from stream.input import Input
 from stream.output import Output
 
@@ -104,7 +102,7 @@ class KeyItemPlacement(object):
             "air": 0x22,
             "excalibur": 0x23
         }
-        
+
         self.item_index = {
             "lute": 0x00,
             "crown": 0x01,
@@ -126,7 +124,7 @@ class KeyItemPlacement(object):
             "excalibur": 0x11,
             "gear": 0xFF,
         }
-        
+
         self.item_data = {
             "bridge": ('flag', 0x03),
             "ship": ('flag', 0x05),
@@ -155,7 +153,7 @@ class KeyItemPlacement(object):
             "excalibur": ('item', 0x11),
             "gear": ('item', 0xFF),
         }
-        
+
         self.vanilla_flags = {
             "king": 0x02,
             "sara": 0x04,
@@ -213,7 +211,7 @@ class KeyItemPlacement(object):
             "sky2": ('item', 0x06),
             "desert": ('item', 0xFF),
         }
-        #-------
+        # -------
         self.location_event_id = {
             "lich": 0x13B3,
             "kary": 0x13A8,
@@ -242,7 +240,7 @@ class KeyItemPlacement(object):
             "sky2": 0x138D,
             "desert": 0xFFFF,
         }
-        
+
         self.item_sprite = {
             "bridge": 0x22,  # King
             "lute": 0x00,  # Princess Sarah
@@ -299,7 +297,7 @@ class KeyItemPlacement(object):
             "lukahn": 0x2F,
             "sky2": 0x5D
         }
-        
+
         # This one's a *little* hacky - each item of the array is a tuple
         # or 3ple: tuples are other NPCs, and 3ples are chests
         self.location_map_objects = {
@@ -333,11 +331,11 @@ class KeyItemPlacement(object):
 
         self._do_placement(clingo_seed)
 
-    def _idx_to_array(self, x:int):
+    def _idx_to_array(self, x: int):
         lil = x % 0x100
         big = (x - lil) / 0x100
-        return [lil,big]
-        
+        return [lil, big]
+
     def _solve_placement(self, seed: int) -> tuple:
         """Create a random distribution for key items (KI).
 
@@ -384,7 +382,7 @@ class KeyItemPlacement(object):
         new_events = dict()
         for placement in key_item_locations:
             print(f"Placement: {placement}")
-            self._replace_item_event(placement.item,placement.location)
+            self._replace_item_event(placement.item, placement.location)
             self._replace_map_sprite(self.item_sprite[placement.item], self.location_map_objects[placement.location])
             if placement.location == "sara":
                 sara_sprite = self.item_sprite[placement.item]
@@ -400,7 +398,7 @@ class KeyItemPlacement(object):
         for t in tiles:
             if not t.event == 0x100:
                 t.event = 0x0
-        
+
     def _replace_item_event(self, item: str, location: str):
         """So, we take in the item and the location of said item"""
         """And take our time calling up the needed data here"""
@@ -412,21 +410,21 @@ class KeyItemPlacement(object):
             map_id = self.map_check_index[location]
         if location in self.location_event_id:
             event_id = self.location_event_id[location]
-        
+
         if item == "bottle" or location == "desert":
             return
-        
+
         if not map_id == None:
-            #print(map_id)
+            # print(map_id)
             map_event_ptr = Rom.pointer_to_offset(self.map_events.get_addr(map_id))
             map_event = Event(self.rom.get_event(map_event_ptr))
             replacement = EventRewriter(map_event)
-            
+
             new_item_flag = self.flag_index[item]
             old_item_flag = self.vanilla_flags[location]
             replacement.replace_chest()
-            replacement.replace_conditional(old_item_flag,new_item_flag)
-            
+            replacement.replace_conditional(old_item_flag, new_item_flag)
+
             map_output = Output()
             replacement.rewrite().write(map_output)
             self.rom = self.rom.apply_patches({map_event_ptr: map_output.get_buffer()})
@@ -434,22 +432,14 @@ class KeyItemPlacement(object):
             event_ptr = Rom.pointer_to_offset(self.events.get_addr(event_id))
             event = Event(self.rom.get_event(event_ptr))
             replacement = EventRewriter(event)
-            
+
             item_id = self.item_data[item]
             vanilla = self.vanilla_rewards[location]
-            new_reward = None
-            vanilla_reward = None
-            if item_id[0] == 'flag':
-                new_reward = Reward(flag=item_id[1], mask=0x0)
-            else:
-                new_reward = Reward(item=item_id[1])
-            if vanilla[0] == 'flag':
-                vanilla_reward = Reward(flag=vanilla[1], mask=0x0)
-            else:
-                vanilla_reward = Reward(item=vanilla[1])
-            replacement.replace_reward(vanilla_reward, new_reward)
-            replacement.replace_flag(self.vanilla_flags[location],self.flag_index[item])
-            
+            replacement.replace_flag(self.vanilla_flags[location], self.flag_index[item])
+
+            if item_id[0] != 'flag':
+                replacement.give_item(item_id[1])
+
             event_output = Output()
             replacement.rewrite().write(event_output)
             self.rom = self.rom.apply_patches({event_ptr: event_output.get_buffer()})
