@@ -66,14 +66,15 @@ def solve_key_item_placement(seed: int):
 
     return tuple(ki_placement)
 
+
 class KeyItemPlacement(object):
-    
+
     def __init__(self, rom: Rom, clingo_seed: int):
         self.rom = rom
         self.maps = Maps(rom)
         self.events = EventTable(rom, 0x7788, 0xbb7, base_event_id=0x1388)
         self.event_text_block = EventTextBlock(rom)
-        
+
         self.item_data = {
             "bridge": ('flag', 0x03),
             "ship": ('flag', 0x05),
@@ -131,7 +132,7 @@ class KeyItemPlacement(object):
             "excalibur": 0x3C,
             "gear": 0xFF
         }
-        
+
         self.vanilla_rewards = {
             "lich": ('flag', 0x11),
             "kary": ('flag', 0x13),
@@ -202,7 +203,7 @@ class KeyItemPlacement(object):
             "bikke": [(0x62, 2)],
             "marsh": [(0x5B, 5, 0)],
             "locked_cornelia": [(0x38, 2, 2)],
-            "nerrick": [(0x57,11)],
+            "nerrick": [(0x57, 11)],
             "vampire": [(0x03, 1, 0)],
             "sarda": [(0x37, 0)],
             "ice": [(0x44, 0)],
@@ -220,7 +221,7 @@ class KeyItemPlacement(object):
             "sky2": [(0x5D, 0)],
             "desert": [None]
         }
-                             
+
         self._do_placement(clingo_seed)
 
     def _solve_placement(self, seed: int) -> tuple:
@@ -251,7 +252,7 @@ class KeyItemPlacement(object):
 
         return tuple(ki_placement)
 
-    def _do_placement(self, clingo_seed:int):
+    def _do_placement(self, clingo_seed: int):
         key_item_locations = self._solve_placement(clingo_seed)
 
         # The Key items returned work like this. Suppose a Placement returned was
@@ -269,8 +270,9 @@ class KeyItemPlacement(object):
         new_events = dict()
         for placement in key_item_locations:
             print(f"Placement: {placement}")
-            self._replace_item_event(self.item_data[placement.item], self.location_event_id[placement.location],self.vanilla_rewards[placement.location])
-            self._replace_map_sprite(self.item_sprite[placement.item],self.location_map_objects[placement.location])
+            self._replace_item_event(self.item_data[placement.item], self.location_event_id[placement.location],
+                                     self.vanilla_rewards[placement.location])
+            self._replace_map_sprite(self.item_sprite[placement.item], self.location_map_objects[placement.location])
             if placement.location == "sara":
                 sara_sprite = self.item_sprite[placement.item]
             if placement.location == "king":
@@ -279,39 +281,40 @@ class KeyItemPlacement(object):
         self.rom = self._placement_king(king_sprite, sara_sprite)
         self.rom = self.maps.write(self.rom)
 
-    def _replace_item_event(self, item_id, event_id:int, vanilla):
+    def _replace_item_event(self, item_id, event_id: int, vanilla):
         """Replace the item given in Event event_id with item_id"""
         """We won't worry about dialog for now"""
         if event_id == 0xFFFF:
             return
         event_ptr = Rom.pointer_to_offset(self.events.get_addr(event_id))
         event = Event(self.rom.get_event(event_ptr))
+
         replacement = EventRewriter(event)
         new_reward = None
         vanilla_reward = None
         if item_id[0] == 'flag':
-            new_reward = Reward(flag=item_id[1],mask=0x0)
+            new_reward = Reward(flag=item_id[1], mask=0x0)
         else:
             new_reward = Reward(item=item_id[1])
         if vanilla[0] == 'flag':
-            vanilla_reward = Reward(flag=vanilla[1],mask=0x0)
+            vanilla_reward = Reward(flag=vanilla[1], mask=0x0)
         else:
             vanilla_reward = Reward(item=vanilla[1])
         replacement.replace_reward(vanilla_reward, new_reward)
-        
+
         event_output = Output()
         replacement.rewrite().write(event_output)
         self.rom = self.rom.apply_patches({event_ptr: event_output.get_buffer()})
-    
-    def _replace_map_sprite(self, new_sprite:int, locations_to_edit):
+
+    def _replace_map_sprite(self, new_sprite: int, locations_to_edit):
         for loc in locations_to_edit:
             if loc == None:
                 """Do nothing"""
-            elif len(loc) == 2: #An NPC to replace
+            elif len(loc) == 2:  # An NPC to replace
                 self.maps._maps[loc[0]].npcs[loc[1]].sprite_id = new_sprite
-            else: #A chest (w/ event sprite)
+            else:  # A chest (w/ event sprite)
                 print(len(self.maps._maps[loc[0]].sprites))
-                chest = self.maps._maps[loc[0]].chests.pop(loc[1]) #Remove & Return
+                chest = self.maps._maps[loc[0]].chests.pop(loc[1])  # Remove & Return
                 sprite = self.maps._maps[loc[0]].sprites.pop(loc[2])
                 new_npc = bytearray(b'\x02\x00')
                 new_npc.extend(int.to_bytes(sprite.event, 2, byteorder="little", signed=False))

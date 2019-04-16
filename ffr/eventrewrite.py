@@ -54,6 +54,14 @@ class EventRewriter(object):
         self._reward_cmd = EventCommand([-1, 4, 0, 0])
         self._reward_replacement = None
 
+        self._set_flag = (-1, -1)
+        self._give_item = None
+
+        self._gives_item = False
+        for cmd in self._input_event.commands:
+            if cmd[0] == 0x37 and cmd[1] == 0x4 and cmd[2] == 0x00:
+                self._gives_item = True
+
     def include_dialogs(self, *string_ids):
         for string_id in string_ids:
             self._replace_dialog[string_id] = string_id
@@ -73,6 +81,12 @@ class EventRewriter(object):
     def replace_reward(self, original: Reward, replacement: Reward):
         self._reward_cmd = original.get_cmd()
         self._reward_replacement = replacement
+
+    def replace_flag(self, original: int, replacement: int):
+        self._set_flag = (original, replacement)
+
+    def give_item(self, event_item_id: int):
+        self._give_item = event_item_id
 
     def rewrite(self) -> Event:
         new_commands = []
