@@ -62,13 +62,15 @@ requires(elf,jolt_tonic).
 requires(key,locked_cornelia).
 requires(nerrick,nitro_powder).
 requires(desert,levistone).
-requires(ordeals,canoe).
+requires(ordeals,ordeal_access).
 requires(fairy,bottle).
 requires(mermaids,oxyale).
 requires(lefien,slab).
 requires(sky2,sky_access).
 requires(smith,adamant).
 requires(waterfall,canoe).
+has(sky_access) :- has(chime), has(cube).
+has(ordeal_access) :- has(canoe), has(crown).
 
 %Force fiends to be Vanilla
 pair(earth,lich).
