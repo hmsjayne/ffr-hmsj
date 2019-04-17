@@ -17,15 +17,27 @@ from doslib.rom import Rom
 from doslib.shopdata import ShopData
 from doslib.spells import Spells
 from ffr.shuffledlist import ShuffledList
+from stream.output import Output
 
 
 class SpellShuffle(object):
     def __init__(self, rom: Rom):
         self._shops = ShopData(rom)
         self._spells = Spells(rom)
+
+        self._permissions = []
+        permissions_stream = rom.open_bytestream(0x1A20C0, 0x82)
+        while not permissions_stream.is_eos():
+            self._permissions.append(permissions_stream.get_u16())
+
         self._do_shuffle()
 
-    def write(self, rom:Rom) -> Rom:
+    def write(self, rom: Rom) -> Rom:
+        permissions_stream = Output()
+        for permission in self._permissions:
+            permissions_stream.put_u16(permission)
+
+        rom = rom.apply_patch(0x1A20C0, permissions_stream.get_buffer())
         rom = self._spells.write(rom)
         return self._shops.write(rom)
 
@@ -97,3 +109,9 @@ class SpellShuffle(object):
                 for spell_index in inventory.magic:
                     new_magic_inventory.append(complete_magic_mapping[spell_index])
                 inventory.magic = new_magic_inventory
+
+        # Finally, rewrite permissions to be the same as the slot was before.
+        new_permissions = copy.deepcopy(self._permissions)
+        for index, magic in enumerate(self._spells):
+            new_permissions[complete_magic_mapping[index]] = self._permissions[index]
+        self._permissions = new_permissions
