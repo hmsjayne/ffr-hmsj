@@ -404,7 +404,7 @@ class KeyItemPlacement(object):
         """
         command = [
             "clingo", "asp/KeyItemSolving.lp", "asp/KeyItemData.lp",
-            "--sign-def=3",
+            "--sign-def=rnd",
             "--seed=" + str(seed),
             "--outf=2"
         ]
@@ -515,7 +515,7 @@ class KeyItemPlacement(object):
                 """Do nothing"""
             elif len(loc) == 2:  # An NPC to replace
                 self.maps._maps[loc[0]].npcs[loc[1]].sprite_id = new_sprite
-            else:  # A chest (w/ event sprite)
+            """else:  # A chest (w/ event sprite)
                 print(len(self.maps._maps[loc[0]].sprites))
                 chest = self.maps._maps[loc[0]].chests.pop(loc[1])  # Remove & Return
                 sprite = self.maps._maps[loc[0]].sprites.pop(loc[2])
@@ -527,7 +527,7 @@ class KeyItemPlacement(object):
                 new_npc.extend(int.to_bytes(0x00, 2, byteorder="little", signed=False))
                 new_npc.extend(int.to_bytes(0x00, 2, byteorder="little", signed=False))
                 new_npc.extend(int.to_bytes(0x01, 2, byteorder="little", signed=False))
-                self.maps._maps[loc[0]].npcs.append(Npc(Input(new_npc)))
+                self.maps._maps[loc[0]].npcs.append(Npc(Input(new_npc)))"""
 
     def _placement_king(self, king_sprite_id: int, kidnapped_sprite_id: int) -> Rom:
         # Princess Sara has a unique sprite pose of her lying down, which is

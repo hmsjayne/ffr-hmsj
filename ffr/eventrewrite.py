@@ -117,7 +117,7 @@ class EventRewriter(object):
                 else:
                     new_commands.append(command)
             elif op == 0x36 and self._chest_to_npc:
-                command[0] = 0x2E
+                #command[0] = 0x2E
                 new_commands.append(command)
             elif op == EventRewriter.SET_FLAG_CMD:
                 if command.size() == 0x8 and self._replace_conditional:

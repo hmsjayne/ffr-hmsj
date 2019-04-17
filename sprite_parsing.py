@@ -131,6 +131,7 @@ map_count = len(locations)
 maps = []
 
 while (map_index < map_count):
+    print(locations[map_index])
     cur_map = Map_Events(locations[map_index], cur_ptr)
     maps.append(cur_map)
     cur_map.add_boundaries(rom.rom_data[cur_ptr:cur_ptr + 10])
