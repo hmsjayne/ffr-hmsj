@@ -404,7 +404,7 @@ class KeyItemPlacement(object):
         """
         command = [
             "clingo", "asp/KeyItemSolving.lp", "asp/KeyItemData.lp",
-            "--sign-def=rnd",
+            "--sign-def=3",
             "--seed=" + str(seed),
             "--outf=2"
         ]

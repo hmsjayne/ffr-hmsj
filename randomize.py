@@ -71,9 +71,6 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
         shuffle_maigc = SpellShuffle(rom)
         rom = shuffle_maigc.write(rom)
 
-    maps = Maps(rom)
-    rom = maps.write(rom)
-
     if flags.treasures is not None:
         rom = treasure_shuffle(rom)
 
