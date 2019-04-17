@@ -81,3 +81,4 @@ pair(air,tiamat).
 %Debug stuff for PuwP
 pair(bottle,caravan).
 pair(gear,desert).
+pair(canal,fairy).

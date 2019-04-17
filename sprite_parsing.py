@@ -95,7 +95,7 @@ class Map_Events:
         new_shop = dict()
         new_shop['x_coord'] = data[4]
         new_shop['y_coord'] = data[6]
-        new_shop['event'] = data[2:4]
+        new_shop['event'] = data[2] | (data[3] << 8)
         new_shop['ptr'] = cur_ptr
         self.shops.append(new_shop)
 
@@ -120,6 +120,9 @@ class Map_Events:
         for c in self.interactive_sprites:
             file.write(hex(c['ptr']) + " = Sprite" + hex(c['event']) + " at (" + str(c['x_coord']) + "," + str(
                 c['y_coord']) + ") \n")
+        file.write("\n")
+        for c in self.shops:
+            file.write(hex(c['ptr']) + " = Shop" + hex(c['event']) + " at (" + str(c['x_coord']) + "," + str(c['y_coord']) + ") \n")
         file.write("\n")
 
 
