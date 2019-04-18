@@ -53,22 +53,26 @@ class Maps(object):
         return Rom.pointer_to_offset(self._map_lut[map_id])
 
     def write(self, rom: Rom) -> Rom:
-        lut = Output()
-        data = Output()
+        # lut = Output()
+        # data = Output()
 
-        next_map_addr = self._map_lut[0]
-        data_size = 0
-        for map in self._maps:
-            lut.put_u32(next_map_addr)
+        # next_map_addr = self._map_lut[0]
+        patches = {}
+        # data_size = 0
+        for index, map in enumerate(self._maps):
+            data = Output()
+            # lut.put_u32(next_map_addr)
             map.write(data)
 
-            next_map_addr += (data.size() - data_size)
-            data_size = data.size()
+            patches[self._map_lut[index]] = data.get_buffer()
 
-        patches = {
-            0x1E4F40: lut.get_buffer(),
-            Rom.pointer_to_offset(self._map_lut[0]): data.get_buffer()
-        }
+            # next_map_addr += (data.size() - data_size)
+            # data_size = data.size()
+
+        # patches = {
+        #     0x1E4F40: lut.get_buffer(),
+        #     Rom.pointer_to_offset(self._map_lut[0]): data.get_buffer()
+        # }
         return rom.apply_patches(patches)
 
 
