@@ -58,7 +58,7 @@ class Maps(object):
             data = Output()
             map.write(data)
 
-            patches[self._map_lut[index]] = data.get_buffer()
+            patches[Rom.pointer_to_offset(self._map_lut[index])] = data.get_buffer()
         return rom.apply_patches(patches)
 
 

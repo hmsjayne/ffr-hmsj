@@ -28,7 +28,6 @@ from collections import namedtuple
 from subprocess import run, PIPE
 
 from doslib.event import EventTable, EventTextBlock, Event
-from doslib.eventbuilder import EventBuilder
 from doslib.maps import Maps
 from doslib.rom import Rom
 from ffr.eventrewrite import EventRewriter
@@ -76,6 +75,7 @@ REWARD_SOURCE = {
     "kraken": NpcSource(map_id=0x17, npc_index=0, event_id=0x13A3, vanilla_ki="water"),
     "tiamat": NpcSource(map_id=0x60, npc_index=0, event_id=0x13BB, vanilla_ki="air"),
     "sara": NpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, vanilla_ki="lute"),
+    "sara2": NpcSource(map_id=0x39, npc_index=3, event_id=0x13CB, vanilla_ki="lute"),
     "king": NpcSource(map_id=0x39, npc_index=2, event_id=0x138B, vanilla_ki="bridge"),
     "bikke": NpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, vanilla_ki="ship"),
     "marsh": ChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, vanilla_ki="crown"),
@@ -136,6 +136,10 @@ class KeyItemPlacement(object):
 
             self._replace_item_event(source, key_item)
 
+            if placement.location == "sara":
+                # There's the second "wait!" event if you don't talk to Sara. Update that event as well.
+                self._replace_item_event(REWARD_SOURCE["sara2"], key_item)
+
             if isinstance(source, NpcSource):
                 self.maps._maps[source.map_id].npcs[source.npc_index].sprite_id = key_item.sprite
 
@@ -143,7 +147,6 @@ class KeyItemPlacement(object):
                 if placement.location == "sara":
                     self.maps._maps[0x1f].npcs[6].sprite_id = key_item.sprite
                     self._rewrite_map_init_event(0x1f, 0x1, 0x1, 6)
-            self.rom = self.maps.write(self.rom)
 
         self._remove_bridge_trigger()
         self.rom = self.maps.write(self.rom)
