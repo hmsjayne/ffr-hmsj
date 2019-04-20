@@ -28,8 +28,10 @@ from collections import namedtuple
 from subprocess import run, PIPE
 
 from doslib.event import EventTable, EventTextBlock, Event
+from doslib.eventbuilder import EventBuilder
 from doslib.maps import Maps
 from doslib.rom import Rom
+from doslib.textblock import TextBlock
 from ffr.eventrewrite import EventRewriter
 from stream.output import Output
 
@@ -55,12 +57,12 @@ KEY_ITEMS = {
     "fire": KeyItem(sprite=0x00, flag=0x13, item=None, dialog=None),
     "levistone": KeyItem(sprite=0x57, flag=0x14, item=0x0a, dialog=0x10c),
     "tail": KeyItem(sprite=0x25, flag=0x17, item=0x0c, dialog=0x10d),
-    "class_change": KeyItem(sprite=0x00, flag=0x18, item=None, dialog=0x1d2),
+    "class_change": KeyItem(sprite=0x64, flag=0x18, item=None, dialog=0x1d2),
     "bottle": KeyItem(sprite=0x44, flag=0x19, item=0x0e, dialog=None),
     "oxyale": KeyItem(sprite=0x29, flag=0x1a, item=0x0f, dialog=0x1c0),
     "slab": KeyItem(sprite=0x1B, flag=0x1c, item=0x07, dialog=0x10e),
     "water": KeyItem(sprite=0x00, flag=0x1d, item=None, dialog=None),
-    "lufienish": KeyItem(sprite=0x00, flag=0x1e, item=None, dialog=0x235),
+    "lufienish": KeyItem(sprite=0x3A, flag=0x1e, item=None, dialog=0x235),
     "chime": KeyItem(sprite=0x21, flag=0x1f, item=0x0b, dialog=0x240),
     "cube": KeyItem(sprite=0x2B, flag=0x20, item=0x0d, dialog=0x241),
     "adamant": KeyItem(sprite=0x59, flag=0x21, item=0x06, dialog=0x10f),
@@ -88,9 +90,11 @@ REWARD_SOURCE = {
     "matoya": NpcSource(map_id=0x61, npc_index=4, event_id=0x1391, vanilla_ki="jolt_tonic"),
     "elf": NpcSource(map_id=0x06, npc_index=7, event_id=0x139A, vanilla_ki="key"),
     "ordeals": ChestSource(map_id=0x4F, chest_id=8, sprite_id=0, event_id=0x13AA, vanilla_ki="tail"),
+    "bahamut": NpcSource(map_id=0x54, npc_index=2, event_id=0x1396, vanilla_ki="class_change"),
     "waterfall": NpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, vanilla_ki="cube"),
     "fairy": NpcSource(map_id=0x47, npc_index=11, event_id=0x138F, vanilla_ki="oxyale"),
     "mermaids": ChestSource(map_id=0x1E, chest_id=12, sprite_id=0, event_id=0x13B4, vanilla_ki="slab"),
+    "dr_unne": NpcSource(map_id=0x6A, npc_index=0, event_id=0x13A5, vanilla_ki="lufienish"),
     "lefien": NpcSource(map_id=0x70, npc_index=11, event_id=0x1395, vanilla_ki="chime"),
     "smith": NpcSource(map_id=0x57, npc_index=4, event_id=0x139D, vanilla_ki="excalibur"),
     "lukahn": NpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, vanilla_ki="canoe"),
@@ -144,6 +148,9 @@ class KeyItemPlacement(object):
                     self._rewrite_map_init_event(0x1f, 0x1, 0x1, 6)
 
         self._remove_bridge_trigger()
+        self._shorten_canal_scene()
+        self._rewrite_give_texts()
+
         self.rom = self.maps.write(self.rom)
 
     def _remove_bridge_trigger(self):
@@ -152,6 +159,23 @@ class KeyItemPlacement(object):
             if tile.event == 0x1392:
                 # Remove the bridge building cut-scene trigger.
                 tile.event = 0x0
+
+    def _shorten_canal_scene(self):
+        # This cuts out the part of the scene that switches to the
+        # overworld and shows the rocks collapsing, but keeps the
+        # rest of it.
+        event = EventBuilder() \
+            .add_label("end_up_collaps", 0x800c238) \
+            .jump_to("end_up_collaps") \
+            .get_event()
+        self.rom = self.rom.apply_patch(0xc0f4, event)
+
+    def _rewrite_give_texts(self):
+        self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\\x00")
+        self.event_text_block.strings[0x1e8] = TextBlock.encode_text("You obtain the canal.\\x00")
+        self.event_text_block.strings[0x1d2] = TextBlock.encode_text("You obtain class change.\\x00")
+        self.event_text_block.strings[0x235] = TextBlock.encode_text("You can now speak Lufenian.\\x00")
+        self.rom = self.event_text_block.pack(self.rom)
 
     def _replace_item_event(self, source, key_item: KeyItem):
         """So, we take in the item and the location of said item"""
@@ -164,7 +188,7 @@ class KeyItemPlacement(object):
         if source.map_id is not None:
             # Dump out any posing in the map init events for visiting NPCs
             if isinstance(source, NpcSource):
-                visiting_npcs = [source.npc_index]
+                visiting_npcs = source.npc_index
             else:
                 visiting_npcs = None
             self._rewrite_map_init_event(source.map_id, vanilla_item.flag, key_item.flag, visiting_npcs)
@@ -216,7 +240,7 @@ class KeyItemPlacement(object):
                 new_npc.extend(int.to_bytes(0x01, 2, byteorder="little", signed=False))
                 self.maps._maps[loc[0]].npcs.append(Npc(Input(new_npc)))"""
 
-    def _rewrite_map_init_event(self, map_id: int, vanilla_flag, new_flag, *visiting_npcs):
+    def _rewrite_map_init_event(self, map_id: int, vanilla_flag, new_flag, visiting_npcs):
         map_event_ptr = Rom.pointer_to_offset(self.map_events.get_addr(map_id))
         map_event = Event(self.rom.get_event(map_event_ptr))
         replacement = EventRewriter(map_event)

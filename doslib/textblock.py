@@ -29,7 +29,7 @@ class TextBlock(object):
         return TextBlock._as_ascii(Input(self.strings[index], check_alignment=False))
 
     def __setitem__(self, index, value):
-        self.strings[index] = TextBlock._encode_text(Input(value, check_alignment=False))
+        self.strings[index] = TextBlock.encode_text(Input(value, check_alignment=False))
 
     def size(self):
         return len(self.strings)
@@ -54,6 +54,13 @@ class TextBlock(object):
             text_block_offset: text_block.get_buffer()
         }
         return rom.apply_patches(patches)
+
+    @staticmethod
+    def encode_text(text:str):
+        data = bytearray()
+        for char in text:
+            data.append(ord(char))
+        return TextBlock._encode_text(Input(data))
 
     @staticmethod
     def _as_ascii(stream: Input, symbolic_names: bool = False):
@@ -93,9 +100,9 @@ class TextBlock(object):
     def _encode_text(stream):
         working = bytearray()
         while not stream.is_eos():
-            char = stream.get_u8()
+            char = stream.get_char()
             if char == '\\':
-                char = stream.get_u8()
+                char = stream.get_char()
                 if char == 'x':
                     # \x designates a 2 digit hex code
                     chars = (stream.get_u8() << 8) + stream.get_u8()

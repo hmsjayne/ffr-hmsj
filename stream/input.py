@@ -59,6 +59,18 @@ class Input(object):
             char = None
         return char
 
+    def get_char(self):
+        """Gets a char from the stream
+
+        :return: The char, or None if the stream has ended.
+        """
+        if self._index < len(self._stream):
+            char = self._stream[self._index]
+            self._index += 1
+        else:
+            char = None
+        return chr(char)
+
     def peek_u8(self):
         """Gets the next byte without altering the stream
 
@@ -148,6 +160,10 @@ class Input(object):
             self._ensure_word_aligned()
         if self._index > 0:
             self._index -= 4
+
+    @staticmethod
+    def from_string(string: str):
+        return Input(bytearray(string.encode()))
 
     def _ensure_halfword_aligned(self):
         if self._index % 2 != 0:

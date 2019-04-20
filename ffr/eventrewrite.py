@@ -22,7 +22,6 @@ from doslib.event import Event, EventCommand
 class EventRewriter(object):
     def __init__(self, event: Event):
         self._replace_dialog = {}
-        self._replace_with_pose = {}
 
         self._visiting_npcs = []
         self._input_event = event
@@ -61,11 +60,6 @@ class EventRewriter(object):
     def rewrite_dialog(self, original_dialog: int, replacement_dialog: int):
         self._replace_dialog[original_dialog] = replacement_dialog
 
-    def replace_set_frame_with_pose(self, npc_index: int, frame: int, pose: int):
-        if npc_index not in self._replace_with_pose:
-            self._replace_with_pose[npc_index] = {}
-        self._replace_with_pose[npc_index][frame] = pose
-
     def replace_flag(self, original: int, replacement: int):
         self._replace_flag = (original, replacement)
 
@@ -100,22 +94,7 @@ class EventRewriter(object):
             elif op == EventRewriter.SET_ANI_FRAME_CMD:
                 npc_index = command[2]
                 if npc_index in self._visiting_npcs:
-                    if npc_index in self._replace_with_pose:
-                        poses = self._replace_with_pose[npc_index]
-                        ani_frame = command[3]
-                        if ani_frame in poses:
-                            pose_cmd_data = [
-                                EventRewriter.SET_POSE_CMD,
-                                0x4,
-                                npc_index,
-                                poses[ani_frame]
-                            ]
-                            pose_cmd = EventCommand(pose_cmd_data)
-                            new_commands.append(pose_cmd)
-                        else:
-                            new_commands.extend(self._cmd_as_nop(command))
-                    else:
-                        new_commands.extend(self._cmd_as_nop(command))
+                    new_commands.extend(self._cmd_as_nop(command))
                 else:
                     new_commands.append(command)
             elif op == 0x36 and self._chest_to_npc:

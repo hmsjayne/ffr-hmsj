@@ -22,6 +22,7 @@ from doslib.eventbuilder import EventBuilder
 from doslib.gen.classes import JobClass
 from doslib.maps import Maps
 from doslib.rom import Rom
+from doslib.textblock import TextBlock
 from ffr.flags import Flags
 from ffr.keyitemsolver import KeyItemPlacement
 from ffr.spellshuffle import SpellShuffle
@@ -105,6 +106,8 @@ def enable_free_airship(rom: Rom) -> Rom:
         .add_label("init_world_map", map_init_events.get_addr(0)) \
         .set_flag("garland_unlocked", 0x0) \
         .set_flag("show_airship", 0x0) \
+        .add_flag("have_nitro", 0x0A) \
+        .set_flag("have_nitro", 0x0) \
         .jump_to("init_world_map") \
         .event_end() \
         .get_event()
@@ -152,11 +155,11 @@ def shuffle_key_items(rom: Rom) -> Rom:
     # until Garland is defeated and that NPC (or treasure) is itself rescued.
 
     locations = Maps(rom)
-    #key_item_locations = solve_key_item_placement(randint(0, 0xffffffff), locations)
+    # key_item_locations = solve_key_item_placement(randint(0, 0xffffffff), locations)
     key_item_locations = KeyItemPlacement(rom, randint(0, 0xffffffff))
-    
+
     key_item_locations.maps.write(rom)
-    
+
     # print(f"KI solution: {key_item_locations}")
 
     return rom

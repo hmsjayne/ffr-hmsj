@@ -24,6 +24,8 @@ item(earth).
 item(fire).
 item(water).
 item(air).
+item(class_change).
+item(lufienish).
 
 location(sara).
 location(king).
@@ -51,6 +53,8 @@ location(lich).
 location(kary).
 location(kraken).
 location(tiamat).
+location(bahamut).
+location(dr_unne).
 
 requires(lich,rod).
 requires(kraken,oxyale).
@@ -65,10 +69,12 @@ requires(desert,levistone).
 requires(ordeals,ordeal_access).
 requires(fairy,bottle).
 requires(mermaids,oxyale).
-requires(lefien,slab).
+requires(lefien,lufienish).
 requires(sky2,sky_access).
 requires(smith,adamant).
 requires(waterfall,canoe).
+requires(bahamut,tail).
+requires(dr_unne,slab).
 has(sky_access) :- has(chime), has(cube).
 has(ordeal_access) :- has(canoe), has(crown).
 
