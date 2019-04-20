@@ -230,7 +230,7 @@ class KeyItemPlacement(object):
             "astos": 0x1390,
             "matoya": 0x1391,
             "elf": 0x139A,
-            "ordeals": 0x13AD,
+            "ordeals": 0x13AA,
             "waterfall": 0x13BD,
             "fairy": 0x138F,
             "mermaids": 0x13B4,
