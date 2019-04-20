@@ -99,6 +99,8 @@ class Rom(object):
         for offset in sorted(patches.keys()):
             if working_offset > offset:
                 raise RuntimeError(f"Could not apply patch to {hex(offset)}; already at {hex(working_offset)}!")
+            elif offset > len(self.rom_data):
+                raise RuntimeError(f"Invalid patch offset {hex(offset)}! Is it a pointer?")
 
             # Check if there's missing data between our working position and the next patch
             if working_offset < offset:

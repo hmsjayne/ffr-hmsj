@@ -74,6 +74,7 @@ class EventRewriter(object):
 
     def rewrite(self) -> Event:
         new_commands = []
+        kept_dialog = []
 
         for command in self._input_event.commands:
             op = command.cmd()
@@ -87,6 +88,7 @@ class EventRewriter(object):
                 if str_id in self._replace_dialog:
                     self._should_skip_dialog = False
                     command.put_u16(2, self._replace_dialog[str_id])
+                    kept_dialog.append(self._replace_dialog[str_id])
                 else:
                     self._should_skip_dialog = True
 
@@ -139,6 +141,10 @@ class EventRewriter(object):
                 new_commands.append(command)
             else:
                 new_commands.append(command)
+
+        for keep_text in self._replace_dialog:
+            if self._replace_dialog[keep_text] not in kept_dialog:
+                print(f"Warning: Did not see text {hex(keep_text)} in event")
 
         new_event = copy.copy(self._input_event)
         new_event.commands = new_commands

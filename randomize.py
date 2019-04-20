@@ -23,7 +23,7 @@ from doslib.gen.classes import JobClass
 from doslib.maps import Maps
 from doslib.rom import Rom
 from ffr.flags import Flags
-from ffr.keyitemsolver import KeyItemPlacement, solve_key_item_placement
+from ffr.keyitemsolver import KeyItemPlacement
 from ffr.spellshuffle import SpellShuffle
 from ffr.treasures import treasure_shuffle
 from ipsfile import load_ips_files
