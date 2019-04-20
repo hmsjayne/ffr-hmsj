@@ -75,7 +75,6 @@ REWARD_SOURCE = {
     "kraken": NpcSource(map_id=0x17, npc_index=0, event_id=0x13A3, vanilla_ki="water"),
     "tiamat": NpcSource(map_id=0x60, npc_index=0, event_id=0x13BB, vanilla_ki="air"),
     "sara": NpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, vanilla_ki="lute"),
-    "sara2": NpcSource(map_id=0x39, npc_index=3, event_id=0x13CB, vanilla_ki="lute"),
     "king": NpcSource(map_id=0x39, npc_index=2, event_id=0x138B, vanilla_ki="bridge"),
     "bikke": NpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, vanilla_ki="ship"),
     "marsh": ChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, vanilla_ki="crown"),
@@ -92,7 +91,7 @@ REWARD_SOURCE = {
     "waterfall": NpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, vanilla_ki="cube"),
     "fairy": NpcSource(map_id=0x47, npc_index=11, event_id=0x138F, vanilla_ki="oxyale"),
     "mermaids": ChestSource(map_id=0x1E, chest_id=12, sprite_id=0, event_id=0x13B4, vanilla_ki="slab"),
-    "lefien": NpcSource(map_id=0x70, npc_index=11, event_id=0x1395, vanilla_ki="lufienish"),
+    "lefien": NpcSource(map_id=0x70, npc_index=11, event_id=0x1395, vanilla_ki="chime"),
     "smith": NpcSource(map_id=0x57, npc_index=4, event_id=0x139D, vanilla_ki="excalibur"),
     "lukahn": NpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, vanilla_ki="canoe"),
     "sky2": NpcSource(map_id=0x5D, npc_index=0, event_id=0x138D, vanilla_ki="adamant"),
@@ -135,10 +134,6 @@ class KeyItemPlacement(object):
             key_item = KEY_ITEMS[placement.item]
 
             self._replace_item_event(source, key_item)
-
-            if placement.location == "sara":
-                # There's the second "wait!" event if you don't talk to Sara. Update that event as well.
-                self._replace_item_event(REWARD_SOURCE["sara2"], key_item)
 
             if isinstance(source, NpcSource):
                 self.maps._maps[source.map_id].npcs[source.npc_index].sprite_id = key_item.sprite
