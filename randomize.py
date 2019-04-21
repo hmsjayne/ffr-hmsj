@@ -146,11 +146,11 @@ def sarda_requires_feeding_titan(rom: Rom) -> Rom:
     #
     # This also goes over the old Cornelia soldier event, starting at 0x800a048
     event = EventBuilder() \
-        .add_flag("titan_fed", 0x0e) \
-        .add_label("set_sarda_event", 0x800A058) \
+        .add_flag("fed_titan", 0x0e) \
+        .add_flag("have_earth_rod", 0x0f) \
         .add_label("end_sarda_event", 0x800a060) \
-        .check_flag_and_jump("titan_fed", 0x0, "set_sarda_event") \
-        .jump_to("end_sarda_event") \
+        .check_flag_and_jump("fed_titan", 0x2, "end_sarda_event") \
+        .check_flag_and_jump("have_earth_rod", 0x3, "end_sarda_event") \
         .set_event_on_npc(0x0, 0x13b8) \
         .event_end() \
         .get_event()
