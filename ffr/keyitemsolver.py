@@ -29,46 +29,47 @@ from subprocess import run, PIPE
 
 from doslib.event import EventTable, EventTextBlock, Event
 from doslib.eventbuilder import EventBuilder
+from doslib.gen.enemy import Encounter
 from doslib.maps import Maps
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from ffr.eventrewrite import EventRewriter
 from stream.output import Output
 
-KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog"])
+KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog", "movable"])
 
 NpcSource = namedtuple("NpcLocation", ["map_id", "npc_index", "event_id", "vanilla_ki"])
 ChestSource = namedtuple("ChestLocation", ["map_id", "chest_id", "sprite_id", "event_id", "vanilla_ki"])
 
 KEY_ITEMS = {
-    "bridge": KeyItem(sprite=0x22, flag=0x03, item=None, dialog=0x127),
-    "lute": KeyItem(sprite=0x00, flag=0x04, item=0x00, dialog=0x10a),
-    "ship": KeyItem(sprite=0x45, flag=0x05, item=None, dialog=0x224),
-    "crown": KeyItem(sprite=0x94, flag=0x06, item=0x01, dialog=0x10b),
-    "crystal": KeyItem(sprite=0x47, flag=0x07, item=0x02, dialog=0x1f3),
-    "jolt_tonic": KeyItem(sprite=0x37, flag=0x08, item=0x03, dialog=0x216),
-    "key": KeyItem(sprite=0x31, flag=0x09, item=0x04, dialog=0x154),
-    "nitro_powder": KeyItem(sprite=0x0D, flag=0x0A, item=0x05, dialog=0x128),
-    "canal": KeyItem(sprite=0x00, flag=0x0B, item=None, dialog=0x1e8),
-    "ruby": KeyItem(sprite=0x58, flag=0x0D, item=0x08, dialog=0x142),
-    "rod": KeyItem(sprite=0x39, flag=0x0F, item=0x09, dialog=0x21a),
-    "earth": KeyItem(sprite=0x00, flag=0x11, item=None, dialog=None),
-    "canoe": KeyItem(sprite=0x38, flag=0x12, item=0x10, dialog=0x1b1),
-    "fire": KeyItem(sprite=0x00, flag=0x13, item=None, dialog=None),
-    "levistone": KeyItem(sprite=0x57, flag=0x14, item=0x0a, dialog=0x10c),
-    "tail": KeyItem(sprite=0x25, flag=0x17, item=0x0c, dialog=0x10d),
-    "class_change": KeyItem(sprite=0x64, flag=0x18, item=None, dialog=0x1d2),
-    "bottle": KeyItem(sprite=0x44, flag=0x19, item=0x0e, dialog=None),
-    "oxyale": KeyItem(sprite=0x29, flag=0x1a, item=0x0f, dialog=0x1c0),
-    "slab": KeyItem(sprite=0x1B, flag=0x1c, item=0x07, dialog=0x10e),
-    "water": KeyItem(sprite=0x00, flag=0x1d, item=None, dialog=None),
-    "lufienish": KeyItem(sprite=0x3A, flag=0x1e, item=None, dialog=0x235),
-    "chime": KeyItem(sprite=0x21, flag=0x1f, item=0x0b, dialog=0x240),
-    "cube": KeyItem(sprite=0x2B, flag=0x20, item=0x0d, dialog=0x241),
-    "adamant": KeyItem(sprite=0x59, flag=0x21, item=0x06, dialog=0x10f),
-    "air": KeyItem(sprite=0x00, flag=0x22, item=None, dialog=None),
-    "excalibur": KeyItem(sprite=0x3C, flag=0x23, item=0x11, dialog=0x1ed),
-    "gear": KeyItem(sprite=0x8F, flag=None, item=None, dialog=None),
+    "bridge": KeyItem(sprite=0x22, flag=0x03, item=None, dialog=0x127, movable=True),
+    "lute": KeyItem(sprite=0x00, flag=0x04, item=0x00, dialog=0x10a, movable=True),
+    "ship": KeyItem(sprite=0x45, flag=0x05, item=None, dialog=0x224, movable=True),
+    "crown": KeyItem(sprite=0x94, flag=0x06, item=0x01, dialog=0x10b, movable=True),
+    "crystal": KeyItem(sprite=0x47, flag=0x07, item=0x02, dialog=0x1f3, movable=True),
+    "jolt_tonic": KeyItem(sprite=0x37, flag=0x08, item=0x03, dialog=0x216, movable=True),
+    "key": KeyItem(sprite=0x31, flag=0x09, item=0x04, dialog=0x154, movable=False),
+    "nitro_powder": KeyItem(sprite=0x0D, flag=0x0A, item=0x05, dialog=0x128, movable=True),
+    "canal": KeyItem(sprite=0x00, flag=0x0B, item=None, dialog=0x1e8, movable=True),
+    "ruby": KeyItem(sprite=0x58, flag=0x0D, item=0x08, dialog=0x142, movable=False),
+    "rod": KeyItem(sprite=0x39, flag=0x0F, item=0x09, dialog=0x21a, movable=True),
+    "earth": KeyItem(sprite=0x00, flag=0x11, item=None, dialog=None, movable=True),
+    "canoe": KeyItem(sprite=0x38, flag=0x12, item=0x10, dialog=0x1b1, movable=True),
+    "fire": KeyItem(sprite=0x00, flag=0x13, item=None, dialog=None, movable=True),
+    "levistone": KeyItem(sprite=0x57, flag=0x14, item=0x0a, dialog=0x10c, movable=False),
+    "tail": KeyItem(sprite=0x25, flag=0x17, item=0x0c, dialog=0x10d, movable=True),
+    "class_change": KeyItem(sprite=0x64, flag=0x18, item=None, dialog=0x1d2, movable=False),
+    "bottle": KeyItem(sprite=0x44, flag=0x19, item=0x0e, dialog=None, movable=True),
+    "oxyale": KeyItem(sprite=0x29, flag=0x1a, item=0x0f, dialog=0x1c0, movable=True),
+    "slab": KeyItem(sprite=0x1B, flag=0x1c, item=0x07, dialog=0x10e, movable=True),
+    "water": KeyItem(sprite=0x00, flag=0x1d, item=None, dialog=None, movable=True),
+    "lufienish": KeyItem(sprite=0x3A, flag=0x1e, item=None, dialog=0x235, movable=True),
+    "chime": KeyItem(sprite=0x21, flag=0x1f, item=0x0b, dialog=0x240, movable=True),
+    "cube": KeyItem(sprite=0x2B, flag=0x20, item=0x0d, dialog=0x241, movable=True),
+    "adamant": KeyItem(sprite=0x59, flag=0x21, item=0x06, dialog=0x10f, movable=False),
+    "air": KeyItem(sprite=0x00, flag=0x22, item=None, dialog=None, movable=True),
+    "excalibur": KeyItem(sprite=0x3C, flag=0x23, item=0x11, dialog=0x1ed, movable=True),
+    "gear": KeyItem(sprite=0x8F, flag=None, item=None, dialog=None, movable=True),
 }
 
 REWARD_SOURCE = {
@@ -140,16 +141,15 @@ class KeyItemPlacement(object):
             self._replace_item_event(source, key_item)
 
             if isinstance(source, NpcSource):
-                self.maps._maps[source.map_id].npcs[source.npc_index].sprite_id = key_item.sprite
-
-                # Bahamut should not move around =(
-                if key_item.sprite == 0x64:
-                    self.maps._maps[source.map_id].npcs[source.npc_index].move_speed = 0
+                self._replace_map_sprite(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
 
                 # Special case for "Sara" -- also update Chaos Shrine.
                 if placement.location == "sara":
-                    self.maps._maps[0x1f].npcs[6].sprite_id = key_item.sprite
+                    self._replace_map_sprite(0x1f, 6, key_item.sprite, key_item.movable)
                     self._rewrite_map_init_event(0x1f, 0x1, 0x1, 6)
+
+            if placement.location == "bikke":
+                self._better_pirates(placement.item)
 
         self._remove_bridge_trigger()
         self._shorten_canal_scene()
@@ -224,25 +224,12 @@ class KeyItemPlacement(object):
             replacement.rewrite().write(event_output)
             self.rom = self.rom.apply_patches({event_ptr: event_output.get_buffer()})
 
-    def _replace_map_sprite(self, new_sprite: int, locations_to_edit):
-        for loc in locations_to_edit:
-            if loc is None:
-                """Do nothing"""
-            elif len(loc) == 2:  # An NPC to replace
-                self.maps._maps[loc[0]].npcs[loc[1]].sprite_id = new_sprite
-            """else:  # A chest (w/ event sprite)
-                print(len(self.maps._maps[loc[0]].sprites))
-                chest = self.maps._maps[loc[0]].chests.pop(loc[1])  # Remove & Return
-                sprite = self.maps._maps[loc[0]].sprites.pop(loc[2])
-                new_npc = bytearray(b'\x02\x00')
-                new_npc.extend(int.to_bytes(sprite.event, 2, byteorder="little", signed=False))
-                new_npc.extend(int.to_bytes(sprite.x_pos, 2, byteorder="little", signed=False))
-                new_npc.extend(int.to_bytes(sprite.y_pos, 2, byteorder="little", signed=False))
-                new_npc.extend(int.to_bytes(new_sprite, 2, byteorder="little", signed=False))
-                new_npc.extend(int.to_bytes(0x00, 2, byteorder="little", signed=False))
-                new_npc.extend(int.to_bytes(0x00, 2, byteorder="little", signed=False))
-                new_npc.extend(int.to_bytes(0x01, 2, byteorder="little", signed=False))
-                self.maps._maps[loc[0]].npcs.append(Npc(Input(new_npc)))"""
+    def _replace_map_sprite(self, map_id: int, npc_index: int, sprite: int, movable: bool):
+        self.maps._maps[map_id].npcs[npc_index].sprite_id = sprite
+
+        # Some sprites weren't designed to move, so hold them still.
+        if not movable:
+            self.maps._maps[map_id].npcs[npc_index].move_speed = 0
 
     def _rewrite_map_init_event(self, map_id: int, vanilla_flag, new_flag, visiting_npcs):
         map_event_ptr = Rom.pointer_to_offset(self.map_events.get_addr(map_id))
@@ -261,6 +248,36 @@ class KeyItemPlacement(object):
         map_output = Output()
         replacement.rewrite().write(map_output)
         self.rom = self.rom.apply_patches({map_event_ptr: map_output.get_buffer()})
+
+    def _better_pirates(self, key_item: str):
+        if key_item not in BETTER_PIRATES:
+            return
+
+        formation_stream = self.rom.open_bytestream(0x2288B4, 0x1CD4)
+        formations = []
+        while not formation_stream.is_eos():
+            formations.append(Encounter(formation_stream))
+        pirates = formations[0x7e]
+
+        total_enemy_count = 0
+        for index, enemy in enumerate(BETTER_PIRATES[key_item]):
+            if enemy.enemy_id != -1:
+                pirates.groups[index].enemy_id = enemy.enemy_id
+                pirates.groups[index].min_count = enemy.number
+                pirates.groups[index].max_count = enemy.number
+            total_enemy_count += enemy.number
+
+        if total_enemy_count == 1:
+            pirates.config = 0x3
+        elif total_enemy_count <= 4:
+            pirates.config = 0x02
+        else:
+            pirates.config = 0x00
+
+        formation_stream = Output()
+        for formation in formations:
+            formation.write(formation_stream)
+        self.rom = self.rom.apply_patch(0x2288B4, formation_stream.get_buffer())
 
     @staticmethod
     def _solve_placement(seed: int) -> tuple:
@@ -290,3 +307,25 @@ class KeyItemPlacement(object):
             ki_placement.append(pairing)
 
         return tuple(ki_placement)
+
+
+MiniFormation = namedtuple("MiniFormation", ["enemy_id", "number"])
+
+# Because there's not enough detail to pick out what the encounter configuration should be based
+# only on the data here, there's a bit of rule breaking.
+# Encounters are always sized based on the number of enemies in them:
+#  - 1: Fiend size :)
+#  - 2-4: Large size
+#  - 5+: Small
+# Don't mix land + flying...
+#
+# So what do you do if you want 2 small enemies? Add an extra entry with enemy_id=-1 with the number required to
+# bump into the correct category. (So 1 large would be the 1 enemy + 1 more -1 enemy.
+# See the "crown" item below.
+# NOTE: enemy_id=-1 *MUST* be at the end. If they're mixed in the middle BAD THING will happen.
+BETTER_PIRATES = {
+    "crown": [MiniFormation(enemy_id=0x67, number=4), MiniFormation(enemy_id=-1, number=1)],
+    "class_change": [MiniFormation(enemy_id=0x43, number=1), MiniFormation(enemy_id=0x6b, number=1),
+                     MiniFormation(enemy_id=0x6a, number=1), MiniFormation(enemy_id=0x42, number=1)],
+    "lufienish": [MiniFormation(enemy_id=0x32, number=4)],
+}

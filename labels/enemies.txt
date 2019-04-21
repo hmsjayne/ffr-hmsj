@@ -1,0 +1,195 @@
+0x0: Goblin\x00
+0x1: Goblin Guard\x00
+0x2: Wolf\x00
+0x3: Warg Wolf\x00
+0x4: Werewolf\x00
+0x5: Winter Wolf\x00
+0x6: Lizard\x00
+0x7: Fire Lizard\x00
+0x8: Basilisk\x00
+0x9: Hill Gigas\x00
+0xa: Ice Gigas\x00
+0xb: Fire Gigas\x00
+0xc: Sahagin\x00
+0xd: Sahagin Chief\x00
+0xe: Sahagin Prince\x00
+0xf: Pirate\x00
+0x10: Buccaneer\x00
+0x11: Shark\x00
+0x12: White Shark\x00
+0x13: Bigeyes\x00
+0x14: Deepeyes\x00
+0x15: Skeleton\x00
+0x16: Bloodbones\x00
+0x17: Gigas Worm\x00
+0x18: Crawler\x00
+0x19: Hyenadon\x00
+0x1a: Hellhound\x00
+0x1b: Ogre\x00
+0x1c: Ogre Chief\x00
+0x1d: Ogre Mage\x00
+0x1e: Cobra\x00
+0x1f: Anaconda\x00
+0x20: Sea Snake\x00
+0x21: Scorpion\x00
+0x22: Sea Scorpion\x00
+0x23: Minotaur\x00
+0x24: Minotaur Zombie\x00
+0x25: Troll\x00
+0x26: Sea Troll\x00
+0x27: Shadow\x00
+0x28: Wraith\x00
+0x29: Specter\x00
+0x2a: Ghost\x00
+0x2b: Zombie\x00
+0x2c: Ghoul\x00
+0x2d: Ghast\x00
+0x2e: Wight\x00
+0x2f: Purple Worm\x00
+0x30: Sand Worm\x00
+0x31: Lava Worm\x00
+0x32: Evil Eye\x00
+0x33: Death Eye\x00
+0x34: Medusa\x00
+0x35: Earth Medusa\x00
+0x36: Weretiger\x00
+0x37: Rakshasa\x00
+0x38: Ankheg\x00
+0x39: Remorazz\x00
+0x3a: Lesser Tiger\x00
+0x3b: Sabertooth\x00
+0x3c: Vampire\x00
+0x3d: Vampire Lord\x00
+0x3e: Gargoyle\x00
+0x3f: Horned Devil\x00
+0x40: Earth Elemental\x00
+0x41: Fire Elemental\x00
+0x42: White Dragon\x00
+0x43: Red Dragon\x00
+0x44: Dragon Zombie\x00
+0x45: Green Slime\x00
+0x46: Gray Ooze\x00
+0x47: Ochre Jelly\x00
+0x48: Black Flan\x00
+0x49: Black Widow\x00
+0x4a: Tarantula\x00
+0x4b: Manticore\x00
+0x4c: Sphinx\x00
+0x4d: Baretta\x00
+0x4e: Desert Baretta\x00
+0x4f: Mummy\x00
+0x50: King Mummy\x00
+0x51: Cockatrice\x00
+0x52: Pyrolisk\x00
+0x53: Wyvern\x00
+0x54: Wyrm\x00
+0x55: Allosaurus\x00
+0x56: Tyrannosaur\x00
+0x57: Piranha\x00
+0x58: Red Piranha\x00
+0x59: Crocodile\x00
+0x5a: White Croc\x00
+0x5b: Ochu\x00
+0x5c: Neochu\x00
+0x5d: Hydra\x00
+0x5e: Fire Hydra\x00
+0x5f: Guardian\x00
+0x60: Soldier\x00
+0x61: Water Elemental\x00
+0x62: Air Elemental\x00
+0x63: Water Naga\x00
+0x64: Spirit Naga\x00
+0x65: Chimera\x00
+0x66: Rhyos\x00
+0x67: Piscodemon\x00
+0x68: Mindflayer\x00
+0x69: Garland\x00
+0x6a: Green Dragon\x00
+0x6b: Blue Dragon\x00
+0x6c: Clay Golem\x00
+0x6d: Stone Golem\x00
+0x6e: Iron Golem\x00
+0x6f: Black Knight\x00
+0x70: Death Knight\x00
+0x71: Astos\x00
+0x72: Dark Wizard\x00
+0x73: Dark Fighter\x00
+0x74: Crazy Horse\x00
+0x75: Nightmare\x00
+0x76: Death Machine\x00
+0x77: Lich\x00
+0x78: Lich\x00
+0x79: Marilith\x00
+0x7a: Marilith\x00
+0x7b: Kraken\x00
+0x7c: Kraken\x00
+0x7d: Tiamat\x00
+0x7e: Tiamat\x00
+0x7f: Chaos\x00
+0x80: Echidna\x00
+0x81: Cerberus\x00
+0x82: Ahriman\x00
+0x83: 2-Headed Dragon\x00
+0x84: Scarmiglione\x00
+0x85: Scarmiglione\x00
+0x86: Cagnazzo\x00
+0x87: Barbariccia\x00
+0x88: Rubicante\x00
+0x89: Gilgamesh\x00
+0x8a: Omega\x00
+0x8b: Shinryu\x00
+0x8c: Atomos\x00
+0x8d: Typhon\x00
+0x8e: Orthros\x00
+0x8f: Phantom Train\x00
+0x90: Death Gaze\x00
+0x91: Devil Wizard\x00
+0x92: Abyss Worm\x00
+0x93: Elm Gigas\x00
+0x94: Flare Gigas\x00
+0x95: Unicorn\x00
+0x96: Yellow Ogre\x00
+0x97: Mad Ogre\x00
+0x98: Mage Chimera\x00
+0x99: Yellow Dragon\x00
+0x9a: Holy Dragon\x00
+0x9b: Mythril Golem\x00
+0x9c: Killer Shark\x00
+0x9d: Death Manticore\x00
+0x9e: Blood Tiger\x00
+0x9f: Dark Eye\x00
+0xa0: Bloody Eye\x00
+0xa1: Flood Gigas\x00
+0xa2: Poison Eagle\x00
+0xa3: Black Goblin\x00
+0xa4: Knocker\x00
+0xa5: Desertpede\x00
+0xa6: Gloom Widow\x00
+0xa7: Duel Knight\x00
+0xa8: Squidraken\x00
+0xa9: Pharaoh\x00
+0xaa: Bonesnatch\x00
+0xab: Silver Dragon\x00
+0xac: Black Dragon\x00
+0xad: Blue Troll\x00
+0xae: Earth Troll\x00
+0xaf: Poison Naga\x00
+0xb0: Earth Plant\x00
+0xb1: Yamatano Orochi\x00
+0xb2: Dark Elemental\x00
+0xb3: Devil Hound\x00
+0xb4: Sekhret\x00
+0xb5: Catoblepas\x00
+0xb6: Hundlegs\x00
+0xb7: Undergrounder\x00
+0xb8: Death Elemental\x00
+0xb9: Wild Nakk\x00
+0xba: Dark Wolf\x00
+0xbb: Rock Gargoyle\x00
+0xbc: Sahagin Queen\x00
+0xbd: Reaper\x00
+0xbe: Python\x00
+0xbf: Skuldier\x00
+0xc0: Red Flan\x00
+0xc1: Prototype\x00
+0xc2: Revenant\x00

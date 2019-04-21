@@ -22,6 +22,7 @@ from doslib.eventbuilder import EventBuilder
 from doslib.gen.classes import JobClass
 from doslib.maps import Maps
 from doslib.rom import Rom
+from doslib.textblock import TextBlock
 from ffr.flags import Flags
 from ffr.keyitemsolver import KeyItemPlacement
 from ffr.spellshuffle import SpellShuffle
