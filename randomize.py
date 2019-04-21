@@ -104,9 +104,13 @@ def enable_free_airship(rom: Rom) -> Rom:
     event = EventBuilder() \
         .add_flag("garland_unlocked", 0x28) \
         .add_flag("show_airship", 0x15) \
+        .add_flag("have_crown", 0x06) \
+        .add_flag("can_enter_cot", 0x16) \
         .add_label("init_world_map", map_init_events.get_addr(0)) \
         .set_flag("garland_unlocked", 0x0) \
         .set_flag("show_airship", 0x0) \
+        .check_flag_and_jump("have_crown", 0x2, "init_world_map") \
+        .set_flag("can_enter_cot", 0x0) \
         .jump_to("init_world_map") \
         .event_end() \
         .get_event()
@@ -145,11 +149,11 @@ def sarda_requires_feeding_titan(rom: Rom) -> Rom:
     # With the airship the Star Ruby would serve no purpose =(
     # To make things more spicy, require feeding the Titan to get Sarda's item.
     #
-    # This also goes over the old Cornelia soldier event, starting at 0x800a048
+    # This also goes over the old Cornelia soldier event, starting at 0x800a100
     event = EventBuilder() \
         .add_flag("fed_titan", 0x0e) \
         .add_flag("have_earth_rod", 0x0f) \
-        .add_label("end_sarda_event", 0x800a060) \
+        .add_label("end_sarda_event", 0x800a118) \
         .check_flag_and_jump("fed_titan", 0x2, "end_sarda_event") \
         .check_flag_and_jump("have_earth_rod", 0x3, "end_sarda_event") \
         .set_event_on_npc(0x0, 0x13b8) \
@@ -157,10 +161,10 @@ def sarda_requires_feeding_titan(rom: Rom) -> Rom:
         .get_event()
 
     sages_cave_init_addr = Output()
-    sages_cave_init_addr.put_u32(0x800a048)
+    sages_cave_init_addr.put_u32(0x800a100)
 
     patches = {
-        0xa048: event,
+        0xa100: event,
         (0x7050 + (0x37 * 4)): sages_cave_init_addr.get_buffer()
     }
     return rom.apply_patches(patches)
