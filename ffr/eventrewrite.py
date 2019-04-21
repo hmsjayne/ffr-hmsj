@@ -24,6 +24,8 @@ class EventRewriter(object):
         self._replace_dialog = {}
 
         self._visiting_npcs = []
+        self._remove_visiting_pose = False
+
         self._input_event = event
 
         self._should_skip_dialog = True
@@ -49,6 +51,9 @@ class EventRewriter(object):
     def visiting_npc(self, *sprite_indices):
         for sprite_index in sprite_indices:
             self._visiting_npcs.append(sprite_index)
+
+    def remove_visiting_pose(self, remove_pose: bool):
+        self._remove_visiting_pose = remove_pose
 
     def replace_conditional(self, old_flag: int, new_flag: int):
         self._replace_conditional = True
@@ -97,8 +102,14 @@ class EventRewriter(object):
                     new_commands.extend(self._cmd_as_nop(command))
                 else:
                     new_commands.append(command)
+            elif op == EventRewriter.SET_POSE_CMD:
+                npc_index = command[2]
+                if npc_index in self._visiting_npcs and self._remove_visiting_pose:
+                    new_commands.extend(self._cmd_as_nop(command))
+                else:
+                    new_commands.append(command)
             elif op == 0x36 and self._chest_to_npc:
-                #command[0] = 0x2E
+                # command[0] = 0x2E
                 new_commands.append(command)
             elif op == EventRewriter.SET_FLAG_CMD:
                 if command.size() == 0x8 and self._replace_conditional:

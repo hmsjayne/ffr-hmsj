@@ -255,6 +255,8 @@ class KeyItemPlacement(object):
         # Dump out any posing in the map init events for visiting NPCs
         if visiting_npcs is not None:
             replacement.visiting_npc(visiting_npcs)
+            if map_id == 0x1f:
+                replacement.remove_visiting_pose(True)
 
         map_output = Output()
         replacement.rewrite().write(map_output)
