@@ -50,7 +50,7 @@ KEY_ITEMS = {
     "key": KeyItem(sprite=0x31, flag=0x09, item=0x04, dialog=0x154),
     "nitro_powder": KeyItem(sprite=0x0D, flag=0x0A, item=0x05, dialog=0x128),
     "canal": KeyItem(sprite=0x00, flag=0x0B, item=None, dialog=0x1e8),
-    "ruby": KeyItem(sprite=0x58, flag=0x0D, item=0x08, dialog=0x142),
+    "ruby": KeyItem(sprite=0x58, flag=0x0E, item=0x08, dialog=0x142),
     "rod": KeyItem(sprite=0x39, flag=0x0F, item=0x09, dialog=0x21a),
     "earth": KeyItem(sprite=0x00, flag=0x11, item=None, dialog=None),
     "canoe": KeyItem(sprite=0x38, flag=0x12, item=0x10, dialog=0x1b1),

@@ -57,6 +57,23 @@ class EventBuilder(object):
         self._stream.put_u32(addr)
         return self
 
+    def check_flag_and_jump(self, flag_name: str, condition: int, label: str) -> EventBuilder:
+        if flag_name not in self._flags:
+            raise RuntimeError(f"Undefined flag: {flag_name}")
+        if label not in self._labels:
+            raise RuntimeError(f"Undefined label: {label}")
+
+        addr = self._labels[label]
+        if addr == -1:
+            raise RuntimeError(f"Address for {label} was not set")
+
+        self._stream.put_u8(0x2d)
+        self._stream.put_u8(0x8)
+        self._stream.put_u8(self._flags[flag_name])
+        self._stream.put_u8(condition)
+        self._stream.put_u32(addr)
+        return self
+
     def set_event_on_npc(self, npc_id: int, event_id: int) -> EventBuilder:
         self._stream.put_u8(0x30)
         self._stream.put_u8(0x8)
