@@ -245,7 +245,11 @@ class KeyItemPlacement(object):
         replacement = EventRewriter(map_event)
 
         replacement.replace_chest()
-        replacement.replace_conditional(vanilla_flag, new_flag)
+
+        # Don't change the init event flag for Elven Castle or the Mystic Key doors
+        # will be locked until the Prince wakes up :)
+        if map_id != 0x6:
+            replacement.replace_conditional(vanilla_flag, new_flag)
 
         # Dump out any posing in the map init events for visiting NPCs
         if visiting_npcs is not None:
