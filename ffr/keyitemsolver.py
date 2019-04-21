@@ -142,6 +142,10 @@ class KeyItemPlacement(object):
             if isinstance(source, NpcSource):
                 self.maps._maps[source.map_id].npcs[source.npc_index].sprite_id = key_item.sprite
 
+                # Bahamut should not move around =(
+                if key_item.sprite == 0x64:
+                    self.maps._maps[source.map_id].npcs[source.npc_index].move_speed = 0
+
                 # Special case for "Sara" -- also update Chaos Shrine.
                 if placement.location == "sara":
                     self.maps._maps[0x1f].npcs[6].sprite_id = key_item.sprite
