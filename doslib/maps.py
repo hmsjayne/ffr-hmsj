@@ -55,6 +55,10 @@ class Maps(object):
     def write(self, rom: Rom) -> Rom:
         patches = {}
         for index, map in enumerate(self._maps):
+            # TODO: Figure out what breaks the Caravan.
+            if index == 0x73:
+                continue
+
             data = Output()
             map.write(data)
 
@@ -77,7 +81,7 @@ class Map(object):
             if data_type == 0x0:
 
                 if self.header is not None:
-                    print(f"Warning: Map {hex(map_id)} has more than one header?")
+                    raise RuntimeError(f"Warning: Map {hex(map_id)} has more than one header?")
                 self.header = MapHeader(stream)
             elif data_type == 0x1:
                 self.tiles.append(Tile(stream))

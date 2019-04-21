@@ -11,11 +11,11 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 from random import shuffle
 
-from doslib.maps import TreasureChest, ItemChest, MoneyChest
+from doslib.maps import TreasureChest, MoneyChest
 from doslib.rom import Rom
-from ffr.shuffledlist import ShuffledList
 from stream.output import Output
 
 

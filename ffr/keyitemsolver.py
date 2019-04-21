@@ -53,21 +53,21 @@ KEY_ITEMS = {
     "canal": KeyItem(sprite=0x00, flag=0x0B, item=None, dialog=0x1e8, movable=True),
     "ruby": KeyItem(sprite=0x58, flag=0x0D, item=0x08, dialog=0x142, movable=False),
     "rod": KeyItem(sprite=0x39, flag=0x0F, item=0x09, dialog=0x21a, movable=True),
-    "earth": KeyItem(sprite=0x00, flag=0x11, item=None, dialog=None, movable=True),
+    "earth": KeyItem(sprite=0x55, flag=0x11, item=None, dialog=None, movable=True),
     "canoe": KeyItem(sprite=0x38, flag=0x12, item=0x10, dialog=0x1b1, movable=True),
-    "fire": KeyItem(sprite=0x00, flag=0x13, item=None, dialog=None, movable=True),
+    "fire": KeyItem(sprite=0x56, flag=0x13, item=None, dialog=None, movable=True),
     "levistone": KeyItem(sprite=0x57, flag=0x14, item=0x0a, dialog=0x10c, movable=False),
     "tail": KeyItem(sprite=0x25, flag=0x17, item=0x0c, dialog=0x10d, movable=True),
     "class_change": KeyItem(sprite=0x64, flag=0x18, item=None, dialog=0x1d2, movable=False),
     "bottle": KeyItem(sprite=0x44, flag=0x19, item=0x0e, dialog=None, movable=True),
     "oxyale": KeyItem(sprite=0x29, flag=0x1a, item=0x0f, dialog=0x1c0, movable=True),
     "slab": KeyItem(sprite=0x1B, flag=0x1c, item=0x07, dialog=0x10e, movable=True),
-    "water": KeyItem(sprite=0x00, flag=0x1d, item=None, dialog=None, movable=True),
+    "water": KeyItem(sprite=0x54, flag=0x1d, item=None, dialog=None, movable=True),
     "lufienish": KeyItem(sprite=0x3A, flag=0x1e, item=None, dialog=0x235, movable=True),
     "chime": KeyItem(sprite=0x21, flag=0x1f, item=0x0b, dialog=0x240, movable=True),
     "cube": KeyItem(sprite=0x2B, flag=0x20, item=0x0d, dialog=0x241, movable=True),
     "adamant": KeyItem(sprite=0x59, flag=0x21, item=0x06, dialog=0x10f, movable=False),
-    "air": KeyItem(sprite=0x00, flag=0x22, item=None, dialog=None, movable=True),
+    "air": KeyItem(sprite=0x53, flag=0x22, item=None, dialog=None, movable=True),
     "excalibur": KeyItem(sprite=0x3C, flag=0x23, item=0x11, dialog=0x1ed, movable=True),
     "gear": KeyItem(sprite=0x8F, flag=None, item=None, dialog=None, movable=True),
 }
@@ -216,6 +216,7 @@ class KeyItemPlacement(object):
 
             if isinstance(source, NpcSource):
                 replacement.visiting_npc(source.npc_index)
+                replacement.remove_visiting_pose(key_item.movable)
 
             # Special case for Sara in event 0x138b - confronting Garland.
             if source.event_id == 0x138b:
