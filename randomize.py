@@ -13,7 +13,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
+import random
 from argparse import ArgumentParser
 from random import seed, randint
 
@@ -66,7 +66,7 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     rom = sarda_requires_feeding_titan(rom)
 
     if flags.key_item_shuffle is not None:
-        placement = KeyItemPlacement(rom, rom_seed)
+        placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
         rom = placement.rom
 
     if flags.magic is not None:

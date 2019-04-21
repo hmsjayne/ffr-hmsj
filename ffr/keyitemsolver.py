@@ -117,6 +117,13 @@ class KeyItemPlacement(object):
     def _do_placement(self, clingo_seed: int):
         key_item_locations = self._solve_placement(clingo_seed)
 
+        # Swap the flag the King sets (0x2 to 0x3).
+        king_flag = EventBuilder() \
+            .add_flag("bridge_built", 0x3) \
+            .set_flag("bridge_built", 0x0) \
+            .get_event()
+        self.rom = self.rom.apply_patch(0xa618, king_flag)
+
         # The Key items returned work like this. Suppose a Placement returned was
         # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
         # should be found in the King of Cornelia location.
