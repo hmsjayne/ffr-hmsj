@@ -138,8 +138,8 @@ class TextBlock(object):
         return escaped
 
     TEXT_TABLE = {
-        0x00: "(End)",
-        0x0A: "\\n",
+        0x00: "\x00",
+        0x0A: "\n",
         0x2D: "(Dash)",
         0x2E: "(period)",
         0x30: "(%1)",
