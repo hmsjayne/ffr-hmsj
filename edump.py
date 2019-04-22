@@ -42,13 +42,13 @@ def lookup_event(id):
     elif (id >= 0xFA0 and id <= 0xFAA):
         lut_id_offset = 0xFA0
         lut_base = 0x08007900
-    elif id >= 0x1388 and id <= 0x1F3F:
+    elif id >= 0x1388 and id <= 0x13CC:
         lut_id_offset = 0x1388
         lut_base = 0x08007788
     elif id >= 0x1F40 and id <= 0x202F:
         lut_id_offset = 0x1F40
         lut_base = 0x080073A0
-    elif id >= 0x2328 and id <= 0x2403:
+    elif id >= 0x2328 and id <= 0x2404:
         lut_id_offset = 0x2328
         lut_base = 0x08006A98
     else:
@@ -199,14 +199,26 @@ def decompile(addr):
         elif cmd == 0x2b:
             battle = rom_data[addr + 2]
             cmd_str = f"begin_battle {hex(battle)} :: {cmd_str}"
-        elif cmd == 0x2d and cmd_len == 0x8:
-            # 0x2d variant with alternate
-            jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
-            jumps.append(jump_target)
-            cmd_str = f"check_set_flag_and_jump {hex(rom_data[addr + 2])}, condition={hex(rom_data[addr + 3])}, " \
-                f"{hex(jump_target)} :: {cmd_str}"
         elif cmd == 0x2d:
-            cmd_str = f"check_set_flag {hex(rom_data[addr + 2])}, condition={hex(rom_data[addr + 3])} :: {cmd_str}"
+            sub_cmd = rom_data[addr + 3]
+            if cmd_len == 0x8:
+                cmd_append = "_and_jump"
+                jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
+                jump_target_formatted = f"{hex(jump_target)} "
+                jumps.append(jump_target)
+            else:
+                cmd_append = ""
+                jump_target_formatted = ""
+
+            if sub_cmd == 0x0:
+                cmd_str = f"set_flag{cmd_append} {hex(rom_data[addr + 2])} {jump_target_formatted}:: {cmd_str}"
+            elif sub_cmd == 0x2:
+                cmd_str = f"check_flag_clear{cmd_append} {hex(rom_data[addr + 2])} {jump_target_formatted}:: {cmd_str}"
+            elif sub_cmd == 0x3:
+                cmd_str = f"check_flag_set{cmd_append} {hex(rom_data[addr + 2])} {jump_target_formatted}:: {cmd_str}"
+            else:
+                cmd_str = f"flag_op_{hex(sub_cmd)}{cmd_append} {hex(rom_data[addr + 2])} {jump_target_formatted}:: " \
+                    f"{cmd_str}"
         elif cmd == 0x2e:
             event_id = array.array("H", rom_data[addr + 4:addr + 6])[0]
             cmd_str = f"remove_trigger {hex(event_id)} :: {cmd_str}"
@@ -298,6 +310,27 @@ def main(argv):
                 print(f"Main game event {event}")
                 decompile_event(index)
                 print(f"\n* * *\n")
+    elif argv[1] == "--max":
+        event_desc = {}
+        with open("labels/event_desc.txt", "r") as f:
+            events = f.readlines()
+            for event in events:
+                event = event.rstrip().lstrip()
+                data = event.split(":")
+                event_desc[data[0].lower()] = data[1]
+
+        event_ranges = [(0x0, 0xD4), (0xFA0, 0xFAB), (0x1388, 0x13CD), (0x1F40, 0x2030), (0x2328, 0x2405)]
+        for event_range in event_ranges:
+            for event_id in range(event_range[0], event_range[1]):
+                if hex(event_id) in event_desc:
+                    title = f"Event: {hex(event_id)} - {event_desc[hex(event_id)]}"
+                else:
+                    title = f"Event: {hex(event_id)}"
+
+                print(title)
+                decompile_event(event_id)
+                print(f"\n* * *\n")
+
     else:
         if argv[1].startswith("0x"):
             event_id = int(argv[1], 0)
