@@ -1,0 +1,522 @@
+0x1388: (Normal chest)
+0x1389: Cornelia Inn
+0x138A: Chapel priests
+0x138B: Confronting Garland (and Sarah rescue?)
+0x138C: (For Cornelian soldiers who teleport you to the King)
+0x138D: Adamantite obtaining
+0x138E: Airship rises from Ryukahn Desert
+0x138F: Fairy gets Oxyale
+0x1390: Confronting Astos
+0x1391: Giving Crystal Eye to Matoya
+0x1392: Bridge rebuilding scene(?)
+0x1393: Nerrick uses Nitro Powder
+0x1394: Receive Canoe
+0x1395: Receive Chime
+0x1396: Class change!
+0x1397: (Use Cottage)
+0x1398: Crown chest
+0x1399: Feed Star Ruby to Giant
+0x139A: Give Jolt Tonic to Healer
+0x139B: (Nothing)
+0x139C: Pause, slow white fadein/out
+0x139D: Give Adamantite to Smyth
+0x139E: Fairy released from bottle
+0x139F: Levistone obtaining
+0x13A0: Unlock Black Crystal
+0x13A1: Sub Engineer fades away...
+0x13A2: Barrel submarine (Onrac)
+0x13A3: Confronting Kraken
+0x13A4: Confronting Chaos
+0x13A5: Unne deciphers Rosetta Stone
+0x13A6: Flying Fortress's Observation Window
+0x13A7: Receive Lute
+0x13A8: Confronting Marilith
+0x13A9: Matoya's Plight
+0x13AA: Rat Tail chest
+0x13AB: Lute breaks seal
+0x13AC: (Nothing)
+0x13AD: Nitro Powder chest
+0x13AE: (Nothing)
+0x13AF: Citadel of Trials greeter
+0x13B0: (Nothing)
+0x13B1: "Lali-Ho!" Dwarf
+0x13B2: Barrel Submarine (Sunken Shrine)
+0x13B3: Confronting Lich
+0x13B4: Rosetta Stone chest
+0x13B5: Confronting Bikke
+0x13B6: (Using Sleeping Bag)
+0x13B7: Star Ruby chest
+0x13B8: Receive Earth Rod
+0x13B9: (Nothing)
+0x13BA: (Using Tent)
+0x13BB: Confronting Tiamat
+0x13BC: Confronting Vampire
+0x13BD: Robot gives Warp Cube
+0x13BE: Pravoka Inn
+0x13BF: Elfheim Inn
+0x13C0: Melmond Inn
+0x13C1: Crescent Lake Inn
+0x13C2: Onrac Inn
+0x13C3: Gaia Inn
+0x13C4: (Warp event)
+0x13C5: (Exit event)
+0x13C6: Mirage Tower/Flying Fort warp
+0x13C7: Warp out with effects
+0x13C8: Citadel of Trials teleporter effect
+0x13C9: Flying Fortress teleporter effect
+0x13CA: Ice Cave pit effect
+0x13CB: Sarah stops you leaving to give Lute
+0x13CC: Surface Return teleporter effect
+0x1F40: Cornelia citizen 1 (near entrance)
+0x1F41: Talking to Arylon the dancer
+0x1F42: Cornelia 2 (guard near well)
+0x1F43: Cornelia 3 (old woman near magic shops)
+0x1F44: Cornelia 4 (old man in NW corner)
+0x1F45: Cornelia 5 (guard up north)
+0x1F46: Cornelia 6 (lady near chapel)
+0x1F47: Cornelia 7 (man near item shop)
+0x1F48: Cornelia Well
+0x1F49: Cornelia fountain
+0x1F4A: Mystic Key Door (auto-erased on map load if Mystic Key carried)
+0x1F4B: Sky Warrior 1
+0x1F4C: Black Crystal
+0x1F4D: "The door is locked." (For Soul of Chaos)
+0x1F4E: Sky Warrior 2
+0x1F4F: Sky Warrior 3
+0x1F50: Sky Warrior 4
+0x1F51: Sky Warrior 5
+0x1F52: Queen Jayne
+0x1F53: Sarah's sister
+0x1F54: Cornelia Castle Guard 1 (stairs up)
+0x1F55: Cornelia Castle Guard 2 (entrance)
+0x1F56: Cornelia Castle Guard 3 (Jayne's room)
+0x1F57: Cornelia Castle Lady
+0x1F58: Cornelia Castle Scholar
+0x1F59: Cornelia Castle Old Man 1 (Treasure Room)
+0x1F5A: Cornelia Castle Old Man 2 (Near Treasure Room)
+0x1F5B: (Unused? For a Cornelia Castle NPC...)
+0x1F5C: Talking to King Cornelia (aka The King)
+0x1F5D: Talking to Princess Sarah
+0x1F5E: Cornelia Castle Guard (Throne Room)
+0x1F5F: Cornelia Castle Guard (Lookout)
+0x1F60: Talking to Cornelia Chancellor
+0x1F61: Talking to Sadda
+0x1F62: (Nothing)
+0x1F63: (Nothing)
+0x1F64: (Nothing)
+0x1F65: (Nothing)
+0x1F66: (Nothing)
+0x1F67: (Nothing)
+0x1F68: Talking to Bahamut
+0x1F69: Cardia Dragon 1
+0x1F6A: Cardia Dragon 2
+0x1F6B: Cardia Dragon 3
+0x1F6C: Cardia Dragon 4
+0x1F6D: Cardia Dragon 5
+0x1F6E: Cardia Dragon 6
+0x1F6F: Cardia Dragon 7
+0x1F70: Cardia Dragon 8
+0x1F71: Cardia Dragon 9
+0x1F72: Elfheim Citizen 1
+0x1F73: Elfheim Citizen 2
+0x1F74: Elfheim Citizen 3
+0x1F75: Elfheim Citizen 4
+0x1F76: Elfheim Citizen 5
+0x1F77: Elfheim Citizen 6
+0x1F78: Elfheim Seer 1
+0x1F79: Elfheim Seer 2
+0x1F7A: "Here lies Link."
+0x1F7B: Elfland gravestone
+0x1F7C: Elven Castle Guard 1 (Entrance right)
+0x1F7D: Elven Castle Guard 2 (Entrance left)
+0x1F7E: Elven Castle Guard 3 (West gardens)
+0x1F7F: Elven Castle Guard 4 (Central hall)
+0x1F80: Elven Castle Guard 5 (North hall)
+0x1F81: Elven Castle Guard 6 (Treasure Room)
+0x1F82: Talking to Elven Healer
+0x1F83: Talking to Elven Prince
+0x1F84: (Nothing)
+0x1F85: (Nothing)
+0x1F86: Western Keep "King"
+0x1F87: Western Keep Bats ("Kee! Kee!")
+0x1F88: Sleeping Elven Prince
+0x1F89: (Nothing)
+0x1F8A: (Nothing)
+0x1F8B: (Nothing)
+0x1F8C: (Nothing)
+0x1F8D: (Nothing)
+0x1F8E: (Nothing)
+0x1F8F: (Nothing)
+0x1F90: Talking to Smyth
+0x1F91: Mt. Duergar Dwarf
+0x1F92: Mt. Duergar Dwarf
+0x1F93: Mt. Duergar Dwarf
+0x1F94: Mt. Duergar Dwarf
+0x1F95: Mt. Duergar Dwarf
+0x1F96: Mt. Duergar Dwarf
+0x1F97: Mt. Duergar Dwarf
+0x1F98: Mt. Duergar Dwarf
+0x1F99: Mt. Duergar Dwarf
+0x1FA0: Crescent Lake Adventurer's Wife
+0x1F9B: Crescent Lake Adventurer
+0x1F9C: Crescent Sage 1 (clockwise from bottom)
+0x1F9D: Crescent Sage 2
+0x1F9E: Crescent Sage 3
+0x1F9F: Crescent Sage 4
+0x1FA0: Crescent Sage 5
+0x1FA1: Crescent Sage 6
+0x1FA2: Crescent Sage 7
+0x1FA3: Crescent Sage 8
+0x1FA4: Matoya
+0x1FA5: Matoya's Brooms
+0x1FA6: (Nothing)
+0x1FA7: (Nothing)
+0x1FA8: (Nothing)
+0x1FA9: (Nothing)
+0x1FAA: (Nothing)
+0x1FAB: (Nothing)
+0x1FAC: (Nothing)
+0x1FAD: (Nothing)
+0x1FAE: Melmond Citizen 1
+0x1FAF: Melmond Citizen 
+0x1FB0: Melmond Citizen
+0x1FB1: Melmond Citizen 
+0x1FB2: Melmond Citizen 
+0x1FB3: Melmond Citizen 
+0x1FB4: Melmond Citizen 
+0x1FB5: Melmond Citizen 
+0x1FB6: Melmond Citizen 
+0x1FB7: Melmond Citizen 
+0x1FB8: Onrac Citizen (Guard)
+0x1FB9: Onrac Citizen (Old man near chapel)
+0x1FBA: Onrac Citizen (Graveyard man)
+0x1FBB: Onrac Citizen (Leg-loving lady)
+0x1FBC: Onrac Citizen (Mohawk)
+0x1FBD: Onrac Citizen (Scholar)
+0x1FBE: Onrac Citizen (Woman in front of Inn)
+0x1FBF: Onrac Citizen (Mohawked skeptic)
+0x1FC0: Onrac Citizen (Drunk Sailor)
+0x1FC1: Onrac Citizen (Witch)
+0x1FC2: Pravoka Citizen
+0x1FC3: Pravoka Citizen
+0x1FC4: Bikke
+0x1FC5: Pravoka Citizen
+0x1FC6: (Nothing)
+0x1FC7: (Nothing)
+0x1FC8: Pravoka Citizen (Elf-liker)
+0x1FC9: Pravoka Citizen (Melmond refugee)
+0x1FCA: Bikke's Bikkeneers
+0x1FCB: (Nothing)
+0x1FCC: Lufenia Citizen (Legend of Light Warriors)
+0x1FCD: Lufenia Citizen
+0x1FCE: Lufenia Citizen
+0x1FCF: Lufenia Citizen
+0x1FD0: Lufenia Citizen
+0x1FD1: Lufenia Citizen
+0x1FD2: Lufenia Citizen
+0x1FD3: Lufenia Citizen
+0x1FD4: Lufenia Citizen
+0x1FD5: Lufenia Citizen
+0x1FD6: Gaia Citizen (Fairy catcher)
+0x1FD7: Gaia Citizen (Scholar 1)
+0x1FD8: Gaia Citizen
+0x1FD9: Gaia Citizen (Ordeals hint-giver)
+0x1FDA: Gaia Citizen
+0x1FDB: Gaia Citizen
+0x1FDC: Gaia Citizen
+0x1FDD: Gaia Citizen (Broom witch)
+0x1FDE: Gaia Broom
+0x1FDF: Gaia Citizen (Scholar 2)
+0x1FE0: Crescent Sage 9
+0x1FE1: Crescent Sage 10
+0x1FE2: Crescent Sage 11
+0x1FE3: Sage Lukahn
+0x1FE4: Crescent Lake gravestone
+0x1FE5: Melmond Citizen
+0x1FE6: Melmond Citizen
+0x1FE7: Melmond Citizen
+0x1FE8: Melmond Citizen
+0x1FE9: Melmond gravestone
+0x1FEA: Onrac Citizen (Old man at docks)
+0x1FEB: Onrac Sub Engineer
+0x1FEC: Onrac Dragon
+0x1FED: Onrac fountain
+0x1FEE: Onrac gravestone
+0x1FEF: Lufenia Citizen (Airship talker)
+0x1FF0: Lufenia Citizen (Chime guy)
+0x1FF1: Lufenia Citizen (Tiamat fight talker)
+0x1FF2: Lufenia Citizen
+0x1FF3: Gaia Citizen (Greeter)
+0x1FF4: Talking with Gaia Fairy
+0x1FF5: Flying Fortress Tiamat Analyzer
+0x1FF6: FFFort Robot (Observation Window)
+0x1FF7: Lute-sealed slab
+0x1FF8: Altar of Water
+0x1FF9: Sunken Shrine Mermaid 1
+0x1FFA: Sunken Shrine Mermaid 2
+0x1FFB: Sunken Shrine Mermaid 3
+0x1FFC: Sunken Shrine Mermaid 4
+0x1FFD: Sunken Shrine Mermaid 5
+0x1FFE: Sunken Shrine Mermaid 6
+0x1FFF: Sunken Shrine Mermaid 7
+0x2000: Sunken Shrine Mermaid 8
+0x2001: Sunken Shrine Mermaid 9
+0x2002: Sunken Shrine Mermaid 10
+0x2003: Mirage Tower Robot (Welcome back!)
+0x2004: Mirage Tower Robot (Journey to the West)
+0x2005: Mirage Tower Robot (Warp Cube explainer)
+0x2006: Bahamut's Attendant 1
+0x2007: Bahamut's Attendant 2
+0x2008: Nitro Powder hint-giving dwarf
+0x2009: Nerrick
+0x200A: Smyth's display swords
+0x200B: Marsh Cave Bats
+0x200C: Earth Cave Bats
+0x200D: Earth Cave B3 slab
+0x200E: Waterfall Cavern bats
+0x200F: Waterfall Cavern robot
+0x2010: Talking to Giant
+0x2011: Equipment hint-giver
+0x2012: Magic hint-giver
+0x2013: Item hint-giver
+0x2014: Monster hint-giver
+0x2015: Gaia Citizen (Disbelieving lady)
+0x2016: Gaia Citizen (Light observer)
+0x2017: Lufenia Fountain
+0x2018: Altar of Earth
+0x2019: Altar of Fire
+0x201A: Altar of Wind
+0x201B: Onrac Citizen (Underhill's daughter)
+0x201C: Koppe
+0x201D: (Nothing)
+0x201E: (Nothing)
+0x201F: (Nothing)
+0x2020: (Nothing)
+0x2021: (Nothing)
+0x2022: (Nothing)
+0x2023: (Nothing)
+0x2024: (Nothing)
+0x2025: (Nothing)
+0x2026: (Nothing)
+0x2027: Onrac well
+0x2028: (Nothing)
+0x2029: (Nothing)
+0x202A: (Nothing)
+0x202B: (Nothing)
+0x202C: (Nothing)
+0x202D: (Nothing)
+0x202E: (Nothing)
+0x202F: (Nothing)
+0x2328: Dwarf in Earthgift Shrine entrance
+0x23D4 - 0x23F3: Dialogue for the NPCs in Trespasser (the ones that bodyblock you obnoxiously)
+0x23F3: "You are not permitted to proceed any farther. Accept fate, do not fight it."
+0x23F4: (Inn event? Trace this!)
+0x23F5: Earthgift Shrine Statue
+0x23F6: Hellfire Chasm Statue
+0x23F7: Lifespring Grotto Statue
+0x23F8: Whisperwind Cove Statue
+0x23F9: MP-Restoring Fairy 1
+0x23FA: HP-Draining Fairy 1
+0x23FB: MP-Draining Fairy 1
+0x23FC: HP-Restoring Fairy 1
+0x23FD: MP-Restoring Fairy 2
+0x23FE: HP-Draining Fairy 2
+0x23FF: MP-Draining Fairy 2
+0x2400: HP-Restoring Fairy 2
+0x2401: ???
+0x2402: ???
+0x2403: ???
+0x2404: "I keep running into this big man lately." (probs SoC Dancer room)
+0x0: World Map
+0x1: Earth Cave B1
+0x2: Earth Cave B2
+0x3: Earth Cave B3
+0x4: Earth Cave B4
+0x5: Earth Cave B5
+0x6: Elven Castle
+0x7: Elfheim
+0x8: Elfheim Inn
+0x9: Elfheim Weapon Shop
+0xA: Elfheim Armor Shop
+0xB: Elfheim Item Shop
+0xC: Elfheim White Magic 1
+0xD: Elfheim White Magic 2
+0xE: Elfheim Black Magic 1
+0xF: Elfheim Black Magic 2
+0x10: Elfheim Chapel
+0x11: Onrac
+0x12: Onrac Inn
+0x13: Onrac Item Shop
+0x14: Onrac White Magic
+0x15: Onrac Black Magic
+0x16: Onrac Chapel
+0x17: Sunken Shrine 1F
+0x18: Sunken Shrine 2F
+0x19: Sunken Shrine 3Fa
+0x1A: Sunken Shrine 3Fb
+0x1B: Sunken Shrine 3Fc
+0x1C: Sunken Shrine 4Fa
+0x1D: Sunken Shrine 4Fb
+0x1E: Sunken Shrine 5F
+0x1F: Chaos Shrine
+0x20: Chaos Temple 1F
+0x21: Chaos Temple 2F
+0x22: Chaos Temple 3F
+0x23: Chaos Temple B1
+0x24: Chaos Temple B2
+0x25: Chaos Temple B3
+0x26: Chaos Temple B4
+0x27: Chaos Temple B5
+0x28: Giant's Cave
+0x29: Mt. Gulg B1
+0x2A: Mt. Gulg B2
+0x2B: Mt. Gulg B3
+0x2C: Mt. Gulg B3a
+0x2D: Mt. Gulg B4
+0x2E: Mt. Gulg B5
+0x2F: Crescent Lake
+0x30: Crescent Lake Inn
+0x31: Crescent Lake Weapon Shop
+0x32: Crescent Lake Armor Shop
+0x33: Crescent Lake Item Shop
+0x34: Crescent Lake White Magic
+0x35: Crescent Lake Black Magic
+0x36: Crescent Lake Chapel
+0x37: Sage's Cave
+0x38: Castle Cornelia 1F
+0x39: Castle Cornelia 2F
+0x3A: Cornelia
+0x3B: Cornelia Inn
+0x3C: Cornelia Weapon Shop
+0x3D: Cornelia Armor Shop
+0x3E: Cornelia Item Shop
+0x3F: Cornelia White Magic
+0x40: Cornelia Black Magic
+0x41: Cornelia Chapel
+0x42: Cavern of Ice B1
+0x43: Cavern of Ice B2a
+0x44: Cavern of Ice B2b
+0x45: Cavern of Ice B3a
+0x46: Cavern of Ice B3b
+0x47: Gaia
+0x48: Gaia Inn
+0x49: Gaia Weapon/Armor Shop
+0x4A: Gaia Item Shop
+0x4B: Gaia White/Black Magic
+0x4C: Gaia Chapel
+0x4D: Citadel of Trials 1F
+0x4E: Citadel of Trials 2F
+0x4F: Citadel of Trials 3F
+0x50: Mirage Tower 1F
+0x51: Mirage Tower 2F
+0x52: Mirage Tower 3F
+0x53: Waterfall Cavern
+0x54: Dragon Caves B2
+0x55: Dragon Caves B1 (Bahamut's)
+0x56: Dragon Caves B1
+0x57: Mt. Duergar
+0x58: Western Keep
+0x59: Marsh Cave B1
+0x5A: Marsh Cave B2
+0x5B: Marsh Cave B3
+0x5C: Flying Fortress 1F
+0x5D: Flying Fortress 2F
+0x5E: Flying Fortress 3F
+0x5F: Flying Fortress 4F
+0x60: Flying Fortress 5F
+0x61: Matoya's Cave
+0x62: Pravoka
+0x63: Pravoka Inn
+0x64: Pravoka Weapon Shop
+0x65: Pravoka Armor Shop
+0x66: Pravoka Item Shop
+0x67: Pravoka White Magic
+0x68: Pravoka Black Magic
+0x69: Pravoka Chapel
+0x6A: Melmond
+0x6B: Melmond Inn
+0x6C: Melmond Weapon Shop
+0x6D: Melmond Armor Shop
+0x6E: Melmond White Magic
+0x6F: Melmond Black Magic
+0x70: Lufenia
+0x71: Lufenia White/Black Magic
+0x72: Caravan
+0x73: Caravan Interior
+0x74: Gaia White Magic 2
+0x75: Gaia Black Magic 2
+0x76: Drawbridge (cutscene)
+0x77: Ryukahn Desert (cutscene)
+0x78: Earthgift Shrine Entrance
+0x79: Hellfire Chasm Entrance
+0x7A: Lifespring Grotto Entrance
+0x7B: Whisperwind Cove Entrance
+0x1388: (Normal chest)
+0x1389: Cornelia Inn
+0x138A: Chapel priests
+0x138B: Confronting Garland (and Sarah rescue?)
+0x138C: (For Cornelian soldiers who teleport you to the King)
+0x138D: Adamantite obtaining
+0x138E: Airship rises from Ryukahn Desert
+0x138F: Fairy gets Oxyale
+0x1390: Confronting Astos
+0x1391: Giving Crystal Eye to Matoya
+0x1392: Bridge rebuilding scene(?)
+0x1393: Nerrick uses Nitro Powder
+0x1394: Receive Canoe
+0x1395: Receive Chime
+0x1396: Class change!
+0x1397: (Use Cottage)
+0x1398: Crown chest
+0x1399: Feed Star Ruby to Giant
+0x139A: Give Jolt Tonic to Healer
+0x139B: (Nothing)
+0x139C: Pause, slow white fadein/out
+0x139D: Give Adamantite to Smyth
+0x139E: Fairy released from bottle
+0x139F: Levistone obtaining
+0x13A0: Unlock Black Crystal
+0x13A1: Sub Engineer fades away...
+0x13A2: Barrel submarine (Onrac)
+0x13A3: Confronting Kraken
+0x13A4: Confronting Chaos
+0x13A5: Unne deciphers Rosetta Stone
+0x13A6: Flying Fortress's Observation Window
+0x13A7: Receive Lute
+0x13A8: Confronting Marilith
+0x13A9: Matoya's Plight
+0x13AA: Rat Tail chest
+0x13AB: Lute breaks seal
+0x13AC: (Nothing)
+0x13AD: Nitro Powder chest
+0x13AE: (Nothing)
+0x13AF: Citadel of Trials greeter
+0x13B0: (Nothing)
+0x13B1: "Lali-Ho!" Dwarf
+0x13B2: Barrel Submarine (Sunken Shrine)
+0x13B3: Confronting Lich
+0x13B4: Rosetta Stone chest
+0x13B5: Confronting Bikke
+0x13B6: (Using Sleeping Bag)
+0x13B7: Star Ruby chest
+0x13B8: Receive Earth Rod
+0x13B9: (Nothing)
+0x13BA: (Using Tent)
+0x13BB: Confronting Tiamat
+0x13BC: Confronting Vampire
+0x13BD: Robot gives Warp Cube
+0x13BE: Pravoka Inn
+0x13BF: Elfheim Inn
+0x13C0: Melmond Inn
+0x13C1: Crescent Lake Inn
+0x13C2: Onrac Inn
+0x13C3: Gaia Inn
+0x13C4: (Warp event)
+0x13C5: (Exit event)
+0x13C6: Mirage Tower/Flying Fort warp
+0x13C7: Warp out with effects
+0x13C8: Citadel of Trials teleporter effect
+0x13C9: Flying Fortress teleporter effect
+0x13CA: Ice Cave pit effect
+0x13CB: Sarah stops you leaving to give Lute
+0x13CC: Surface Return teleporter effect

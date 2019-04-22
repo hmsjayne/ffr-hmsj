@@ -50,7 +50,7 @@ KEY_ITEMS = {
     "jolt_tonic": KeyItem(sprite=0x37, flag=0x08, item=0x03, dialog=0x216, movable=True),
     "key": KeyItem(sprite=0x31, flag=0x09, item=0x04, dialog=0x154, movable=False),
     "nitro_powder": KeyItem(sprite=0x0D, flag=0x0A, item=0x05, dialog=0x128, movable=True),
-    "canal": KeyItem(sprite=0x00, flag=0x0B, item=None, dialog=0x1e8, movable=True),
+    "canal": KeyItem(sprite=0x3B, flag=0x0B, item=None, dialog=0x1e8, movable=True),
     "ruby": KeyItem(sprite=0x58, flag=0x0D, item=0x08, dialog=0x142, movable=False),
     "rod": KeyItem(sprite=0x39, flag=0x0F, item=0x09, dialog=0x21a, movable=True),
     "earth": KeyItem(sprite=0x55, flag=0x11, item=None, dialog=None, movable=True),
@@ -124,6 +124,9 @@ class KeyItemPlacement(object):
             .get_event()
         self.rom = self.rom.apply_patch(0xa618, king_flag)
 
+        # This has to be done *before* shuffle, or the flag won't be reset properly.
+        self._shorten_canal_scene()
+
         # The Key items returned work like this. Suppose a Placement returned was
         # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
         # should be found in the King of Cornelia location.
@@ -159,7 +162,6 @@ class KeyItemPlacement(object):
                 self._better_pirates(placement.item)
 
         self._remove_bridge_trigger()
-        self._shorten_canal_scene()
         self._rewrite_give_texts()
 
         self.rom = self.maps.write(self.rom)
@@ -176,16 +178,19 @@ class KeyItemPlacement(object):
         # overworld and shows the rocks collapsing, but keeps the
         # rest of it.
         event = EventBuilder() \
+            .add_flag("have_canal", 0x0b) \
             .add_label("end_up_collaps", 0x800c238) \
+            .set_flag("have_canal", 0x0) \
             .jump_to("end_up_collaps") \
+            .nop() \
             .get_event()
         self.rom = self.rom.apply_patch(0xc0f4, event)
 
     def _rewrite_give_texts(self):
-        self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\\x00")
-        self.event_text_block.strings[0x1e8] = TextBlock.encode_text("You obtain the canal.\\x00")
-        self.event_text_block.strings[0x1d2] = TextBlock.encode_text("You obtain class change.\\x00")
-        self.event_text_block.strings[0x235] = TextBlock.encode_text("You can now speak Lufenian.\\x00")
+        self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\x00")
+        self.event_text_block.strings[0x1e8] = TextBlock.encode_text("You obtain the canal.\x00")
+        self.event_text_block.strings[0x1d2] = TextBlock.encode_text("You obtain class change.\x00")
+        self.event_text_block.strings[0x235] = TextBlock.encode_text("You can now speak Lufenian.\x00")
         self.rom = self.event_text_block.pack(self.rom)
 
     def _replace_item_event(self, source, key_item: KeyItem):
