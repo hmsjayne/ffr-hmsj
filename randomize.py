@@ -65,6 +65,8 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     rom = enable_generous_lukahn(rom)
     rom = sarda_requires_feeding_titan(rom)
 
+    rom = update_xp_requirements(rom, flags.XP_mult)
+
     if flags.key_item_shuffle is not None:
         placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
         rom = placement.rom
@@ -95,6 +97,16 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
 
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
+def update_xp_requirements(rom: Rom, value) -> Rom:
+    
+    level_data = rom.open_bytestream(0x1BE3B4,396)
+    new_table = Output()
+    next_value = level_data.get_u32()
+    while not next_value == None:
+        new_table.put_u32(int(next_value * value))
+        next_value = level_data.get_u32()
+    rom = rom.apply_patch(0x1BE3B4, new_table.get_buffer())
+    return rom
 
 def enable_free_airship(rom: Rom) -> Rom:
     map_init_events = EventTable(rom, 0x7050, 0xD3)

@@ -21,6 +21,7 @@ class Flags(object):
         self.magic = None
         self.treasures = None
         self.key_item_shuffle = None
+        self.XP_mult = 1.0
 
         self.debug = None
 
@@ -37,3 +38,5 @@ class Flags(object):
                 self.default_party = "random"
             elif flag == "-hax":
                 self.debug = "iddqd"
+            elif flag[:2] == "XP":
+                self.XP_mult *= float(flag.split("=")[1])
