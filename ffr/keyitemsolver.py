@@ -124,6 +124,9 @@ class KeyItemPlacement(object):
             .get_event()
         self.rom = self.rom.apply_patch(0xa618, king_flag)
 
+        # This has to be done *before* shuffle, or the flag won't be reset properly.
+        self._shorten_canal_scene()
+
         # The Key items returned work like this. Suppose a Placement returned was
         # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
         # should be found in the King of Cornelia location.
@@ -159,7 +162,6 @@ class KeyItemPlacement(object):
                 self._better_pirates(placement.item)
 
         self._remove_bridge_trigger()
-        self._shorten_canal_scene()
         self._rewrite_give_texts()
 
         self.rom = self.maps.write(self.rom)
@@ -176,8 +178,11 @@ class KeyItemPlacement(object):
         # overworld and shows the rocks collapsing, but keeps the
         # rest of it.
         event = EventBuilder() \
+            .add_flag("have_canal", 0x0b) \
             .add_label("end_up_collaps", 0x800c238) \
+            .set_flag("have_canal", 0x0) \
             .jump_to("end_up_collaps") \
+            .nop() \
             .get_event()
         self.rom = self.rom.apply_patch(0xc0f4, event)
 

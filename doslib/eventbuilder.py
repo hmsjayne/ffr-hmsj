@@ -89,6 +89,12 @@ class EventBuilder(object):
         self._stream.put_u16(0xffff)
         return self
 
+    def nop(self) -> EventBuilder:
+        self._stream.put_u8(0x1)
+        self._stream.put_u8(0x4)
+        self._stream.put_u16(0xffff)
+        return self
+
     def get_event(self) -> bytearray:
         return self._stream.get_buffer()
 
