@@ -26,15 +26,20 @@ class InputString(object):
         self._index = 0
 
     def getc(self):
-        if self._index < len(self._data):
+        char = self.peek()
+        if char is not None:
             self._index += 1
-            return self._data[self._index - 1]
-        else:
-            return None
+        return char
 
     def ungetc(self):
         if self._index > 0:
             self._index -= 1
+
+    def peek(self):
+        if self._index < len(self._data):
+            return self._data[self._index]
+        else:
+            return None
 
     def get_int(self) -> int:
         working = ""
@@ -58,40 +63,113 @@ class InputString(object):
             return int(working)
 
 
-def tokenize(line: str) -> list:
-    tokens = []
+class TokenStream(object):
+    def __init__(self, line: str):
+        self._tokens = self._tokenize(line)
+        self._index = 0
 
-    input = InputString(line)
-    char = input.getc()
-    while char is not None:
-        if char.isspace():
-            # Ignore whitespace...
-            pass
-        elif char.isalpha():
-            # Identifiers are alphanumeric, but start with a letter. They may include '_' because ... Python?
-            current = ""
-            while char is not None and (char.isalnum() or char == '_'):
-                current += char
-                char = input.getc()
-            tokens.append(current)
-
-            # Took one too many characters, potentially.
-            if char is not None:
-                input.ungetc()
-        elif char.isdigit():
-            # Numbers are all ints and just parsed by the stream - makes this easier
-            input.ungetc()
-            tokens.append(input.get_int())
+    def peek(self):
+        if self._index < len(self._tokens):
+            return self._tokens[self._index]
         else:
-            # Symbols are single characters
-            tokens.append(char)
+            return None
 
-        char = input.getc()
+    def next(self):
+        token = self.peek()
+        if token is not None:
+            self._index += 1
+        return token
 
-    return tokens
+    def _get_alphanum_token(self, working: InputString) -> str:
+        # Identifiers are alphanumeric, but start with a letter. They may include '_' because ... Python?
+        current = ""
+        char = working.getc()
+        while char is not None and (char.isalnum() or char == '_'):
+            current += char
+            char = working.getc()
+
+        # Took one too many characters, potentially.
+        if char is not None:
+            working.ungetc()
+
+        # Return what we got
+        return current
+
+    def _tokenize(self, line: str) -> list:
+        tokens = []
+
+        current = InputString(line)
+        char = current.getc()
+        while char is not None:
+            if char.isspace():
+                # Ignore whitespace...
+                pass
+            elif char.isalpha():
+                current.ungetc()
+                tokens.append(KeywordToken(self._get_alphanum_token(current)))
+            elif char.isdigit():
+                # Numbers are all ints and just parsed by the stream - makes this easier
+                current.ungetc()
+                tokens.append(NumberToken(current.get_int()))
+            elif char == '.':
+                if current.peek().isalpha():
+                    tokens.append(LabelToken(self._get_alphanum_token(current)))
+                else:
+                    raise RuntimeError(f"Illegal label definition, starts with: {current.peek()}")
+            elif char == '%':
+                if current.peek().isalpha():
+                    tokens.append(SymbolToken(self._get_alphanum_token(current)))
+                else:
+                    raise RuntimeError(f"Illegal label definition, starts with: {current.peek()}")
+            elif char == ':':
+                tokens.append(ColonToken(":"))
+            elif char == ";":
+                comment = ";"
+                while current.peek() is not None:
+                    comment += current.getc()
+                tokens.append(CommentToken(comment))
+            else:
+                # Symbols are single characters
+                tokens.append(char)
+
+            char = current.getc()
+
+        return tokens
 
 
-def assemble(source: str, base_addr: int):
+class CommentToken(str):
+    pass
+
+
+class LabelToken(str):
+    pass
+
+
+class SymbolToken(str):
+    pass
+
+
+class KeywordToken(str):
+    pass
+
+
+class ColonToken(str):
+    pass
+
+
+class NumberToken(int):
+    def __repr__(self):
+        return f"NumberToken({hex(self)})"
+
+    def __str__(self):
+        return f"NumberToken({hex(self)})"
+
+
+def tokenize(line: str) -> list:
+    return []
+
+
+def _assemble(source: str, base_addr: int):
     labels = {}
     symbol = {}
 
@@ -100,7 +178,6 @@ def assemble(source: str, base_addr: int):
     working = []
 
     for line_number, line in enumerate(source.splitlines()):
-        line = line.lstrip().rstrip()
         tokens = tokenize(line)
 
         if len(tokens) == 0 or tokens[0] == ';':
@@ -210,6 +287,39 @@ def assemble(source: str, base_addr: int):
     return assembled
 
 
+def assemble(source: str, base_addr: int):
+    labels = {}
+    symbols = {}
+
+    current_addr = base_addr
+
+    working = []
+    for line_number, line in enumerate(source.splitlines()):
+        tokens = TokenStream(line)
+
+        token = tokens.next()
+        if token is None or isinstance(token, CommentToken):
+            # Empty or comment only line
+            continue
+
+        if isinstance(token, LabelToken):
+            label = token
+            token = tokens.next()
+            if isinstance(token, ColonToken):
+                labels[label] = current_addr
+            elif isinstance(token, NumberToken):
+                labels[label] = token
+            else:
+                print(f"Syntax error on line {line_number + 1}: line")
+        elif isinstance(token, SymbolToken):
+            symbol = token
+            value = tokens.next()
+            if isinstance(value, NumberToken):
+                symbols[symbol] = value
+            else:
+                print(f"Syntax error on line {line_number + 1}: line")
+
+
 def main():
     test = """
     ; Flags we want to check
@@ -219,21 +329,21 @@ def main():
     
     ; Events to clear based on flags
     %bridge_credits 0xfa6
-    %raise_airship 0x138e
+    %raise_airship 0x138e               ; Some comment after the line
     
-    check_flag clear %watched_bridge_credits @BridgeCreditsWatched
+    check_flag clear %watched_bridge_credits .BridgeCreditsWatched
     remove_trigger %bridge_credits
 
-    @BridgeCreditsWatched:
-    check_flag clear %airship_visible @ChimeCheck
+    .BridgeCreditsWatched:
+    check_flag clear %airship_visible .ChimeCheck
     remove_trigger %raise_airship
     
-    @ChimeCheck:
-    check_flag set %have_chime @PostChimeThing
+    .ChimeCheck:
+    check_flag set %have_chime .PostChimeThing
 
     db 0x2f 0x8 0x0 0x0 0xff 0xb8 0x38 0x2
     
-    @PostChimeThing:
+    .PostChimeThing:
     update_npc remove_collision 0x0
     update_npc remove_collision 0x1
     update_npc remove_collision 0x2
@@ -244,12 +354,8 @@ def main():
     event_end
      
     """
+
     out = assemble(test, 0x80079a8)
-    for cmd in out:
-        line = ""
-        for b in cmd:
-            line += f"{hex(b)} "
-        print(f"Command: {line}")
 
 
 if __name__ == "__main__":
