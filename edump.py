@@ -35,27 +35,27 @@ def addr_to_rom(addr):
 
 
 # Looks up the starting memory address of an event given its ID
-def lookup_event(id):
-    if (id >= 0x0 and id <= 0xD3):
+def lookup_event(event_id):
+    if 0x0 <= event_id <= 0xD3:
         lut_id_offset = 0x0
         lut_base = 0x08007050
-    elif (id >= 0xFA0 and id <= 0xFAA):
+    elif 0xFA0 <= event_id <= 0xFAA:
         lut_id_offset = 0xFA0
         lut_base = 0x08007900
-    elif id >= 0x1388 and id <= 0x13CC:
+    elif 0x1388 <= event_id <= 0x13CC:
         lut_id_offset = 0x1388
         lut_base = 0x08007788
-    elif id >= 0x1F40 and id <= 0x202F:
+    elif 0x1F40 <= event_id <= 0x202F:
         lut_id_offset = 0x1F40
         lut_base = 0x080073A0
-    elif id >= 0x2328 and id <= 0x2404:
+    elif 0x2328 <= event_id <= 0x2404:
         lut_id_offset = 0x2328
         lut_base = 0x08006A98
     else:
-        raise ValueError("Event id invalid: " + hex(id))
+        raise ValueError("Event id invalid: " + hex(event_id))
 
     # This is the address of the pointer in the LUT
-    lut_addr = addr_to_rom(((id - lut_id_offset) * 4) + lut_base)
+    lut_addr = addr_to_rom(((event_id - lut_id_offset) * 4) + lut_base)
     # Since it's stored little endian, we only really need the
     # first two bytes.
     return addr_to_rom(array.array("I", rom.rom_data[lut_addr:lut_addr + 4])[0])
@@ -262,6 +262,15 @@ def decompile(addr):
             jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
             jumps.append(jump_target)
             cmd_str = f"jump_if_no {hex(jump_target)} :: {cmd_str}"
+        elif cmd == 0x8b:
+            jump_target_1 = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
+            jump_target_2 = addr_to_rom(array.array("I", rom_data[addr + 8:addr + 12])[0])
+            jump_target_3 = addr_to_rom(array.array("I", rom_data[addr + 12:addr + 16])[0])
+            jumps.append(jump_target_1)
+            jumps.append(jump_target_2)
+
+            jumps.append(jump_target_3)
+            cmd_str = f"jmp? {hex(jump_target_1)} {hex(jump_target_2)} {hex(jump_target_3)} :: {cmd_str}"
 
         working[addr] = cmd_str
 
