@@ -47,3 +47,85 @@ class KeywordToken(str):
     pass
 
 
+class RawCommandToken(str):
+    pass
+
+
+class EndEventToken(str):
+    pass
+
+
+class LoadTextToken(str):
+    pass
+
+
+class LoadTextTopToken(str):
+    pass
+
+
+class LoadTextBottomToken(str):
+    pass
+
+
+class CloseDialogToken(str):
+    pass
+
+
+class CloseDialogAutoToken(str):
+    pass
+
+
+class CloseDialogWaitToken(str):
+    pass
+
+
+class JumpToken(str):
+    pass
+
+
+class JumpToken(str):
+    pass
+
+
+class MusicToken(str):
+    pass
+
+
+class ShowDialogToken(str):
+    pass
+
+
+class CheckFlagToken(str):
+    pass
+
+
+class SetFlagToken(str):
+    pass
+
+
+class JzToken(str):
+    pass
+
+
+class JnzToken(str):
+    pass
+
+
+class RemoveTriggerToken(str):
+    pass
+
+
+class NpcUpdateToken(str):
+    pass
+
+
+class GiveItemToken(str):
+    pass
+
+
+class TakeItemToken(str):
+    pass
+
+
+class CheckItemToken(str):
+    pass

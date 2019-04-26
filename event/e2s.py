@@ -133,7 +133,7 @@ def _da_2d(cmd: bytearray) -> tuple:
         else:
             cond = hex(cmd[3])
 
-        cmd_text = f"check {hex(cmd[2])} {cond} $$addr$$"
+        cmd_text = f"check_flag {hex(cmd[2])} {cond} $$addr$$"
         jump_to = addr
 
     return cmd_text, jump_to
@@ -145,13 +145,7 @@ def _da_2e(cmd: bytearray) -> str:
 
 
 def _da_30(cmd: bytearray) -> str:
-    actions = {
-        0x4: "no_collision",
-    }
-    if cmd[2] in actions:
-        action = actions[cmd[2]]
-    else:
-        action = hex(cmd[2])
+    action = hex(cmd[2])
     return f"npc_update {action} {hex(cmd[3])}"
 
 

@@ -12,6 +12,70 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from event.tokens import *
+
+# The grammar for `easm` is very simple, and is defined in the dict here.
+
+
+GRAMMAR = {
+    # Here we define mappings of strings to terminal tokens.
+    # If a string is not defined here, it will likely cause a SyntaxError exception.
+    "end_event": EndEventToken,
+    "load_text": LoadTextToken,
+    "close_dialog": CloseDialogToken,
+    "jump": JumpToken,
+    "music": MusicToken,
+    "show_dialog": ShowDialogToken,
+    "set_flag": SetFlagToken,
+    "check_flag": CheckFlagToken,
+    "remove_trigger": RemoveTriggerToken,
+    "npc_update": NpcUpdateToken,
+    "give_item": GiveItemToken,
+    "take_item": TakeItemToken,
+    "check_item": CheckItemToken,
+
+    # Conditional jumps
+    "jz": JzToken,
+    "jnz": JnzToken,
+
+    # Here are various other keywords that are command specific.
+    "top": LoadTextTopToken,
+    "bot": LoadTextBottomToken,
+    "wait": CloseDialogWaitToken,
+    "auto": CloseDialogAutoToken,
+
+    #
+    # Define various non-terminal tokens here.
+    #
+    "value": (SymbolToken, NumberToken),
+    "cond": (JzToken, JnzToken),
+
+    #
+    # Define the structure of each command here.
+    # Commands that don't match the patterns here will raise a SyntaxError exception.
+    #
+    EndEventToken: None,
+    LoadTextToken: [(LoadTextTopToken, LoadTextBottomToken)],
+    CloseDialogToken: [(CloseDialogAutoToken, CloseDialogWaitToken)],
+    JumpToken: [LabelToken],
+    MusicToken: ["value", "value"],
+    ShowDialogToken: None,
+    SetFlagToken: ["value"],
+    CheckFlagToken: ["value", "cond", LabelToken],
+    RemoveTriggerToken: ["value"],
+    NpcUpdateToken: ["value", "value"],
+    GiveItemToken: ["value"],
+    TakeItemToken: ["value"],
+    CheckItemToken: ["value", JzToken, LabelToken],
+
+    # One command is missing a definition here: db
+    # This command is handled separately by the parser, because it is essentially a request to insert the
+    # bytes that proceed it verbatim into the output. Because the command can be followed by any number
+    # of bytes, it's easiest to just not try to worry about coding that into the grammar.
+    "db": RawCommandToken
+}
+
+
 class Uint16(object):
     def __init__(self, value: int):
         self._value = value
@@ -163,34 +227,6 @@ class TokenStream(object):
             char = current.getc()
 
         return tokens
-
-
-class CommentToken(str):
-    pass
-
-
-class LabelToken(str):
-    pass
-
-
-class SymbolToken(str):
-    pass
-
-
-class KeywordToken(str):
-    pass
-
-
-class ColonToken(str):
-    pass
-
-
-class NumberToken(int):
-    def __repr__(self):
-        return f"NumberToken({hex(self)})"
-
-    def __str__(self):
-        return f"NumberToken({hex(self)})"
 
 
 def tokenize(line: str) -> list:
