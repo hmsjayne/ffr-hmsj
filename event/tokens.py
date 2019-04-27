@@ -39,14 +39,6 @@ class NumberToken(int):
         return f"NumberToken({hex(self)})"
 
 
-class KeywordToken(str):
-    """
-    FIXME: This class captures more than one terminal token which prevents proper shift/reduce decisions
-    from being put together in a table. :)
-    """
-    pass
-
-
 class RawCommandToken(str):
     pass
 
@@ -76,10 +68,6 @@ class CloseDialogAutoToken(str):
 
 
 class CloseDialogWaitToken(str):
-    pass
-
-
-class JumpToken(str):
     pass
 
 
