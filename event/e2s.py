@@ -108,6 +108,11 @@ def _da_0c(cmd: bytearray) -> tuple:
     return "jump $$addr$$", addr
 
 
+def _da_0d(cmd: bytearray) -> tuple:
+    addr = array.array("I", cmd[4:8])[0]
+    return "jump_chest_empty $$addr$$", addr
+
+
 def _da_11(cmd: bytearray) -> str:
     item_id = array.array("H", cmd[4:6])[0]
     return f"music {hex(cmd[2])} {hex(item_id)}"
@@ -204,6 +209,14 @@ def disassemble(rom: Rom, offset: int) -> dict:
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
+        elif cmd == 0xd:
+            cmd_text, jump_target = _da_0d(full_cmd)
+            if jump_target is not None:
+                if jump_target not in labels:
+                    labels[jump_target] = f".Label_{len(labels) + 1}"
+                label = labels[jump_target]
+                cmd_text = cmd_text.replace("$$addr$$", label)
+            working[offset] = cmd_text
         elif cmd == 0x11:
             working[offset] = _da_11(full_cmd)
         elif cmd == 0x27:
@@ -237,7 +250,7 @@ def disassemble(rom: Rom, offset: int) -> dict:
     for offset, cmd in sorted(working.items(), key=lambda x: x[0]):
         addr = offset_to_addr(offset)
         if addr in labels:
-            print(format_output(labels[addr], addr))
+            print(format_output(f"{labels[addr]}:", addr))
         print(format_output(cmd, addr))
 
 

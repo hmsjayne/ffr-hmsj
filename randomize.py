@@ -22,7 +22,7 @@ from doslib.eventbuilder import EventBuilder
 from doslib.gen.classes import JobClass
 from doslib.maps import Maps
 from doslib.rom import Rom
-from doslib.textblock import TextBlock
+from event import easm
 from ffr.flags import Flags
 from ffr.keyitemsolver import KeyItemPlacement
 from ffr.spellshuffle import SpellShuffle
@@ -57,49 +57,63 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     base_patch = load_ips_files(*patches_to_load)
     rom = rom.apply_patches(base_patch)
 
-    event_text_block = EventTextBlock(rom)
-    event_text_block.shrink()
-    rom = event_text_block.pack(rom)
+    # event_text_block = EventTextBlock(rom)
+    # event_text_block.shrink()
+    # rom = event_text_block.pack(rom)
+    #
+    # rom = enable_free_airship(rom)
+    # rom = enable_generous_lukahn(rom)
+    # rom = sarda_requires_feeding_titan(rom)
+    #
+    # rom = update_xp_requirements(rom, flags.XP_mult)
+    #
+    # if flags.key_item_shuffle is not None:
+    #     placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
+    #     rom = placement.rom
+    #
+    # if flags.magic is not None:
+    #     shuffle_maigc = SpellShuffle(rom)
+    #     rom = shuffle_maigc.write(rom)
+    #
+    # if flags.treasures is not None:
+    #     rom = treasure_shuffle(rom)
+    #
+    # if flags.debug is not None:
+    #     class_stats_stream = rom.open_bytestream(0x1E1354, 96)
+    #     class_stats = []
+    #     while not class_stats_stream.is_eos():
+    #         class_stats.append(JobClass(class_stats_stream))
+    #
+    #     class_out_stream = Output()
+    #     for job_class in class_stats:
+    #         # Set the starting weapon and armor for all classes to something
+    #         # very fair and balanced: Masamune + Diamond Armlet. :)
+    #         job_class.weapon_id = 0x28
+    #         job_class.armor_id = 0x0e
+    #
+    #         # Write the (very balanced) new data out
+    #         job_class.write(class_out_stream)
+    #     rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
 
-    rom = enable_free_airship(rom)
-    rom = enable_generous_lukahn(rom)
-    rom = sarda_requires_feeding_titan(rom)
+    test_event = """
+%text_id 0x48
 
-    rom = update_xp_requirements(rom, flags.XP_mult)
-
-    if flags.key_item_shuffle is not None:
-        placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
-        rom = placement.rom
-
-    if flags.magic is not None:
-        shuffle_maigc = SpellShuffle(rom)
-        rom = shuffle_maigc.write(rom)
-
-    if flags.treasures is not None:
-        rom = treasure_shuffle(rom)
-
-    if flags.debug is not None:
-        class_stats_stream = rom.open_bytestream(0x1E1354, 96)
-        class_stats = []
-        while not class_stats_stream.is_eos():
-            class_stats.append(JobClass(class_stats_stream))
-
-        class_out_stream = Output()
-        for job_class in class_stats:
-            # Set the starting weapon and armor for all classes to something
-            # very fair and balanced: Masamune + Diamond Armlet. :)
-            job_class.weapon_id = 0x28
-            job_class.armor_id = 0x0e
-
-            # Write the (very balanced) new data out
-            job_class.write(class_out_stream)
-        rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
-
+music 0x5 0x2           ; Fade BGM (fast)
+music 0xa 0xffff        ; Wait for fade
+load_text top %text_id
+music 0x0 0x21          ; Play fanfare
+show_dialog
+music 0x9 0xffff        ; Wait for fanfare to finish
+close_dialog wait
+music 0x4 0x4           ; Resume BGM
+end_event
+"""
+    rom = remove_cornelia_soldiers(rom)
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
+
 def update_xp_requirements(rom: Rom, value) -> Rom:
-    
-    level_data = rom.open_bytestream(0x1BE3B4,396)
+    level_data = rom.open_bytestream(0x1BE3B4, 396)
     new_table = Output()
     next_value = level_data.get_u32()
     while not next_value == None:
@@ -107,6 +121,59 @@ def update_xp_requirements(rom: Rom, value) -> Rom:
         next_value = level_data.get_u32()
     rom = rom.apply_patch(0x1BE3B4, new_table.get_buffer())
     return rom
+
+
+def remove_cornelia_soldiers(rom: Rom) -> Rom:
+    map_init_events = EventTable(rom, 0x7050, 0xD3)
+    chaos_shrine_map_id = 0x1f
+    cornelia_map_id = 0x3a
+
+    cornelia_map_init = """
+        remove_trigger 0x138c       ; Called 3 times because there are 3 guards (N, E, and S)
+        remove_trigger 0x138c       ; and each time this removes one of them.
+        remove_trigger 0x138c
+        end_event
+    """
+    cornelia_map_event_addr = map_init_events.get_addr(cornelia_map_id)
+    cornelia_map_event = easm.parse(cornelia_map_init, cornelia_map_event_addr)
+
+    chaos_shrine_init = """
+        check_flag 0x1 jz .Label_3
+        remove_trigger 0x138b
+        remove_trigger 0x138b
+        check_flag 0x9 jz .Label_2
+        remove_trigger 0x1f4a
+        remove_trigger 0x1f4a
+        jump .Label_2
+        .Label_3:
+        db 0x2f 0x8 0x0 0x0 0xff 0x25 0x1c 0x8
+        db 0x2f 0x8 0x0 0x0 0xff 0x25 0x1d 0x8
+        db 0x2f 0x8 0x0 0x0 0xff 0x27 0x1c 0x8
+        db 0x2f 0x8 0x0 0x0 0xff 0x27 0x1d 0x8
+        db 0x21 0x4 0x6 0x4
+        .Label_2:
+        check_flag 0x24 jz .Label_4
+        remove_trigger 0x1f4c
+        jump .Label_5
+        .Label_4:
+        check_flag 0x13 jz .Label_5
+        check_flag 0x1d jz .Label_5
+        check_flag 0x22 jz .Label_5
+        npc_update 0x1 0x7
+        db 0x2f 0x8 0x0 0x0 0xff 0x25 0x1c 0x8
+        db 0x2f 0x8 0x0 0x0 0xff 0x27 0x1c 0x8
+        db 0x2f 0x8 0x0 0x0 0xff 0x26 0x1d 0x8
+        .Label_5:
+        end_event
+    """
+
+    chaos_shrine_event_addr = map_init_events.get_addr(chaos_shrine_map_id)
+    chaos_shrine_map_event = easm.parse(chaos_shrine_init, chaos_shrine_event_addr)
+    return rom.apply_patches({
+        Rom.pointer_to_offset(cornelia_map_event_addr): cornelia_map_event,
+        Rom.pointer_to_offset(chaos_shrine_event_addr): chaos_shrine_map_event,
+    })
+
 
 def enable_free_airship(rom: Rom) -> Rom:
     map_init_events = EventTable(rom, 0x7050, 0xD3)

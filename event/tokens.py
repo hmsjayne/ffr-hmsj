@@ -51,11 +51,11 @@ class LoadTextToken(str):
     pass
 
 
-class LoadTextTopToken(str):
+class LoadTextTopToken(int):
     pass
 
 
-class LoadTextBottomToken(str):
+class LoadTextBottomToken(int):
     pass
 
 
@@ -63,17 +63,19 @@ class CloseDialogToken(str):
     pass
 
 
-class CloseDialogAutoToken(str):
+class CloseDialogAutoToken(int):
     pass
 
 
-class CloseDialogWaitToken(str):
+class CloseDialogWaitToken(int):
     pass
 
 
 class JumpToken(str):
     pass
 
+class JumpChestEmptyToken(str):
+    pass
 
 class MusicToken(str):
     pass
@@ -91,11 +93,11 @@ class SetFlagToken(str):
     pass
 
 
-class JzToken(str):
+class JzToken(int):
     pass
 
 
-class JnzToken(str):
+class JnzToken(int):
     pass
 
 
