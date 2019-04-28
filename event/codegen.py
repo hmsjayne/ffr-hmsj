@@ -80,3 +80,19 @@ def npc_update(parameters: list) -> list:
     action = parameters[0]
     npc_id = parameters[1]
     return [0x30, 0x4, action, npc_id]
+
+
+def set_npc_event(parameters: list) -> list:
+    npc_id = parameters[0]
+    event_id = Uint16(parameters[1])
+    bytecode = [0x30, 0x8, 0x1, npc_id]
+    bytecode.extend(event_id.bytes())
+    bytecode.extend([0xff, 0xff])
+    return bytecode
+
+
+def remove_all(parameters: list) -> list:
+    trigger_id = Uint16(parameters[0])
+    bytecode = [0x36, 0x4]
+    bytecode.extend(trigger_id.bytes())
+    return bytecode

@@ -74,8 +74,10 @@ class CloseDialogWaitToken(int):
 class JumpToken(str):
     pass
 
+
 class JumpChestEmptyToken(str):
     pass
+
 
 class MusicToken(str):
     pass
@@ -106,6 +108,14 @@ class RemoveTriggerToken(str):
 
 
 class NpcUpdateToken(str):
+    pass
+
+
+class SetNpcEventToken(str):
+    pass
+
+
+class RemoveAllToken(str):
     pass
 
 

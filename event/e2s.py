@@ -150,8 +150,22 @@ def _da_2e(cmd: bytearray) -> str:
 
 
 def _da_30(cmd: bytearray) -> str:
-    action = hex(cmd[2])
-    return f"npc_update {action} {hex(cmd[3])}"
+    action = cmd[2]
+    npc_index = cmd[3]
+
+    if len(cmd) == 0x8:
+        if action == 0x1:
+            event_id = array.array("H", cmd[4:6])[0]
+            return f"set_npc_event {hex(npc_index)} {hex(event_id)}"
+        else:
+            return _da_rest(cmd)
+
+    return f"npc_update {hex(action)} {hex(npc_index)}"
+
+
+def _da_36(cmd: bytearray) -> str:
+    event_id = array.array("H", cmd[2:4])[0]
+    return f"remove_all {hex(event_id)}"
 
 
 def _da_37(cmd: bytearray) -> tuple:

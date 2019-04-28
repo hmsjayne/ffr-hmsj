@@ -57,12 +57,12 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     base_patch = load_ips_files(*patches_to_load)
     rom = rom.apply_patches(base_patch)
 
-    # event_text_block = EventTextBlock(rom)
-    # event_text_block.shrink()
-    # rom = event_text_block.pack(rom)
-    #
-    # rom = enable_free_airship(rom)
-    # rom = enable_generous_lukahn(rom)
+    rom = init_base_events(rom)
+
+    event_text_block = EventTextBlock(rom)
+    event_text_block.shrink()
+    rom = event_text_block.pack(rom)
+
     # rom = sarda_requires_feeding_titan(rom)
     #
     # rom = update_xp_requirements(rom, flags.XP_mult)
@@ -108,7 +108,6 @@ close_dialog wait
 music 0x4 0x4           ; Resume BGM
 end_event
 """
-    rom = remove_cornelia_soldiers(rom)
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
 
@@ -123,15 +122,54 @@ def update_xp_requirements(rom: Rom, value) -> Rom:
     return rom
 
 
-def remove_cornelia_soldiers(rom: Rom) -> Rom:
+def init_base_events(rom: Rom) -> Rom:
+    """This method sets up the core changes required for the randomizer.
+
+    This method specifically sets up the following:
+
+    - Shows the airship from the start.
+    - Changes the flag for the desert cut-scene from 0x15 (having the airship) to 0x28
+      which used to be set by listening to the King's plight in Cornelia Castle.
+    - Removes the guards from Cornelia who send you to the King.
+    - Removes the locked door in Chaos Shrine that would normally prevent you from accessing Garland
+      before talking to the King.
+    - Remove setting a pose on Princess Sara, since she may be shuffled.
+    - Move the airship to right in front of Castle Cornelia.
+
+    :param rom:
+    :return:
+    """
     map_init_events = EventTable(rom, 0x7050, 0xD3)
+    world_map_id = 0x0
     chaos_shrine_map_id = 0x1f
+    crescent_lake_map_id = 0x2f
     cornelia_map_id = 0x3a
 
+    world_map_init = """
+        %airship_visible 0x15
+        %have_chime 0x1f
+        %item_from_desert 0x28
+
+        set_flag %airship_visible
+        check_flag %item_from_desert jz .Label_2
+        remove_trigger 0x138e
+        .Label_2:
+        check_flag %have_chime jnz .Label_3
+        db 0x2f 0x8 0x0 0x0 0xff 0xb8 0x38 0x2
+        .Label_3:
+        npc_update 0x4 0x0
+        npc_update 0x4 0x1
+        npc_update 0x4 0x2
+        npc_update 0x4 0x3
+        npc_update 0x4 0x4
+        npc_update 0x4 0x5
+        end_event
+    """
+    world_map_event_addr = map_init_events.get_addr(world_map_id)
+    world_map_event = easm.parse(world_map_init, world_map_event_addr)
+
     cornelia_map_init = """
-        remove_trigger 0x138c       ; Called 3 times because there are 3 guards (N, E, and S)
-        remove_trigger 0x138c       ; and each time this removes one of them.
-        remove_trigger 0x138c
+        remove_all 0x138c
         end_event
     """
     cornelia_map_event_addr = map_init_events.get_addr(cornelia_map_id)
@@ -150,7 +188,6 @@ def remove_cornelia_soldiers(rom: Rom) -> Rom:
         db 0x2f 0x8 0x0 0x0 0xff 0x25 0x1d 0x8
         db 0x2f 0x8 0x0 0x0 0xff 0x27 0x1c 0x8
         db 0x2f 0x8 0x0 0x0 0xff 0x27 0x1d 0x8
-        db 0x21 0x4 0x6 0x4
         .Label_2:
         check_flag 0x24 jz .Label_4
         remove_trigger 0x1f4c
@@ -166,62 +203,39 @@ def remove_cornelia_soldiers(rom: Rom) -> Rom:
         .Label_5:
         end_event
     """
-
     chaos_shrine_event_addr = map_init_events.get_addr(chaos_shrine_map_id)
     chaos_shrine_map_event = easm.parse(chaos_shrine_init, chaos_shrine_event_addr)
-    return rom.apply_patches({
-        Rom.pointer_to_offset(cornelia_map_event_addr): cornelia_map_event,
-        Rom.pointer_to_offset(chaos_shrine_event_addr): chaos_shrine_map_event,
-    })
 
+    crescent_lake_map_init = """
+        %lukahn_npc_id 0xd
+        %have_canoe 0x12
 
-def enable_free_airship(rom: Rom) -> Rom:
-    map_init_events = EventTable(rom, 0x7050, 0xD3)
-    main_events = EventTable(rom, 0x7788, 0xbb7, base_event_id=0x1388)
+        %earth_crystal_lit 0x11
+        %fire_crystal_lit 0x13
+        
+        %give_canoe_event 0x1394
+        
+        check_flag %have_canoe jnz .End_of_Event
+        check_flag %earth_crystal_lit jz .End_of_Event
+        set_npc_event %lukahn_npc_id %give_canoe_event
+        .End_of_Event:
+        end_event
+    """
+    crescent_lake_map_event_addr = map_init_events.get_addr(crescent_lake_map_id)
+    crescent_lake_map_event = easm.parse(crescent_lake_map_init, crescent_lake_map_event_addr)
 
-    # Build a new event (that will replace the soldiers in Coneria that usually bring you to the King.)
-    event = EventBuilder() \
-        .add_flag("garland_unlocked", 0x28) \
-        .add_flag("show_airship", 0x15) \
-        .add_flag("have_crown", 0x06) \
-        .add_flag("can_enter_cot", 0x16) \
-        .add_label("init_world_map", map_init_events.get_addr(0)) \
-        .set_flag("garland_unlocked", 0x0) \
-        .set_flag("show_airship", 0x0) \
-        .check_flag_and_jump("have_crown", 0x2, "init_world_map") \
-        .set_flag("can_enter_cot", 0x0) \
-        .jump_to("init_world_map") \
-        .event_end() \
-        .get_event()
-
-    # Write the new event over the old one.
-    coneria_soldiers_event_id = 0x138C
-    rom = rom.apply_patch(Rom.pointer_to_offset(main_events.get_addr(coneria_soldiers_event_id)), event)
-
-    # Then, change the pointer of the world map init event script to point to ours,
-    # so it runs as soon as the game starts.
-    world_map_init_patch = Output()
-    world_map_init_patch.put_u32(main_events.get_addr(coneria_soldiers_event_id))
-    rom = rom.apply_patch(0x7050, world_map_init_patch.get_buffer())
-
-    # Finally, move the airship's start location to right outside of Coneria Castle.
+    # Move the airship's start location to right outside of Coneria Castle.
     airship_start = Output()
     airship_start.put_u32(0x918)
     airship_start.put_u32(0x998)
-    rom = rom.apply_patch(0x65280, airship_start.get_buffer())
 
-    return rom
-
-
-def enable_generous_lukahn(rom: Rom) -> Rom:
-    # The "Give Canoe" Event (ID 0x1394) is normally on NPC 0xc (AKA, the "Canoe Sage").
-    # Since their sprite is kind of generic, it would be easier for spotting them outside of
-    # Crescent Lake if Lukahn was the one giving the item.
-    event = EventBuilder() \
-        .set_event_on_npc(0xd, 0x1394) \
-        .get_event()
-
-    return rom.apply_patch(0x90f8, event)
+    return rom.apply_patches({
+        0x65280: airship_start.get_buffer(),
+        Rom.pointer_to_offset(world_map_event_addr): world_map_event,
+        Rom.pointer_to_offset(cornelia_map_event_addr): cornelia_map_event,
+        Rom.pointer_to_offset(chaos_shrine_event_addr): chaos_shrine_map_event,
+        Rom.pointer_to_offset(crescent_lake_map_event_addr): crescent_lake_map_event,
+    })
 
 
 def sarda_requires_feeding_titan(rom: Rom) -> Rom:
