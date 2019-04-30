@@ -67,9 +67,9 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     #
     # rom = update_xp_requirements(rom, flags.XP_mult)
     #
-    # if flags.key_item_shuffle is not None:
-    #     placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
-    #     rom = placement.rom
+    if flags.key_item_shuffle is not None:
+        placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
+        rom = placement.rom
     #
     # if flags.magic is not None:
     #     shuffle_maigc = SpellShuffle(rom)
@@ -78,22 +78,23 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     # if flags.treasures is not None:
     #     rom = treasure_shuffle(rom)
     #
-    # if flags.debug is not None:
-    #     class_stats_stream = rom.open_bytestream(0x1E1354, 96)
-    #     class_stats = []
-    #     while not class_stats_stream.is_eos():
-    #         class_stats.append(JobClass(class_stats_stream))
-    #
-    #     class_out_stream = Output()
-    #     for job_class in class_stats:
-    #         # Set the starting weapon and armor for all classes to something
-    #         # very fair and balanced: Masamune + Diamond Armlet. :)
-    #         job_class.weapon_id = 0x28
-    #         job_class.armor_id = 0x0e
-    #
-    #         # Write the (very balanced) new data out
-    #         job_class.write(class_out_stream)
-    #     rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
+    if flags.debug is not None:
+        class_stats_stream = rom.open_bytestream(0x1E1354, 96)
+        class_stats = []
+        while not class_stats_stream.is_eos():
+            class_stats.append(JobClass(class_stats_stream))
+
+        class_out_stream = Output()
+        for job_class in class_stats:
+            # Set the starting weapon and armor for all classes to something
+            # very fair and balanced: Masamune + Diamond Armlet. :)
+            job_class.weapon_id = 0x28
+            job_class.armor_id = 0x0e
+
+            # Write the (very balanced) new data out
+            job_class.write(class_out_stream)
+
+        rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
 
     test_event = """
 %text_id 0x48

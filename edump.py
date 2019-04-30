@@ -225,14 +225,21 @@ def decompile(addr):
         elif cmd == 0x30:
             npc_id = rom_data[addr + 3]
             sub_cmd = rom_data[addr + 2]
-            if sub_cmd == 0x2:
+            if sub_cmd == 0x1:
+                action = "set_event"
+                event_id = array.array("H", rom_data[addr + 4:addr + 6])[0]
+            elif sub_cmd == 0x2:
                 action = "hide"
             elif sub_cmd == 0x4:
                 action = "remove_collision"
             else:
                 action = hex(sub_cmd)
+                event_id = array.array("H", rom_data[addr + 4:addr + 6])[0]
 
-            cmd_str = f"update_npc {action}, {hex(npc_id)} :: {cmd_str}"
+            if event_id is not None:
+                cmd_str = f"update_npc {action} {hex(npc_id)} {hex(event_id)} :: {cmd_str}"
+            else:
+                cmd_str = f"update_npc {action} {hex(npc_id)} :: {cmd_str}"
         elif cmd == 0x37:
             sub_cmd = rom_data[addr + 2]
             item_index = rom_data[addr + 3]

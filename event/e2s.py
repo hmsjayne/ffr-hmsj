@@ -247,6 +247,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = _da_2e(full_cmd)
         elif cmd == 0x30:
             working[offset] = _da_30(full_cmd)
+        elif cmd == 0x36:
+            working[offset] = _da_36(full_cmd)
         elif cmd == 0x37:
             cmd_text, jump_target = _da_37(full_cmd)
             if jump_target is not None:
@@ -264,8 +266,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
     for offset, cmd in sorted(working.items(), key=lambda x: x[0]):
         addr = offset_to_addr(offset)
         if addr in labels:
-            print(format_output(f"{labels[addr]}:", addr))
-        print(format_output(cmd, addr))
+            print(f"{labels[addr]}:")
+        print(cmd)
 
 
 def disassemble_event(rom: Rom, event_id: int) -> dict:

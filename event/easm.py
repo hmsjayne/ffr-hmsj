@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 from event import codegen
+from event.parseinputstring import ParseInputString
 from event.tokens import *
 
 # The grammar for `easm` is very simple, and is defined in the dict here.
@@ -122,7 +123,6 @@ def def_symbol(parameters: list, symbol_table: dict):
 
 def parse(source: str, base_addr: int) -> bytearray:
     symbol_table = {}
-
     icode = []
     current_addr = base_addr
 
@@ -237,49 +237,6 @@ class Uint32(object):
         return [self._value & 0xff, (self._value >> 8) & 0xff, (self._value >> 16) & 0xff, (self._value >> 24) & 0xff]
 
 
-class InputString(object):
-    def __init__(self, data: str):
-        self._data = data
-        self._index = 0
-
-    def getc(self):
-        char = self.peek()
-        if char is not None:
-            self._index += 1
-        return char
-
-    def ungetc(self):
-        if self._index > 0:
-            self._index -= 1
-
-    def peek(self):
-        if self._index < len(self._data):
-            return self._data[self._index]
-        else:
-            return None
-
-    def get_int(self) -> int:
-        working = ""
-        is_hex = False
-
-        char = self.getc()
-        while char is not None and (char.isdigit() or (is_hex and char.lower() in ['a', 'b', 'c', 'd', 'e', 'f'])):
-            working += char
-
-            char = self.getc()
-
-            # Special case for hex number
-            if len(working) == 1 and (char == 'x' or char == 'X'):
-                is_hex = True
-                working += char
-                char = self.getc()
-
-        if is_hex:
-            return int(working, 16)
-        else:
-            return int(working)
-
-
 class TokenStream(object):
     def __init__(self, line_number: int, line: str):
         self._tokens = self._tokenize(line)
@@ -325,25 +282,10 @@ class TokenStream(object):
     def reset(self):
         self._index = 0
 
-    def _get_alphanum_token(self, working: InputString) -> str:
-        # Identifiers are alphanumeric, but start with a letter. They may include '_' because ... Python?
-        current = ""
-        char = working.getc()
-        while char is not None and (char.isalnum() or char == '_'):
-            current += char
-            char = working.getc()
-
-        # Took one too many characters, potentially.
-        if char is not None:
-            working.ungetc()
-
-        # Return what we got
-        return current
-
     def _tokenize(self, line: str) -> list:
         tokens = []
 
-        current = InputString(line)
+        current = ParseInputString(line)
         char = current.getc()
         while char is not None:
             if char.isspace():
@@ -351,7 +293,7 @@ class TokenStream(object):
                 pass
             elif char.isalpha():
                 current.ungetc()
-                keyword = self._get_alphanum_token(current)
+                keyword = current.get_alphanum_str(['_'])
                 if keyword not in GRAMMAR:
                     raise RuntimeError(f"Unknown keyword: {keyword}")
                 token = GRAMMAR[keyword]
@@ -364,14 +306,14 @@ class TokenStream(object):
                 if current.peek().isalpha():
                     if len(tokens) == 0:
                         tokens.append(GRAMMAR["$$def_label"])
-                    tokens.append(LabelToken(self._get_alphanum_token(current)))
+                    tokens.append(LabelToken(current.get_alphanum_str(['_'])))
                 else:
                     raise RuntimeError(f"Illegal label definition, starts with: {current.peek()}")
             elif char == '%':
                 if current.peek().isalpha():
                     if len(tokens) == 0:
                         tokens.append(GRAMMAR["$$def_symbol"])
-                    tokens.append(SymbolToken(self._get_alphanum_token(current)))
+                    tokens.append(SymbolToken(current.get_alphanum_str(['_'])))
                 else:
                     raise RuntimeError(f"Illegal label definition, starts with: {current.peek()}")
             elif char == ':':

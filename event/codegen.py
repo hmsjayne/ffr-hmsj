@@ -96,3 +96,19 @@ def remove_all(parameters: list) -> list:
     bytecode = [0x36, 0x4]
     bytecode.extend(trigger_id.bytes())
     return bytecode
+
+
+def give_item(parameters: list) -> list:
+    item = parameters[0]
+    return [0x37, 0x4, 0x0, item]
+
+
+def take_item(parameters: list) -> list:
+    item = parameters[0]
+    return [0x37, 0x4, 0x1, item]
+
+
+def check_item(parameters: list) -> list:
+    item = parameters[0]
+    label = parameters[1]
+    return [0x37, 0x4, 0x2, item, label]

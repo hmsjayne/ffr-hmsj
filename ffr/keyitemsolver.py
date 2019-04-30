@@ -23,6 +23,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 import json
 from collections import namedtuple
 from subprocess import run, PIPE
@@ -33,13 +34,19 @@ from doslib.gen.enemy import Encounter
 from doslib.maps import Maps
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
+from event import easm
+from event.epp import pparse
 from ffr.eventrewrite import EventRewriter
+from ffr.keyitemevents import *
 from stream.output import Output
 
 KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog", "movable"])
 
 NpcSource = namedtuple("NpcLocation", ["map_id", "npc_index", "event_id", "vanilla_ki"])
 ChestSource = namedtuple("ChestLocation", ["map_id", "chest_id", "sprite_id", "event_id", "vanilla_ki"])
+
+NewKeyItem = namedtuple("NewKeyItem", ["sprite", "reward", "dialog", "movable"])
+NewNpcSource = namedtuple("NewNpcSource", ["map_id", "npc_index", "event_id", "event", "map_init"])
 
 KEY_ITEMS = {
     "bridge": KeyItem(sprite=0x22, flag=0x03, item=None, dialog=0x127, movable=True),
@@ -103,6 +110,17 @@ REWARD_SOURCE = {
     "desert": None,
 }
 
+NEW_REWARD_SOURCE = {
+    "king": NewNpcSource(map_id=0x39, npc_index=2, event_id=0x138B, event=king_event, map_init=None),
+    "sara": NewNpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, event=sara_event,
+                         map_init=cornelia_castle_2f_event),
+}
+
+NEW_KEY_ITEMS = {
+    "lute": NewKeyItem(sprite=0x00, reward=lute_reward, dialog=0x10a, movable=True),
+    "lufienish": NewKeyItem(sprite=0x3A, reward=lufienish_reward, dialog=0x235, movable=True),
+}
+
 
 class KeyItemPlacement(object):
 
@@ -117,53 +135,41 @@ class KeyItemPlacement(object):
     def _do_placement(self, clingo_seed: int):
         key_item_locations = self._solve_placement(clingo_seed)
 
-        # Swap the flag the King sets (0x2 to 0x3).
-        king_flag = EventBuilder() \
-            .add_flag("bridge_built", 0x3) \
-            .set_flag("bridge_built", 0x0) \
-            .get_event()
-        self.rom = self.rom.apply_patch(0xa618, king_flag)
-
-        # This has to be done *before* shuffle, or the flag won't be reset properly.
-        self._shorten_canal_scene()
-
-        # The Key items returned work like this. Suppose a Placement returned was
-        # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
-        # should be found in the King of Cornelia location.
-        #
-        # This does *NOT* mean the King of Cornelia will give you Oxyale, rather, it means the NPC
-        # that gives Oxyale (the Fairy) should be placed in the King's spot.
-        #
-        # Further, the Fairy in the King of Cornelia's spot, will be there at the start of the game, and
-        # won't need to be rescued from the Bottle. It *does* mean that the Fairy won't provide Oxyale
-        # until Garland is defeated and that NPC (or treasure) is itself rescued.
-
         for placement in key_item_locations:
             print(f"Placement: {placement}")
 
-            # TODO: Add logic to allow another item in the shop at the very least. :)
-            if placement.item == "bottle" or placement.location == "desert":
+            if placement.location not in NEW_REWARD_SOURCE:
+                continue
+            if placement.item not in NEW_KEY_ITEMS:
                 continue
 
-            source = REWARD_SOURCE[placement.location]
-            key_item = KEY_ITEMS[placement.item]
+            source = NEW_REWARD_SOURCE[placement.location]
+            key_item = NEW_KEY_ITEMS[placement.item]
 
-            self._replace_item_event(source, key_item)
+            event_addr = self.events.get_addr(source.event_id)
+            event_source = pparse(f"{key_item.reward}\n\n{source.event}")
+            event = easm.parse(event_source, event_addr)
 
-            if isinstance(source, NpcSource):
+            if source.map_init is not None:
+                map_event_addr = self.map_events.get_addr(source.map_id)
+                map_event_source = pparse(f"{key_item.reward}\n\n{source.map_init}")
+                map_event = easm.parse(map_event_source, map_event_addr)
+
+                self.rom = self.rom.apply_patches({
+                    Rom.pointer_to_offset(event_addr): event,
+                    Rom.pointer_to_offset(map_event_addr): map_event
+                })
+            else:
+                self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
+
+            if isinstance(source, NewNpcSource):
                 self._replace_map_sprite(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
 
                 # Special case for "Sara" -- also update Chaos Shrine.
                 if placement.location == "sara":
                     self._replace_map_sprite(0x1f, 6, key_item.sprite, key_item.movable)
-                    self._rewrite_map_init_event(0x1f, 0x1, 0x1, 6)
 
-            if placement.location == "bikke":
-                self._better_pirates(placement.item)
-
-        self._remove_bridge_trigger()
         self._rewrite_give_texts()
-
         self.rom = self.maps.write(self.rom)
 
     def _remove_bridge_trigger(self):
