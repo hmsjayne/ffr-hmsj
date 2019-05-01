@@ -29,6 +29,12 @@ class EventTable(object):
     def set_addr(self, event_id: int, value: int):
         self._lut[event_id - self._base_event_id] = value
 
+    def get_lut(self) -> bytearray:
+        stream = OutputStream()
+        for addr in self._lut:
+            stream.put_u32(addr)
+        return stream.get_buffer()
+
 
 class EventTextBlock(TextBlock):
     def __init__(self, rom: Rom):

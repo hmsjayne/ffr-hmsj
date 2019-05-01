@@ -38,7 +38,7 @@ from event import easm
 from event.epp import pparse
 from ffr.eventrewrite import EventRewriter
 from ffr.keyitemevents import *
-from stream.outputstream import OutputStream
+from stream.outputstream import OutputStream, AddressableOutputStream
 
 KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog", "movable"])
 
@@ -130,6 +130,9 @@ class KeyItemPlacement(object):
         self.events = EventTable(rom, 0x7788, 0xbb7, base_event_id=0x1388)
         self.map_events = EventTable(rom, 0x7050, 0xD3, base_event_id=0x0)
         self.event_text_block = EventTextBlock(rom)
+
+        self.our_events = AddressableOutputStream(0x223F4C, max_size=0x1860)
+
         self._do_placement(clingo_seed)
 
     def _do_placement(self, clingo_seed: int):
@@ -151,16 +154,15 @@ class KeyItemPlacement(object):
             event = easm.parse(event_source, event_addr)
 
             if source.map_init is not None:
-                map_event_addr = self.map_events.get_addr(source.map_id)
+                map_event_addr = self.our_events.current_addr()
+
                 map_event_source = pparse(f"{key_item.reward}\n\n{source.map_init}")
                 map_event = easm.parse(map_event_source, map_event_addr)
 
-                self.rom = self.rom.apply_patches({
-                    Rom.pointer_to_offset(event_addr): event,
-                    Rom.pointer_to_offset(map_event_addr): map_event
-                })
-            else:
-                self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
+                self.map_events.set_addr(source.map_id, map_event_addr)
+                self.our_events.put_bytes(map_event)
+
+            self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
 
             if isinstance(source, NewNpcSource):
                 self._replace_map_sprite(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
@@ -169,8 +171,34 @@ class KeyItemPlacement(object):
                 if placement.location == "sara":
                     self._replace_map_sprite(0x1f, 6, key_item.sprite, key_item.movable)
 
+        # Write out our (moved) rewritten events along with the updated
+        # LUTs for them.
+        self.rom.apply_patches({
+            0x7050: self.map_events.get_lut(),
+            0x7788: self.events.get_lut(),
+            0x223F4C: self.our_events.get_buffer()
+
+        })
+
+        self._unite_mystic_key_doors()
         self._rewrite_give_texts()
         self.rom = self.maps.write(self.rom)
+
+    def _unite_mystic_key_doors(self):
+        maps_with_doors = [
+            0x06,  # Elven Castle
+            0x38,  # Castle Cornelia 1F
+        ]
+
+        # There are two events (in vanilla) for mystic key locked doors.
+        # - 0x1f4a: This door has been bound by the mystic key.
+        # - 0x23cd: The treasure house has been bound by the mystic key.
+        # In order to simplify some of the logic, change the 3 instances of the second to the first
+        # since it's more generic.
+        for map_id in maps_with_doors:
+            for sprite in self.maps._maps[map_id].sprites:
+                if sprite.event == 0x23cd:
+                    sprite.event = 0x1f4a
 
     def _remove_bridge_trigger(self):
         tiles = self.maps._maps[0x38].tiles
@@ -196,6 +224,7 @@ class KeyItemPlacement(object):
         self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\x00")
         self.event_text_block.strings[0x1e8] = TextBlock.encode_text("You obtain the canal.\x00")
         self.event_text_block.strings[0x1d2] = TextBlock.encode_text("You obtain class change.\x00")
+        self.event_text_block.strings[0x1bf] = TextBlock.encode_text("You obtain a bottle.\x00")
         self.event_text_block.strings[0x235] = TextBlock.encode_text("You can now speak Lufenian.\x00")
         self.rom = self.event_text_block.pack(self.rom)
 
