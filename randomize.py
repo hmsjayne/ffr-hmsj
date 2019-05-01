@@ -28,7 +28,7 @@ from ffr.keyitemsolver import KeyItemPlacement
 from ffr.spellshuffle import SpellShuffle
 from ffr.treasures import treasure_shuffle
 from ipsfile import load_ips_files
-from stream.output import Output
+from stream.outputstream import OutputStream
 
 BASE_PATCHES = [
     "data/DataPointerConsolidation.ips",
@@ -84,7 +84,7 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
         while not class_stats_stream.is_eos():
             class_stats.append(JobClass(class_stats_stream))
 
-        class_out_stream = Output()
+        class_out_stream = OutputStream()
         for job_class in class_stats:
             # Set the starting weapon and armor for all classes to something
             # very fair and balanced: Masamune + Diamond Armlet. :)
@@ -114,7 +114,7 @@ end_event
 
 def update_xp_requirements(rom: Rom, value) -> Rom:
     level_data = rom.open_bytestream(0x1BE3B4, 396)
-    new_table = Output()
+    new_table = OutputStream()
     next_value = level_data.get_u32()
     while not next_value == None:
         new_table.put_u32(int(next_value * value))
@@ -226,7 +226,7 @@ def init_base_events(rom: Rom) -> Rom:
     crescent_lake_map_event = easm.parse(crescent_lake_map_init, crescent_lake_map_event_addr)
 
     # Move the airship's start location to right outside of Coneria Castle.
-    airship_start = Output()
+    airship_start = OutputStream()
     airship_start.put_u32(0x918)
     airship_start.put_u32(0x998)
 
@@ -254,7 +254,7 @@ def sarda_requires_feeding_titan(rom: Rom) -> Rom:
         .event_end() \
         .get_event()
 
-    sages_cave_init_addr = Output()
+    sages_cave_init_addr = OutputStream()
     sages_cave_init_addr.put_u32(0x800a100)
 
     patches = {

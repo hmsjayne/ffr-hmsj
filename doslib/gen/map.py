@@ -16,12 +16,12 @@
 #
 #  Generated on 2019-04-11 07:46
 
-from stream.input import Input
-from stream.output import Output
+from stream.inputstream import InputStream
+from stream.outputstream import OutputStream
 
 
 class Npc(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.indentifier = 0
             self.event = 0
@@ -42,7 +42,7 @@ class Npc(object):
             self.facing = stream.get_u16()
             self.in_room = stream.get_u16()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u16(self.indentifier)
         stream.put_u16(self.event)
         stream.put_u16(self.x_pos)
@@ -54,7 +54,7 @@ class Npc(object):
 
 
 class Chest(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.indentifier = 0
             self.chest_id = 0
@@ -67,7 +67,7 @@ class Chest(object):
             self.x_pos = stream.get_u16()
             self.y_pos = stream.get_u16()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u16(self.indentifier)
         stream.put_u16(self.chest_id)
         stream.put_u16(self.x_pos)
@@ -75,7 +75,7 @@ class Chest(object):
 
 
 class Tile(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.indentifier = 0
             self.event = 0
@@ -88,7 +88,7 @@ class Tile(object):
             self.x_pos = stream.get_u16()
             self.y_pos = stream.get_u16()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u16(self.indentifier)
         stream.put_u16(self.event)
         stream.put_u16(self.x_pos)
@@ -96,7 +96,7 @@ class Tile(object):
 
 
 class Shop(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.indentifier = 0
             self.event = 0
@@ -109,7 +109,7 @@ class Shop(object):
             self.x_pos = stream.get_u16()
             self.y_pos = stream.get_u16()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u16(self.indentifier)
         stream.put_u16(self.event)
         stream.put_u16(self.x_pos)
@@ -117,7 +117,7 @@ class Shop(object):
 
 
 class Sprite(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.indentifier = 0
             self.event = 0
@@ -130,7 +130,7 @@ class Sprite(object):
             self.x_pos = stream.get_u16()
             self.y_pos = stream.get_u16()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u16(self.indentifier)
         stream.put_u16(self.event)
         stream.put_u16(self.x_pos)
@@ -138,7 +138,7 @@ class Sprite(object):
 
 
 class MapHeader(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.indentifier = 0
             self.low_x = 0
@@ -153,7 +153,7 @@ class MapHeader(object):
             self.high_x = stream.get_u16()
             self.high_y = stream.get_u16()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u16(self.indentifier)
         stream.put_u16(self.low_x)
         stream.put_u16(self.low_y)

@@ -13,7 +13,7 @@
 #  limitations under the License.
 import struct
 
-from stream.input import Input
+from stream.inputstream import InputStream
 
 
 class Rom(object):
@@ -29,7 +29,7 @@ class Rom(object):
     def open_bytestream(self, offset: int, size: int = -1, check_alignment: bool = True):
         if 0 <= offset < len(self.rom_data):
             data = self.rom_data[offset:] if size < 0 else self.rom_data[offset:(offset + size)]
-            return Input(data, check_alignment=check_alignment)
+            return InputStream(data, check_alignment=check_alignment)
         raise RuntimeError(f"Index out of bounds {hex(offset)} vs {len(self.rom_data)}")
 
     def get_lut(self, offset: int, count: int):
@@ -63,7 +63,7 @@ class Rom(object):
         else:
             raise RuntimeError(f"Error: Either an end marker or length is required for a stream.")
 
-        return Input(self.rom_data[offset:end_offset])
+        return InputStream(self.rom_data[offset:end_offset])
 
     def get_event(self, offset: int):
         end_offset = offset
@@ -73,7 +73,7 @@ class Rom(object):
             last_cmd = self.rom_data[end_offset]
             end_offset += cmd_len
 
-        return Input(self.rom_data[offset:end_offset])
+        return InputStream(self.rom_data[offset:end_offset])
 
     def apply_patch(self, offset: int, patch: bytearray):
         """Applies a patch to the rom.

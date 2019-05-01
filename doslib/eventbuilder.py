@@ -14,14 +14,14 @@
 
 from __future__ import annotations
 
-from stream.output import Output
+from stream.outputstream import OutputStream
 
 
 class EventBuilder(object):
     def __init__(self):
         self._labels = {}
         self._flags = {}
-        self._stream = Output()
+        self._stream = OutputStream()
 
     def add_label(self, label: str, addr=-1) -> EventBuilder:
         if label not in self._labels:

@@ -16,12 +16,12 @@
 #
 #  Generated on 2019-04-11 07:46
 
-from stream.input import Input
-from stream.output import Output
+from stream.inputstream import InputStream
+from stream.outputstream import OutputStream
 
 
 class EnemyStats(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.exp_reward = 0
             self.gil_reward = 0
@@ -76,7 +76,7 @@ class EnemyStats(object):
             for index in range(3):
                 self.padding.append(stream.get_u8())
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u16(self.exp_reward)
         stream.put_u16(self.gil_reward)
         stream.put_u16(self.max_hp)
@@ -105,7 +105,7 @@ class EnemyStats(object):
 
 
 class Encounter(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.config = 0
             self.unrunnable = 0
@@ -120,7 +120,7 @@ class Encounter(object):
             for index in range(4):
                 self.groups.append(EncounterGroup(stream))
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u8(self.config)
         stream.put_u8(self.unrunnable)
         stream.put_u16(self.surprise_chance)
@@ -129,7 +129,7 @@ class Encounter(object):
 
 
 class EncounterGroup(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.enemy_id = 0
             self.min_count = 0
@@ -142,7 +142,7 @@ class EncounterGroup(object):
             self.max_count = stream.get_u8()
             self.unused = stream.get_u8()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u8(self.enemy_id)
         stream.put_u8(self.min_count)
         stream.put_u8(self.max_count)

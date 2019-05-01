@@ -16,7 +16,7 @@ from random import shuffle
 
 from doslib.maps import TreasureChest, MoneyChest
 from doslib.rom import Rom
-from stream.output import Output
+from stream.outputstream import OutputStream
 
 
 def treasure_shuffle(rom: Rom) -> Rom:
@@ -32,7 +32,7 @@ def treasure_shuffle(rom: Rom) -> Rom:
 
     shuffle(chests_to_shuffle)
 
-    chest_data = Output()
+    chest_data = OutputStream()
     for chest in original_list:
         if isinstance(chest, MoneyChest) or chest.item_type != 0:
             new_chest = chests_to_shuffle.pop()

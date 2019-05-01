@@ -17,7 +17,7 @@ from doslib.rom import Rom
 from doslib.shopdata import ShopData
 from doslib.spells import Spells
 from ffr.shuffledlist import ShuffledList
-from stream.output import Output
+from stream.outputstream import OutputStream
 
 
 class SpellShuffle(object):
@@ -33,7 +33,7 @@ class SpellShuffle(object):
         self._do_shuffle()
 
     def write(self, rom: Rom) -> Rom:
-        permissions_stream = Output()
+        permissions_stream = OutputStream()
         for permission in self._permissions:
             permissions_stream.put_u16(permission)
 

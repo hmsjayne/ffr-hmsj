@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 
-class Output(object):
+class OutputStream(object):
     """Class to present a bytearray as a stream"""
 
     def __init__(self):

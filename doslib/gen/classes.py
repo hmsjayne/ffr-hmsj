@@ -16,12 +16,12 @@
 #
 #  Generated on 2019-04-11 07:46
 
-from stream.input import Input
-from stream.output import Output
+from stream.inputstream import InputStream
+from stream.outputstream import OutputStream
 
 
 class JobClass(object):
-    def __init__(self, stream: Input = None):
+    def __init__(self, stream: InputStream = None):
         if stream is None:
             self.base_hp = 0
             self.base_mp = 0
@@ -54,7 +54,7 @@ class JobClass(object):
             self.armor_id = stream.get_u8()
             self.unused = stream.get_u8()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u16(self.base_hp)
         stream.put_u16(self.base_mp)
         stream.put_u8(self.starting_spell_level)

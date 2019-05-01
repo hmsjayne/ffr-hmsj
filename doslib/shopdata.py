@@ -15,8 +15,8 @@
 from __future__ import annotations
 
 from doslib.rom import Rom
-from stream.input import Input
-from stream.output import Output
+from stream.inputstream import InputStream
+from stream.outputstream import OutputStream
 
 
 class ShopData(object):
@@ -37,8 +37,8 @@ class ShopData(object):
     def write(self, rom: Rom) -> Rom:
         # Since there's a LUT and the data that it points to, create two output streams.
         # This should work because both are continuous.
-        data_lut_stream = Output()
-        shop_inventory = Output()
+        data_lut_stream = OutputStream()
+        shop_inventory = OutputStream()
 
         next_shop_addr = self.shop_data_pointers[0].pointer
         start_size = 0
@@ -64,7 +64,7 @@ class ShopData(object):
 
 
 class ShopDataPointer(object):
-    def __init__(self, stream: Input):
+    def __init__(self, stream: InputStream):
         self.contents = stream.get_u8()
         self.shop_graphic = (self.contents >> 4) & 0x0f
         self.shop_data_length = self.contents & 0x0f
@@ -74,7 +74,7 @@ class ShopDataPointer(object):
             self.unused.append(stream.get_u8())
         self.pointer = stream.get_u32()
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         stream.put_u8(self.contents)
         for data in self.unused:
             stream.put_u8(data)
@@ -82,7 +82,7 @@ class ShopDataPointer(object):
 
 
 class ShopInventory(object):
-    def __init__(self, stream: Input, length: int):
+    def __init__(self, stream: InputStream, length: int):
         self.magic = []
         self.armor = []
         self.weapons = []
@@ -104,7 +104,7 @@ class ShopInventory(object):
                 active.append(data)
                 read_length += 1
 
-    def write(self, stream: Output) -> int:
+    def write(self, stream: OutputStream) -> int:
         written_length = 0
         if len(self.magic) > 0:
             for magic_id in self.magic:
@@ -159,7 +159,7 @@ class ShopInventoryBuilder(object):
         return self
 
     def build(self):
-        stream = Output()
+        stream = OutputStream()
         written_length = 0
         if len(self._magic) > 0:
             for magic_id in self._magic:
@@ -187,4 +187,4 @@ class ShopInventoryBuilder(object):
         if written_length > 0xf:
             raise RuntimeError(f"Error: Too many items in shop: {written_length}")
 
-        return ShopInventory(Input(stream.get_buffer()), written_length)
+        return ShopInventory(InputStream(stream.get_buffer()), written_length)

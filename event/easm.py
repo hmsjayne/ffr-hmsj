@@ -17,7 +17,7 @@ from event.parseinputstring import ParseInputString
 from event.tokens import *
 
 # The grammar for `easm` is very simple, and is defined in the dict here.
-from stream.output import Output
+from stream.outputstream import OutputStream
 
 GRAMMAR = {
     # Here we define mappings of strings to terminal tokens.
@@ -200,7 +200,7 @@ def parse(source: str, base_addr: int) -> bytearray:
 
     # At this point, all of the intermediate code is built and the only thing left is to resolve
     # the left over symbols, which will all bel labels.
-    bytecode = Output()
+    bytecode = OutputStream()
     for code in icode:
         for bd in code:
             if isinstance(bd, LabelToken):

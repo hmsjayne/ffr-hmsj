@@ -25,7 +25,7 @@
 #  limitations under the License.
 
 
-class Input(object):
+class InputStream(object):
     """Class to present a bytearray as a stream"""
 
     def __init__(self, stream: bytearray, check_alignment: bool = True):
@@ -163,7 +163,7 @@ class Input(object):
 
     @staticmethod
     def from_string(string: str):
-        return Input(bytearray(string.encode()))
+        return InputStream(bytearray(string.encode()))
 
     def _ensure_halfword_aligned(self):
         if self._index % 2 != 0:

@@ -225,6 +225,7 @@ def decompile(addr):
         elif cmd == 0x30:
             npc_id = rom_data[addr + 3]
             sub_cmd = rom_data[addr + 2]
+            event_id = None
             if sub_cmd == 0x1:
                 action = "set_event"
                 event_id = array.array("H", rom_data[addr + 4:addr + 6])[0]

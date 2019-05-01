@@ -38,7 +38,7 @@ from event import easm
 from event.epp import pparse
 from ffr.eventrewrite import EventRewriter
 from ffr.keyitemevents import *
-from stream.output import Output
+from stream.outputstream import OutputStream
 
 KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog", "movable"])
 
@@ -239,7 +239,7 @@ class KeyItemPlacement(object):
             if old_dialog is not None and new_dialog is not None:
                 replacement.rewrite_dialog(old_dialog, new_dialog)
 
-            event_output = Output()
+            event_output = OutputStream()
             replacement.rewrite().write(event_output)
             self.rom = self.rom.apply_patches({event_ptr: event_output.get_buffer()})
 
@@ -268,7 +268,7 @@ class KeyItemPlacement(object):
             if map_id == 0x1f:
                 replacement.remove_visiting_pose(True)
 
-        map_output = Output()
+        map_output = OutputStream()
         replacement.rewrite().write(map_output)
         self.rom = self.rom.apply_patches({map_event_ptr: map_output.get_buffer()})
 
@@ -297,7 +297,7 @@ class KeyItemPlacement(object):
         else:
             pirates.config = 0x00
 
-        formation_stream = Output()
+        formation_stream = OutputStream()
         for formation in formations:
             formation.write(formation_stream)
         self.rom = self.rom.apply_patch(0x2288B4, formation_stream.get_buffer())
