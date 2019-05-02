@@ -83,6 +83,14 @@ class MusicToken(str):
     pass
 
 
+class SetRepeatToken(str):
+    pass
+
+
+class RepeatToken(str):
+    pass
+
+
 class ShowDialogToken(str):
     pass
 
@@ -129,3 +137,25 @@ class TakeItemToken(str):
 
 class CheckItemToken(str):
     pass
+
+
+class Uint16(object):
+    def __init__(self, value: int):
+        self._value = value
+
+    def __repr__(self):
+        return f"Unit16({hex(self._value)})"
+
+    def bytes(self):
+        return [self._value & 0xff, (self._value >> 8) & 0xff]
+
+
+class Uint32(object):
+    def __init__(self, value: int):
+        self._value = value
+
+    def __repr__(self):
+        return f"Uint32({hex(self._value)})"
+
+    def bytes(self):
+        return [self._value & 0xff, (self._value >> 8) & 0xff, (self._value >> 16) & 0xff, (self._value >> 24) & 0xff]

@@ -90,5 +90,3 @@ pair(gear,desert).
 
 %Bahamut's event needs extra work
 pair(class_change, bahamut).
-
-pair(lute, king).

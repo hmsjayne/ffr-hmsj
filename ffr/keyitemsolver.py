@@ -114,11 +114,34 @@ NEW_REWARD_SOURCE = {
     "king": NewNpcSource(map_id=0x39, npc_index=2, event_id=0x138B, event=king_event, map_init=None),
     "sara": NewNpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, event=sara_event,
                          map_init=cornelia_castle_2f_event),
+    "bikke": NewNpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, event=bikke_event,
+                          map_init=pravoka_init_event),
 }
 
 NEW_KEY_ITEMS = {
+    "bridge": NewKeyItem(sprite=0x22, reward=bridge_reward, dialog=0x127, movable=True),
     "lute": NewKeyItem(sprite=0x00, reward=lute_reward, dialog=0x10a, movable=True),
+    "ship": NewKeyItem(sprite=0x45, reward=ship_reward, dialog=0x224, movable=True),
+    "crown": NewKeyItem(sprite=0x94, reward=crown_reward, dialog=0x10b, movable=True),
+    "crystal": NewKeyItem(sprite=0x47, reward=crystal_reward, dialog=0x1f3, movable=True),
+    "jolt_tonic": NewKeyItem(sprite=0x37, reward=jolt_tonic_reward, dialog=0x216, movable=True),
+    "key": NewKeyItem(sprite=0x31, reward=key_reward, dialog=0x154, movable=False),
+    "nitro_powder": NewKeyItem(sprite=0x0D, reward=nitro_powder_reward, dialog=0x128, movable=True),
+    "canal": NewKeyItem(sprite=0x3B, reward=canal_reward, dialog=0x1e8, movable=True),
+    "ruby": NewKeyItem(sprite=0x58, reward=ruby_reward, dialog=0x142, movable=False),
+    "rod": NewKeyItem(sprite=0x39, reward=rod_reward, dialog=0x21a, movable=True),
+    "canoe": NewKeyItem(sprite=0x38, reward=canoe_reward, dialog=0x1b1, movable=True),
+    "levistone": NewKeyItem(sprite=0x57, reward=levistone_reward, dialog=0x10c, movable=False),
+    "tail": NewKeyItem(sprite=0x25, reward=tail_reward, dialog=0x10d, movable=True),
+    "class_change": NewKeyItem(sprite=0x64, reward=class_change_reward, dialog=0x1d2, movable=False),
+    "bottle": NewKeyItem(sprite=0x44, reward=bottle_reward, dialog=None, movable=True),
+    "oxyale": NewKeyItem(sprite=0x29, reward=oxyale_reward, dialog=0x1c0, movable=True),
+    "slab": NewKeyItem(sprite=0x1B, reward=slab_reward, dialog=0x10e, movable=True),
     "lufienish": NewKeyItem(sprite=0x3A, reward=lufienish_reward, dialog=0x235, movable=True),
+    "chime": NewKeyItem(sprite=0x21, reward=chime_reward, dialog=0x240, movable=True),
+    "cube": NewKeyItem(sprite=0x2B, reward=cube_reward, dialog=0x241, movable=True),
+    "adamant": NewKeyItem(sprite=0x59, reward=adamant_reward, dialog=0x10f, movable=False),
+    "excalibur": NewKeyItem(sprite=0x3C, reward=excalibur_reward, dialog=0x1ed, movable=True),
 }
 
 
@@ -177,7 +200,6 @@ class KeyItemPlacement(object):
             0x7050: self.map_events.get_lut(),
             0x7788: self.events.get_lut(),
             0x223F4C: self.our_events.get_buffer()
-
         })
 
         self._unite_mystic_key_doors()

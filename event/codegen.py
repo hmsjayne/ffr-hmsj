@@ -11,7 +11,8 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from evtasm import Uint16
+
+from event.tokens import Uint16
 
 
 def end_event(parameters: list) -> list:
@@ -51,6 +52,17 @@ def music(parameters: list) -> list:
     bytecode.extend(sound_id.bytes())
     bytecode.extend([0xff, 0xff])
     return bytecode
+
+
+def set_repeat(parameters: list) -> list:
+    times = parameters[0]
+    return [0x19, 0x4, 0x0, times]
+
+
+def repeat(parameters: list) -> list:
+    step = parameters[0]
+    label = parameters[1]
+    return [0x19, 0x8, step, 0xff, label]
 
 
 def show_dialog(parameters: list) -> list:

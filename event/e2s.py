@@ -118,6 +118,14 @@ def _da_11(cmd: bytearray) -> str:
     return f"music {hex(cmd[2])} {hex(item_id)}"
 
 
+def _da_19(cmd: bytearray) -> tuple:
+    if cmd[1] == 0x4:
+        return f"set_repeat {hex(cmd[3])}", None
+    else:
+        addr = array.array("I", cmd[4:8])[0]
+        return f"repeat {hex(cmd[2])} $$addr$$", addr
+
+
 def _da_27(cmd: bytearray) -> str:
     return f"show_dialog"
 
@@ -233,6 +241,14 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = cmd_text
         elif cmd == 0x11:
             working[offset] = _da_11(full_cmd)
+        elif cmd == 0x19:
+            cmd_text, jump_target = _da_19(full_cmd)
+            if jump_target is not None:
+                if jump_target not in labels:
+                    labels[jump_target] = f".Label_{len(labels) + 1}"
+                label = labels[jump_target]
+                cmd_text = cmd_text.replace("$$addr$$", label)
+            working[offset] = cmd_text
         elif cmd == 0x27:
             working[offset] = _da_27(full_cmd)
         elif cmd == 0x2d:
@@ -274,26 +290,3 @@ def disassemble_event(rom: Rom, event_id: int) -> dict:
     # Decompile the event in a function so it can recurse.
     offset = lookup_event(rom, event_id)
     return disassemble(rom, offset)
-
-
-def main():
-    parser = ArgumentParser(description="Final Fantasy: Dawn of Souls Event->Script")
-    parser.add_argument("rom", metavar="ROM file", type=str, help="ROM source file")
-    parser.add_argument("--event", dest="event", type=str, help="Event to disassemble")
-    parsed = parser.parse_args()
-
-    # Opening the ROM is simple.
-    rom = Rom(parsed.rom)
-
-    # The event id is a bit trickier. The parser won't recognize hex values, so we need to accept it as a
-    # string and convert it ourselves.
-    if parsed.event.startswith("0x"):
-        event_id = int(parsed.event, 16)
-    else:
-        event_id = int(parsed.event)
-
-    disassemble_event(rom, event_id)
-
-
-if __name__ == "__main__":
-    main()

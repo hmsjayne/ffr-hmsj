@@ -28,6 +28,8 @@ GRAMMAR = {
     "jump": JumpToken("jump"),
     "jump_chest_empty": JumpChestEmptyToken("jump_chest_empty"),
     "music": MusicToken("music"),
+    "set_repeat": SetRepeatToken("set_repeat"),
+    "repeat": RepeatToken("repeat"),
     "show_dialog": ShowDialogToken("show_dialog"),
     "set_flag": SetFlagToken("set_flag"),
     "check_flag": CheckFlagToken("check_flag"),
@@ -70,6 +72,8 @@ GRAMMAR = {
     CloseDialogToken: [(CloseDialogAutoToken(), CloseDialogWaitToken())],
     JumpToken: [LabelToken()],
     MusicToken: ["$$value$$", "$$value$$"],
+    SetRepeatToken: ["$$value$$"],
+    RepeatToken: ["$$value$$", LabelToken()],
     ShowDialogToken: None,
     SetFlagToken: ["$$value$$"],
     CheckFlagToken: ["$$value$$", "$$cond$$", LabelToken()],
@@ -213,28 +217,6 @@ def parse(source: str, base_addr: int) -> bytearray:
 
     # Done!
     return bytecode.get_buffer()
-
-
-class Uint16(object):
-    def __init__(self, value: int):
-        self._value = value
-
-    def __repr__(self):
-        return f"Unit16({hex(self._value)})"
-
-    def bytes(self):
-        return [self._value & 0xff, (self._value >> 8) & 0xff]
-
-
-class Uint32(object):
-    def __init__(self, value: int):
-        self._value = value
-
-    def __repr__(self):
-        return f"Uint32({hex(self._value)})"
-
-    def bytes(self):
-        return [self._value & 0xff, (self._value >> 8) & 0xff, (self._value >> 16) & 0xff, (self._value >> 24) & 0xff]
 
 
 class TokenStream(object):
