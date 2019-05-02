@@ -154,7 +154,7 @@ class KeyItemPlacement(object):
         self.map_events = EventTable(rom, 0x7050, 0xD3, base_event_id=0x0)
         self.event_text_block = EventTextBlock(rom)
 
-        self.our_events = AddressableOutputStream(0x223F4C, max_size=0x1860)
+        self.our_events = AddressableOutputStream(0x8223F4C, max_size=0x1860)
 
         self._do_placement(clingo_seed)
 
@@ -196,7 +196,7 @@ class KeyItemPlacement(object):
 
         # Write out our (moved) rewritten events along with the updated
         # LUTs for them.
-        self.rom.apply_patches({
+        self.rom = self.rom.apply_patches({
             0x7050: self.map_events.get_lut(),
             0x7788: self.events.get_lut(),
             0x223F4C: self.our_events.get_buffer()
