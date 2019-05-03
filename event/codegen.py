@@ -122,3 +122,10 @@ def check_item(parameters: list) -> list:
     item = parameters[0]
     label = parameters[1]
     return [0x37, 0x4, 0x2, item, label]
+
+
+def jump_by_dir(parameters: list) -> list:
+    up_label = parameters[0]
+    right_label = parameters[1]
+    left_label = parameters[2]
+    return [0x42, 0x10, 0xff, 0xff, up_label, right_label, left_label]

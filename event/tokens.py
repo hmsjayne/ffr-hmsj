@@ -138,6 +138,8 @@ class TakeItemToken(str):
 class CheckItemToken(str):
     pass
 
+class JumpByDirToken(str):
+    pass
 
 class Uint16(object):
     def __init__(self, value: int):

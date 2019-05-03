@@ -40,6 +40,7 @@ GRAMMAR = {
     "give_item": GiveItemToken("give_item"),
     "take_item": TakeItemToken("take_item"),
     "check_item": CheckItemToken("check_item"),
+    "jump_by_dir": JumpByDirToken("jump_by_dir"),
 
     # Conditional jumps
     "jz": JzToken(0x2),
@@ -85,6 +86,7 @@ GRAMMAR = {
     GiveItemToken: ["$$value$$"],
     TakeItemToken: ["$$value$$"],
     CheckItemToken: ["$$value$$", JzToken(), LabelToken()],
+    JumpByDirToken: [LabelToken(), LabelToken(), LabelToken()],
     # The one special case is the `db` (define bytes).
     # This command is handled separately by the parser, because it is essentially a request to insert the
     # bytes that proceed it verbatim into the output. Because the command can be followed by any number
