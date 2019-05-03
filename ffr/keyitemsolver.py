@@ -156,7 +156,7 @@ class KeyItemPlacement(object):
     def __init__(self, rom: Rom, clingo_seed: int):
         self.rom = rom
         self.maps = Maps(rom)
-        self.events = EventTable(rom, 0x7788, 0xbb7, base_event_id=0x1388)
+        self.events = EventTable(rom, 0x7788, 0x44, base_event_id=0x1388)
         self.map_events = EventTable(rom, 0x7050, 0xD3, base_event_id=0x0)
         self.event_text_block = EventTextBlock(rom)
 
