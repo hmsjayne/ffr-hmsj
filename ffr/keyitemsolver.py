@@ -47,6 +47,7 @@ ChestSource = namedtuple("ChestLocation", ["map_id", "chest_id", "sprite_id", "e
 
 NewKeyItem = namedtuple("NewKeyItem", ["sprite", "reward", "dialog", "movable"])
 NewNpcSource = namedtuple("NewNpcSource", ["map_id", "npc_index", "event_id", "event", "map_init"])
+NewChestSource = namedtuple("NewChestSource", ["map_id", "chest_id", "sprite_id", "event_id", "event", "map_init"])
 
 KEY_ITEMS = {
     "bridge": KeyItem(sprite=0x22, flag=0x03, item=None, dialog=0x127, movable=True),
@@ -116,6 +117,11 @@ NEW_REWARD_SOURCE = {
                          map_init=cornelia_castle_2f_event),
     "bikke": NewNpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, event=bikke_event,
                           map_init=pravoka_init_event),
+    "marsh": NewChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, event=marsh_event,
+                            map_init=marsh_cave_b3_init),
+    "locked_cornelia": NewChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13ad,
+                                      event=locked_cornelia_event, map_init=cornelia_castle_1f_event),
+    "nerrick": NewNpcSource(map_id=0x57, npc_index=11, event_id=0x1393, event=nerrik_event, map_init=mt_duergar_init),
 }
 
 NEW_KEY_ITEMS = {
@@ -162,12 +168,13 @@ class KeyItemPlacement(object):
         key_item_locations = self._solve_placement(clingo_seed)
 
         for placement in key_item_locations:
-            print(f"Placement: {placement}")
 
             if placement.location not in NEW_REWARD_SOURCE:
                 continue
             if placement.item not in NEW_KEY_ITEMS:
                 continue
+
+            print(f"Placement: {placement}")
 
             source = NEW_REWARD_SOURCE[placement.location]
             key_item = NEW_KEY_ITEMS[placement.item]
@@ -175,6 +182,7 @@ class KeyItemPlacement(object):
             event_addr = self.events.get_addr(source.event_id)
             event_source = pparse(f"{key_item.reward}\n\n{source.event}")
             event = easm.parse(event_source, event_addr)
+            self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
 
             if source.map_init is not None:
                 map_event_addr = self.our_events.current_addr()
@@ -185,14 +193,12 @@ class KeyItemPlacement(object):
                 self.map_events.set_addr(source.map_id, map_event_addr)
                 self.our_events.put_bytes(map_event)
 
-            self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
-
             if isinstance(source, NewNpcSource):
-                self._replace_map_sprite(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
+                self._replace_map_npc(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
 
                 # Special case for "Sara" -- also update Chaos Shrine.
                 if placement.location == "sara":
-                    self._replace_map_sprite(0x1f, 6, key_item.sprite, key_item.movable)
+                    self._replace_map_npc(0x1f, 6, key_item.sprite, key_item.movable)
 
         # Write out our (moved) rewritten events along with the updated
         # LUTs for them.
@@ -222,26 +228,6 @@ class KeyItemPlacement(object):
                 if sprite.event == 0x23cd:
                     sprite.event = 0x1f4a
 
-    def _remove_bridge_trigger(self):
-        tiles = self.maps._maps[0x38].tiles
-        for tile in tiles:
-            if tile.event == 0x1392:
-                # Remove the bridge building cut-scene trigger.
-                tile.event = 0x0
-
-    def _shorten_canal_scene(self):
-        # This cuts out the part of the scene that switches to the
-        # overworld and shows the rocks collapsing, but keeps the
-        # rest of it.
-        event = EventBuilder() \
-            .add_flag("have_canal", 0x0b) \
-            .add_label("end_up_collaps", 0x800c238) \
-            .set_flag("have_canal", 0x0) \
-            .jump_to("end_up_collaps") \
-            .nop() \
-            .get_event()
-        self.rom = self.rom.apply_patch(0xc0f4, event)
-
     def _rewrite_give_texts(self):
         self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\x00")
         self.event_text_block.strings[0x1e8] = TextBlock.encode_text("You obtain the canal.\x00")
@@ -250,108 +236,12 @@ class KeyItemPlacement(object):
         self.event_text_block.strings[0x235] = TextBlock.encode_text("You can now speak Lufenian.\x00")
         self.rom = self.event_text_block.pack(self.rom)
 
-    def _replace_item_event(self, source, key_item: KeyItem):
-        """So, we take in the item and the location of said item"""
-        """And take our time calling up the needed data here"""
-        """In particular, there's two events that need to be fixed:"""
-        """One is indexed the same as the map, and needs to look at """
-
-        vanilla_item = KEY_ITEMS[source.vanilla_ki]
-
-        if source.map_id is not None:
-            # Dump out any posing in the map init events for visiting NPCs
-            if isinstance(source, NpcSource):
-                visiting_npcs = source.npc_index
-            else:
-                visiting_npcs = None
-            self._rewrite_map_init_event(source.map_id, vanilla_item.flag, key_item.flag, visiting_npcs)
-
-        if source.event_id is not None:
-            event_ptr = Rom.pointer_to_offset(self.events.get_addr(source.event_id))
-            event = Event(self.rom.get_event(event_ptr))
-            replacement = EventRewriter(event)
-
-            replacement.replace_flag(vanilla_item.flag, key_item.flag)
-
-            if key_item.item is not None:
-                replacement.give_item(key_item.item)
-
-            if isinstance(source, NpcSource):
-                replacement.visiting_npc(source.npc_index)
-                replacement.remove_visiting_pose(key_item.movable)
-
-            # Special case for Sara in event 0x138b - confronting Garland.
-            if source.event_id == 0x138b:
-                replacement.visiting_npc(6)
-
-            old_dialog = vanilla_item.dialog
-            new_dialog = key_item.dialog
-
-            if old_dialog is not None and new_dialog is not None:
-                replacement.rewrite_dialog(old_dialog, new_dialog)
-
-            event_output = OutputStream()
-            replacement.rewrite().write(event_output)
-            self.rom = self.rom.apply_patches({event_ptr: event_output.get_buffer()})
-
-    def _replace_map_sprite(self, map_id: int, npc_index: int, sprite: int, movable: bool):
+    def _replace_map_npc(self, map_id: int, npc_index: int, sprite: int, movable: bool):
         self.maps._maps[map_id].npcs[npc_index].sprite_id = sprite
 
         # Some sprites weren't designed to move, so hold them still.
         if not movable:
             self.maps._maps[map_id].npcs[npc_index].move_speed = 0
-
-    def _rewrite_map_init_event(self, map_id: int, vanilla_flag, new_flag, visiting_npcs):
-        map_event_ptr = Rom.pointer_to_offset(self.map_events.get_addr(map_id))
-        map_event = Event(self.rom.get_event(map_event_ptr))
-        replacement = EventRewriter(map_event)
-
-        replacement.replace_chest()
-
-        # Don't change the init event flag for Elven Castle or the Mystic Key doors
-        # will be locked until the Prince wakes up :)
-        if map_id != 0x6:
-            replacement.replace_conditional(vanilla_flag, new_flag)
-
-        # Dump out any posing in the map init events for visiting NPCs
-        if visiting_npcs is not None:
-            replacement.visiting_npc(visiting_npcs)
-            if map_id == 0x1f:
-                replacement.remove_visiting_pose(True)
-
-        map_output = OutputStream()
-        replacement.rewrite().write(map_output)
-        self.rom = self.rom.apply_patches({map_event_ptr: map_output.get_buffer()})
-
-    def _better_pirates(self, key_item: str):
-        if key_item not in BETTER_PIRATES:
-            return
-
-        formation_stream = self.rom.open_bytestream(0x2288B4, 0x1CD4)
-        formations = []
-        while not formation_stream.is_eos():
-            formations.append(Encounter(formation_stream))
-        pirates = formations[0x7e]
-
-        total_enemy_count = 0
-        for index, enemy in enumerate(BETTER_PIRATES[key_item]):
-            if enemy.enemy_id != -1:
-                pirates.groups[index].enemy_id = enemy.enemy_id
-                pirates.groups[index].min_count = enemy.number
-                pirates.groups[index].max_count = enemy.number
-            total_enemy_count += enemy.number
-
-        if total_enemy_count == 1:
-            pirates.config = 0x3
-        elif total_enemy_count <= 4:
-            pirates.config = 0x02
-        else:
-            pirates.config = 0x00
-
-        formation_stream = OutputStream()
-        for formation in formations:
-            formation.write(formation_stream)
-        self.rom = self.rom.apply_patch(0x2288B4, formation_stream.get_buffer())
 
     @staticmethod
     def _solve_placement(seed: int) -> tuple:
@@ -381,25 +271,3 @@ class KeyItemPlacement(object):
             ki_placement.append(pairing)
 
         return tuple(ki_placement)
-
-
-MiniFormation = namedtuple("MiniFormation", ["enemy_id", "number"])
-
-# Because there's not enough detail to pick out what the encounter configuration should be based
-# only on the data here, there's a bit of rule breaking.
-# Encounters are always sized based on the number of enemies in them:
-#  - 1: Fiend size :)
-#  - 2-4: Large size
-#  - 5+: Small
-# Don't mix land + flying...
-#
-# So what do you do if you want 2 small enemies? Add an extra entry with enemy_id=-1 with the number required to
-# bump into the correct category. (So 1 large would be the 1 enemy + 1 more -1 enemy.
-# See the "crown" item below.
-# NOTE: enemy_id=-1 *MUST* be at the end. If they're mixed in the middle BAD THING will happen.
-BETTER_PIRATES = {
-    "crown": [MiniFormation(enemy_id=0x67, number=4), MiniFormation(enemy_id=-1, number=1)],
-    "class_change": [MiniFormation(enemy_id=0x43, number=1), MiniFormation(enemy_id=0x6b, number=1),
-                     MiniFormation(enemy_id=0x6a, number=1), MiniFormation(enemy_id=0x42, number=1)],
-    "lufienish": [MiniFormation(enemy_id=0x32, number=4)],
-}

@@ -40,9 +40,7 @@ def jump(parameters: list) -> list:
 
 def jump_chest_empty(parameters: list) -> list:
     label = parameters[0]
-    bytecode = [0xd, 0xc, 0x0, 0xff, label]
-    bytecode.extend([0x0, 0x0, 0x0, 0x0])
-    return bytecode
+    return [0xd, 0xc, 0x0, 0xff, label, 0x0, 0x0, 0x0, 0x0]
 
 
 def music(parameters: list) -> list:

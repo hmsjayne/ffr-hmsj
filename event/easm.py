@@ -71,6 +71,7 @@ GRAMMAR = {
     LoadTextToken: [(LoadTextTopToken(), LoadTextBottomToken()), "$$value$$"],
     CloseDialogToken: [(CloseDialogAutoToken(), CloseDialogWaitToken())],
     JumpToken: [LabelToken()],
+    JumpChestEmptyToken: [LabelToken()],
     MusicToken: ["$$value$$", "$$value$$"],
     SetRepeatToken: ["$$value$$"],
     RepeatToken: ["$$value$$", LabelToken()],
