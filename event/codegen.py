@@ -120,8 +120,8 @@ def take_item(parameters: list) -> list:
 
 def check_item(parameters: list) -> list:
     item = parameters[0]
-    label = parameters[1]
-    return [0x37, 0x4, 0x2, item, label]
+    label = parameters[2]
+    return [0x37, 0x8, 0x2, item, label]
 
 
 def jump_by_dir(parameters: list) -> list:

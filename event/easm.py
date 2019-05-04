@@ -128,7 +128,7 @@ def def_symbol(parameters: list, symbol_table: dict):
     return None
 
 
-def parse(source: str, base_addr: int) -> bytearray:
+def parse(source: str, base_addr: int, debug=False) -> bytearray:
     symbol_table = {}
     icode = []
     current_addr = base_addr
@@ -209,14 +209,19 @@ def parse(source: str, base_addr: int) -> bytearray:
     # the left over symbols, which will all bel labels.
     bytecode = OutputStream()
     for code in icode:
+        txt = ""
         for bd in code:
             if isinstance(bd, LabelToken):
                 label = bd
                 if label not in symbol_table:
                     raise UndefinedLabel(label)
                 bytecode.put_u32(symbol_table[label])
+                txt += f"{label} ({hex(symbol_table[label])}) "
             else:
+                txt += f"{hex(bd)} "
                 bytecode.put_u8(bd)
+        if debug:
+            print(txt)
 
     # Done!
     return bytecode.get_buffer()

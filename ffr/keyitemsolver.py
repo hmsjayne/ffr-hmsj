@@ -122,6 +122,9 @@ NEW_REWARD_SOURCE = {
     "locked_cornelia": NewChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13ad,
                                       event=locked_cornelia_event, map_init=cornelia_castle_1f_event),
     "nerrick": NewNpcSource(map_id=0x57, npc_index=11, event_id=0x1393, event=nerrik_event, map_init=mt_duergar_init),
+    "vampire": NewChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7,
+                              event=vampire_event, map_init=earth_b3_init),
+    "sarda": NewNpcSource(map_id=0x37, npc_index=0, event_id=0x13b8, event=sarda_event, map_init=sages_cave_init),
 }
 
 NEW_KEY_ITEMS = {
@@ -200,6 +203,10 @@ class KeyItemPlacement(object):
                 if placement.location == "sara":
                     self._replace_map_npc(0x1f, 6, key_item.sprite, key_item.movable)
 
+        self._unite_mystic_key_doors()
+        self._better_earth_plate()
+        self._rewrite_give_texts()
+
         # Write out our (moved) rewritten events along with the updated
         # LUTs for them.
         self.rom = self.rom.apply_patches({
@@ -207,9 +214,6 @@ class KeyItemPlacement(object):
             0x7788: self.events.get_lut(),
             0x223F4C: self.our_events.get_buffer()
         })
-
-        self._unite_mystic_key_doors()
-        self._rewrite_give_texts()
         self.rom = self.maps.write(self.rom)
 
     def _unite_mystic_key_doors(self):
@@ -227,6 +231,14 @@ class KeyItemPlacement(object):
             for sprite in self.maps._maps[map_id].sprites:
                 if sprite.event == 0x23cd:
                     sprite.event = 0x1f4a
+
+    def _better_earth_plate(self):
+        self.maps._maps[0x3].npcs[0xe].event = 0x139c
+
+        event_addr = self.our_events.current_addr()
+        event = easm.parse(better_earth_plate, event_addr)
+        self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
+        self.events.set_addr(0x139c, event_addr)
 
     def _rewrite_give_texts(self):
         self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\x00")
