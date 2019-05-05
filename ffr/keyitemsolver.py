@@ -119,12 +119,16 @@ NEW_REWARD_SOURCE = {
                           map_init=pravoka_init_event),
     "marsh": NewChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, event=marsh_event,
                             map_init=marsh_cave_b3_init),
+    "astos": NewNpcSource(map_id=0x58, npc_index=0, event_id=0x1390, event=astos_event, map_init=nw_keep_init),
+    "matoya": NewNpcSource(map_id=0x61, npc_index=4, event_id=0x1391, event=matoya_event, map_init=matoyas_cave_init),
+    "elf": NewNpcSource(map_id=0x06, npc_index=7, event_id=0x139A, event=elf_prince_event, map_init=elven_castle_init),
     "locked_cornelia": NewChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13ad,
                                       event=locked_cornelia_event, map_init=cornelia_castle_1f_event),
     "nerrick": NewNpcSource(map_id=0x57, npc_index=11, event_id=0x1393, event=nerrik_event, map_init=mt_duergar_init),
     "vampire": NewChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7,
                               event=vampire_event, map_init=earth_b3_init),
     "sarda": NewNpcSource(map_id=0x37, npc_index=0, event_id=0x13b8, event=sarda_event, map_init=sages_cave_init),
+    "ice": NewNpcSource(map_id=0x44, npc_index=0, event_id=0x139F, event=levistone_event, map_init=ice_b3_init),
 }
 
 NEW_KEY_ITEMS = {
