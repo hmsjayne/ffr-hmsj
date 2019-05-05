@@ -40,9 +40,7 @@ BASE_PATCHES = [
 ]
 
 
-def randomize(rom_path: str, flags: Flags, rom_seed: str):
-    rom = Rom(rom_path)
-
+def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     if rom_seed is None:
         rom_seed = hex(randint(0, 0xffffffff))
 
@@ -63,21 +61,19 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
     event_text_block.shrink()
     rom = event_text_block.pack(rom)
 
-    # rom = sarda_requires_feeding_titan(rom)
-    #
-    # rom = update_xp_requirements(rom, flags.XP_mult)
-    #
+    rom = update_xp_requirements(rom, flags.XP_mult)
+
     if flags.key_item_shuffle is not None:
         placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
         rom = placement.rom
-    #
-    # if flags.magic is not None:
-    #     shuffle_maigc = SpellShuffle(rom)
-    #     rom = shuffle_maigc.write(rom)
-    #
-    # if flags.treasures is not None:
-    #     rom = treasure_shuffle(rom)
-    #
+
+    if flags.magic is not None:
+        shuffle_maigc = SpellShuffle(rom)
+        rom = shuffle_maigc.write(rom)
+
+    if flags.treasures is not None:
+        rom = treasure_shuffle(rom)
+
     if flags.debug is not None:
         class_stats_stream = rom.open_bytestream(0x1E1354, 96)
         class_stats = []
@@ -95,20 +91,12 @@ def randomize(rom_path: str, flags: Flags, rom_seed: str):
             job_class.write(class_out_stream)
 
         rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
+    return rom
 
-    test_event = """
-%text_id 0x48
 
-music 0x5 0x2           ; Fade BGM (fast)
-music 0xa 0xffff        ; Wait for fade
-load_text top %text_id
-music 0x0 0x21          ; Play fanfare
-show_dialog
-music 0x9 0xffff        ; Wait for fanfare to finish
-close_dialog wait
-music 0x4 0x4           ; Resume BGM
-end_event
-"""
+def randomize(rom_path: str, flags: Flags, rom_seed: str):
+    rom = Rom(rom_path)
+    rom = randomize_rom(rom, flags, rom_seed)
     rom.write("ffr-dos-" + rom_seed + ".gba")
 
 
