@@ -139,6 +139,10 @@ NEW_REWARD_SOURCE = {
     "fairy": NewNpcSource(map_id=0x47, npc_index=11, event_id=0x138F, event=fairy_event, map_init=gaia_init),
     "mermaids": NewChestSource(map_id=0x1E, chest_id=12, sprite_id=0, event_id=0x13B4, event=slab_chest_event,
                                map_init=mermaid_floor_init),
+    "dr_unne": NewNpcSource(map_id=0x6A, npc_index=0, event_id=0x13A5, event=dr_unne_event, map_init=melmond_init),
+    "lefien": NewNpcSource(map_id=0x70, npc_index=11, event_id=0x1395, event=lefein_event, map_init=lefein_init),
+    "sky2": NewNpcSource(map_id=0x5D, npc_index=0, event_id=0x138D, event=sky2_adamant_event, map_init=sky_f2_init),
+    "smith": NewNpcSource(map_id=0x57, npc_index=4, event_id=0x139D, event=smyth_event, map_init=mt_duergar_init),
 }
 
 NEW_KEY_ITEMS = {
@@ -184,6 +188,10 @@ class KeyItemPlacement(object):
     def _do_placement(self, clingo_seed: int):
         key_item_locations = self._solve_placement(clingo_seed)
 
+        # 2 Rewards on one map...
+        nerrik_reward = None
+        smyth_reward = None
+
         for placement in key_item_locations:
 
             if placement.location not in NEW_REWARD_SOURCE:
@@ -204,11 +212,23 @@ class KeyItemPlacement(object):
             if source.map_init is not None:
                 map_event_addr = self.our_events.current_addr()
 
-                map_event_source = pparse(f"{key_item.reward}\n\n{source.map_init}")
-                map_event = easm.parse(map_event_source, map_event_addr)
+                if placement.location == "nerrick" or placement.location == "smith":
+                    if placement.location == "nerrick":
+                        nerrik_reward = key_item.reward.replace("%reward_flag", "%nerrik_reward_flag").replace("%text_id", "%nerrik_text_id")
+                    else:
+                        smyth_reward = key_item.reward.replace("%reward_flag", "%smyth_reward_flag").replace("%text_id","%myth_text_id")
 
-                self.map_events.set_addr(source.map_id, map_event_addr)
-                self.our_events.put_bytes(map_event)
+                    if nerrik_reward is not None and smyth_reward is not None:
+                        map_event_source = pparse(f"{nerrik_reward}\n{smyth_reward}\n\n{source.map_init}")
+                    else:
+                        map_event_source = None
+                else:
+                    map_event_source = pparse(f"{key_item.reward}\n\n{source.map_init}")
+
+                if map_event_source is not None:
+                    map_event = easm.parse(map_event_source, map_event_addr)
+                    self.map_events.set_addr(source.map_id, map_event_addr)
+                    self.our_events.put_bytes(map_event)
 
             if isinstance(source, NewNpcSource):
                 self._replace_map_npc(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
