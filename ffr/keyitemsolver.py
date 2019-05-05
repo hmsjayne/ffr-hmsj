@@ -128,7 +128,17 @@ NEW_REWARD_SOURCE = {
     "vampire": NewChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7,
                               event=vampire_event, map_init=earth_b3_init),
     "sarda": NewNpcSource(map_id=0x37, npc_index=0, event_id=0x13b8, event=sarda_event, map_init=sages_cave_init),
+    "lukahn": NewNpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, event=lukahn_event, map_init=crescent_lake_init),
     "ice": NewNpcSource(map_id=0x44, npc_index=0, event_id=0x139F, event=levistone_event, map_init=ice_b3_init),
+    "ordeals": NewChestSource(map_id=0x4F, chest_id=8, sprite_id=0, event_id=0x13AA,
+                              event=citadel_of_trials_chest_event, map_init=citadel_of_trials_f2_init),
+    "bahamut": NewNpcSource(map_id=0x54, npc_index=2, event_id=0x1396, event=bahamuts_cave_event,
+                            map_init=bahamuts_cave_init),
+    "waterfall": NewNpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, event=waterfall_robot_event,
+                              map_init=waterfall_init),
+    "fairy": NewNpcSource(map_id=0x47, npc_index=11, event_id=0x138F, event=fairy_event, map_init=gaia_init),
+    "mermaids": NewChestSource(map_id=0x1E, chest_id=12, sprite_id=0, event_id=0x13B4, event=slab_chest_event,
+                               map_init=mermaid_floor_init),
 }
 
 NEW_KEY_ITEMS = {
