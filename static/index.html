@@ -3,8 +3,15 @@
 <head>
   <meta charset="utf-8">
   <title>Final Fantasy Randomizer: HMS Jayne</title>
+  <style type="text/css">
+    #flags label {
+      display: block;
+    }
+
+
+  </style>
 </head>
-<body>
+<body onload="">
 <form method="post" enctype="multipart/form-data" action="randomize">
   <label>Upload ROM</label><br/>
   <label>
@@ -12,11 +19,69 @@
   </label>
   <label>
     Flags:
-    <input name="flags" type="text">
+    <input id="rom-flags" name="flags" type="text">
     Seed:
-    <input name="seed" type="text">
+    <input id="rom-seed" name="seed" type="text" maxlength="10">
   </label>
   <input type="submit" value="Randomize">
+
+  <div id="flags">
+    <label>Shuffle Key Items: <input id="key-item" type="checkbox"/></label>
+    <label>Encounter toggle: <input id="encounter-toggle" type="checkbox"/></label>
+    <label>Magic shuffle: <input id="magic-shuffle" type="checkbox"/></label>
+    <label>Treasure shuffle: <input id="treasure-shuffle" type="checkbox"/></label>
+    <label>Debug mode: <input id="debug-mode" type="checkbox"/></label>
+    <label>Exp Scale:
+      <input id="exp-scale" type="range" min="100" max="500" value="200" step="10" class="slider">
+    </label>
+  </div>
 </form>
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script type="text/javascript">
+    function genSeed() {
+      var seed = Math.floor(Math.random() * 0xffffffff).toString(16);
+      if ($("#rom-seed").val().length == 0) {
+        $("#rom-seed").val(seed);
+      }
+    }
+
+    function updateFlags() {
+      var flags = "";
+      if ($("#key-item").prop("checked")) {
+        flags += "K "
+      }
+      if ($("#encounter-toggle").prop("checked")) {
+        flags += "Et "
+      }
+      if ($("#magic-shuffle").prop("checked")) {
+        flags += "Ms "
+      }
+      if ($("#treasure-shuffle").prop("checked")) {
+        flags += "Ts "
+      }
+      if ($("#debug-mode").prop("checked")) {
+        flags += " -hax "
+      }
+      flags += "XP=" + ($("#exp-scale").val() / 100);
+      $("#rom-flags").val(flags.trim());
+    }
+
+    $(document).ready(function() {
+      genSeed();
+
+      $("#rom-seed").blur(genSeed);
+
+      $("#key-item").change(updateFlags);
+      $("#encounter-toggle").change(updateFlags);
+      $("#magic-shuffle").change(updateFlags);
+      $("#treasure-shuffle").change(updateFlags);
+      $("#debug-mode").change(updateFlags);
+      $("#exp-scale").on("input change", updateFlags);
+    });
+
+
+
+</script>
 </html>
