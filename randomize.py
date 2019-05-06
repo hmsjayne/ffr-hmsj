@@ -22,6 +22,7 @@ from doslib.eventbuilder import EventBuilder
 from doslib.gen.classes import JobClass
 from doslib.maps import Maps
 from doslib.rom import Rom
+from doslib.textblock import TextBlock
 from event import easm
 from ffr.flags import Flags
 from ffr.keyitemsolver import KeyItemPlacement
@@ -43,6 +44,8 @@ BASE_PATCHES = [
 def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     if rom_seed is None:
         rom_seed = hex(randint(0, 0xffffffff))
+    elif len(rom_seed) > 10:
+        rom_seed = rom_seed[0:10]
 
     seed(rom_seed)
 
@@ -61,7 +64,7 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     event_text_block.shrink()
     rom = event_text_block.pack(rom)
 
-    rom = update_xp_requirements(rom, flags.XP_mult)
+    rom = update_xp_requirements(rom, flags.exp_mult)
 
     if flags.key_item_shuffle is not None:
         placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
@@ -91,6 +94,16 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
             job_class.write(class_out_stream)
 
         rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
+
+    # Add the seed + flags to the party creation screen.
+    seed_str = TextBlock.encode_text(f"Seed:\n{rom_seed}\nFlags:\n{flags}\x00")
+    pointer = OutputStream()
+    pointer.put_u32(0x8227054)
+    rom = rom.apply_patches({
+        0x227054: seed_str,
+        0x4d8d4: pointer.get_buffer()
+    })
+
     return rom
 
 

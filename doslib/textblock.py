@@ -56,7 +56,7 @@ class TextBlock(object):
         return rom.apply_patches(patches)
 
     @staticmethod
-    def encode_text(text: str):
+    def encode_text(text: str) -> bytearray:
         data = bytearray()
         for char in text:
             data.append(ord(char))
@@ -97,7 +97,7 @@ class TextBlock(object):
         return working
 
     @staticmethod
-    def _encode_text(stream):
+    def _encode_text(stream) -> bytearray:
         working = bytearray()
         while not stream.is_eos():
             char = stream.get_char()
@@ -105,12 +105,12 @@ class TextBlock(object):
                 char = stream.get_char()
                 if char == 'x':
                     # \x designates a 2 digit hex code
-                    chars = (stream.get_u8() << 8) + stream.get_u8()
+                    chars = stream.get_char() + stream.get_char()
                 elif char == 'u':
                     # \u designates a 4 digit hex code
                     num = ""
                     for digit in range(4):
-                        num += hex(stream.get_u8())
+                        num += stream.get_char()
                     chars = int(num, 16)
                 elif char == '\"':
                     chars = 0x815F
@@ -121,7 +121,7 @@ class TextBlock(object):
             else:
                 chars = TextBlock.INVERTED_TEXT_TABLE[char]
 
-            digits = int(len(hex(chars)) / 2) - 1
+            digits = max(int(len(hex(chars)) / 2) - 1, 1)
             working += int(chars).to_bytes(digits, byteorder="big", signed=False)
 
         working.append(0x0)
