@@ -54,13 +54,22 @@ def load_ips_files(*args):
     :param args: List of IPS file paths to load.
     :return: A dictionary containing all the offsets & data of the patches.
     """
-    complete = dict()
+    complete = {}
+    offset_file = {}
+    loaded = []
     for file in args:
         patches = load_ips_file(file)
         for offset, data in patches.items():
             if offset in complete:
-                raise RuntimeWarning(f"Multiple patches targeted to {offset}")
+                if file not in complete:
+                    raise RuntimeWarning(f"Multiple patches targeted to {hex(offset)}: {file} vs {offset_file[offset]}")
+                else:
+                    print(f"Warning: {file} was specified multiple times")
             complete[offset] = data
+
+            # Save data for debugging
+            loaded.append(file)
+            offset_file[offset] = file
     return complete
 
 
