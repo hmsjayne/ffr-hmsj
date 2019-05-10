@@ -42,12 +42,6 @@ BASE_PATCHES = [
 
 
 def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
-    if rom_seed is None:
-        rom_seed = hex(randint(0, 0xffffffff))
-    elif len(rom_seed) > 10:
-        rom_seed = rom_seed[0:10]
-
-    seed(rom_seed)
 
     patches_to_load = BASE_PATCHES
     if flags.encounters is not None:
@@ -71,8 +65,8 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
         rom = placement.rom
 
     if flags.magic is not None:
-        shuffle_maigc = SpellShuffle(rom)
-        rom = shuffle_maigc.write(rom)
+        shuffle_magic = SpellShuffle(rom)
+        rom = shuffle_magic.write(rom)
 
     if flags.treasures is not None:
         rom = treasure_shuffle(rom)
@@ -106,11 +100,24 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
 
     return rom
 
+#Reduces a seed to the first 10 chars.
+#Pulling this out for future caching, should we desire.
+def gen_seed(flags: Flags, rom_seed: str):
+    if rom_seed is None:
+        rom_seed = hex(randint(0, 0xffffffff))
+    elif len(rom_seed) > 10:
+        rom_seed = rom_seed[0:10]
+        
+    out_seed = rom_seed
+    print(out_seed)
+    seed(rom_seed)
+    return str(out_seed)
 
 def randomize(rom_path: str, flags: Flags, rom_seed: str):
+    seed = gen_seed(flags, rom_seed)
     rom = Rom(rom_path)
-    rom = randomize_rom(rom, flags, rom_seed)
-    rom.write("ffr-dos-" + rom_seed + ".gba")
+    rom = randomize_rom(rom, flags, seed)
+    rom.write("ffr-dos-" + seed + ".gba")
 
 
 def update_xp_requirements(rom: Rom, value) -> Rom:
