@@ -241,6 +241,9 @@ def decompile(addr):
                 cmd_str = f"update_npc {action} {hex(npc_id)} {hex(event_id)} :: {cmd_str}"
             else:
                 cmd_str = f"update_npc {action} {hex(npc_id)} :: {cmd_str}"
+        elif cmd == 0x36:
+            event_id = array.array("H", rom_data[addr + 2:addr + 4])[0]
+            cmd_str = f"remove_all {hex(event_id)} :: {cmd_str}"
         elif cmd == 0x37:
             sub_cmd = rom_data[addr + 2]
             item_index = rom_data[addr + 3]

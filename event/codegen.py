@@ -12,11 +12,32 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from event.tokens import Uint16
+from event.tokens import Uint16, Uint32
 
 
-def end_event(parameters: list) -> list:
-    return [0x0, 0x4, 0xff, 0xff]
+def simple_gen(op_format: list, parameters: list) -> list:
+    bytecode = []
+    for elem in op_format:
+        if isinstance(elem, str) and elem.startswith("$"):
+            if elem.startswith("$("):
+                (size, index_str) = elem[2:len(elem) - 1].split(":")
+                index = int(index_str)
+                if size == "x":
+                    bytecode.append(parameters[index])
+                elif size == "u":
+                    param = Uint16(parameters[index])
+                    bytecode.extend(param.bytes())
+                elif size == "U":
+                    param = Uint32(parameters[index])
+                    bytecode.extend(param.bytes())
+                else:
+                    raise RuntimeError(f"Invalid format specified: {size}")
+            else:
+                index = int(elem[1:])
+                bytecode.append(parameters[index])
+        else:
+            bytecode.append(elem)
+    return bytecode
 
 
 def load_text(parameters: list) -> list:
@@ -63,10 +84,6 @@ def repeat(parameters: list) -> list:
     return [0x19, 0x8, step, 0xff, label]
 
 
-def show_dialog(parameters: list) -> list:
-    return [0x27, 0x4, 0x0, 0xff]
-
-
 def set_flag(parameters: list) -> list:
     flag = parameters[0]
     return [0x2d, 0x4, flag, 0x0]
@@ -101,21 +118,9 @@ def set_npc_event(parameters: list) -> list:
     return bytecode
 
 
-def remove_all(parameters: list) -> list:
-    trigger_id = Uint16(parameters[0])
-    bytecode = [0x36, 0x4]
-    bytecode.extend(trigger_id.bytes())
-    return bytecode
-
-
 def give_item(parameters: list) -> list:
     item = parameters[0]
     return [0x37, 0x4, 0x0, item]
-
-
-def take_item(parameters: list) -> list:
-    item = parameters[0]
-    return [0x37, 0x4, 0x1, item]
 
 
 def check_item(parameters: list) -> list:

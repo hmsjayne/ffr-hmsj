@@ -43,7 +43,11 @@ class RawCommandToken(str):
     pass
 
 
-class EndEventToken(str):
+class NopToken(list):
+    pass
+
+
+class EndEventToken(list):
     pass
 
 
@@ -91,7 +95,7 @@ class RepeatToken(str):
     pass
 
 
-class ShowDialogToken(str):
+class ShowDialogToken(list):
     pass
 
 
@@ -123,23 +127,25 @@ class SetNpcEventToken(str):
     pass
 
 
-class RemoveAllToken(str):
+class RemoveAllToken(list):
     pass
 
 
-class GiveItemToken(str):
+class GiveItemToken(list):
     pass
 
 
-class TakeItemToken(str):
+class TakeItemToken(list):
     pass
 
 
 class CheckItemToken(str):
     pass
 
+
 class JumpByDirToken(str):
     pass
+
 
 class Uint16(object):
     def __init__(self, value: int):
