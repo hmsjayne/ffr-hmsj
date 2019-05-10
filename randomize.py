@@ -42,7 +42,6 @@ BASE_PATCHES = [
 
 
 def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
-
     patches_to_load = BASE_PATCHES
     if flags.encounters is not None:
         patches_to_load.append("data/FF1EncounterToggle.ips")
@@ -100,18 +99,20 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
 
     return rom
 
-#Reduces a seed to the first 10 chars.
-#Pulling this out for future caching, should we desire.
+
+# Reduces a seed to the first 10 chars.
+# Pulling this out for future caching, should we desire.
 def gen_seed(flags: Flags, rom_seed: str):
     if rom_seed is None:
         rom_seed = hex(randint(0, 0xffffffff))
     elif len(rom_seed) > 10:
         rom_seed = rom_seed[0:10]
-        
+
     out_seed = rom_seed
     print(out_seed)
     seed(rom_seed)
     return str(out_seed)
+
 
 def randomize(rom_path: str, flags: Flags, rom_seed: str):
     seed = gen_seed(flags, rom_seed)
