@@ -71,6 +71,7 @@ GRAMMAR = {
     # Commands that don't match the patterns here will raise a SyntaxError exception.
     #
     EndEventToken: None,
+    NopToken: None,
     LoadTextToken: [(LoadTextTopToken(), LoadTextBottomToken()), "$$value$$"],
     CloseDialogToken: [(CloseDialogAutoToken(), CloseDialogWaitToken())],
     JumpToken: [LabelToken()],
