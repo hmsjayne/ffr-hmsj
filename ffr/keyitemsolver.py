@@ -28,17 +28,14 @@ import json
 from collections import namedtuple
 from subprocess import run, PIPE
 
-from doslib.event import EventTable, EventTextBlock, Event
-from doslib.eventbuilder import EventBuilder
-from doslib.gen.enemy import Encounter
+from doslib.event import EventTable, EventTextBlock
 from doslib.maps import Maps
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
 from event.epp import pparse
-from ffr.eventrewrite import EventRewriter
 from ffr.keyitemevents import *
-from stream.outputstream import OutputStream, AddressableOutputStream
+from stream.outputstream import AddressableOutputStream
 
 KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog", "movable"])
 

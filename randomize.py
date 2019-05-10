@@ -248,31 +248,6 @@ def init_base_events(rom: Rom) -> Rom:
     })
 
 
-def sarda_requires_feeding_titan(rom: Rom) -> Rom:
-    # With the airship the Star Ruby would serve no purpose =(
-    # To make things more spicy, require feeding the Titan to get Sarda's item.
-    #
-    # This also goes over the old Cornelia soldier event, starting at 0x800a100
-    event = EventBuilder() \
-        .add_flag("fed_titan", 0x0e) \
-        .add_flag("have_earth_rod", 0x0f) \
-        .add_label("end_sarda_event", 0x800a118) \
-        .check_flag_and_jump("fed_titan", 0x2, "end_sarda_event") \
-        .check_flag_and_jump("have_earth_rod", 0x3, "end_sarda_event") \
-        .set_event_on_npc(0x0, 0x13b8) \
-        .event_end() \
-        .get_event()
-
-    sages_cave_init_addr = OutputStream()
-    sages_cave_init_addr.put_u32(0x800a100)
-
-    patches = {
-        0xa100: event,
-        (0x7050 + (0x37 * 4)): sages_cave_init_addr.get_buffer()
-    }
-    return rom.apply_patches(patches)
-
-
 def shuffle_key_items(rom: Rom) -> Rom:
     # The Key items returned work like this. Suppose a Placement returned was
     # `Placement(item='oxyale', location='king')` this means that the "Oxyale" key item
@@ -285,14 +260,8 @@ def shuffle_key_items(rom: Rom) -> Rom:
     # won't need to be rescued from the Bottle. It *does* mean that the Fairy won't provide Oxyale
     # until Garland is defeated and that NPC (or treasure) is itself rescued.
 
-    locations = Maps(rom)
-    # key_item_locations = solve_key_item_placement(randint(0, 0xffffffff), locations)
     key_item_locations = KeyItemPlacement(rom, randint(0, 0xffffffff))
-
     key_item_locations.maps.write(rom)
-
-    # print(f"KI solution: {key_item_locations}")
-
     return rom
 
 
