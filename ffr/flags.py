@@ -39,7 +39,7 @@ class Flags(object):
             elif flag == "-hax":
                 self.debug = "iddqd"
             elif flag[:2] == "XP":
-                self.exp_mult *= float(flag.split("=")[1])
+                self.exp_mult /= float(flag.split("=")[1])
 
     def __str__(self):
         value = ""
