@@ -217,12 +217,10 @@ def init_base_events(rom: Rom) -> Rom:
     chaos_shrine_map_event = easm.parse(chaos_shrine_init, chaos_shrine_event_addr)
 
     crescent_lake_map_init = """
+        %earth_crystal_lit 0x11
         %lukahn_npc_id 0xd
         %have_canoe 0x12
 
-        %earth_crystal_lit 0x11
-        %fire_crystal_lit 0x13
-        
         %give_canoe_event 0x1394
         
         check_flag %have_canoe jnz .End_of_Event
