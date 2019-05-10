@@ -1955,14 +1955,16 @@ matoyas_cave_init = """
 """
 
 elven_castle_init = """
-    check_flag 0x9 jz .Label_1
+    %have_jolt_tonic 0x8
+    %have_mystic_key 0x9
+    
+    check_flag %have_mystic_key jz .Label_1
     db 0x45 0x8 0x7 0x0 0x11 0x0 0xf 0x0
     remove_all 0x1f4a
-    jump .Label_2
     .Label_1:
     db 0x1f 0x4 0x7 0x8
     check_flag %reward_flag jnz .Label_2 
-    check_flag 0x8 jz .Label_2
+    check_flag %have_jolt_tonic jz .Label_2
     set_npc_event 0x6 0x139a
     .Label_2:
     end_event
