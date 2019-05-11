@@ -13,6 +13,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import os
 import random
 from argparse import ArgumentParser
 from random import seed, randint
@@ -24,10 +25,10 @@ from doslib.maps import Maps
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
-from ffr.flags import Flags
-from ffr.keyitemsolver import KeyItemPlacement
-from ffr.spellshuffle import SpellShuffle
-from ffr.treasures import treasure_shuffle
+from randomizer.flags import Flags
+from randomizer.keyitemsolver import KeyItemPlacement
+from randomizer.spellshuffle import SpellShuffle
+from randomizer.treasures import treasure_shuffle
 from ipsfile import load_ips_files
 from stream.outputstream import OutputStream
 
@@ -100,32 +101,45 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     return rom
 
 
-# Reduces a seed to the first 10 chars.
-# Pulling this out for future caching, should we desire.
-def gen_seed(flags: Flags, rom_seed: str):
+def gen_seed(rom_seed: str) -> str:
+    """Reduces a seed to the first 10 chars.
+
+    Pulling this out for future caching, should we desire.
+    :param rom_seed: Raw input seed
+    :return: String of the seed
+    """
     if rom_seed is None:
         rom_seed = hex(randint(0, 0xffffffff))
     elif len(rom_seed) > 10:
         rom_seed = rom_seed[0:10]
 
     out_seed = rom_seed
-    print(out_seed)
     seed(rom_seed)
     return str(out_seed)
 
 
+def get_filename(base_path: str, flags: Flags, seed: str) -> str:
+    filename = base_path
+    if filename.find(os.sep) > -1:
+        filename = filename[0:filename.rfind(os.sep)]
+    if filename.endswith(".gba"):
+        filename = filename[:len(filename) - 4]
+    return f"{filename}_{flags.text()}_{seed}.gba"
+
+
 def randomize(rom_path: str, flags: Flags, rom_seed: str):
-    seed = gen_seed(flags, rom_seed)
+    rom_seed = gen_seed(rom_seed)
     rom = Rom(rom_path)
-    rom = randomize_rom(rom, flags, seed)
-    rom.write("ffr-dos-" + seed + ".gba")
+    rom = randomize_rom(rom, flags, rom_seed)
+
+    rom.write(get_filename(rom_path, flags, rom_seed))
 
 
 def update_xp_requirements(rom: Rom, value) -> Rom:
     level_data = rom.open_bytestream(0x1BE3B4, 396)
     new_table = OutputStream()
     next_value = level_data.get_u32()
-    while not next_value == None:
+    while next_value is not None:
         new_table.put_u32(int(next_value * value))
         next_value = level_data.get_u32()
     rom = rom.apply_patch(0x1BE3B4, new_table.get_buffer())

@@ -16,7 +16,7 @@ import copy
 from doslib.rom import Rom
 from doslib.shopdata import ShopData
 from doslib.spells import Spells
-from ffr.shuffledlist import ShuffledList
+from randomizer.shuffledlist import ShuffledList
 from stream.outputstream import OutputStream
 
 

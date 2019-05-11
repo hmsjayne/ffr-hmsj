@@ -34,7 +34,7 @@ from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
 from event.epp import pparse
-from ffr.keyitemevents import *
+from randomizer.keyitemevents import *
 from stream.outputstream import AddressableOutputStream
 
 KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog", "movable"])
