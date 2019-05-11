@@ -103,7 +103,11 @@ class SpellShuffle(object):
 
         # To keep things simple, map the new spell inventories directly to the shuffled slots with
         # the mapping created above.
-        for inventory in self._shops.shop_inventories:
+        for shop_number, inventory in enumerate(self._shops.shop_inventories):
+            if shop_number in [0x26, 0x27]:
+                # Shop 0x26 is the "Bottle" shop and 0x27 is the item shop that opens
+                # after the Bottle has been purchased.
+                continue
             if len(inventory.magic) > 0:
                 new_magic_inventory = []
                 for spell_index in inventory.magic:
