@@ -1708,7 +1708,7 @@ lefein_event = """
     end_event
 """
 
-sky2_adamant_event = """
+sky2_adamantite_event = """
     db 0x26 0x4 0x0 0xff
     db 0x16 0x4 0x0 0xff
     db 0x12 0x8 0x0 0x1 0x2 0xff 0xff 0xff
@@ -2182,7 +2182,7 @@ jolt_tonic_reward = """
     set_flag %reward_flag
 """
 
-key_reward = """
+mystic_key_reward = """
 %text_id 0x154
 %reward_flag 0x09
 
@@ -2208,7 +2208,7 @@ canal_reward = """
 #define GIVE_REWARD set_flag %reward_flag
 """
 
-ruby_reward = """
+star_ruby_reward = """
 %text_id 0x142
 %reward_flag 0x0D
 
@@ -2244,7 +2244,7 @@ levistone_reward = """
     set_flag %reward_flag
 """
 
-tail_reward = """
+rats_tail_reward = """
 %text_id 0x10d
 %reward_flag 0x17
 
@@ -2253,7 +2253,7 @@ tail_reward = """
     set_flag %reward_flag
 """
 
-class_change_reward = """
+promotion_reward = """
 %text_id 0x1d2
 %reward_flag 0x18
 
@@ -2280,7 +2280,7 @@ oxyale_reward = """
     set_flag %reward_flag
 """
 
-slab_reward = """
+rosetta_stone_reward = """
 %text_id 0x10e
 %reward_flag 0x1c
 
@@ -2305,7 +2305,7 @@ chime_reward = """
     set_flag %reward_flag
 """
 
-cube_reward = """
+warp_cube_reward = """
 %text_id 0x241
 %reward_flag 0x20
 
@@ -2314,7 +2314,7 @@ cube_reward = """
     set_flag %reward_flag
 """
 
-adamant_reward = """
+adamantite_reward = """
 %text_id 0x10f
 %reward_flag 0x21
 
