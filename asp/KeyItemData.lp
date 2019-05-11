@@ -63,7 +63,7 @@ requires(lukahn,earth).
 requires(astos,crown).
 requires(matoya,crystal).
 requires(elf,jolt_tonic).
-requires(key,locked_cornelia).
+requires(locked_cornelia,key).
 requires(nerrick,nitro_powder).
 requires(desert,levistone).
 requires(ordeals,ordeal_access).
@@ -75,6 +75,7 @@ requires(smith,adamant).
 requires(waterfall,canoe).
 requires(bahamut,tail).
 requires(dr_unne,slab).
+requires(sarda,ruby).
 has(sky_access) :- has(chime), has(cube).
 has(ordeal_access) :- has(canoe), has(crown).
 
