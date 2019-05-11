@@ -15,7 +15,7 @@
 from flask import Flask, request, make_response
 
 from doslib.rom import Rom
-from ffr.flags import Flags
+from randomizer.flags import Flags
 from randomize import randomize_rom
 
 app = Flask(__name__)

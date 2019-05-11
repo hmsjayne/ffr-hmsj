@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 from event import codegen
+from event.codegen import simple_gen
 from event.parseinputstring import ParseInputString
 from event.tokens import *
 
@@ -22,7 +23,8 @@ from stream.outputstream import OutputStream
 GRAMMAR = {
     # Here we define mappings of strings to terminal tokens.
     # If a string is not defined here, it will likely cause a SyntaxError exception.
-    "end_event": EndEventToken("end_event"),
+    "end_event": EndEventToken([0x0, 0x4, 0xff, 0xff]),
+    "nop": NopToken([0x1, 0x4, 0xff, 0xff]),
     "load_text": LoadTextToken("load_text"),
     "close_dialog": CloseDialogToken("close_dialog"),
     "jump": JumpToken("jump"),
@@ -30,15 +32,15 @@ GRAMMAR = {
     "music": MusicToken("music"),
     "set_repeat": SetRepeatToken("set_repeat"),
     "repeat": RepeatToken("repeat"),
-    "show_dialog": ShowDialogToken("show_dialog"),
+    "show_dialog": ShowDialogToken([0x27, 0x4, 0x0, 0xff]),
     "set_flag": SetFlagToken("set_flag"),
     "check_flag": CheckFlagToken("check_flag"),
     "remove_trigger": RemoveTriggerToken("remove_trigger"),
     "npc_update": NpcUpdateToken("npc_update"),
     "set_npc_event": SetNpcEventToken("set_npc_event"),
-    "remove_all": RemoveAllToken("remove_all"),
-    "give_item": GiveItemToken("give_item"),
-    "take_item": TakeItemToken("take_item"),
+    "remove_all": RemoveAllToken([0x36, 0x4, "$(u:0)"]),
+    "give_item": GiveItemToken([0x37, 0x4, 0x0, "$0"]),
+    "take_item": TakeItemToken([0x37, 0x4, 0x1, "$0"]),
     "check_item": CheckItemToken("check_item"),
     "jump_by_dir": JumpByDirToken("jump_by_dir"),
 
@@ -69,6 +71,7 @@ GRAMMAR = {
     # Commands that don't match the patterns here will raise a SyntaxError exception.
     #
     EndEventToken: None,
+    NopToken: None,
     LoadTextToken: [(LoadTextTopToken(), LoadTextBottomToken()), "$$value$$"],
     CloseDialogToken: [(CloseDialogAutoToken(), CloseDialogWaitToken())],
     JumpToken: [LabelToken()],
@@ -198,12 +201,15 @@ def parse(source: str, base_addr: int, debug=False) -> bytearray:
                     value = current_addr
                 symbol_table[name] = value
             else:
-                method = getattr(codegen, op_name)
-                if method is not None:
+                if isinstance(op_name, list):
+                    output = simple_gen(op_name, parameters)
+                else:
+                    method = getattr(codegen, op_name)
                     output = method(parameters)
-                    if output is not None:
-                        icode.append(output)
-                        current_addr += output[1]
+
+                if output is not None:
+                    icode.append(output)
+                    current_addr += output[1]
 
     # At this point, all of the intermediate code is built and the only thing left is to resolve
     # the left over symbols, which will all bel labels.

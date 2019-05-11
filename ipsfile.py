@@ -58,17 +58,18 @@ def load_ips_files(*args):
     offset_file = {}
     loaded = []
     for file in args:
+        if file in loaded:
+            # IPS file has already be loaded, so skip reading it a second time.
+            continue
+        loaded.append(file)
+
         patches = load_ips_file(file)
         for offset, data in patches.items():
             if offset in complete:
-                if file not in complete:
-                    raise RuntimeWarning(f"Multiple patches targeted to {hex(offset)}: {file} vs {offset_file[offset]}")
-                else:
-                    print(f"Warning: {file} was specified multiple times")
+                raise RuntimeWarning(f"Multiple patches targeted to {hex(offset)}: {file} vs {offset_file[offset]}")
             complete[offset] = data
 
             # Save data for debugging
-            loaded.append(file)
             offset_file[offset] = file
     return complete
 

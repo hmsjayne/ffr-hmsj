@@ -2031,9 +2031,12 @@ sages_cave_init = """
 """
 
 crescent_lake_init = """
+    %earth_crystal_lit 0x11
+    %lukahn_npc_id 0xd
+
     check_flag %reward_flag jnz .End
-    check_flag 0x11 jz .End
-    set_npc_event 0xc 0x1394
+    check_flag %earth_crystal_lit jz .End
+    set_npc_event %lukahn_npc_id 0x1394
     .End:
     end_event
 """
@@ -2045,7 +2048,18 @@ ice_b3_init = """
     end_event
 """
 
-citadel_of_trials_f2_init = """
+citadel_of_trials_f1_init = """
+    %have_crown 0x06
+    %can_enter_cot 0x16
+
+    check_flag %have_crown jz .End
+    set_flag %can_enter_cot
+    remove_all 0x13af
+    .End:
+    end_event
+"""
+
+citadel_of_trials_f3_init = """
     check_flag %reward_flag jz .Label_1
     remove_all 0x13aa
     .Label_1:

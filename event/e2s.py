@@ -27,7 +27,6 @@
 #  limitations under the License.
 
 import array
-from argparse import ArgumentParser
 
 from doslib.rom import Rom
 

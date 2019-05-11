@@ -42,9 +42,15 @@ class Flags(object):
                 self.exp_mult /= float(flag.split("=")[1])
 
     def __str__(self):
+        return self.text(internal=True)
+
+    def text(self, internal=False):
         value = ""
         if self.debug is not None:
-            value += "\\u819A"
+            if internal:
+                value += "\\u819a"
+            else:
+                value += "!"
         if self.encounters is not None:
             value += "Et"
         if self.magic is not None:

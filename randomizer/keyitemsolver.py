@@ -28,17 +28,14 @@ import json
 from collections import namedtuple
 from subprocess import run, PIPE
 
-from doslib.event import EventTable, EventTextBlock, Event
-from doslib.eventbuilder import EventBuilder
-from doslib.gen.enemy import Encounter
+from doslib.event import EventTable, EventTextBlock
 from doslib.maps import Maps
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
 from event.epp import pparse
-from ffr.eventrewrite import EventRewriter
-from ffr.keyitemevents import *
-from stream.outputstream import OutputStream, AddressableOutputStream
+from randomizer.keyitemevents import *
+from stream.outputstream import AddressableOutputStream
 
 KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog", "movable"])
 
@@ -130,8 +127,8 @@ NEW_REWARD_SOURCE = {
     "sarda": NewNpcSource(map_id=0x37, npc_index=0, event_id=0x13b8, event=sarda_event, map_init=sages_cave_init),
     "lukahn": NewNpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, event=lukahn_event, map_init=crescent_lake_init),
     "ice": NewNpcSource(map_id=0x44, npc_index=0, event_id=0x139F, event=levistone_event, map_init=ice_b3_init),
-    "ordeals": NewChestSource(map_id=0x4F, chest_id=8, sprite_id=0, event_id=0x13AA,
-                              event=citadel_of_trials_chest_event, map_init=citadel_of_trials_f2_init),
+    "ordeals": NewChestSource(map_id=0x4D, chest_id=8, sprite_id=0, event_id=0x13AA,
+                              event=citadel_of_trials_chest_event, map_init=citadel_of_trials_f1_init),
     "bahamut": NewNpcSource(map_id=0x54, npc_index=2, event_id=0x1396, event=bahamuts_cave_event,
                             map_init=bahamuts_cave_init),
     "waterfall": NewNpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, event=waterfall_robot_event,
@@ -214,9 +211,11 @@ class KeyItemPlacement(object):
 
                 if placement.location == "nerrick" or placement.location == "smith":
                     if placement.location == "nerrick":
-                        nerrik_reward = key_item.reward.replace("%reward_flag", "%nerrik_reward_flag").replace("%text_id", "%nerrik_text_id")
+                        nerrik_reward = key_item.reward.replace("%reward_flag", "%nerrik_reward_flag").replace(
+                            "%text_id", "%nerrik_text_id")
                     else:
-                        smyth_reward = key_item.reward.replace("%reward_flag", "%smyth_reward_flag").replace("%text_id","%myth_text_id")
+                        smyth_reward = key_item.reward.replace("%reward_flag", "%smyth_reward_flag").replace("%text_id",
+                                                                                                             "%myth_text_id")
 
                     if nerrik_reward is not None and smyth_reward is not None:
                         map_event_source = pparse(f"{nerrik_reward}\n{smyth_reward}\n\n{source.map_init}")
@@ -228,6 +227,14 @@ class KeyItemPlacement(object):
                 if map_event_source is not None:
                     map_event = easm.parse(map_event_source, map_event_addr)
                     self.map_events.set_addr(source.map_id, map_event_addr)
+                    self.our_events.put_bytes(map_event)
+
+                if placement.location == "ordeals":
+                    citadel_of_trials_3f_map_id = 0x4F
+                    map_event_addr = self.our_events.current_addr()
+                    map_event_source = pparse(f"{key_item.reward}\n\n{citadel_of_trials_f3_init}")
+                    map_event = easm.parse(map_event_source, map_event_addr)
+                    self.map_events.set_addr(citadel_of_trials_3f_map_id, map_event_addr)
                     self.our_events.put_bytes(map_event)
 
             if isinstance(source, NewNpcSource):
