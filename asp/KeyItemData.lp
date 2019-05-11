@@ -63,7 +63,7 @@ requires(lukahn,earth).
 requires(astos,crown).
 requires(matoya,crystal).
 requires(elf,jolt_tonic).
-requires(mystic_key,locked_cornelia).
+requires(locked_cornelia,mystic_key).
 requires(nerrick,nitro_powder).
 requires(desert,levistone).
 requires(citadel_of_trials,trials_access).
