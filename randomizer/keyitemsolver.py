@@ -42,6 +42,7 @@ NpcSource = namedtuple("NpcSource", ["map_id", "npc_index", "event_id", "event",
 ChestSource = namedtuple("ChestSource", ["map_id", "chest_id", "sprite_id", "event_id", "event", "map_init"])
 
 EVENT_SOURCE_MAP = {
+    0x03: earth_b3_init,
     0x39: cornelia_castle_2f_init,
     0x62: pravoka_init,
     0x5B: marsh_cave_b3_init,
@@ -174,6 +175,11 @@ class KeyItemPlacement(object):
 
             if use_our_event:
                 event_addr = self.our_events.current_addr()
+
+                if event_id < 0xff:
+                    self.map_events.set_addr(event_id, event_addr)
+                else:
+                    self.events.set_addr(event_id, event_addr)
             else:
                 event_addr = self.events.get_addr(event_id)
 
@@ -233,6 +239,8 @@ class KeyItemPlacement(object):
             if placement.item not in NEW_KEY_ITEMS:
                 continue
 
+            print(f"Placement: {placement}")
+
             source = NEW_REWARD_SOURCE[placement.location]
             key_item = NEW_KEY_ITEMS[placement.item]
             if isinstance(source, NpcSource):
@@ -245,9 +253,8 @@ class KeyItemPlacement(object):
                 chest_index = source.chest_id
                 if chest_index < len(self.maps._maps[source.map_id].chests):
                     chest_id = self.maps._maps[source.map_id].chests[chest_index].chest_id
+                    print(f"Replace chest: {hex(chests[chest_id].id)} {hex(chests[chest_id].item_id)}")
                     chests[chest_id].item_id = 0x0
-                else:
-                    print(f"Chest at {placement.location} was out of bounds: {chest_index}")
 
         npcs = self.maps._maps[0x39].npcs
         for npc in npcs:
