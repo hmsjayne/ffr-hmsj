@@ -1859,10 +1859,7 @@ smyth_event = """
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 cornelia_castle_1f_event = """
-    check_flag 0x3 jz .Label_1
     remove_all 0x1392
-    jump .Label_2
-    .Label_1:
     check_flag 0x1 jz .Label_3
     jump .Label_2
     .Label_3:

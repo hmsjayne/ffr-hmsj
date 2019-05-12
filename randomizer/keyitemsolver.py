@@ -253,13 +253,7 @@ class KeyItemPlacement(object):
                 chest_index = source.chest_id
                 if chest_index < len(self.maps._maps[source.map_id].chests):
                     chest_id = self.maps._maps[source.map_id].chests[chest_index].chest_id
-                    print(f"Replace chest: {hex(chests[chest_id].id)} {hex(chests[chest_id].item_id)}")
                     chests[chest_id].item_id = 0x0
-
-        npcs = self.maps._maps[0x39].npcs
-        for npc in npcs:
-            if npc.event == 0x138c:
-                self.maps._maps[0x39].npcs.remove(npc)
 
         # Save the chests (without key items in them).
         chest_data = OutputStream()
