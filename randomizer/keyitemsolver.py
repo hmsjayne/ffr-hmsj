@@ -253,7 +253,11 @@ class KeyItemPlacement(object):
                 chest_index = source.chest_id
                 if chest_index < len(self.maps._maps[source.map_id].chests):
                     chest_id = self.maps._maps[source.map_id].chests[chest_index].chest_id
+
+                    # Convert the chests from item chests to chests with gil, and set it to 1 >_>
                     chests[chest_id].item_id = 0x0
+                    chests[chest_id].item_type = 0x1
+                    chests[chest_id].id = 0x0
 
         # Save the chests (without key items in them).
         chest_data = OutputStream()
