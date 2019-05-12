@@ -29,39 +29,86 @@ from collections import namedtuple
 from subprocess import run, PIPE
 
 from doslib.event import EventTable, EventTextBlock
-from doslib.maps import Maps
+from doslib.maps import Maps, TreasureChest, MoneyChest
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
 from event.epp import pparse
 from randomizer.keyitemevents import *
-from stream.outputstream import AddressableOutputStream
+from stream.outputstream import AddressableOutputStream, OutputStream
 
 KeyItem = namedtuple("KeyItem", ["sprite", "reward", "dialog", "movable"])
 NpcSource = namedtuple("NpcSource", ["map_id", "npc_index", "event_id", "event", "map_init"])
 ChestSource = namedtuple("ChestSource", ["map_id", "chest_id", "sprite_id", "event_id", "event", "map_init"])
 
+EVENT_SOURCE_MAP = {
+    0x39: cornelia_castle_2f_init,
+    0x62: pravoka_init,
+    0x5B: marsh_cave_b3_init,
+    0x58: nw_keep_init,
+    0x61: matoyas_cave_init,
+    0x06: elven_castle_init,
+    0x38: cornelia_castle_1f_event,
+    0x03: earth_b3_init,
+    0x37: sages_cave_init,
+    0x2F: crescent_lake_init,
+    0x44: ice_b3_init,
+    0x4D: citadel_of_trials_f1_init,
+    0x4F: citadel_of_trials_f3_init,
+    0x54: bahamuts_cave_init,
+    0x53: waterfall_init,
+    0x47: gaia_init,
+    0x1E: mermaid_floor_init,
+    0x6A: melmond_init,
+    0x70: lefein_init,
+    0x5D: sky_f2_init,
+    0x57: mt_duergar_init,
+    0x138B: king_event,
+    0x13A7: sara_event,
+    0x13B5: bikke_event,
+    0x1398: marsh_event,
+    0x1390: astos_event,
+    0x1391: matoya_event,
+    0x139A: elf_prince_event,
+    0x13ad: locked_cornelia_event,
+    0x1393: nerrik_event,
+    0x13B7: vampire_event,
+    0x13b8: sarda_event,
+    0x1394: lukahn_event,
+    0x139F: levistone_event,
+    0x13AA: citadel_of_trials_chest_event,
+    0x1396: bahamuts_cave_event,
+    0x13BD: waterfall_robot_event,
+    0x138F: fairy_event,
+    0x13B4: slab_chest_event,
+    0x13A5: dr_unne_event,
+    0x1395: lefein_event,
+    0x138D: sky2_adamantite_event,
+    0x139D: smyth_event,
+
+    # Extra events
+    0x139c: better_earth_plate
+}
+
 NEW_REWARD_SOURCE = {
     "king": NpcSource(map_id=0x39, npc_index=2, event_id=0x138B, event=king_event, map_init=None),
-    "sara": NpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, event=sara_event,
-                      map_init=cornelia_castle_2f_event),
-    "bikke": NpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, event=bikke_event,
-                       map_init=pravoka_init_event),
+    "sara": NpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, event=sara_event, map_init=cornelia_castle_2f_init),
+    "bikke": NpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, event=bikke_event, map_init=pravoka_init),
     "marsh": ChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, event=marsh_event,
                          map_init=marsh_cave_b3_init),
     "astos": NpcSource(map_id=0x58, npc_index=0, event_id=0x1390, event=astos_event, map_init=nw_keep_init),
     "matoya": NpcSource(map_id=0x61, npc_index=4, event_id=0x1391, event=matoya_event, map_init=matoyas_cave_init),
     "elf": NpcSource(map_id=0x06, npc_index=7, event_id=0x139A, event=elf_prince_event, map_init=elven_castle_init),
-    "locked_cornelia": ChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13ad,
-                                   event=locked_cornelia_event, map_init=cornelia_castle_1f_event),
+    "locked_cornelia": ChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13ad, event=locked_cornelia_event,
+                                   map_init=cornelia_castle_1f_event),
     "nerrick": NpcSource(map_id=0x57, npc_index=11, event_id=0x1393, event=nerrik_event, map_init=mt_duergar_init),
-    "vampire": ChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7,
-                           event=vampire_event, map_init=earth_b3_init),
+    "vampire": ChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7, event=vampire_event,
+                           map_init=earth_b3_init),
     "sarda": NpcSource(map_id=0x37, npc_index=0, event_id=0x13b8, event=sarda_event, map_init=sages_cave_init),
     "lukahn": NpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, event=lukahn_event, map_init=crescent_lake_init),
     "ice": NpcSource(map_id=0x44, npc_index=0, event_id=0x139F, event=levistone_event, map_init=ice_b3_init),
-    "citadel_of_trials": ChestSource(map_id=0x4D, chest_id=8, sprite_id=0, event_id=0x13AA,
-                           event=citadel_of_trials_chest_event, map_init=citadel_of_trials_f1_init),
+    "citadel_of_trials": ChestSource(map_id=0x4F, chest_id=8, sprite_id=0, event_id=0x13AA,
+                                     event=citadel_of_trials_chest_event, map_init=citadel_of_trials_f1_init),
     "bahamut": NpcSource(map_id=0x54, npc_index=2, event_id=0x1396, event=bahamuts_cave_event,
                          map_init=bahamuts_cave_init),
     "waterfall": NpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, event=waterfall_robot_event,
@@ -117,67 +164,28 @@ class KeyItemPlacement(object):
 
     def _do_placement(self, clingo_seed: int):
         key_item_locations = self._solve_placement(clingo_seed)
+        source_headers = self._prepare_header(key_item_locations)
 
-        print(self._prepare_header(key_item_locations))
+        for event_id, source in EVENT_SOURCE_MAP.items():
+            if event_id < 0xff or event_id in [0x139c]:
+                use_our_event = True
+            else:
+                use_our_event = False
 
-        # 2 Rewards on one map...
-        nerrik_reward = None
-        smyth_reward = None
+            if use_our_event:
+                event_addr = self.our_events.current_addr()
+            else:
+                event_addr = self.events.get_addr(event_id)
 
-        for placement in key_item_locations:
-
-            if placement.location not in NEW_REWARD_SOURCE:
-                continue
-            if placement.item not in NEW_KEY_ITEMS:
-                continue
-
-            source = NEW_REWARD_SOURCE[placement.location]
-            key_item = NEW_KEY_ITEMS[placement.item]
-
-            event_addr = self.events.get_addr(source.event_id)
-            event_source = pparse(f"{key_item.reward}\n\n{source.event}")
+            event_source = pparse(f"{source_headers}\n\n{source}")
             event = easm.parse(event_source, event_addr)
-            self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
 
-            if source.map_init is not None:
-                map_event_addr = self.our_events.current_addr()
+            if use_our_event:
+                self.our_events.put_bytes(event)
+            else:
+                self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
 
-                if placement.location == "nerrick" or placement.location == "smyth":
-                    if placement.location == "nerrick":
-                        nerrik_reward = key_item.reward.replace("%reward_flag", "%nerrik_reward_flag").replace(
-                            "%text_id", "%nerrik_text_id")
-                    else:
-                        smyth_reward = key_item.reward.replace("%reward_flag",
-                                                               "%smyth_reward_flag").replace("%text_id",
-                                                                                             "%myth_text_id")
-
-                    if nerrik_reward is not None and smyth_reward is not None:
-                        map_event_source = pparse(f"{nerrik_reward}\n{smyth_reward}\n\n{source.map_init}")
-                    else:
-                        map_event_source = None
-                else:
-                    map_event_source = pparse(f"{key_item.reward}\n\n{source.map_init}")
-
-                if map_event_source is not None:
-                    map_event = easm.parse(map_event_source, map_event_addr)
-                    self.map_events.set_addr(source.map_id, map_event_addr)
-                    self.our_events.put_bytes(map_event)
-
-                if placement.location == "citadel_of_trials":
-                    citadel_of_trials_3f_map_id = 0x4F
-                    map_event_addr = self.our_events.current_addr()
-                    map_event_source = pparse(f"{key_item.reward}\n\n{citadel_of_trials_f3_init}")
-                    map_event = easm.parse(map_event_source, map_event_addr)
-                    self.map_events.set_addr(citadel_of_trials_3f_map_id, map_event_addr)
-                    self.our_events.put_bytes(map_event)
-
-            if isinstance(source, NpcSource):
-                self._replace_map_npc(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
-
-                # Special case for "Sara" -- also update Chaos Shrine.
-                if placement.location == "sara":
-                    self._replace_map_npc(0x1f, 6, key_item.sprite, key_item.movable)
-
+        self._update_npcs(key_item_locations)
         self._unite_mystic_key_doors()
         self._better_earth_plate()
         self._rewrite_give_texts()
@@ -191,7 +199,7 @@ class KeyItemPlacement(object):
         })
         self.rom = self.maps.write(self.rom)
 
-    def _prepare_header(self, key_item_locations:tuple) -> str:
+    def _prepare_header(self, key_item_locations: tuple) -> str:
         working_header = ""
 
         for placement in key_item_locations:
@@ -209,6 +217,48 @@ class KeyItemPlacement(object):
             reward_text = reward_text.replace("%reward_flag", f"%{location}_reward_flag")
             working_header += f";---\n; {placement.item} -> {location}\n;---\n{reward_text}\n\n"
         return working_header
+
+    def _update_npcs(self, key_item_locations: tuple):
+        chest_stream = self.rom.open_bytestream(0x217FB4, 0x400)
+
+        chests = []
+        for index in range(256):
+            chest = TreasureChest.read(chest_stream)
+            chests.append(chest)
+
+        for placement in key_item_locations:
+
+            if placement.location not in NEW_REWARD_SOURCE:
+                continue
+            if placement.item not in NEW_KEY_ITEMS:
+                continue
+
+            source = NEW_REWARD_SOURCE[placement.location]
+            key_item = NEW_KEY_ITEMS[placement.item]
+            if isinstance(source, NpcSource):
+                self._replace_map_npc(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
+
+                # Special case for "Sara" -- also update Chaos Shrine.
+                if placement.location == "sara":
+                    self._replace_map_npc(0x1f, 6, key_item.sprite, key_item.movable)
+            elif isinstance(source, ChestSource):
+                chest_index = source.chest_id
+                if chest_index < len(self.maps._maps[source.map_id].chests):
+                    chest_id = self.maps._maps[source.map_id].chests[chest_index].chest_id
+                    chests[chest_id].item_id = 0x0
+                else:
+                    print(f"Chest at {placement.location} was out of bounds: {chest_index}")
+
+        npcs = self.maps._maps[0x39].npcs
+        for npc in npcs:
+            if npc.event == 0x138c:
+                self.maps._maps[0x39].npcs.remove(npc)
+
+        # Save the chests (without key items in them).
+        chest_data = OutputStream()
+        for chest in chests:
+            chest.write(chest_data)
+        self.rom = self.rom.apply_patch(0x217FB4, chest_data.get_buffer())
 
     def _unite_mystic_key_doors(self):
         maps_with_doors = [
@@ -228,11 +278,6 @@ class KeyItemPlacement(object):
 
     def _better_earth_plate(self):
         self.maps._maps[0x3].npcs[0xe].event = 0x139c
-
-        event_addr = self.our_events.current_addr()
-        event = easm.parse(better_earth_plate, event_addr)
-        self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
-        self.events.set_addr(0x139c, event_addr)
 
     def _rewrite_give_texts(self):
         self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\x00")

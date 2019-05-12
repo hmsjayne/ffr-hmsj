@@ -41,7 +41,7 @@ sara_event = """
     db 0x1f 0x4 0x20 0x0
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %sara_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -49,7 +49,7 @@ sara_event = """
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
-    GIVE_REWARD
+    GIVE_SARA_REWARD
     db 0x1 0x4 0xff 0xff
     db 0x60 0x4 0x0 0xff
     set_npc_event 0x3 0x1f5d
@@ -160,9 +160,10 @@ king_event = """
     db 0x9 0x4 0x3c 0x0
     db 0x9 0x4 0x28 0x0
     db 0x9 0x4 0x3c 0x0
+    GIVE_KING_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %king_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -188,7 +189,6 @@ king_event = """
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
     set_npc_event 0x2 0x1f5c
-    GIVE_REWARD
     db 0x6a 0x8 0xff 0x7f 0xff 0xff 0xff 0xff
     db 0x6a 0x8 0xe 0x0 0x0 0xff 0xff 0xff
     db 0x6a 0x8 0x0 0x0 0x38 0xff 0xff 0xff
@@ -247,7 +247,7 @@ bikke_event = """
     db 0x14 0x4 0x8 0x0
     db 0x14 0x4 0x9 0x0
     db 0x9 0x4 0x3c 0x0
-    GIVE_REWARD
+    GIVE_BIKKE_REWARD
     db 0x26 0x4 0x0 0xff
     db 0x16 0x4 0x0 0xff
     db 0x12 0x8 0x0 0x1 0x2 0xff 0xff 0xff
@@ -257,7 +257,7 @@ bikke_event = """
     db 0x1f 0x4 0x20 0x0
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %bikke_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -289,9 +289,10 @@ marsh_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
+    GIVE_MARSH_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %marsh_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -299,7 +300,6 @@ marsh_event = """
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
-    GIVE_REWARD
     remove_trigger 0x1398
     jump .Label_2
     .Label_1:
@@ -418,15 +418,15 @@ astos_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
+    GIVE_ASTOS_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %astos_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
     close_dialog wait
     music 0x4 0x4           ; Resume BGM
-    GIVE_REWARD
     db 0x15 0x8 0x2 0x0 0x0 0x0 0x0 0x0
     db 0x3b 0x4 0xff 0xff
     db 0x3b 0x4 0xff 0xff
@@ -445,15 +445,15 @@ matoya_event = """
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
     take_item 0x2
+    GIVE_MATOYA_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %matoya_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
     close_dialog wait
     music 0x4 0x4           ; Resume BGM
-    GIVE_REWARD
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
     db 0x60 0x4 0x0 0xff
@@ -512,15 +512,15 @@ elf_prince_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
+    GIVE_ELF_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %elf_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
     close_dialog wait
     music 0x4 0x4           ; Resume BGM
-    GIVE_REWARD
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
     set_npc_event 0x6 0x1f82
@@ -537,9 +537,10 @@ locked_cornelia_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
+    GIVE_LOCKED_CORNELIA_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %locked_cornelia_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -547,7 +548,6 @@ locked_cornelia_event = """
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
-    GIVE_REWARD
     remove_trigger 0x13ad
     jump .Label_2
     .Label_1:
@@ -871,10 +871,10 @@ nerrik_event = """
     db 0x1f 0x4 0x20 0x0
     db 0x9 0x4 0x38 0x0
     take_item 0x5
-    GIVE_REWARD
+    GIVE_NERRICK_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %nerrick_text_id
     music 0x0 0x20          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -922,9 +922,10 @@ vampire_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
+    GIVE_VAMPIRE_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %vampire_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -932,7 +933,6 @@ vampire_event = """
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
-    GIVE_REWARD
     db 0x1 0x4 0xff 0xff
     remove_trigger 0x13b7
     jump .Label_2
@@ -952,10 +952,10 @@ sarda_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
-    GIVE_REWARD
+    GIVE_SARDA_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %sarda_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -976,10 +976,10 @@ lukahn_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
-    GIVE_REWARD
+    GIVE_LUKAHN_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %lukahn_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1001,9 +1001,10 @@ levistone_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
+    GIVE_ICE_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %ice_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1011,7 +1012,6 @@ levistone_event = """
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
-    GIVE_REWARD
     remove_trigger 0x139f
     end_event
 """
@@ -1025,9 +1025,10 @@ citadel_of_trials_chest_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
+    GIVE_CITADEL_OF_TRIALS_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %citadel_of_trials_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1035,7 +1036,6 @@ citadel_of_trials_chest_event = """
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
-    GIVE_REWARD
     db 0x1 0x4 0xff 0xff
     remove_trigger 0x13aa
     jump .Label_2
@@ -1230,7 +1230,7 @@ bahamuts_cave_event = """
     db 0x50 0x8 0xa 0x0 0x4 0xff 0xff 0xff
     db 0x9 0x4 0xf 0x0
     take_item 0xc
-    GIVE_REWARD
+    GIVE_BAHAMUT_REWARD
     db 0x23 0xc 0xff 0x20 0x0 0x0 0x0 0x0 0xbb 0x0 0x88 0x1
     db 0x23 0xc 0xff 0x21 0x0 0x0 0x0 0x0 0xbb 0x0 0x88 0x1
     db 0x23 0xc 0xff 0x22 0x0 0x0 0x0 0x0 0xbb 0x0 0x88 0x1
@@ -1309,7 +1309,7 @@ bahamuts_cave_event = """
     db 0x1f 0x4 0x23 0x1a
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %bahamut_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1350,10 +1350,10 @@ waterfall_robot_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
-    GIVE_REWARD
+    GIVE_WATERFALL_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %waterfall_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1476,10 +1476,10 @@ fairy_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
-    GIVE_REWARD
+    GIVE_FAIRY_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %fairy_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1501,10 +1501,10 @@ slab_chest_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
-    GIVE_REWARD
+    GIVE_MERMAIDS_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %mermaids_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1662,10 +1662,10 @@ dr_unne_event = """
     .Label_12:
     db 0x9 0x4 0x28 0x0
     take_item 0x7
-    GIVE_REWARD
+    GIVE_DR_UNNE_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %dr_unne_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1692,10 +1692,10 @@ lefein_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
-    GIVE_REWARD
+    GIVE_LEFIEN_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %lefien_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1716,10 +1716,10 @@ sky2_adamantite_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
-    GIVE_REWARD
+    GIVE_SKY2_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %sky2_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1836,10 +1836,10 @@ smyth_event = """
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x1e 0x0
     db 0x1f 0x4 0x20 0x0
-    GIVE_REWARD
+    GIVE_SMYTH_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %text_id
+    load_text top %smyth_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
@@ -1868,7 +1868,7 @@ cornelia_castle_1f_event = """
     .Label_3:
     remove_all 0x1392
     .Label_2:
-    check_flag %reward_flag jz .Label_4
+    check_flag %king_reward_flag jz .Label_4
     remove_all 0x13ad
     .Label_4:
     check_flag 0x9 jz .Label_5
@@ -1879,22 +1879,22 @@ cornelia_castle_1f_event = """
     end_event
 """
 
-cornelia_castle_2f_event = """
+cornelia_castle_2f_init = """
     remove_all 0x138c
     db 0x1f 0x4 0x2 0x0
     check_flag 0x1 jnz .Label_3
     remove_trigger 0x1f5d
     jump .Label_4
     .Label_3:
-    check_flag %reward_flag jnz .Label_4
+    check_flag %sara_reward_flag jnz .Label_4
     set_npc_event 0x3 0x13a7
     db 0x2f 0x8 0xcb 0x13 0xff 0x14 0xa 0x8
     .Label_4:
     end_event
 """
 
-pravoka_init_event = """
-    check_flag %reward_flag jz .Label_1
+pravoka_init = """
+    check_flag %bikke_reward_flag jz .Label_1
     remove_all 0x1fca
     jump .Label_2
     .Label_1:
@@ -1916,7 +1916,7 @@ pravoka_init_event = """
 """
 
 marsh_cave_b3_init = """
-    check_flag %reward_flag jz .Label_1
+    check_flag %marsh_reward_flag jz .Label_1
     remove_all 0x1398
     .Label_1:
     check_flag 0x9 jz .Label_2
@@ -1930,7 +1930,7 @@ nw_keep_init = """
     check_flag 0x9 jz .Label_1
     remove_trigger 0x1f4a
     .Label_1:
-    check_flag %reward_flag jz .Label_2
+    check_flag %astos_reward_flag jz .Label_2
     remove_trigger 0x1f86
     remove_trigger 0x1f88
     jump .Label_3
@@ -1946,7 +1946,7 @@ nw_keep_init = """
 """
 
 matoyas_cave_init = """
-    check_flag %reward_flag jnz .Label_1
+    check_flag %matoya_reward_flag jnz .Label_1
     check_flag 0x7 jz .Label_1
     set_npc_event 0x4 0x1391
     .Label_1:
@@ -1963,7 +1963,7 @@ elven_castle_init = """
     remove_all 0x1f4a
     .Label_1:
     db 0x1f 0x4 0x7 0x8
-    check_flag %reward_flag jnz .Label_2 
+    check_flag %elf_reward_flag jnz .Label_2 
     check_flag %have_jolt_tonic jz .Label_2
     set_npc_event 0x6 0x139a
     .Label_2:
@@ -1971,22 +1971,16 @@ elven_castle_init = """
 """
 
 mt_duergar_init = """
-    ; Since there are two events that take place here,
-    ; we need to be more careful about checking the correct
-    ; flags.
-    ; %nerrik_reward_flag - flag set from Nerrik's reward (vanilla canal - 0x0b)
-    ; %smyth_reward_flag - flag set by Smyth (vanilla Excalibur - 0x23)
-    
     %flag_have_mystic_key 0x09
     %flag_have_nitro 0x0a
     %flag_have_adamantite 0x21
 
-    check_flag %nerrik_reward_flag jnz .Label_1
+    check_flag %nerrick_reward_flag jnz .Label_1
     music 0x0 0x85
     db 0x2f 0x8 0x0 0x0 0xff 0x16 0x2a 0x8
     jump .Label_2
     .Label_1:
-    check_flag %nerrik_reward_flag jz .Label_2
+    check_flag %nerrick_reward_flag jz .Label_2
     npc_update 0x2 0xb
     npc_update 0x4 0xb
     .Label_2:
@@ -2007,7 +2001,7 @@ mt_duergar_init = """
 
 earth_b3_init = """
     db 0x18 0x8 0xe 0x1 0x2 0x0 0xff 0xff
-    check_flag %reward_flag jz .Label_1
+    check_flag %vampire_reward_flag jz .Label_1
     remove_all 0x13b7
     .Label_1:
     check_flag 0xc jz .Label_2
@@ -2023,7 +2017,7 @@ sages_cave_init = """
     %fed_titan 0x0e
 
     check_flag %fed_titan jz .End
-    check_flag %reward_flag jnz .End
+    check_flag %sarda_reward_flag jnz .End
     set_npc_event 0x0 0x13b8
 
     .End:
@@ -2034,7 +2028,7 @@ crescent_lake_init = """
     %earth_crystal_lit 0x11
     %lukahn_npc_id 0xd
 
-    check_flag %reward_flag jnz .End
+    check_flag %lukahn_reward_flag jnz .End
     check_flag %earth_crystal_lit jz .End
     set_npc_event %lukahn_npc_id 0x1394
     .End:
@@ -2042,7 +2036,7 @@ crescent_lake_init = """
 """
 
 ice_b3_init = """
-    check_flag %reward_flag jz .Label_1
+    check_flag %ice_reward_flag jz .Label_1
     remove_all 0x139f
     .Label_1:
     end_event
@@ -2060,7 +2054,7 @@ citadel_of_trials_f1_init = """
 """
 
 citadel_of_trials_f3_init = """
-    check_flag %reward_flag jz .Label_1
+    check_flag %citadel_of_trials_reward_flag jz .Label_1
     remove_all 0x13aa
     .Label_1:
     end_event
@@ -2068,7 +2062,7 @@ citadel_of_trials_f3_init = """
 
 bahamuts_cave_init = """
     db 0x18 0x8 0x2 0x1 0xf8 0xff 0xff 0xff
-    check_flag %reward_flag jnz .End
+    check_flag %bahamut_reward_flag jnz .End
     check_flag 0x17 jz .End
     set_npc_event 0x2 0x1396
     .End:
@@ -2076,14 +2070,14 @@ bahamuts_cave_init = """
 """
 
 waterfall_init = """
-    check_flag %reward_flag jnz .Label_1
+    check_flag %waterfall_reward_flag jnz .Label_1
     set_npc_event 0x0 0x13bd
     .Label_1:
     end_event
 """
 
 gaia_init = """
-    check_flag %reward_flag jnz .Label_1
+    check_flag %fairy_reward_flag jnz .Label_1
     check_flag 0x19 jz .Label_2
     set_npc_event 0xb 0x138f
     .Label_1:
@@ -2096,7 +2090,7 @@ gaia_init = """
 """
 
 mermaid_floor_init = """
-    check_flag %reward_flag jz .Label_1
+    check_flag %mermaids_reward_flag jz .Label_1
     remove_all 0x13b4
     .Label_1:
     end_event
@@ -2104,7 +2098,7 @@ mermaid_floor_init = """
 
 melmond_init = """
     db 0x1c 0x4 0x0 0x1
-    check_flag %reward_flag jnz .End
+    check_flag %dr_unne_reward_flag jnz .End
     check_flag 0x1c jz .End
     set_npc_event 0x0 0x13a5
     .End:
@@ -2112,7 +2106,7 @@ melmond_init = """
 """
 
 lefein_init = """
-    check_flag %reward_flag jnz .Label_1
+    check_flag %lefien_reward_flag jnz .Label_1
     check_flag 0x1e jz .Label_1
     set_npc_event 0xb 0x1395
     .Label_1:
@@ -2120,7 +2114,7 @@ lefein_init = """
 """
 
 sky_f2_init = """
-    check_flag %reward_flag jz .Label_1
+    check_flag %sky2_reward_flag jz .Label_1
     remove_trigger 0x138d
     .Label_1:
     end_event
