@@ -107,6 +107,16 @@ class Map(object):
                         self.dummy_chests.append(chest.chest_id)
                         break
 
+    def get_event_chest(self, chest_id: int) -> tuple:
+        if chest_id > len(self.chests):
+            raise RuntimeError(f"Chest index out of bounds: {chest_id} vs {len(self.chests)}")
+
+        chest = self.chests[chest_id]
+        for sprite in self.sprites:
+            if chest.x_pos == sprite.x_pos and chest.y_pos == sprite.y_pos:
+                return chest, sprite
+        raise RuntimeError(f"Chest {chest_id} does not have matching sprite!")
+
     def write(self, stream: OutputStream):
         self.header.write(stream)
 

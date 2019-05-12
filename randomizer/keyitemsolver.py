@@ -29,7 +29,8 @@ from collections import namedtuple
 from subprocess import run, PIPE
 
 from doslib.event import EventTable, EventTextBlock
-from doslib.maps import Maps, TreasureChest, MoneyChest
+from doslib.gen.map import Npc
+from doslib.maps import Maps, TreasureChest
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
@@ -37,7 +38,7 @@ from event.epp import pparse
 from randomizer.keyitemevents import *
 from stream.outputstream import AddressableOutputStream, OutputStream
 
-KeyItem = namedtuple("KeyItem", ["sprite", "reward", "dialog", "movable"])
+KeyItem = namedtuple("KeyItem", ["sprite", "movable", "key_item", "reward"])
 NpcSource = namedtuple("NpcSource", ["map_id", "npc_index", "event_id", "event", "map_init"])
 ChestSource = namedtuple("ChestSource", ["map_id", "chest_id", "sprite_id", "event_id", "event", "map_init"])
 
@@ -50,7 +51,6 @@ EVENT_SOURCE_MAP = {
     0x61: matoyas_cave_init,
     0x06: elven_castle_init,
     0x38: cornelia_castle_1f_event,
-    0x03: earth_b3_init,
     0x37: sages_cave_init,
     0x2F: crescent_lake_init,
     0x44: ice_b3_init,
@@ -124,29 +124,29 @@ NEW_REWARD_SOURCE = {
 }
 
 NEW_KEY_ITEMS = {
-    "bridge": KeyItem(sprite=0x22, reward=bridge_reward, dialog=0x127, movable=True),
-    "lute": KeyItem(sprite=0x00, reward=lute_reward, dialog=0x10a, movable=True),
-    "ship": KeyItem(sprite=0x45, reward=ship_reward, dialog=0x224, movable=True),
-    "crown": KeyItem(sprite=0x94, reward=crown_reward, dialog=0x10b, movable=True),
-    "crystal": KeyItem(sprite=0x47, reward=crystal_reward, dialog=0x1f3, movable=True),
-    "jolt_tonic": KeyItem(sprite=0x37, reward=jolt_tonic_reward, dialog=0x216, movable=True),
-    "mystic_key": KeyItem(sprite=0x31, reward=mystic_key_reward, dialog=0x154, movable=False),
-    "nitro_powder": KeyItem(sprite=0x0D, reward=nitro_powder_reward, dialog=0x128, movable=True),
-    "canal": KeyItem(sprite=0x3B, reward=canal_reward, dialog=0x1e8, movable=True),
-    "star_ruby": KeyItem(sprite=0x58, reward=star_ruby_reward, dialog=0x142, movable=False),
-    "rod": KeyItem(sprite=0x39, reward=rod_reward, dialog=0x21a, movable=True),
-    "canoe": KeyItem(sprite=0x38, reward=canoe_reward, dialog=0x1b1, movable=True),
-    "levistone": KeyItem(sprite=0x57, reward=levistone_reward, dialog=0x10c, movable=False),
-    "rats_tail": KeyItem(sprite=0x25, reward=rats_tail_reward, dialog=0x10d, movable=True),
-    "promotion": KeyItem(sprite=0x64, reward=promotion_reward, dialog=0x1d2, movable=False),
-    "bottle": KeyItem(sprite=0x44, reward=bottle_reward, dialog=None, movable=True),
-    "oxyale": KeyItem(sprite=0x29, reward=oxyale_reward, dialog=0x1c0, movable=True),
-    "rosetta_stone": KeyItem(sprite=0x1B, reward=rosetta_stone_reward, dialog=0x10e, movable=True),
-    "lufienish": KeyItem(sprite=0x3A, reward=lufienish_reward, dialog=0x235, movable=True),
-    "chime": KeyItem(sprite=0x21, reward=chime_reward, dialog=0x240, movable=True),
-    "warp_cube": KeyItem(sprite=0x2B, reward=warp_cube_reward, dialog=0x241, movable=True),
-    "adamantite": KeyItem(sprite=0x59, reward=adamantite_reward, dialog=0x10f, movable=False),
-    "excalibur": KeyItem(sprite=0x3C, reward=excalibur_reward, dialog=0x1ed, movable=True),
+    "bridge": KeyItem(sprite=0x22, movable=True, key_item=None, reward=bridge_reward),
+    "lute": KeyItem(sprite=0x00, movable=True, key_item=0x00, reward=lute_reward),
+    "ship": KeyItem(sprite=0x45, movable=True, key_item=None, reward=ship_reward),
+    "crown": KeyItem(sprite=0x94, movable=True, key_item=0x01, reward=crown_reward),
+    "crystal": KeyItem(sprite=0x47, movable=True, key_item=0x02, reward=crystal_reward),
+    "jolt_tonic": KeyItem(sprite=0x37, movable=True, key_item=0x03, reward=jolt_tonic_reward),
+    "mystic_key": KeyItem(sprite=0x31, movable=False, key_item=0x04, reward=mystic_key_reward),
+    "nitro_powder": KeyItem(sprite=0x0D, movable=True, key_item=0x05, reward=nitro_powder_reward),
+    "canal": KeyItem(sprite=0x3B, movable=True, key_item=None, reward=canal_reward),
+    "star_ruby": KeyItem(sprite=0x58, movable=False, key_item=0x08, reward=star_ruby_reward),
+    "rod": KeyItem(sprite=0x39, movable=True, key_item=0x09, reward=rod_reward),
+    "canoe": KeyItem(sprite=0x38, movable=True, key_item=0x10, reward=canoe_reward),
+    "levistone": KeyItem(sprite=0x57, movable=False, key_item=0x0a, reward=levistone_reward),
+    "rats_tail": KeyItem(sprite=0x25, movable=True, key_item=0x0c, reward=rats_tail_reward),
+    "promotion": KeyItem(sprite=0x64, movable=False, key_item=None, reward=promotion_reward),
+    "bottle": KeyItem(sprite=0x44, movable=True, key_item=0x0e, reward=bottle_reward),
+    "oxyale": KeyItem(sprite=0x29, movable=True, key_item=0x0f, reward=oxyale_reward),
+    "rosetta_stone": KeyItem(sprite=0x1B, movable=True, key_item=0x07, reward=rosetta_stone_reward),
+    "lufienish": KeyItem(sprite=0x3A, movable=True, key_item=None, reward=lufienish_reward),
+    "chime": KeyItem(sprite=0x21, movable=True, key_item=0x0b, reward=chime_reward),
+    "warp_cube": KeyItem(sprite=0x2B, movable=True, key_item=0x0d, reward=warp_cube_reward),
+    "adamantite": KeyItem(sprite=0x59, movable=False, key_item=0x06, reward=adamantite_reward),
+    "excalibur": KeyItem(sprite=0x3C, movable=True, key_item=0x11, reward=excalibur_reward),
 }
 
 
@@ -159,6 +159,7 @@ class KeyItemPlacement(object):
         self.map_events = EventTable(rom, 0x7050, 0xD3, base_event_id=0x0)
         self.event_text_block = EventTextBlock(rom)
 
+        self.chests = self._load_chests()
         self.our_events = AddressableOutputStream(0x8223F4C, max_size=0x1860)
 
         self._do_placement(clingo_seed)
@@ -195,6 +196,7 @@ class KeyItemPlacement(object):
         self._unite_mystic_key_doors()
         self._better_earth_plate()
         self._rewrite_give_texts()
+        self._save_chests()
 
         # Write out our (moved) rewritten events along with the updated
         # LUTs for them.
@@ -225,12 +227,6 @@ class KeyItemPlacement(object):
         return working_header
 
     def _update_npcs(self, key_item_locations: tuple):
-        chest_stream = self.rom.open_bytestream(0x217FB4, 0x400)
-
-        chests = []
-        for index in range(256):
-            chest = TreasureChest.read(chest_stream)
-            chests.append(chest)
 
         for placement in key_item_locations:
 
@@ -250,20 +246,7 @@ class KeyItemPlacement(object):
                 if placement.location == "sara":
                     self._replace_map_npc(0x1f, 6, key_item.sprite, key_item.movable)
             elif isinstance(source, ChestSource):
-                chest_index = source.chest_id
-                if chest_index < len(self.maps._maps[source.map_id].chests):
-                    chest_id = self.maps._maps[source.map_id].chests[chest_index].chest_id
-
-                    # Convert the chests from item chests to chests with gil, and set it to 1 >_>
-                    chests[chest_id].item_id = 0x0
-                    chests[chest_id].item_type = 0x1
-                    chests[chest_id].id = 0x0
-
-        # Save the chests (without key items in them).
-        chest_data = OutputStream()
-        for chest in chests:
-            chest.write(chest_data)
-        self.rom = self.rom.apply_patch(0x217FB4, chest_data.get_buffer())
+                self._replace_chest(source.map_id, source.chest_id, key_item.key_item)
 
     def _unite_mystic_key_doors(self):
         maps_with_doors = [
@@ -298,6 +281,35 @@ class KeyItemPlacement(object):
         # Some sprites weren't designed to move, so hold them still.
         if not movable:
             self.maps._maps[map_id].npcs[npc_index].move_speed = 0
+
+    def _replace_chest(self, map_id: int, chest_id: int, key_item:int):
+        safe_key_item = {
+            0x38: NEW_KEY_ITEMS["mystic_key"].key_item,
+            0x4F: NEW_KEY_ITEMS["crown"].key_item,
+            0x1E: NEW_KEY_ITEMS["oxyale"].key_item,
+        }
+
+        map = self.maps.get_map(map_id)
+        chest, sprite = map.get_event_chest(chest_id)
+        if key_item is None:
+            key_item = safe_key_item[map_id]
+            print(f"None key item for {hex(map_id)} -> {hex(key_item)}")
+        self.chests[chest.chest_id].item_id = (key_item + 1)
+
+    def _load_chests(self) -> list:
+        chest_stream = self.rom.open_bytestream(0x217FB4, 0x400)
+        chests = []
+        for index in range(256):
+            chest = TreasureChest.read(chest_stream)
+            chests.append(chest)
+        return chests
+
+    def _save_chests(self):
+        # Save the chests (without key items in them).
+        chest_data = OutputStream()
+        for chest in self.chests:
+            chest.write(chest_data)
+        self.rom = self.rom.apply_patch(0x217FB4, chest_data.get_buffer())
 
     @staticmethod
     def _solve_placement(seed: int) -> tuple:

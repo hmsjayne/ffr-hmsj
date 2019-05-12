@@ -60,7 +60,7 @@ class: EncounterGroup
 module: map
 
 class: Npc
-    indentifier, 16
+    identifier, 16
     event, 16
     x_pos, 16
     y_pos, 16
@@ -70,31 +70,31 @@ class: Npc
     in_room, 16
 
 class: Chest
-    indentifier, 16
+    identifier, 16
     chest_id, 16
     x_pos, 16
     y_pos, 16
     
 class: Tile
-    indentifier, 16
+    identifier, 16
     event, 16
     x_pos, 16
     y_pos, 16
     
 class: Shop
-    indentifier, 16
+    identifier, 16
     event, 16
     x_pos, 16
     y_pos, 16
     
 class: Sprite
-    indentifier, 16
+    identifier, 16
     event, 16
     x_pos, 16
     y_pos, 16
     
 class: MapHeader
-    indentifier, 16
+    identifier, 16
     low_x, 16
     low_y, 16
     high_x, 16

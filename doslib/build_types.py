@@ -33,8 +33,8 @@ LICENSE_HEADER = f"""#  Licensed under the Apache License, Version 2.0 (the "Lic
 #
 #  Generated on {datetime.datetime.now().strftime("%Y-%m-%d %H:%M")}
 
-from stream.input import Input
-from stream.output import Output
+from stream.inputstream import InputStream
+from stream.outputstream import OutputStream
 
 
 """
@@ -122,12 +122,12 @@ def main(argv):
                 # Build the full class as a string
                 class_lines = [
                     f"class {a_class}(object):\n",
-                    f"    def __init__(self, stream: Input = None):\n"
+                    f"    def __init__(self, stream: InputStream = None):\n"
                     f"        if stream is None:\n"
                     f"{new_init_text}\n"
                     f"        else:\n"
                     f"{init_text}\n",
-                    f"    def write(self, stream: Output):\n{write_text}\n\n"
+                    f"    def write(self, stream: OutputStream):\n{write_text}\n\n"
                 ]
                 module_file.writelines(class_lines)
 
