@@ -17,6 +17,8 @@ from stream.inputstream import InputStream
 
 
 class Rom(object):
+    """Class that represents a Dawn of Souls ROM."""
+
     def __init__(self, path: str = None, data: bytearray = None):
         if path is not None and data is None:
             with open(path, "rb") as rom_file:
@@ -26,13 +28,28 @@ class Rom(object):
         else:
             raise RuntimeError("Pass only the path of the ROM to load")
 
-    def open_bytestream(self, offset: int, size: int = -1, check_alignment: bool = True):
+    def open_bytestream(self, offset: int, size: int = -1, check_alignment: bool = True) -> InputStream:
+        """
+        Opens a InputStream to read over part of the ROM.
+        :param offset: Offset of the start of the InputStream
+        :param size: Number of bytes to include
+        :param check_alignment: Whether non-byte reads should checked that they are word aligned
+        :return: The InputStream
+        """
         if 0 <= offset < len(self.rom_data):
             data = self.rom_data[offset:] if size < 0 else self.rom_data[offset:(offset + size)]
             return InputStream(data, check_alignment=check_alignment)
         raise RuntimeError(f"Index out of bounds {hex(offset)} vs {len(self.rom_data)}")
 
-    def get_lut(self, offset: int, count: int):
+    def get_lut(self, offset: int, count: int) -> tuple:
+        """Gets a look-up table from the ROM.
+
+        Note: The offset *must* be word aligned as all the LUTs in the ROM are.
+
+        :param offset: Offset of the lookup table
+        :param count: Number of pointers to read
+        :return: The LUT as a tuple
+        """
         if len(self.rom_data) > offset >= 0 == offset % 4:
             lut_data = self.rom_data[offset:(offset + (count * 4))]
             return struct.unpack(f"<{count}I", lut_data)
@@ -41,31 +58,52 @@ class Rom(object):
             raise RuntimeError(f"Offset must be word aligned: {hex(offset)}")
         raise RuntimeError(f"Index out of bounds {hex(offset)} vs {len(self.rom_data)}")
 
-    def get_string(self, offset):
+    def get_string(self, offset) -> bytearray:
+        """
+        Gets a null terminated string.
+        :param offset: Offset of the string to read.
+        :return: The string as a bytearray.
+        """
         end_offset = offset
         while self.rom_data[end_offset] != 0x0:
             end_offset += 1
         return self.rom_data[offset:end_offset + 1]
 
-    def get_stream(self, offset: int, end_marker: bytearray = None, length: int = -1):
-        if end_marker is None and length > 0:
-            end_offset = offset + length
-        elif end_marker is not None:
-            end_offset = offset
-            markers_found = 0
+    def get_stream(self, offset: int, end_marker: bytearray) -> InputStream:
+        """
+        Gets an InputStream from the ROM.
 
-            while markers_found < len(end_marker):
-                if self.rom_data[end_offset] == end_marker[markers_found]:
-                    markers_found += 1
-                else:
-                    markers_found = 0
-                end_offset += 1
-        else:
-            raise RuntimeError(f"Error: Either an end marker or length is required for a stream.")
+        This should primarily be used where the data is not null terminated (use `get_string` then), and is of
+        variable length. Many events could be read using this method and a bytearray of [0x0, 0x4, 0xff, 0xff]
+        for example, but `get_event` should be used in that case.
+
+        :param offset: The offset of the start of the stream.
+        :param end_marker: The end marker.
+        :return: InputStream representing the data.
+        """
+        end_offset = offset
+        markers_found = 0
+
+        while markers_found < len(end_marker):
+            if self.rom_data[end_offset] == end_marker[markers_found]:
+                markers_found += 1
+            else:
+                markers_found = 0
+            end_offset += 1
 
         return InputStream(self.rom_data[offset:end_offset])
 
-    def get_event(self, offset: int):
+    def get_event(self, offset: int) -> InputStream:
+        """
+        Creates an InputStream from a simple event.
+
+        Note: This does *not* follow jumps. Many events only include one "end of event" command at the end,
+        and this method will work to read them. Some SoC events, however, include multiple end of event commands,
+        and this method would only read to the first one.
+
+        :param offset: Offset of the start of the event.
+        :return: InputStream representing the event.
+        """
         end_offset = offset
         last_cmd = -1
         while last_cmd != 0:
@@ -117,18 +155,32 @@ class Rom(object):
         return Rom(data=new_data)
 
     def write(self, path: str):
+        """
+        Writes a ROM as a file.
+        :param path: Path to output the ROM data.
+        """
         with open(path, "wb") as rom_file:
             rom_file.write(self.rom_data)
             rom_file.close()
 
     @staticmethod
-    def pointer_to_offset(pointer):
+    def pointer_to_offset(pointer: int) -> int:
+        """
+        Converts a pointer to an offset.
+        :param pointer: Pointer to convert.
+        :return: Offset in the ROM file.
+        """
         if pointer >= 0x8000000:
             return pointer - 0x8000000
         raise RuntimeError(f"Not a pointer {hex(pointer)}")
 
     @staticmethod
-    def offset_to_pointer(offset):
+    def offset_to_pointer(offset: int) -> int:
+        """
+        Converts a rom offset to a pointer.
+        :param offset: Offset into the ROM.
+        :return: A pointer representing the offset.
+        """
         if offset <= 0x8000000:
             return offset + 0x8000000
         raise RuntimeError(f"Not a pointer {hex(offset)}")

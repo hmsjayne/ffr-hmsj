@@ -21,7 +21,7 @@ from stream.outputstream import OutputStream
 
 class ShopData(object):
     def __init__(self, rom: Rom):
-        data_lut_stream = rom.get_stream(0x1DFB04, length=0x198)
+        data_lut_stream = rom.open_bytestream(0x1DFB04, 0x198)
         self.shop_data_pointers = []
         self.shop_inventories = []
         for index in range(51):
@@ -30,7 +30,7 @@ class ShopData(object):
 
             # This is overkill for vanilla, but is still small. Since code bytes don't count, the
             # value in shop.shop_data_length isn't quite as useful as it could be.
-            inventory = ShopInventory(rom.get_stream(Rom.pointer_to_offset(shop.pointer), length=0x20),
+            inventory = ShopInventory(rom.open_bytestream(Rom.pointer_to_offset(shop.pointer), 0x20),
                                       shop.shop_data_length)
             self.shop_inventories.append(inventory)
 

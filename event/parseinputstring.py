@@ -14,6 +14,8 @@
 
 
 class ParseInputString(object):
+    """Class to parse a string with an API similar to C."""
+
     def __init__(self, data: str):
         self._data = data
         self._index = 0

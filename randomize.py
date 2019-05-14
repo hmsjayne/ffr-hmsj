@@ -19,17 +19,15 @@ from argparse import ArgumentParser
 from random import seed, randint
 
 from doslib.event import EventTextBlock, EventTable
-from doslib.eventbuilder import EventBuilder
 from doslib.gen.classes import JobClass
-from doslib.maps import Maps
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
+from ipsfile import load_ips_files
 from randomizer.flags import Flags
 from randomizer.keyitemsolver import KeyItemPlacement
 from randomizer.spellshuffle import SpellShuffle
 from randomizer.treasures import treasure_shuffle
-from ipsfile import load_ips_files
 from stream.outputstream import OutputStream
 
 BASE_PATCHES = [
