@@ -14,8 +14,8 @@
 
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from stream.input import Input
-from stream.output import Output
+from stream.inputstream import InputStream
+from stream.outputstream import OutputStream
 
 
 class EventTable(object):
@@ -28,6 +28,12 @@ class EventTable(object):
 
     def set_addr(self, event_id: int, value: int):
         self._lut[event_id - self._base_event_id] = value
+
+    def get_lut(self) -> bytearray:
+        stream = OutputStream()
+        for addr in self._lut:
+            stream.put_u32(addr)
+        return stream.get_buffer()
 
 
 class EventTextBlock(TextBlock):
@@ -55,7 +61,7 @@ class EventTextBlock(TextBlock):
 
 
 class Event(object):
-    def __init__(self, stream: Input):
+    def __init__(self, stream: InputStream):
         self.commands = []
 
         last_cmd = -1
@@ -71,7 +77,7 @@ class Event(object):
             self.commands.append(EventCommand(cmd))
             last_cmd = cmd[0]
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         for cmd in self.commands:
             for data in cmd:
                 stream.put_u8(data)

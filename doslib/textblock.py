@@ -13,8 +13,8 @@
 #  limitations under the License.
 
 from doslib.rom import Rom
-from stream.input import Input
-from stream.output import Output
+from stream.inputstream import InputStream
+from stream.outputstream import OutputStream
 
 
 class TextBlock(object):
@@ -26,17 +26,17 @@ class TextBlock(object):
             self.strings.append(rom.get_string(Rom.pointer_to_offset(addr)))
 
     def __getitem__(self, index):
-        return TextBlock._as_ascii(Input(self.strings[index], check_alignment=False))
+        return TextBlock._as_ascii(InputStream(self.strings[index], check_alignment=False))
 
     def __setitem__(self, index, value):
-        self.strings[index] = TextBlock._encode_text(Input(value, check_alignment=False))
+        self.strings[index] = TextBlock._encode_text(InputStream(value, check_alignment=False))
 
     def size(self):
         return len(self.strings)
 
     def pack(self, rom: Rom) -> Rom:
-        text_block = Output()
-        text_lut = Output()
+        text_block = OutputStream()
+        text_lut = OutputStream()
 
         next_addr = self.lut[0]
         text_block_offset = Rom.pointer_to_offset(next_addr)
@@ -56,14 +56,14 @@ class TextBlock(object):
         return rom.apply_patches(patches)
 
     @staticmethod
-    def encode_text(text: str):
+    def encode_text(text: str) -> bytearray:
         data = bytearray()
         for char in text:
             data.append(ord(char))
-        return TextBlock._encode_text(Input(data))
+        return TextBlock._encode_text(InputStream(data))
 
     @staticmethod
-    def _as_ascii(stream: Input, symbolic_names: bool = False):
+    def _as_ascii(stream: InputStream, symbolic_names: bool = False):
         working = ""
         while not stream.is_eos():
             char_code = stream.get_u8()
@@ -97,7 +97,7 @@ class TextBlock(object):
         return working
 
     @staticmethod
-    def _encode_text(stream):
+    def _encode_text(stream) -> bytearray:
         working = bytearray()
         while not stream.is_eos():
             char = stream.get_char()
@@ -105,12 +105,12 @@ class TextBlock(object):
                 char = stream.get_char()
                 if char == 'x':
                     # \x designates a 2 digit hex code
-                    chars = (stream.get_u8() << 8) + stream.get_u8()
+                    chars = stream.get_char() + stream.get_char()
                 elif char == 'u':
                     # \u designates a 4 digit hex code
                     num = ""
                     for digit in range(4):
-                        num += hex(stream.get_u8())
+                        num += stream.get_char()
                     chars = int(num, 16)
                 elif char == '\"':
                     chars = 0x815F
@@ -121,7 +121,7 @@ class TextBlock(object):
             else:
                 chars = TextBlock.INVERTED_TEXT_TABLE[char]
 
-            digits = int(len(hex(chars)) / 2) - 1
+            digits = max(int(len(hex(chars)) / 2) - 1, 1)
             working += int(chars).to_bytes(digits, byteorder="big", signed=False)
 
         working.append(0x0)

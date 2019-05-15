@@ -4,27 +4,27 @@ item(ship).
 item(crown).
 item(crystal).
 item(jolt_tonic).
-item(key).
+item(mystic_key).
 item(nitro_powder).
 item(canal).
-item(ruby).
+item(star_ruby).
 item(rod).
 item(canoe).
 item(levistone).
 item(gear).
-item(tail).
+item(rats_tail).
 item(bottle).
 item(oxyale).
-item(slab).
+item(rosetta_stone).
 item(chime).
-item(cube).
-item(adamant).
+item(warp_cube).
+item(adamantite).
 item(excalibur).
 item(earth).
 item(fire).
 item(water).
 item(air).
-item(class_change).
+item(promotion).
 item(lufienish).
 
 location(sara).
@@ -41,14 +41,14 @@ location(sarda).
 location(lukahn).
 location(ice).
 location(desert).
-location(ordeals).
+location(citadel_of_trials).
 location(caravan).
 location(fairy).
 location(mermaids).
 location(lefien).
 location(waterfall).
 location(sky2).
-location(smith).
+location(smyth).
 location(lich).
 location(kary).
 location(kraken).
@@ -63,20 +63,21 @@ requires(lukahn,earth).
 requires(astos,crown).
 requires(matoya,crystal).
 requires(elf,jolt_tonic).
-requires(key,locked_cornelia).
+requires(locked_cornelia,mystic_key).
 requires(nerrick,nitro_powder).
 requires(desert,levistone).
-requires(ordeals,ordeal_access).
+requires(citadel_of_trials,trials_access).
 requires(fairy,bottle).
 requires(mermaids,oxyale).
 requires(lefien,lufienish).
 requires(sky2,sky_access).
-requires(smith,adamant).
+requires(smyth,adamantite).
 requires(waterfall,canoe).
-requires(bahamut,tail).
-requires(dr_unne,slab).
-has(sky_access) :- has(chime), has(cube).
-has(ordeal_access) :- has(canoe), has(crown).
+requires(bahamut,rats_tail).
+requires(dr_unne,rosetta_stone).
+requires(sarda,star_ruby).
+has(sky_access) :- has(chime), has(warp_cube).
+has(trials_access) :- has(canoe), has(crown).
 
 %Force fiends to be Vanilla
 pair(earth,lich).
@@ -89,4 +90,10 @@ pair(bottle,caravan).
 pair(gear,desert).
 
 %Bahamut's event needs extra work
-pair(class_change, bahamut).
+pair(promotion, bahamut).
+
+%Since Crown + Ruby chests aren't locked by anything, be sure they contain key items
+:- pair(bridge, marsh).
+:- pair(canal, marsh).
+:- pair(bridge, vampire).
+:- pair(canal, vampire).

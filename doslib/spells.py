@@ -14,7 +14,7 @@
 from doslib.gen.spells import SpellData
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from stream.output import Output
+from stream.outputstream import OutputStream
 
 
 class Spells(object):
@@ -25,13 +25,13 @@ class Spells(object):
         # Slot 0 is skipped = 128 + 2 (blank name + empty help) = 130
         self._name_help = TextBlock(rom, 0x1A1650, 130)
 
-        spell_data_stream = rom.get_stream(0x1A1980, length=0x740)
+        spell_data_stream = rom.open_bytestream(0x1A1980, 0x740)
         self._spell_data = []
         for index in range(65):
             self._spell_data.append(SpellData(spell_data_stream))
 
     def write(self, rom: Rom) -> Rom:
-        spell_stream = Output()
+        spell_stream = OutputStream()
         for spell in self._spell_data:
             spell.write(spell_stream)
         return rom.apply_patch(0x1A1980, spell_stream.get_buffer())

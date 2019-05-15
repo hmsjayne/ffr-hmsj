@@ -28,8 +28,8 @@ from __future__ import annotations
 
 from doslib.gen.map import MapHeader, Tile, Npc, Chest, Sprite, Shop
 from doslib.rom import Rom
-from stream.input import Input
-from stream.output import Output
+from stream.inputstream import InputStream
+from stream.outputstream import OutputStream
 
 
 class Maps(object):
@@ -59,7 +59,7 @@ class Maps(object):
             if index == 0x73:
                 continue
 
-            data = Output()
+            data = OutputStream()
             map.write(data)
 
             patches[Rom.pointer_to_offset(self._map_lut[index])] = data.get_buffer()
@@ -67,7 +67,7 @@ class Maps(object):
 
 
 class Map(object):
-    def __init__(self, map_id: int, stream: Input):
+    def __init__(self, map_id: int, stream: InputStream):
         self.header = None
         self.tiles = []
         self.npcs = []
@@ -107,7 +107,17 @@ class Map(object):
                         self.dummy_chests.append(chest.chest_id)
                         break
 
-    def write(self, stream: Output):
+    def get_event_chest(self, chest_id: int) -> tuple:
+        if chest_id > len(self.chests):
+            raise RuntimeError(f"Chest index out of bounds: {chest_id} vs {len(self.chests)}")
+
+        chest = self.chests[chest_id]
+        for sprite in self.sprites:
+            if chest.x_pos == sprite.x_pos and chest.y_pos == sprite.y_pos:
+                return chest, sprite
+        raise RuntimeError(f"Chest {chest_id} does not have matching sprite!")
+
+    def write(self, stream: OutputStream):
         self.header.write(stream)
 
         for tile in self.tiles:
@@ -127,7 +137,7 @@ class Map(object):
 
 class TreasureChest(object):
     @staticmethod
-    def read(stream: Input):
+    def read(stream: InputStream):
         chest_data = stream.get_u32()
         if chest_data & 0x80000000 == 0:
             return MoneyChest(chest_data)
@@ -144,7 +154,7 @@ class ItemChest(TreasureChest):
     def __str__(self):
         return f"{{item, type={self.item_type}, id={hex(self.item_id)}}}"
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         chest_data = (self.id << 24) | (self.item_id << 8) | (self.item_type & 0xff)
         stream.put_u32(chest_data)
 
@@ -157,6 +167,6 @@ class MoneyChest(TreasureChest):
     def __str__(self):
         return f"{{gil, amount={self.qty}}}"
 
-    def write(self, stream: Output):
+    def write(self, stream: OutputStream):
         chest_data = (self.id << 24) | self.qty
         stream.put_u32(chest_data)

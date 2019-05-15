@@ -13,11 +13,12 @@
 #  limitations under the License.
 
 
-class Output(object):
+class OutputStream(object):
     """Class to present a bytearray as a stream"""
 
-    def __init__(self):
+    def __init__(self, max_size: int = None):
         self._stream = bytearray()
+        self._max_size = max_size
 
     def get_buffer(self) -> bytearray:
         return self._stream
@@ -48,3 +49,16 @@ class Output(object):
     def _ensure_word_aligned(self):
         if len(self._stream) % 4 != 0:
             raise RuntimeError(f"Offset must be word aligned: {hex(len(self._stream))}")
+
+    def _check_size(self):
+        if self._max_size is not None and len(self._stream) >= self._max_size:
+            raise RuntimeError(f"Stream overrun: {len(self._stream)} bytes of {self._max_size}")
+
+
+class AddressableOutputStream(OutputStream):
+    def __init__(self, base_addr: int = 0, max_size: int = None):
+        super().__init__(max_size)
+        self._base_addr = base_addr
+
+    def current_addr(self):
+        return self._base_addr + len(self._stream)

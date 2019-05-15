@@ -21,7 +21,7 @@ class Flags(object):
         self.magic = None
         self.treasures = None
         self.key_item_shuffle = None
-        self.XP_mult = 1.0
+        self.exp_mult = 1.0
 
         self.debug = None
 
@@ -39,4 +39,26 @@ class Flags(object):
             elif flag == "-hax":
                 self.debug = "iddqd"
             elif flag[:2] == "XP":
-                self.XP_mult *= float(flag.split("=")[1])
+                self.exp_mult /= float(flag.split("=")[1])
+
+    def __str__(self):
+        return self.text(internal=True)
+
+    def text(self, internal=False):
+        value = ""
+        if self.debug is not None:
+            if internal:
+                value += "\\u819a"
+            else:
+                value += "!"
+        if self.encounters is not None:
+            value += "Et"
+        if self.magic is not None:
+            value += "Ms"
+        if self.treasures is not None:
+            value += "Ts"
+        if self.key_item_shuffle is not None:
+            value += "K"
+        if self.exp_mult is not None:
+            value += f"{str(int(self.exp_mult * 10))}"
+        return value
