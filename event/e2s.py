@@ -102,6 +102,11 @@ def _da_06(cmd: bytearray) -> str:
     return f"close_dialog {method}"
 
 
+def _da_09(cmd: bytearray) -> str:
+    frame_count = array.array("H", cmd[2:4])[0]
+    return f"delay {frame_count}"
+
+
 def _da_0c(cmd: bytearray) -> tuple:
     addr = array.array("I", cmd[4:8])[0]
     return "jump $$addr$$", addr
@@ -123,6 +128,10 @@ def _da_19(cmd: bytearray) -> tuple:
     else:
         addr = array.array("I", cmd[4:8])[0]
         return f"repeat {hex(cmd[2])} $$addr$$", addr
+
+
+def _da_1f(cmd: bytearray) -> str:
+    return f"set_npc_frame {hex(cmd[2])} {hex(cmd[3])}"
 
 
 def _da_27(cmd: bytearray) -> str:
@@ -229,6 +238,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = _da_05(full_cmd)
         elif cmd == 0x6:
             working[offset] = _da_06(full_cmd)
+        elif cmd == 0x9:
+            working[offset] = _da_09(full_cmd)
         elif cmd == 0xc:
             cmd_text, jump_target = _da_0c(full_cmd)
             if jump_target is not None:
@@ -255,6 +266,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
+        elif cmd == 0x1f:
+            working[offset] = _da_1f(full_cmd)
         elif cmd == 0x27:
             working[offset] = _da_27(full_cmd)
         elif cmd == 0x2d:
