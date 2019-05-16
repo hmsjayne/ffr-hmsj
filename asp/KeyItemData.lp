@@ -95,5 +95,7 @@ pair(promotion, bahamut).
 %Since Crown + Ruby chests aren't locked by anything, be sure they contain key items
 :- pair(bridge, marsh).
 :- pair(canal, marsh).
+:- pair(ship, marsh).
 :- pair(bridge, vampire).
 :- pair(canal, vampire).
+:- pair(ship, vampire).

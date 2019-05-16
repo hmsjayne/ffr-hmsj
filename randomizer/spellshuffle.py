@@ -87,12 +87,14 @@ class SpellShuffle(object):
             spell_index = white_magic.original_index(index) + white_magic_offset
             new_spells_list[spell_index].level = int(index / 4) + 1
             new_spells_list[spell_index].price = self._spells[index + white_magic_offset].price
+            new_spells_list[spell_index].mp_cost = self._spells[index + white_magic_offset].mp_cost
             complete_magic_mapping.append(spell_index)
 
         for index, magic in enumerate(black_magic):
             spell_index = black_magic.original_index(index) + black_magic_offset
             new_spells_list[spell_index].level = int(index / 4) + 1
             new_spells_list[spell_index].price = self._spells[index + black_magic_offset].price
+            new_spells_list[spell_index].mp_cost = self._spells[index + black_magic_offset].mp_cost
             complete_magic_mapping.append(spell_index)
 
         # Now that we've finished with the code that needs to look back at the original spell list,

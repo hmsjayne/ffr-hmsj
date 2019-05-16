@@ -20,6 +20,7 @@ from random import seed, randint
 
 from doslib.event import EventTextBlock, EventTable
 from doslib.gen.classes import JobClass
+from doslib.gen.enemy import EnemyStats
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
@@ -86,6 +87,34 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
             job_class.write(class_out_stream)
 
         rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
+
+    if True:
+        enemy_data_stream = rom.open_bytestream(0x1DE044, 0x1860)
+        enemies = []
+        while not enemy_data_stream.is_eos():
+            enemies.append(EnemyStats(enemy_data_stream))
+
+        # Rebalance (Revisited) Fiend HP
+        enemies[0x78].max_hp = enemies[0x77].max_hp * 2
+        enemies[0x7a].max_hp = enemies[0x79].max_hp * 2
+        enemies[0x7c].max_hp = enemies[0x7b].max_hp * 2
+        enemies[0x7e].max_hp = enemies[0x7d].max_hp * 2
+
+        # And Chaos
+        enemies[0x7f].max_hp = enemies[0x7e].max_hp * 2
+
+        # Finally, Piscodemons can suck it
+        enemies[0x67].atk = int(enemies[0x67].atk / 2)
+
+        # We'll also lower everyone's INT just to see how that works
+        for index in range(0x80):
+            enemies[index].intel = int(.666 * enemies[index].intel)
+            # print(f"{hex(index)} HP: {enemies[index].max_hp}, INT: {enemies[index].intel}")
+
+        out = OutputStream()
+        for enemy in enemies:
+            enemy.write(out)
+        rom = rom.apply_patch(0x1DE044, out.get_buffer())
 
     # Add the seed + flags to the party creation screen.
     seed_str = TextBlock.encode_text(f"Seed:\n{rom_seed}\nFlags:\n{flags}\x00")
