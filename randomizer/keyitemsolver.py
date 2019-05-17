@@ -88,7 +88,8 @@ EVENT_SOURCE_MAP = {
     0x139D: smyth_event,
 
     # Extra events
-    0x139c: better_earth_plate
+    0x139c: better_earth_plate,
+    0x13af: citadel_guide
 }
 
 NEW_REWARD_SOURCE = {
@@ -169,7 +170,7 @@ class KeyItemPlacement(object):
         source_headers = self._prepare_header(key_item_locations)
 
         for event_id, source in EVENT_SOURCE_MAP.items():
-            if event_id < 0xff or event_id in [0x139c]:
+            if event_id < 0xff or event_id in [0x139c, 0x13af, 0x13b8]:
                 use_our_event = True
             else:
                 use_our_event = False
@@ -273,6 +274,10 @@ class KeyItemPlacement(object):
         self.event_text_block.strings[0x1d2] = TextBlock.encode_text("You obtain class change.\x00")
         self.event_text_block.strings[0x1bf] = TextBlock.encode_text("You obtain a bottle.\x00")
         self.event_text_block.strings[0x235] = TextBlock.encode_text("You can now speak Lufenian.\x00")
+        self.event_text_block.strings[0x47a] = TextBlock.encode_text("Possession of the crown is required\n"
+                                                                     "to undertake trials..\x00")
+        self.event_text_block.strings[0x47b] = TextBlock.encode_text("The titan is so hungry.\n"
+                                                                     "If you were to feed them\\u8163\x00")
         self.rom = self.event_text_block.pack(self.rom)
 
     def _replace_map_npc(self, map_id: int, npc_index: int, sprite: int, movable: bool):
@@ -282,7 +287,7 @@ class KeyItemPlacement(object):
         if not movable:
             self.maps._maps[map_id].npcs[npc_index].move_speed = 0
 
-    def _replace_chest(self, map_id: int, chest_id: int, key_item:int):
+    def _replace_chest(self, map_id: int, chest_id: int, key_item: int):
         safe_key_item = {
             0x38: NEW_KEY_ITEMS["mystic_key"].key_item,
             0x4F: NEW_KEY_ITEMS["crown"].key_item,
