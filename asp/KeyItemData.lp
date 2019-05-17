@@ -96,6 +96,8 @@ pair(promotion, bahamut).
 :- pair(bridge, marsh).
 :- pair(canal, marsh).
 :- pair(ship, marsh).
+:- pair(lufienish, marsh).
 :- pair(bridge, vampire).
 :- pair(canal, vampire).
 :- pair(ship, vampire).
+:- pair(lufienish, vampire).
