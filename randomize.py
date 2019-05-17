@@ -38,7 +38,7 @@ BASE_PATCHES = [
     "data/RunningChange.ips",
     "data/StatusScreenExpansion.ips",
     "data/SpellLevelFix.ips",
-    "data/FrameLoaderFix.ips"
+    "data/SpriteFrameLoaderFix.ips"
 ]
 
 
