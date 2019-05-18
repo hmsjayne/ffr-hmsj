@@ -18,6 +18,46 @@ from stream.inputstream import InputStream
 from stream.outputstream import OutputStream
 
 
+class EventTables(object):
+    def __init__(self, rom: Rom):
+        self._map_init = EventTable(rom, 0x7050, 0xD3, base_event_id=0x0)
+        self._extra_events = EventTable(rom, 0x7900, 0x0a, base_event_id=0xFA0)
+        self._main_events = EventTable(rom, 0x7788, 0x44, base_event_id=0x1388)
+        self._dialog_events = EventTable(rom, 0x73A0, 0xef, base_event_id=0x1F40)
+
+    def get_addr(self, event_id: int) -> int:
+        if 0x0 <= event_id <= 0xD3:
+            return self._map_init.get_addr(event_id)
+        elif 0xFA0 <= event_id <= 0xFAA:
+            return self._extra_events.get_addr(event_id)
+        elif 0x1388 <= event_id <= 0x13CC:
+            return self._main_events.get_addr(event_id)
+        elif 0x1F40 <= event_id <= 0x202F:
+            return self._dialog_events.get_addr(event_id)
+        else:
+            raise RuntimeError(f"Invalid event_id: {hex(event_id)}")
+
+    def set_addr(self, event_id: int, value: int):
+        if 0x0 <= event_id <= 0xD3:
+            self._map_init.set_addr(event_id, value)
+        elif 0xFA0 <= event_id <= 0xFAA:
+            self._extra_events.set_addr(event_id, value)
+        elif 0x1388 <= event_id <= 0x13CC:
+            self._main_events.set_addr(event_id, value)
+        elif 0x1F40 <= event_id <= 0x202F:
+            self._dialog_events.set_addr(event_id, value)
+        else:
+            raise RuntimeError(f"Invalid event_id: {hex(event_id)}")
+
+    def get_patches(self) -> dict:
+        return {
+            0x7050: self._map_init.get_lut(),
+            0x7900: self._extra_events.get_lut(),
+            0x7788: self._main_events.get_lut(),
+            0x73A0: self._dialog_events.get_lut()
+        }
+
+
 class EventTable(object):
     def __init__(self, rom: Rom, table_offset: int, table_size: int, base_event_id=0):
         self._base_event_id = base_event_id
@@ -58,63 +98,3 @@ class EventTextBlock(TextBlock):
                 # nothing, we'll update the pointer in the LUT to point to string 0, which will serve as a single
                 # placeholder string.
                 self.strings[index] = None
-
-
-class Event(object):
-    def __init__(self, stream: InputStream):
-        self.commands = []
-
-        last_cmd = -1
-        while last_cmd != 0:
-            cmd = [stream.get_u8()]
-            cmd_len = stream.get_u8()
-            cmd.append(cmd_len)
-
-            # 2 Bytes already read -- the command, and length
-            for params in range(cmd_len - 2):
-                cmd.append(stream.get_u8())
-
-            self.commands.append(EventCommand(cmd))
-            last_cmd = cmd[0]
-
-    def write(self, stream: OutputStream):
-        for cmd in self.commands:
-            for data in cmd:
-                stream.put_u8(data)
-
-
-class EventCommand(list):
-    def cmd(self) -> int:
-        return self[0]
-
-    def size(self) -> int:
-        return self[1]
-
-    def get_u16(self, index: int) -> int:
-        if index % 2 == 0:
-            return self[index] | (self[index + 1] << 8)
-        raise RuntimeError(f"Event parameters are always word aligned")
-
-    def get_u32(self, index: int) -> int:
-        if index % 4 == 0:
-            return self[index] | (self[index + 1] << 8) | (self[index + 2] << 16) | (self[index + 3] << 24)
-        raise RuntimeError(f"Event parameters are always word aligned")
-
-    def put_u16(self, index: int, value: int):
-        if index % 2 == 0:
-            self[index] = value & 0xff
-            self[index + 1] = (value >> 8) & 0xff
-        else:
-            raise RuntimeError(f"Event parameters are always word aligned")
-
-    def put_u32(self, index: int, value: int):
-        if index % 4 == 0:
-            self[index] = value & 0xff
-            self[index + 1] = (value >> 8) & 0xff
-            self[index + 2] = (value >> 16) & 0xff
-            self[index + 3] = (value >> 24) & 0xff
-        else:
-            raise RuntimeError(f"Event parameters are always word aligned")
-
-    def __str__(self) -> str:
-        return "[" + ",".join(format(x, "02x") for x in self) + "]"

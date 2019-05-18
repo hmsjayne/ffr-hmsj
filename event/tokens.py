@@ -79,6 +79,10 @@ class DelayToken(list):
     pass
 
 
+class MoveNpcToken(list):
+    pass
+
+
 class JumpToken(str):
     pass
 
@@ -98,8 +102,10 @@ class SetRepeatToken(str):
 class RepeatToken(str):
     pass
 
+
 class SetNpcFrameToken(list):
     pass
+
 
 class ShowDialogToken(list):
     pass

@@ -107,6 +107,14 @@ def _da_09(cmd: bytearray) -> str:
     return f"delay {frame_count}"
 
 
+def _da_0b(cmd: bytearray) -> str:
+    tiles_to_move = cmd[2]
+    speed = cmd[3]
+    direction = cmd[4]
+    npc_id = cmd[8]
+    return f"move_npc {hex(npc_id)} {direction} {tiles_to_move} {speed}"
+
+
 def _da_0c(cmd: bytearray) -> tuple:
     addr = array.array("I", cmd[4:8])[0]
     return "jump $$addr$$", addr
@@ -240,6 +248,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = _da_06(full_cmd)
         elif cmd == 0x9:
             working[offset] = _da_09(full_cmd)
+        elif cmd == 0xb:
+            working[offset] = _da_0b(full_cmd)
         elif cmd == 0xc:
             cmd_text, jump_target = _da_0c(full_cmd)
             if jump_target is not None:

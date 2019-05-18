@@ -28,7 +28,7 @@ import json
 from collections import namedtuple
 from subprocess import run, PIPE
 
-from doslib.event import EventTable, EventTextBlock
+from doslib.event import EventTextBlock, EventTables
 from doslib.gen.map import Npc
 from doslib.maps import Maps, TreasureChest
 from doslib.rom import Rom
@@ -156,8 +156,7 @@ class KeyItemPlacement(object):
     def __init__(self, rom: Rom, clingo_seed: int):
         self.rom = rom
         self.maps = Maps(rom)
-        self.events = EventTable(rom, 0x7788, 0x44, base_event_id=0x1388)
-        self.map_events = EventTable(rom, 0x7050, 0xD3, base_event_id=0x0)
+        self.events = EventTables(rom)
         self.event_text_block = EventTextBlock(rom)
 
         self.chests = self._load_chests()
@@ -169,29 +168,27 @@ class KeyItemPlacement(object):
         key_item_locations = self._solve_placement(clingo_seed)
         source_headers = self._prepare_header(key_item_locations)
 
+        patches = {}
         for event_id, source in EVENT_SOURCE_MAP.items():
-            if event_id < 0xff or event_id in [0x139c, 0x13af, 0x13b8]:
-                use_our_event = True
-            else:
-                use_our_event = False
-
-            if use_our_event:
-                event_addr = self.our_events.current_addr()
-
-                if event_id < 0xff:
-                    self.map_events.set_addr(event_id, event_addr)
-                else:
-                    self.events.set_addr(event_id, event_addr)
-            else:
-                event_addr = self.events.get_addr(event_id)
-
             event_source = pparse(f"{source_headers}\n\n{source}")
-            event = easm.parse(event_source, event_addr)
 
-            if use_our_event:
+            event_addr = self.events.get_addr(event_id)
+            event_space = self.rom.get_event(Rom.pointer_to_offset(event_addr)).size()
+
+            # See if the event fits into it's vanilla location.
+            event = easm.parse(event_source, event_addr)
+            if len(event) > event_space:
+                print(f"Event {hex(event_id)} didn't fit: {hex(len(event))} vs {hex(event_space)}")
+                # Didn't fit. Move it to our space.
+                event_addr = self.our_events.current_addr()
+                self.events.set_addr(event_id, event_addr)
+
+                # We'll write all of our events together at the end
+                event = easm.parse(event_source, event_addr)
                 self.our_events.put_bytes(event)
             else:
-                self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
+                # Add the event to the vanilla patches.
+                patches[Rom.pointer_to_offset(event_addr)] = event
 
         self._update_npcs(key_item_locations)
         self._unite_mystic_key_doors()
@@ -199,13 +196,13 @@ class KeyItemPlacement(object):
         self._rewrite_give_texts()
         self._save_chests()
 
-        # Write out our (moved) rewritten events along with the updated
-        # LUTs for them.
-        self.rom = self.rom.apply_patches({
-            0x7050: self.map_events.get_lut(),
-            0x7788: self.events.get_lut(),
-            0x223F4C: self.our_events.get_buffer()
-        })
+        # Append our new (relocated) events in the patch data.
+        patches[0x223F4C] = self.our_events.get_buffer()
+
+        # And then get all the patch data for the LUTs
+        for offset, patch in self.events.get_patches().items():
+            patches[offset] = patch
+        self.rom = self.rom.apply_patches(patches)
         self.rom = self.maps.write(self.rom)
 
     def _prepare_header(self, key_item_locations: tuple) -> str:
@@ -247,7 +244,7 @@ class KeyItemPlacement(object):
                 if placement.location == "sara":
                     self._replace_map_npc(0x1f, 6, key_item.sprite, key_item.movable)
             elif isinstance(source, ChestSource):
-                self._replace_chest(source.map_id, source.chest_id, key_item.key_item)
+                self._replace_chest(source.map_id, source.chest_id, key_item.sprite)
 
     def _unite_mystic_key_doors(self):
         maps_with_doors = [
@@ -287,19 +284,26 @@ class KeyItemPlacement(object):
         if not movable:
             self.maps._maps[map_id].npcs[npc_index].move_speed = 0
 
-    def _replace_chest(self, map_id: int, chest_id: int, key_item: int):
-        safe_key_item = {
-            0x38: NEW_KEY_ITEMS["mystic_key"].key_item,
-            0x4F: NEW_KEY_ITEMS["crown"].key_item,
-            0x1E: NEW_KEY_ITEMS["oxyale"].key_item,
-        }
-
+    def _replace_chest(self, map_id: int, chest_id: int, sprite_id: int):
         map = self.maps.get_map(map_id)
         chest, sprite = map.get_event_chest(chest_id)
-        if key_item is None:
-            key_item = safe_key_item[map_id]
-            print(f"None key item for {hex(map_id)} -> {hex(key_item)}")
-        self.chests[chest.chest_id].item_id = (key_item + 1)
+        map.chests.remove(chest)
+        map.sprites.remove(sprite)
+
+        chest_npc = Npc()
+        chest_npc.identifier = 0x2
+        chest_npc.in_room = 0x1
+        chest_npc.x_pos = sprite.x_pos
+        chest_npc.y_pos = sprite.y_pos
+        chest_npc.move_speed = 0
+        chest_npc.event = sprite.event
+
+        if map in [0x38, 0x5b]:
+            # Use a chest in Cornelia and Marsh for now.
+            chest_npc.sprite_id = 0xc7
+        else:
+            chest_npc.sprite_id = sprite_id
+        map.npcs.append(chest_npc)
 
     def _load_chests(self) -> list:
         chest_stream = self.rom.open_bytestream(0x217FB4, 0x400)
