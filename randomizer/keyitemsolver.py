@@ -43,53 +43,54 @@ NpcSource = namedtuple("NpcSource", ["map_id", "npc_index", "event_id", "event",
 ChestSource = namedtuple("ChestSource", ["map_id", "chest_id", "sprite_id", "event_id", "event", "map_init"])
 
 EVENT_SOURCE_MAP = {
+    0x00: world_map_init,
     0x03: earth_b3_init,
-    0x39: cornelia_castle_2f_init,
-    0x62: pravoka_init,
-    0x5B: marsh_cave_b3_init,
-    0x58: nw_keep_init,
-    0x61: matoyas_cave_init,
     0x06: elven_castle_init,
-    0x38: cornelia_castle_1f_event,
-    0x37: sages_cave_init,
+    0x1E: mermaid_floor_init,
+    0x1F: chaos_shrine_init,
     0x2F: crescent_lake_init,
+    0x37: sages_cave_init,
+    0x38: cornelia_castle_1f_event,
+    0x39: cornelia_castle_2f_init,
+    0x3A: cornelia_map_init,
     0x44: ice_b3_init,
+    0x47: gaia_init,
     0x4D: citadel_of_trials_f1_init,
     0x4F: citadel_of_trials_f3_init,
-    0x54: bahamuts_cave_init,
     0x53: waterfall_init,
-    0x47: gaia_init,
-    0x1E: mermaid_floor_init,
+    0x54: bahamuts_cave_init,
+    0x57: mt_duergar_init,
+    0x58: nw_keep_init,
+    0x5B: marsh_cave_b3_init,
+    0x5D: sky_f2_init,
+    0x61: matoyas_cave_init,
+    0x62: pravoka_init,
     0x6A: melmond_init,
     0x70: lefein_init,
-    0x5D: sky_f2_init,
-    0x57: mt_duergar_init,
     0x138B: king_event,
-    0x13A7: sara_event,
-    0x13B5: bikke_event,
-    0x1398: marsh_event,
+    0x138D: sky2_adamantite_event,
+    0x138F: fairy_event,
     0x1390: astos_event,
     0x1391: matoya_event,
-    0x139A: elf_prince_event,
-    0x13ad: locked_cornelia_event,
     0x1393: nerrik_event,
+    0x1394: lukahn_event,
+    0x1395: lefein_event,
+    0x1396: bahamuts_cave_event,
+    0x1398: marsh_event,
+    0x139A: elf_prince_event,
+    0x139c: better_earth_plate,
+    0x139D: smyth_event,
+    0x139F: levistone_event,
+    0x13A5: dr_unne_event,
+    0x13A7: sara_event,
+    0x13AA: citadel_of_trials_chest_event,
+    0x13ad: locked_cornelia_event,
+    0x13af: citadel_guide,
+    0x13B4: slab_chest_event,
+    0x13B5: bikke_event,
     0x13B7: vampire_event,
     0x13b8: sarda_event,
-    0x1394: lukahn_event,
-    0x139F: levistone_event,
-    0x13AA: citadel_of_trials_chest_event,
-    0x1396: bahamuts_cave_event,
     0x13BD: waterfall_robot_event,
-    0x138F: fairy_event,
-    0x13B4: slab_chest_event,
-    0x13A5: dr_unne_event,
-    0x1395: lefein_event,
-    0x138D: sky2_adamantite_event,
-    0x139D: smyth_event,
-
-    # Extra events
-    0x139c: better_earth_plate,
-    0x13af: citadel_guide
 }
 
 NEW_REWARD_SOURCE = {
@@ -150,10 +151,13 @@ NEW_KEY_ITEMS = {
     "excalibur": KeyItem(sprite=0x3C, movable=True, key_item=0x11, reward=excalibur_reward),
 }
 
+# All pairings are of the form "pair(item,location)" - need to parse the info
+Placement = namedtuple("Placement", ["item", "location"])
+
 
 class KeyItemPlacement(object):
 
-    def __init__(self, rom: Rom, clingo_seed: int):
+    def __init__(self, rom: Rom, clingo_seed: int = None):
         self.rom = rom
         self.maps = Maps(rom)
         self.events = EventTables(rom)
@@ -162,10 +166,13 @@ class KeyItemPlacement(object):
         self.chests = self._load_chests()
         self.our_events = AddressableOutputStream(0x8223F4C, max_size=0x1860)
 
-        self._do_placement(clingo_seed)
+        if clingo_seed is not None:
+            key_item_locations = self._solve_placement(clingo_seed)
+        else:
+            key_item_locations = self._vanilla_placement()
+        self._do_placement(key_item_locations)
 
-    def _do_placement(self, clingo_seed: int):
-        key_item_locations = self._solve_placement(clingo_seed)
+    def _do_placement(self, key_item_locations: tuple):
         source_headers = self._prepare_header(key_item_locations)
 
         patches = {}
@@ -339,12 +346,42 @@ class KeyItemPlacement(object):
         clingo_out = json.loads(run(command, stdout=PIPE).stdout)
         pairings = clingo_out['Call'][0]['Witnesses'][0]['Value']
 
-        # All pairings are of the form "pair(item,location)" - need to parse the info
-        Placement = namedtuple("Placement", ["item", "location"])
-
         ki_placement = []
         for pairing in pairings:
             pairing = Placement(*pairing[5:len(pairing) - 1].split(","))
             ki_placement.append(pairing)
 
         return tuple(ki_placement)
+
+    @staticmethod
+    def _vanilla_placement() -> tuple:
+        return (
+            Placement("bridge", "king"),
+            Placement("lute", "sara"),
+            Placement("ship", "bikke"),
+            Placement("crown", "marsh"),
+            Placement("crystal", "astos"),
+            Placement("jolt_tonic", "matoya"),
+            Placement("mystic_key", "elf"),
+            Placement("nitro_powder", "locked_cornelia"),
+            Placement("canal", "nerrick"),
+            Placement("star_ruby", "vampire"),
+            Placement("rod", "sarda"),
+            Placement("canoe", "lukahn"),
+            Placement("levistone", "ice"),
+            Placement("airship", "desert"),
+            Placement("rats_tail", "citadel_of_trials"),
+            Placement("promotion", "bahamut"),
+            Placement("bottle", "caravan"),
+            Placement("oxyale", "fairy"),
+            Placement("rosetta_stone", "mermaids"),
+            Placement("lufienish", "dr_unne"),
+            Placement("chime", "lefien"),
+            Placement("warp_cube", "waterfall"),
+            Placement("adamantite", "sky2"),
+            Placement("excalibur", "smyth"),
+            Placement("earth", "lich"),
+            Placement("fire", "kary"),
+            Placement("water", "kraken"),
+            Placement("air", "tiamat"),
+        )
