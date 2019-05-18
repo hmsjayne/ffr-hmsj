@@ -202,7 +202,6 @@ def init_base_events(rom: Rom) -> Rom:
         %have_chime 0x1f
         %item_from_desert 0x28
 
-        set_flag 0x9
         set_flag %airship_visible
         check_flag %item_from_desert jz .Label_2
         remove_trigger 0x138e
