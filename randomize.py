@@ -18,12 +18,11 @@ import random
 from argparse import ArgumentParser
 from random import seed, randint
 
-from doslib.event import EventTextBlock, EventTable
+from doslib.event import EventTextBlock
 from doslib.gen.classes import JobClass
 from doslib.gen.enemy import EnemyStats
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from event import easm
 from ipsfile import load_ips_files
 from randomizer.flags import Flags
 from randomizer.keyitemsolver import KeyItemPlacement
@@ -38,7 +37,8 @@ BASE_PATCHES = [
     "data/RunningChange.ips",
     "data/StatusScreenExpansion.ips",
     "data/SpellLevelFix.ips",
-    "data/SpriteFrameLoaderFix.ips"
+    "data/SpriteFrameLoaderFix.ips",
+    "data/EventUpdates.ips"
 ]
 
 

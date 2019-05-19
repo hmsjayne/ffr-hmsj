@@ -1993,7 +1993,6 @@ world_map_init = """
     %have_chime 0x1f
     %item_from_desert 0x28
 
-    set_flag 0x14
     set_flag %airship_visible
     check_flag %item_from_desert jz .Label_2
     remove_trigger 0x138e
@@ -2519,7 +2518,9 @@ gear_reward = """
 %text_id 0x47c
 %reward_flag 0x28
 
-#define GIVE_REWARD set_flag %reward_flag 
+#define GIVE_REWARD \\
+    give_item_ex 0x1 0x8 \\
+    set_flag %reward_flag
 """
 
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

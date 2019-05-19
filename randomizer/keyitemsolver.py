@@ -292,7 +292,7 @@ class KeyItemPlacement(object):
                                                                      "to undertake trials..\x00")
         self.event_text_block.strings[0x47b] = TextBlock.encode_text("The titan is so hungry.\n"
                                                                      "If you were to feed them\\u8163\x00")
-        self.event_text_block.strings[0x47c] = TextBlock.encode_text("You obtain something cool.\x00")
+        self.event_text_block.strings[0x47c] = TextBlock.encode_text("You obtain a Megalixir.\x00")
         self.rom = self.event_text_block.pack(self.rom)
 
     def _replace_map_npc(self, map_id: int, npc_index: int, sprite: int, movable: bool):

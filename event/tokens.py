@@ -147,6 +147,10 @@ class GiveItemToken(list):
     pass
 
 
+class GiveItemExtendedToken(list):
+    pass
+
+
 class TakeItemToken(list):
     pass
 
