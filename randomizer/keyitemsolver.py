@@ -274,12 +274,13 @@ class KeyItemPlacement(object):
         # In order to simplify some of the logic, change the 3 instances of the second to the first
         # since it's more generic.
         for map_id in maps_with_doors:
-            for sprite in self.maps._maps[map_id].sprites:
+            map = self.maps.get_map(map_id)
+            for sprite in map.sprites:
                 if sprite.event == 0x23cd:
                     sprite.event = 0x1f4a
 
     def _better_earth_plate(self):
-        self.maps._maps[0x3].npcs[0xe].event = 0x139c
+        self.maps.get_map(0x3).npcs[0xe].event = 0x139c
 
     def _rewrite_give_texts(self):
         self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\x00")
@@ -295,11 +296,12 @@ class KeyItemPlacement(object):
         self.rom = self.event_text_block.pack(self.rom)
 
     def _replace_map_npc(self, map_id: int, npc_index: int, sprite: int, movable: bool):
-        self.maps._maps[map_id].npcs[npc_index].sprite_id = sprite
+        map = self.maps.get_map(map_id)
+        map.npcs[npc_index].sprite_id = sprite
 
         # Some sprites weren't designed to move, so hold them still.
         if not movable:
-            self.maps._maps[map_id].npcs[npc_index].move_speed = 0
+            map.npcs[npc_index].move_speed = 0
 
     def _replace_chest(self, map_id: int, chest_id: int, sprite_id: int):
         map = self.maps.get_map(map_id)
