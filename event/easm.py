@@ -46,6 +46,7 @@ GRAMMAR = {
     "take_item": TakeItemToken([0x37, 0x4, 0x1, "$0"]),
     "check_item": CheckItemToken("check_item"),
     "jump_by_dir": JumpByDirToken("jump_by_dir"),
+    "call": CallToken([0x48, 0x8, 0xff, 0xff, "$0"]),
 
     # Conditional jumps
     "jz": JzToken(0x2),
@@ -96,6 +97,7 @@ GRAMMAR = {
     TakeItemToken: ["$$value$$"],
     CheckItemToken: ["$$value$$", JzToken(), LabelToken()],
     JumpByDirToken: [LabelToken(), LabelToken(), LabelToken()],
+    CallToken: [LabelToken()],
     # The one special case is the `db` (define bytes).
     # This command is handled separately by the parser, because it is essentially a request to insert the
     # bytes that proceed it verbatim into the output. Because the command can be followed by any number
@@ -154,7 +156,13 @@ def parse(source: str, base_addr: int, debug=False) -> bytearray:
             parameters = []
             token = tokens.expect(GRAMMAR["$$value$$"])
             while token is not None:
-                parameters.append(token)
+                if isinstance(token, SymbolToken):
+                    if token in symbol_table:
+                        parameters.append(symbol_table[token])
+                    else:
+                        raise SymbolNotDefinedError(token, line, line_number)
+                else:
+                    parameters.append(token)
                 token = tokens.expect(GRAMMAR["$$value$$"])
 
             icode.append(parameters)

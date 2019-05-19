@@ -222,6 +222,11 @@ def _da_42(cmd: bytearray) -> tuple:
     return "jump_by_dir $$up_addr$$ $$right_addr$$ $$left_addr$$", [up_addr, right_addr, left_addr]
 
 
+def _da_48(cmd: bytearray) -> tuple:
+    sub_addr = array.array("I", cmd[4:8])[0]
+    return "call $$addr$$", sub_addr
+
+
 def disassemble(rom: Rom, offset: int) -> dict:
     rom_data = rom.rom_data
     working = dict()
@@ -313,6 +318,16 @@ def disassemble(rom: Rom, offset: int) -> dict:
                     labels[jump_target] = f".Label_{label_num}_{addr_labels[index]}"
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace(token_addr_labels[index], label)
+            working[offset] = cmd_text
+        elif cmd == 0x48:
+            cmd_text, jump_target = _da_48(full_cmd)
+            if jump_target is not None:
+                if jump_target not in labels:
+                    labels[jump_target] = f".Sub_{len(labels) + 1}"
+                    print(f"{labels[jump_target]}:")
+                    disassemble(rom, addr_to_offset(jump_target))
+                label = labels[jump_target]
+                cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
         else:
             working[offset] = _da_rest(full_cmd)

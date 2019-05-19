@@ -108,7 +108,7 @@ class Map(object):
                         break
 
     def get_event_chest(self, chest_id: int) -> tuple:
-        if chest_id > len(self.chests):
+        if chest_id >= len(self.chests):
             raise RuntimeError(f"Chest index out of bounds: {chest_id} vs {len(self.chests)}")
 
         chest = self.chests[chest_id]

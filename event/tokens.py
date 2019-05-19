@@ -159,6 +159,10 @@ class JumpByDirToken(str):
     pass
 
 
+class CallToken(list):
+    pass
+
+
 class Uint16(object):
     def __init__(self, value: int):
         self._value = value

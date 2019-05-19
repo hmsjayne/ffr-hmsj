@@ -69,6 +69,7 @@ EVENT_SOURCE_MAP = {
     0x70: lefein_init,
     0x138B: king_event,
     0x138D: sky2_adamantite_event,
+    0x138E: desert_event,
     0x138F: fairy_event,
     0x1390: astos_event,
     0x1391: matoya_event,
@@ -123,6 +124,7 @@ NEW_REWARD_SOURCE = {
     "lefien": NpcSource(map_id=0x70, npc_index=11, event_id=0x1395, event=lefein_event, map_init=lefein_init),
     "sky2": NpcSource(map_id=0x5D, npc_index=0, event_id=0x138D, event=sky2_adamantite_event, map_init=sky_f2_init),
     "smyth": NpcSource(map_id=0x57, npc_index=4, event_id=0x139D, event=smyth_event, map_init=mt_duergar_init),
+    "desert": ChestSource(map_id=None, chest_id=12, sprite_id=0, event_id=0x13B4, event=None, map_init=None),
 }
 
 NEW_KEY_ITEMS = {
@@ -149,6 +151,8 @@ NEW_KEY_ITEMS = {
     "warp_cube": KeyItem(sprite=0x2B, movable=True, key_item=0x0d, reward=warp_cube_reward),
     "adamantite": KeyItem(sprite=0x59, movable=False, key_item=0x06, reward=adamantite_reward),
     "excalibur": KeyItem(sprite=0x3C, movable=True, key_item=0x11, reward=excalibur_reward),
+    "airship": KeyItem(sprite=0xac, movable=False, key_item=None, reward=airship_reward),
+    "gear": KeyItem(sprite=0xc7, movable=False, key_item=None, reward=gear_reward),
 }
 
 # All pairings are of the form "pair(item,location)" - need to parse the info
@@ -228,6 +232,10 @@ class KeyItemPlacement(object):
             reward_text = base_reward_text.replace("GIVE_REWARD", f"GIVE_{location.upper()}_REWARD")
             reward_text = reward_text.replace("%text_id", f"%{location}_text_id")
             reward_text = reward_text.replace("%reward_flag", f"%{location}_reward_flag")
+
+            if placement.location == "desert":
+                reward_text += f"\n%desert_reward_sprite {hex(key_item.sprite)}"
+
             working_header += f";---\n; {placement.item} -> {location}\n;---\n{reward_text}\n\n"
         return working_header
 
@@ -251,7 +259,8 @@ class KeyItemPlacement(object):
                 if placement.location == "sara":
                     self._replace_map_npc(0x1f, 6, key_item.sprite, key_item.movable)
             elif isinstance(source, ChestSource):
-                self._replace_chest(source.map_id, source.chest_id, key_item.sprite)
+                if source.map_id is not None:
+                    self._replace_chest(source.map_id, source.chest_id, key_item.sprite)
 
     def _unite_mystic_key_doors(self):
         maps_with_doors = [
@@ -282,6 +291,7 @@ class KeyItemPlacement(object):
                                                                      "to undertake trials..\x00")
         self.event_text_block.strings[0x47b] = TextBlock.encode_text("The titan is so hungry.\n"
                                                                      "If you were to feed them\\u8163\x00")
+        self.event_text_block.strings[0x47c] = TextBlock.encode_text("You obtain something cool.\x00")
         self.rom = self.event_text_block.pack(self.rom)
 
     def _replace_map_npc(self, map_id: int, npc_index: int, sprite: int, movable: bool):
