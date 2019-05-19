@@ -1,0 +1,3 @@
+The 0x37 command has been updated to allow to directly use an item type and ID as parameters.
+To do this, use an 0x37 with twelve bytes and set bit 0x40 in the mode byte (+$2). Parameters
++$8 and +$A will then represent the item type and ID, respectively.

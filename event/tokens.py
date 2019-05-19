@@ -147,6 +147,10 @@ class GiveItemToken(list):
     pass
 
 
+class GiveItemExtendedToken(list):
+    pass
+
+
 class TakeItemToken(list):
     pass
 
@@ -156,6 +160,10 @@ class CheckItemToken(str):
 
 
 class JumpByDirToken(str):
+    pass
+
+
+class CallToken(list):
     pass
 
 
