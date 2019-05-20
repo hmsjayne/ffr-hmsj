@@ -317,8 +317,8 @@ class KeyItemPlacement(object):
         chest_npc.move_speed = 0
         chest_npc.event = sprite.event
 
-        if map in [0x38, 0x5b]:
-            # Use a chest in Cornelia and Marsh for now.
+        if map_id in [0x38, 0x5b, 0x1e]:
+            # Use a chest in Cornelia, Marsh, and the mermaid floor in Sea.
             chest_npc.sprite_id = 0xc7
         else:
             chest_npc.sprite_id = sprite_id

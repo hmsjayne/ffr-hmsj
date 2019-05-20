@@ -38,7 +38,8 @@ BASE_PATCHES = [
     "data/StatusScreenExpansion.ips",
     "data/SpellLevelFix.ips",
     "data/SpriteFrameLoaderFix.ips",
-    "data/EventUpdates.ips"
+    "data/EventUpdates.ips",
+    "data/Earth__CitadelMap.ips",
 ]
 
 
