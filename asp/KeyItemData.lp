@@ -87,7 +87,6 @@ pair(air,tiamat).
 
 %Debug stuff for PuwP
 pair(bottle,caravan).
-pair(gear,desert).
 
 %Bahamut's event needs extra work
 pair(promotion, bahamut).

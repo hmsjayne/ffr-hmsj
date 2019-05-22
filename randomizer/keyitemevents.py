@@ -2022,24 +2022,15 @@ cornelia_map_init = """
 """
 
 cornelia_castle_1f_event = """
-    remove_all 0x1392
-    db 0x18 0x8 0x9 0x1 0x3 0x0 0xff 0xff
-    check_flag %locked_cornelia_reward_flag jz .Label_1
-    set_npc_frame 0x9 0x1
-    .Label_1:
-    check_flag 0x1 jz .Label_3
-    jump .Label_2
-    .Label_3:
-    remove_all 0x1392
-    .Label_2:
-    check_flag %king_reward_flag jz .Label_4
-    remove_all 0x13ad
-    .Label_4:
-    check_flag 0x9 jz .Label_5
-    remove_trigger 0x1f4a
-    remove_trigger 0x1f4a
-    remove_all 0x23cd
-    .Label_5:
+    %nitro_chest_npc 0x9
+    remove_all 0x1392                                       ; Remove triggers for the bridge building scene.
+    db 0x18 0x8 %nitro_chest_npc 0x1 0x3 0x0 0xff 0xff      ; Position the 'nitro' chest properly.
+    check_flag %locked_cornelia_reward_flag jz .Nitro_Chest_Closed
+    set_npc_frame 0x9 0x1                                   ; Show the nitro chest as opened.
+    .Nitro_Chest_Closed:
+    check_flag 0x9 jz .No_Mystic_Key
+    remove_all 0x1f4a                                       ; Remove key locks.
+    .No_Mystic_Key:
     end_event
 """
 
