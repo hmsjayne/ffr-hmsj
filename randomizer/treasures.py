@@ -19,7 +19,6 @@ from doslib.rom import Rom
 from stream.outputstream import OutputStream
 
 
-
 def treasure_shuffle(rom: Rom, rng: Random) -> Rom:
     chest_stream = rom.open_bytestream(0x217FB4, 0x400)
 

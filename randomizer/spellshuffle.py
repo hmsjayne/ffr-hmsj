@@ -12,8 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 import copy
-
 from random import Random
+
 from doslib.rom import Rom
 from doslib.shopdata import ShopData
 from doslib.spells import Spells

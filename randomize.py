@@ -70,11 +70,11 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     rom = placement.rom
 
     if flags.magic is not None:
-        shuffle_magic = SpellShuffle(rom,rng)
+        shuffle_magic = SpellShuffle(rom, rng)
         rom = shuffle_magic.write(rom)
 
     if flags.treasures is not None:
-        rom = treasure_shuffle(rom,rng)
+        rom = treasure_shuffle(rom, rng)
 
     if flags.debug is not None:
         class_stats_stream = rom.open_bytestream(0x1E1354, 96)
