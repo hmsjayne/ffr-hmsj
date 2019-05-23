@@ -12,14 +12,15 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from random import shuffle
+from random import Random
 
 from doslib.maps import TreasureChest, MoneyChest
 from doslib.rom import Rom
 from stream.outputstream import OutputStream
 
 
-def treasure_shuffle(rom: Rom) -> Rom:
+
+def treasure_shuffle(rom: Rom, rng: Random) -> Rom:
     chest_stream = rom.open_bytestream(0x217FB4, 0x400)
 
     chests_to_shuffle = []
@@ -30,7 +31,7 @@ def treasure_shuffle(rom: Rom) -> Rom:
         if isinstance(chest, MoneyChest) or chest.item_type != 0:
             chests_to_shuffle.append(chest)
 
-    shuffle(chests_to_shuffle)
+    rng.shuffle(chests_to_shuffle)
 
     chest_data = OutputStream()
     for chest in original_list:

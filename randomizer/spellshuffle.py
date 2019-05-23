@@ -13,6 +13,7 @@
 #  limitations under the License.
 import copy
 
+from random import Random
 from doslib.rom import Rom
 from doslib.shopdata import ShopData
 from doslib.spells import Spells
@@ -21,7 +22,7 @@ from stream.outputstream import OutputStream
 
 
 class SpellShuffle(object):
-    def __init__(self, rom: Rom):
+    def __init__(self, rom: Rom, rng: Random):
         self._shops = ShopData(rom)
         self._spells = Spells(rom)
 
@@ -30,7 +31,7 @@ class SpellShuffle(object):
         while not permissions_stream.is_eos():
             self._permissions.append(permissions_stream.get_u16())
 
-        self._do_shuffle()
+        self._do_shuffle(rng)
 
     def write(self, rom: Rom) -> Rom:
         permissions_stream = OutputStream()
@@ -41,14 +42,14 @@ class SpellShuffle(object):
         rom = self._spells.write(rom)
         return self._shops.write(rom)
 
-    def _do_shuffle(self):
+    def _do_shuffle(self, rng: Random):
         white_magic_offset = 1
         black_magic_offset = white_magic_offset + 32
 
         # To keep the game a _bit_ sane, split out white + black magic
         # and shuffle each independently.
-        white_magic = ShuffledList(self._spells[1:33])
-        black_magic = ShuffledList(self._spells[33:65])
+        white_magic = ShuffledList(self._spells[1:33], rng)
+        black_magic = ShuffledList(self._spells[33:65], rng)
 
         # We want to be very lazy with how we shuffle spells in the game.
         # Specifically, there are a bunch of additional tables, such as the name table,

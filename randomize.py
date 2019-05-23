@@ -44,6 +44,8 @@ BASE_PATCHES = [
 
 
 def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
+    rng = random.Random()
+    rng.seed(rom_seed)
     patches_to_load = BASE_PATCHES
     if flags.encounters is not None:
         patches_to_load.append("data/FF1EncounterToggle.ips")
@@ -62,17 +64,17 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     rom = update_xp_requirements(rom, flags.exp_mult)
 
     if flags.key_item_shuffle is not None:
-        placement = KeyItemPlacement(rom, random.randint(0, 0xffffffff))
+        placement = KeyItemPlacement(rom, rng.randint(0, 0xffffffff))
     else:
         placement = KeyItemPlacement(rom)
     rom = placement.rom
 
     if flags.magic is not None:
-        shuffle_magic = SpellShuffle(rom)
+        shuffle_magic = SpellShuffle(rom,rng)
         rom = shuffle_magic.write(rom)
 
     if flags.treasures is not None:
-        rom = treasure_shuffle(rom)
+        rom = treasure_shuffle(rom,rng)
 
     if flags.debug is not None:
         class_stats_stream = rom.open_bytestream(0x1E1354, 96)
@@ -145,7 +147,6 @@ def gen_seed(rom_seed: str) -> str:
         rom_seed = rom_seed[0:10]
 
     out_seed = rom_seed
-    seed(rom_seed)
     return str(out_seed)
 
 

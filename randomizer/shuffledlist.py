@@ -11,7 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from random import shuffle
+from random import Random
 
 
 class ShuffledList(object):
@@ -20,14 +20,14 @@ class ShuffledList(object):
     NOTE: This routine will advance the random number generator.
     """
 
-    def __init__(self, values):
+    def __init__(self, values, rng: Random):
         if isinstance(values, (list, tuple)):
             self._backing_data = values
         else:
             self._backing_data = list(values)
 
         self._shuffled_indexes = list(range(len(self._backing_data)))
-        shuffle(self._shuffled_indexes)
+        rng.shuffle(self._shuffled_indexes)
 
     def __getitem__(self, index):
         """Returns the shuffled item at the index.
