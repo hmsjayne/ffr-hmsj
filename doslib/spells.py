@@ -25,7 +25,7 @@ class Spells(object):
         # Slot 0 is skipped = 128 + 2 (blank name + empty help) = 130
         self._name_help = TextBlock(rom, 0x1A1650, 130)
 
-        spell_data_stream = rom.get_stream(0x1A1980, length=0x740)
+        spell_data_stream = rom.open_bytestream(0x1A1980, 0x740)
         self._spell_data = []
         for index in range(65):
             self._spell_data.append(SpellData(spell_data_stream))

@@ -102,6 +102,19 @@ def _da_06(cmd: bytearray) -> str:
     return f"close_dialog {method}"
 
 
+def _da_09(cmd: bytearray) -> str:
+    frame_count = array.array("H", cmd[2:4])[0]
+    return f"delay {frame_count}"
+
+
+def _da_0b(cmd: bytearray) -> str:
+    tiles_to_move = cmd[2]
+    speed = cmd[3]
+    direction = cmd[4]
+    npc_id = cmd[8]
+    return f"move_npc {hex(npc_id)} {direction} {tiles_to_move} {speed}"
+
+
 def _da_0c(cmd: bytearray) -> tuple:
     addr = array.array("I", cmd[4:8])[0]
     return "jump $$addr$$", addr
@@ -123,6 +136,10 @@ def _da_19(cmd: bytearray) -> tuple:
     else:
         addr = array.array("I", cmd[4:8])[0]
         return f"repeat {hex(cmd[2])} $$addr$$", addr
+
+
+def _da_1f(cmd: bytearray) -> str:
+    return f"set_npc_frame {hex(cmd[2])} {hex(cmd[3])}"
 
 
 def _da_27(cmd: bytearray) -> str:
@@ -205,6 +222,11 @@ def _da_42(cmd: bytearray) -> tuple:
     return "jump_by_dir $$up_addr$$ $$right_addr$$ $$left_addr$$", [up_addr, right_addr, left_addr]
 
 
+def _da_48(cmd: bytearray) -> tuple:
+    sub_addr = array.array("I", cmd[4:8])[0]
+    return "call $$addr$$", sub_addr
+
+
 def disassemble(rom: Rom, offset: int) -> dict:
     rom_data = rom.rom_data
     working = dict()
@@ -229,6 +251,10 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = _da_05(full_cmd)
         elif cmd == 0x6:
             working[offset] = _da_06(full_cmd)
+        elif cmd == 0x9:
+            working[offset] = _da_09(full_cmd)
+        elif cmd == 0xb:
+            working[offset] = _da_0b(full_cmd)
         elif cmd == 0xc:
             cmd_text, jump_target = _da_0c(full_cmd)
             if jump_target is not None:
@@ -255,6 +281,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
+        elif cmd == 0x1f:
+            working[offset] = _da_1f(full_cmd)
         elif cmd == 0x27:
             working[offset] = _da_27(full_cmd)
         elif cmd == 0x2d:
@@ -290,6 +318,16 @@ def disassemble(rom: Rom, offset: int) -> dict:
                     labels[jump_target] = f".Label_{label_num}_{addr_labels[index]}"
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace(token_addr_labels[index], label)
+            working[offset] = cmd_text
+        elif cmd == 0x48:
+            cmd_text, jump_target = _da_48(full_cmd)
+            if jump_target is not None:
+                if jump_target not in labels:
+                    labels[jump_target] = f".Sub_{len(labels) + 1}"
+                    print(f"{labels[jump_target]}:")
+                    disassemble(rom, addr_to_offset(jump_target))
+                label = labels[jump_target]
+                cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
         else:
             working[offset] = _da_rest(full_cmd)

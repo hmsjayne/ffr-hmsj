@@ -27,11 +27,14 @@ GRAMMAR = {
     "nop": NopToken([0x1, 0x4, 0xff, 0xff]),
     "load_text": LoadTextToken("load_text"),
     "close_dialog": CloseDialogToken("close_dialog"),
+    "delay": DelayToken([0x9, 0x4, "$(u:0)"]),
+    "move_npc": MoveNpcToken([0xb, 0xc, "$2", "$3", "$1", 0x0, 0x0, 0x0, "$0", 0x0, 0xff, 0xff]),
     "jump": JumpToken("jump"),
     "jump_chest_empty": JumpChestEmptyToken("jump_chest_empty"),
     "music": MusicToken("music"),
     "set_repeat": SetRepeatToken("set_repeat"),
     "repeat": RepeatToken("repeat"),
+    "set_npc_frame": SetNpcFrameToken([0x1f, 0x4, "$0", "$1"]),
     "show_dialog": ShowDialogToken([0x27, 0x4, 0x0, 0xff]),
     "set_flag": SetFlagToken("set_flag"),
     "check_flag": CheckFlagToken("check_flag"),
@@ -40,9 +43,11 @@ GRAMMAR = {
     "set_npc_event": SetNpcEventToken("set_npc_event"),
     "remove_all": RemoveAllToken([0x36, 0x4, "$(u:0)"]),
     "give_item": GiveItemToken([0x37, 0x4, 0x0, "$0"]),
+    "give_item_ex": GiveItemExtendedToken([0x37, 0xc, 0x40, 0x00, 0xff, 0xff, 0xff, 0xff, "$(u:0)", "$(u:1)"]),
     "take_item": TakeItemToken([0x37, 0x4, 0x1, "$0"]),
     "check_item": CheckItemToken("check_item"),
     "jump_by_dir": JumpByDirToken("jump_by_dir"),
+    "call": CallToken([0x48, 0x8, 0xff, 0xff, "$0"]),
 
     # Conditional jumps
     "jz": JzToken(0x2),
@@ -74,11 +79,14 @@ GRAMMAR = {
     NopToken: None,
     LoadTextToken: [(LoadTextTopToken(), LoadTextBottomToken()), "$$value$$"],
     CloseDialogToken: [(CloseDialogAutoToken(), CloseDialogWaitToken())],
+    DelayToken: ["$$value$$"],
+    MoveNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
     JumpToken: [LabelToken()],
     JumpChestEmptyToken: [LabelToken()],
     MusicToken: ["$$value$$", "$$value$$"],
     SetRepeatToken: ["$$value$$"],
     RepeatToken: ["$$value$$", LabelToken()],
+    SetNpcFrameToken: ["$$value$$", "$$value$$"],
     ShowDialogToken: None,
     SetFlagToken: ["$$value$$"],
     CheckFlagToken: ["$$value$$", "$$cond$$", LabelToken()],
@@ -87,9 +95,11 @@ GRAMMAR = {
     SetNpcEventToken: ["$$value$$", "$$value$$"],
     RemoveAllToken: ["$$value$$"],
     GiveItemToken: ["$$value$$"],
+    GiveItemExtendedToken: ["$$value$$", "$$value$$"],
     TakeItemToken: ["$$value$$"],
     CheckItemToken: ["$$value$$", JzToken(), LabelToken()],
     JumpByDirToken: [LabelToken(), LabelToken(), LabelToken()],
+    CallToken: [LabelToken()],
     # The one special case is the `db` (define bytes).
     # This command is handled separately by the parser, because it is essentially a request to insert the
     # bytes that proceed it verbatim into the output. Because the command can be followed by any number
@@ -148,7 +158,13 @@ def parse(source: str, base_addr: int, debug=False) -> bytearray:
             parameters = []
             token = tokens.expect(GRAMMAR["$$value$$"])
             while token is not None:
-                parameters.append(token)
+                if isinstance(token, SymbolToken):
+                    if token in symbol_table:
+                        parameters.append(symbol_table[token])
+                    else:
+                        raise SymbolNotDefinedError(token, line, line_number)
+                else:
+                    parameters.append(token)
                 token = tokens.expect(GRAMMAR["$$value$$"])
 
             icode.append(parameters)

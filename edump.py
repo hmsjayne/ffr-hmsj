@@ -225,6 +225,7 @@ def decompile(addr):
         elif cmd == 0x30:
             npc_id = rom_data[addr + 3]
             sub_cmd = rom_data[addr + 2]
+
             event_id = None
             if sub_cmd == 0x1:
                 action = "set_event"
@@ -269,6 +270,7 @@ def decompile(addr):
             # Another jump command
             jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
             jumps.append(jump_target)
+            cmd_str = f"call {hex(jump_target)} :: {cmd_str}"
         elif cmd == 0x63:
             jump_target = addr_to_rom(array.array("I", rom_data[addr + 4:addr + 8])[0])
             jumps.append(jump_target)

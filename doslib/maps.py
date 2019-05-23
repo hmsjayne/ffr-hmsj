@@ -40,13 +40,13 @@ class Maps(object):
         self._map_lut = rom.get_lut(0x1E4F40, 124)
         for map_id, map_addr in enumerate(self._map_lut):
             map_stream = rom.get_stream(Rom.pointer_to_offset(map_addr), bytearray.fromhex("ffff"))
-            map = Map(map_id, map_stream)
+            map = MapFeatures(map_id, map_stream)
             self._maps.append(map)
 
             # Collect the dummy chests together
             self.dummy_chests += map.dummy_chests
 
-    def get_map(self, map_id: int) -> Map:
+    def get_map(self, map_id: int) -> MapFeatures:
         return self._maps[map_id]
 
     def get_map_offset(self, map_id: int) -> int:
@@ -66,7 +66,7 @@ class Maps(object):
         return rom.apply_patches(patches)
 
 
-class Map(object):
+class MapFeatures(object):
     def __init__(self, map_id: int, stream: InputStream):
         self.header = None
         self.tiles = []
@@ -106,6 +106,16 @@ class Map(object):
                     if chest.x_pos == sprite.x_pos and chest.y_pos == sprite.y_pos:
                         self.dummy_chests.append(chest.chest_id)
                         break
+
+    def get_event_chest(self, chest_id: int) -> tuple:
+        if chest_id >= len(self.chests):
+            raise RuntimeError(f"Chest index out of bounds: {chest_id} vs {len(self.chests)}")
+
+        chest = self.chests[chest_id]
+        for sprite in self.sprites:
+            if chest.x_pos == sprite.x_pos and chest.y_pos == sprite.y_pos:
+                return chest, sprite
+        raise RuntimeError(f"Chest {chest_id} does not have matching sprite!")
 
     def write(self, stream: OutputStream):
         self.header.write(stream)

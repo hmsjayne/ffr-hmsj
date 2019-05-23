@@ -28,166 +28,218 @@ import json
 from collections import namedtuple
 from subprocess import run, PIPE
 
-from doslib.event import EventTable, EventTextBlock
-from doslib.maps import Maps
+from doslib.event import EventTextBlock, EventTables
+from doslib.gen.map import Npc
+from doslib.maps import Maps, TreasureChest
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
 from event.epp import pparse
 from randomizer.keyitemevents import *
-from stream.outputstream import AddressableOutputStream
+from stream.outputstream import AddressableOutputStream, OutputStream
 
-KeyItem = namedtuple("KeyItem", ["sprite", "flag", "item", "dialog", "movable"])
+KeyItem = namedtuple("KeyItem", ["sprite", "movable", "key_item", "reward"])
+NpcSource = namedtuple("NpcSource", ["map_id", "npc_index", "event_id", "event", "map_init"])
+ChestSource = namedtuple("ChestSource", ["map_id", "chest_id", "sprite_id", "event_id", "event", "map_init"])
 
-NpcSource = namedtuple("NpcLocation", ["map_id", "npc_index", "event_id", "vanilla_ki"])
-ChestSource = namedtuple("ChestLocation", ["map_id", "chest_id", "sprite_id", "event_id", "vanilla_ki"])
-
-NewKeyItem = namedtuple("NewKeyItem", ["sprite", "reward", "dialog", "movable"])
-NewNpcSource = namedtuple("NewNpcSource", ["map_id", "npc_index", "event_id", "event", "map_init"])
-NewChestSource = namedtuple("NewChestSource", ["map_id", "chest_id", "sprite_id", "event_id", "event", "map_init"])
-
-KEY_ITEMS = {
-    "bridge": KeyItem(sprite=0x22, flag=0x03, item=None, dialog=0x127, movable=True),
-    "lute": KeyItem(sprite=0x00, flag=0x04, item=0x00, dialog=0x10a, movable=True),
-    "ship": KeyItem(sprite=0x45, flag=0x05, item=None, dialog=0x224, movable=True),
-    "crown": KeyItem(sprite=0x94, flag=0x06, item=0x01, dialog=0x10b, movable=True),
-    "crystal": KeyItem(sprite=0x47, flag=0x07, item=0x02, dialog=0x1f3, movable=True),
-    "jolt_tonic": KeyItem(sprite=0x37, flag=0x08, item=0x03, dialog=0x216, movable=True),
-    "key": KeyItem(sprite=0x31, flag=0x09, item=0x04, dialog=0x154, movable=False),
-    "nitro_powder": KeyItem(sprite=0x0D, flag=0x0A, item=0x05, dialog=0x128, movable=True),
-    "canal": KeyItem(sprite=0x3B, flag=0x0B, item=None, dialog=0x1e8, movable=True),
-    "ruby": KeyItem(sprite=0x58, flag=0x0D, item=0x08, dialog=0x142, movable=False),
-    "rod": KeyItem(sprite=0x39, flag=0x0F, item=0x09, dialog=0x21a, movable=True),
-    "earth": KeyItem(sprite=0x55, flag=0x11, item=None, dialog=None, movable=True),
-    "canoe": KeyItem(sprite=0x38, flag=0x12, item=0x10, dialog=0x1b1, movable=True),
-    "fire": KeyItem(sprite=0x56, flag=0x13, item=None, dialog=None, movable=True),
-    "levistone": KeyItem(sprite=0x57, flag=0x14, item=0x0a, dialog=0x10c, movable=False),
-    "tail": KeyItem(sprite=0x25, flag=0x17, item=0x0c, dialog=0x10d, movable=True),
-    "class_change": KeyItem(sprite=0x64, flag=0x18, item=None, dialog=0x1d2, movable=False),
-    "bottle": KeyItem(sprite=0x44, flag=0x19, item=0x0e, dialog=None, movable=True),
-    "oxyale": KeyItem(sprite=0x29, flag=0x1a, item=0x0f, dialog=0x1c0, movable=True),
-    "slab": KeyItem(sprite=0x1B, flag=0x1c, item=0x07, dialog=0x10e, movable=True),
-    "water": KeyItem(sprite=0x54, flag=0x1d, item=None, dialog=None, movable=True),
-    "lufienish": KeyItem(sprite=0x3A, flag=0x1e, item=None, dialog=0x235, movable=True),
-    "chime": KeyItem(sprite=0x21, flag=0x1f, item=0x0b, dialog=0x240, movable=True),
-    "cube": KeyItem(sprite=0x2B, flag=0x20, item=0x0d, dialog=0x241, movable=True),
-    "adamant": KeyItem(sprite=0x59, flag=0x21, item=0x06, dialog=0x10f, movable=False),
-    "air": KeyItem(sprite=0x53, flag=0x22, item=None, dialog=None, movable=True),
-    "excalibur": KeyItem(sprite=0x3C, flag=0x23, item=0x11, dialog=0x1ed, movable=True),
-    "gear": KeyItem(sprite=0x8F, flag=None, item=None, dialog=None, movable=True),
-}
-
-REWARD_SOURCE = {
-    "lich": NpcSource(map_id=0x05, npc_index=10, event_id=0x13B3, vanilla_ki="earth"),
-    "kary": NpcSource(map_id=0x2E, npc_index=0, event_id=0x13A8, vanilla_ki="fire"),
-    "kraken": NpcSource(map_id=0x17, npc_index=0, event_id=0x13A3, vanilla_ki="water"),
-    "tiamat": NpcSource(map_id=0x60, npc_index=0, event_id=0x13BB, vanilla_ki="air"),
-    "sara": NpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, vanilla_ki="lute"),
-    "king": NpcSource(map_id=0x39, npc_index=2, event_id=0x138B, vanilla_ki="bridge"),
-    "bikke": NpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, vanilla_ki="ship"),
-    "marsh": ChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, vanilla_ki="crown"),
-    "locked_cornelia": ChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13AD, vanilla_ki="nitro_powder"),
-    "nerrick": NpcSource(map_id=0x57, npc_index=11, event_id=0x1393, vanilla_ki="canal"),
-    "vampire": ChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7, vanilla_ki="ruby"),
-    "sarda": NpcSource(map_id=0x37, npc_index=0, event_id=0x13B8, vanilla_ki="rod"),
-    "ice": NpcSource(map_id=0x44, npc_index=0, event_id=0x139F, vanilla_ki="levistone"),
-    "caravan": NpcSource(map_id=0x73, npc_index=0, event_id=None, vanilla_ki="bottle"),
-    "astos": NpcSource(map_id=0x58, npc_index=0, event_id=0x1390, vanilla_ki="crystal"),
-    "matoya": NpcSource(map_id=0x61, npc_index=4, event_id=0x1391, vanilla_ki="jolt_tonic"),
-    "elf": NpcSource(map_id=0x06, npc_index=7, event_id=0x139A, vanilla_ki="key"),
-    "ordeals": ChestSource(map_id=0x4F, chest_id=8, sprite_id=0, event_id=0x13AA, vanilla_ki="tail"),
-    "bahamut": NpcSource(map_id=0x54, npc_index=2, event_id=0x1396, vanilla_ki="class_change"),
-    "waterfall": NpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, vanilla_ki="cube"),
-    "fairy": NpcSource(map_id=0x47, npc_index=11, event_id=0x138F, vanilla_ki="oxyale"),
-    "mermaids": ChestSource(map_id=0x1E, chest_id=12, sprite_id=0, event_id=0x13B4, vanilla_ki="slab"),
-    "dr_unne": NpcSource(map_id=0x6A, npc_index=0, event_id=0x13A5, vanilla_ki="lufienish"),
-    "lefien": NpcSource(map_id=0x70, npc_index=11, event_id=0x1395, vanilla_ki="chime"),
-    "smith": NpcSource(map_id=0x57, npc_index=4, event_id=0x139D, vanilla_ki="excalibur"),
-    "lukahn": NpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, vanilla_ki="canoe"),
-    "sky2": NpcSource(map_id=0x5D, npc_index=0, event_id=0x138D, vanilla_ki="adamant"),
-    "desert": None,
+EVENT_SOURCE_MAP = {
+    0x00: world_map_init,
+    0x03: earth_b3_init,
+    0x06: elven_castle_init,
+    0x1E: mermaid_floor_init,
+    0x1F: chaos_shrine_init,
+    0x2F: crescent_lake_init,
+    0x37: sages_cave_init,
+    0x38: cornelia_castle_1f_event,
+    0x39: cornelia_castle_2f_init,
+    0x3A: cornelia_map_init,
+    0x44: ice_b3_init,
+    0x47: gaia_init,
+    0x4D: citadel_of_trials_f1_init,
+    0x4F: citadel_of_trials_f3_init,
+    0x53: waterfall_init,
+    0x54: bahamuts_cave_init,
+    0x57: mt_duergar_init,
+    0x58: nw_keep_init,
+    0x5B: marsh_cave_b3_init,
+    0x5D: sky_f2_init,
+    0x61: matoyas_cave_init,
+    0x62: pravoka_init,
+    0x6A: melmond_init,
+    0x70: lefein_init,
+    0x138B: king_event,
+    0x138D: sky2_adamantite_event,
+    0x138E: desert_event,
+    0x138F: fairy_event,
+    0x1390: astos_event,
+    0x1391: matoya_event,
+    0x1393: nerrik_event,
+    0x1394: lukahn_event,
+    0x1395: lefein_event,
+    0x1396: bahamuts_cave_event,
+    0x1398: marsh_event,
+    0x139A: elf_prince_event,
+    0x139c: better_earth_plate,
+    0x139D: smyth_event,
+    0x139F: levistone_event,
+    0x13A5: dr_unne_event,
+    0x13A7: sara_event,
+    0x13AA: citadel_of_trials_chest_event,
+    0x13ad: locked_cornelia_event,
+    0x13af: citadel_guide,
+    0x13B4: slab_chest_event,
+    0x13B5: bikke_event,
+    0x13B7: vampire_event,
+    0x13b8: sarda_event,
+    0x13BD: waterfall_robot_event,
 }
 
 NEW_REWARD_SOURCE = {
-    "king": NewNpcSource(map_id=0x39, npc_index=2, event_id=0x138B, event=king_event, map_init=None),
-    "sara": NewNpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, event=sara_event,
-                         map_init=cornelia_castle_2f_event),
-    "bikke": NewNpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, event=bikke_event,
-                          map_init=pravoka_init_event),
-    "marsh": NewChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, event=marsh_event,
-                            map_init=marsh_cave_b3_init),
-    "astos": NewNpcSource(map_id=0x58, npc_index=0, event_id=0x1390, event=astos_event, map_init=nw_keep_init),
-    "matoya": NewNpcSource(map_id=0x61, npc_index=4, event_id=0x1391, event=matoya_event, map_init=matoyas_cave_init),
-    "elf": NewNpcSource(map_id=0x06, npc_index=7, event_id=0x139A, event=elf_prince_event, map_init=elven_castle_init),
-    "locked_cornelia": NewChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13ad,
-                                      event=locked_cornelia_event, map_init=cornelia_castle_1f_event),
-    "nerrick": NewNpcSource(map_id=0x57, npc_index=11, event_id=0x1393, event=nerrik_event, map_init=mt_duergar_init),
-    "vampire": NewChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7,
-                              event=vampire_event, map_init=earth_b3_init),
-    "sarda": NewNpcSource(map_id=0x37, npc_index=0, event_id=0x13b8, event=sarda_event, map_init=sages_cave_init),
-    "lukahn": NewNpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, event=lukahn_event, map_init=crescent_lake_init),
-    "ice": NewNpcSource(map_id=0x44, npc_index=0, event_id=0x139F, event=levistone_event, map_init=ice_b3_init),
-    "ordeals": NewChestSource(map_id=0x4D, chest_id=8, sprite_id=0, event_id=0x13AA,
-                              event=citadel_of_trials_chest_event, map_init=citadel_of_trials_f1_init),
-    "bahamut": NewNpcSource(map_id=0x54, npc_index=2, event_id=0x1396, event=bahamuts_cave_event,
-                            map_init=bahamuts_cave_init),
-    "waterfall": NewNpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, event=waterfall_robot_event,
-                              map_init=waterfall_init),
-    "fairy": NewNpcSource(map_id=0x47, npc_index=11, event_id=0x138F, event=fairy_event, map_init=gaia_init),
-    "mermaids": NewChestSource(map_id=0x1E, chest_id=12, sprite_id=0, event_id=0x13B4, event=slab_chest_event,
-                               map_init=mermaid_floor_init),
-    "dr_unne": NewNpcSource(map_id=0x6A, npc_index=0, event_id=0x13A5, event=dr_unne_event, map_init=melmond_init),
-    "lefien": NewNpcSource(map_id=0x70, npc_index=11, event_id=0x1395, event=lefein_event, map_init=lefein_init),
-    "sky2": NewNpcSource(map_id=0x5D, npc_index=0, event_id=0x138D, event=sky2_adamant_event, map_init=sky_f2_init),
-    "smith": NewNpcSource(map_id=0x57, npc_index=4, event_id=0x139D, event=smyth_event, map_init=mt_duergar_init),
+    "king": NpcSource(map_id=0x39, npc_index=2, event_id=0x138B, event=king_event, map_init=None),
+    "sara": NpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, event=sara_event, map_init=cornelia_castle_2f_init),
+    "bikke": NpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, event=bikke_event, map_init=pravoka_init),
+    "marsh": ChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, event=marsh_event,
+                         map_init=marsh_cave_b3_init),
+    "astos": NpcSource(map_id=0x58, npc_index=0, event_id=0x1390, event=astos_event, map_init=nw_keep_init),
+    "matoya": NpcSource(map_id=0x61, npc_index=4, event_id=0x1391, event=matoya_event, map_init=matoyas_cave_init),
+    "elf": NpcSource(map_id=0x06, npc_index=7, event_id=0x139A, event=elf_prince_event, map_init=elven_castle_init),
+    "locked_cornelia": ChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13ad, event=locked_cornelia_event,
+                                   map_init=cornelia_castle_1f_event),
+    "nerrick": NpcSource(map_id=0x57, npc_index=11, event_id=0x1393, event=nerrik_event, map_init=mt_duergar_init),
+    "vampire": ChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7, event=vampire_event,
+                           map_init=earth_b3_init),
+    "sarda": NpcSource(map_id=0x37, npc_index=0, event_id=0x13b8, event=sarda_event, map_init=sages_cave_init),
+    "lukahn": NpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, event=lukahn_event, map_init=crescent_lake_init),
+    "ice": NpcSource(map_id=0x44, npc_index=0, event_id=0x139F, event=levistone_event, map_init=ice_b3_init),
+    "citadel_of_trials": ChestSource(map_id=0x4F, chest_id=8, sprite_id=0, event_id=0x13AA,
+                                     event=citadel_of_trials_chest_event, map_init=citadel_of_trials_f1_init),
+    "bahamut": NpcSource(map_id=0x54, npc_index=2, event_id=0x1396, event=bahamuts_cave_event,
+                         map_init=bahamuts_cave_init),
+    "waterfall": NpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, event=waterfall_robot_event,
+                           map_init=waterfall_init),
+    "fairy": NpcSource(map_id=0x47, npc_index=11, event_id=0x138F, event=fairy_event, map_init=gaia_init),
+    "mermaids": ChestSource(map_id=0x1E, chest_id=12, sprite_id=0, event_id=0x13B4, event=slab_chest_event,
+                            map_init=mermaid_floor_init),
+    "dr_unne": NpcSource(map_id=0x6A, npc_index=0, event_id=0x13A5, event=dr_unne_event, map_init=melmond_init),
+    "lefien": NpcSource(map_id=0x70, npc_index=11, event_id=0x1395, event=lefein_event, map_init=lefein_init),
+    "sky2": NpcSource(map_id=0x5D, npc_index=0, event_id=0x138D, event=sky2_adamantite_event, map_init=sky_f2_init),
+    "smyth": NpcSource(map_id=0x57, npc_index=4, event_id=0x139D, event=smyth_event, map_init=mt_duergar_init),
+    "desert": ChestSource(map_id=None, chest_id=12, sprite_id=0, event_id=0x13B4, event=None, map_init=None),
 }
 
 NEW_KEY_ITEMS = {
-    "bridge": NewKeyItem(sprite=0x22, reward=bridge_reward, dialog=0x127, movable=True),
-    "lute": NewKeyItem(sprite=0x00, reward=lute_reward, dialog=0x10a, movable=True),
-    "ship": NewKeyItem(sprite=0x45, reward=ship_reward, dialog=0x224, movable=True),
-    "crown": NewKeyItem(sprite=0x94, reward=crown_reward, dialog=0x10b, movable=True),
-    "crystal": NewKeyItem(sprite=0x47, reward=crystal_reward, dialog=0x1f3, movable=True),
-    "jolt_tonic": NewKeyItem(sprite=0x37, reward=jolt_tonic_reward, dialog=0x216, movable=True),
-    "key": NewKeyItem(sprite=0x31, reward=key_reward, dialog=0x154, movable=False),
-    "nitro_powder": NewKeyItem(sprite=0x0D, reward=nitro_powder_reward, dialog=0x128, movable=True),
-    "canal": NewKeyItem(sprite=0x3B, reward=canal_reward, dialog=0x1e8, movable=True),
-    "ruby": NewKeyItem(sprite=0x58, reward=ruby_reward, dialog=0x142, movable=False),
-    "rod": NewKeyItem(sprite=0x39, reward=rod_reward, dialog=0x21a, movable=True),
-    "canoe": NewKeyItem(sprite=0x38, reward=canoe_reward, dialog=0x1b1, movable=True),
-    "levistone": NewKeyItem(sprite=0x57, reward=levistone_reward, dialog=0x10c, movable=False),
-    "tail": NewKeyItem(sprite=0x25, reward=tail_reward, dialog=0x10d, movable=True),
-    "class_change": NewKeyItem(sprite=0x64, reward=class_change_reward, dialog=0x1d2, movable=False),
-    "bottle": NewKeyItem(sprite=0x44, reward=bottle_reward, dialog=None, movable=True),
-    "oxyale": NewKeyItem(sprite=0x29, reward=oxyale_reward, dialog=0x1c0, movable=True),
-    "slab": NewKeyItem(sprite=0x1B, reward=slab_reward, dialog=0x10e, movable=True),
-    "lufienish": NewKeyItem(sprite=0x3A, reward=lufienish_reward, dialog=0x235, movable=True),
-    "chime": NewKeyItem(sprite=0x21, reward=chime_reward, dialog=0x240, movable=True),
-    "cube": NewKeyItem(sprite=0x2B, reward=cube_reward, dialog=0x241, movable=True),
-    "adamant": NewKeyItem(sprite=0x59, reward=adamant_reward, dialog=0x10f, movable=False),
-    "excalibur": NewKeyItem(sprite=0x3C, reward=excalibur_reward, dialog=0x1ed, movable=True),
+    "bridge": KeyItem(sprite=0x22, movable=True, key_item=None, reward=bridge_reward),
+    "lute": KeyItem(sprite=0x00, movable=True, key_item=0x00, reward=lute_reward),
+    "ship": KeyItem(sprite=0x45, movable=True, key_item=None, reward=ship_reward),
+    "crown": KeyItem(sprite=0x94, movable=True, key_item=0x01, reward=crown_reward),
+    "crystal": KeyItem(sprite=0x47, movable=True, key_item=0x02, reward=crystal_reward),
+    "jolt_tonic": KeyItem(sprite=0x37, movable=True, key_item=0x03, reward=jolt_tonic_reward),
+    "mystic_key": KeyItem(sprite=0x31, movable=False, key_item=0x04, reward=mystic_key_reward),
+    "nitro_powder": KeyItem(sprite=0x0D, movable=True, key_item=0x05, reward=nitro_powder_reward),
+    "canal": KeyItem(sprite=0x3B, movable=True, key_item=None, reward=canal_reward),
+    "star_ruby": KeyItem(sprite=0x58, movable=False, key_item=0x08, reward=star_ruby_reward),
+    "rod": KeyItem(sprite=0x39, movable=True, key_item=0x09, reward=rod_reward),
+    "canoe": KeyItem(sprite=0x38, movable=True, key_item=0x10, reward=canoe_reward),
+    "levistone": KeyItem(sprite=0x57, movable=False, key_item=0x0a, reward=levistone_reward),
+    "rats_tail": KeyItem(sprite=0x25, movable=True, key_item=0x0c, reward=rats_tail_reward),
+    "promotion": KeyItem(sprite=0x64, movable=False, key_item=None, reward=promotion_reward),
+    "bottle": KeyItem(sprite=0x44, movable=True, key_item=0x0e, reward=bottle_reward),
+    "oxyale": KeyItem(sprite=0x29, movable=True, key_item=0x0f, reward=oxyale_reward),
+    "rosetta_stone": KeyItem(sprite=0x1B, movable=True, key_item=0x07, reward=rosetta_stone_reward),
+    "lufienish": KeyItem(sprite=0x3A, movable=True, key_item=None, reward=lufienish_reward),
+    "chime": KeyItem(sprite=0x21, movable=True, key_item=0x0b, reward=chime_reward),
+    "warp_cube": KeyItem(sprite=0x2B, movable=True, key_item=0x0d, reward=warp_cube_reward),
+    "adamantite": KeyItem(sprite=0x59, movable=False, key_item=0x06, reward=adamantite_reward),
+    "excalibur": KeyItem(sprite=0x3C, movable=True, key_item=0x11, reward=excalibur_reward),
+    "airship": KeyItem(sprite=0xac, movable=False, key_item=None, reward=airship_reward),
+    "gear": KeyItem(sprite=0xc7, movable=False, key_item=None, reward=gear_reward),
 }
+
+# All pairings are of the form "pair(item,location)" - need to parse the info
+Placement = namedtuple("Placement", ["item", "location"])
 
 
 class KeyItemPlacement(object):
 
-    def __init__(self, rom: Rom, clingo_seed: int):
+    def __init__(self, rom: Rom, clingo_seed: int = None):
         self.rom = rom
         self.maps = Maps(rom)
-        self.events = EventTable(rom, 0x7788, 0x44, base_event_id=0x1388)
-        self.map_events = EventTable(rom, 0x7050, 0xD3, base_event_id=0x0)
+        self.events = EventTables(rom)
         self.event_text_block = EventTextBlock(rom)
 
+        self.chests = self._load_chests()
         self.our_events = AddressableOutputStream(0x8223F4C, max_size=0x1860)
 
-        self._do_placement(clingo_seed)
+        if clingo_seed is not None:
+            key_item_locations = self._solve_placement(clingo_seed)
+        else:
+            key_item_locations = self._vanilla_placement()
+        self._do_placement(key_item_locations)
 
-    def _do_placement(self, clingo_seed: int):
-        key_item_locations = self._solve_placement(clingo_seed)
+    def _do_placement(self, key_item_locations: tuple):
+        source_headers = self._prepare_header(key_item_locations)
 
-        # 2 Rewards on one map...
-        nerrik_reward = None
-        smyth_reward = None
+        patches = {}
+        for event_id, source in EVENT_SOURCE_MAP.items():
+            event_source = pparse(f"{source_headers}\n\n{source}")
+
+            event_addr = self.events.get_addr(event_id)
+            event_space = self.rom.get_event(Rom.pointer_to_offset(event_addr)).size()
+
+            # See if the event fits into it's vanilla location.
+            event = easm.parse(event_source, event_addr)
+            if len(event) > event_space:
+                print(f"Event {hex(event_id)} didn't fit: {hex(len(event))} vs {hex(event_space)}")
+                # Didn't fit. Move it to our space.
+                event_addr = self.our_events.current_addr()
+                self.events.set_addr(event_id, event_addr)
+
+                # We'll write all of our events together at the end
+                event = easm.parse(event_source, event_addr)
+                self.our_events.put_bytes(event)
+            else:
+                # Add the event to the vanilla patches.
+                patches[Rom.pointer_to_offset(event_addr)] = event
+
+        self._update_npcs(key_item_locations)
+        self._unite_mystic_key_doors()
+        self._better_earth_plate()
+        self._rewrite_give_texts()
+        self._save_chests()
+
+        # Append our new (relocated) events in the patch data.
+        patches[0x223F4C] = self.our_events.get_buffer()
+
+        # And then get all the patch data for the LUTs
+        for offset, patch in self.events.get_patches().items():
+            patches[offset] = patch
+        self.rom = self.rom.apply_patches(patches)
+        self.rom = self.maps.write(self.rom)
+
+    def _prepare_header(self, key_item_locations: tuple) -> str:
+        working_header = ""
+
+        for placement in key_item_locations:
+            if placement.location not in NEW_REWARD_SOURCE:
+                continue
+            if placement.item not in NEW_KEY_ITEMS:
+                continue
+
+            location = placement.location
+            key_item = NEW_KEY_ITEMS[placement.item]
+
+            base_reward_text = key_item.reward
+            reward_text = base_reward_text.replace("GIVE_REWARD", f"GIVE_{location.upper()}_REWARD")
+            reward_text = reward_text.replace("%text_id", f"%{location}_text_id")
+            reward_text = reward_text.replace("%reward_flag", f"%{location}_reward_flag")
+
+            if placement.location == "desert":
+                reward_text += f"\n%desert_reward_sprite {hex(key_item.sprite)}"
+
+            working_header += f";---\n; {placement.item} -> {location}\n;---\n{reward_text}\n\n"
+        return working_header
+
+    def _update_npcs(self, key_item_locations: tuple):
 
         for placement in key_item_locations:
 
@@ -200,62 +252,15 @@ class KeyItemPlacement(object):
 
             source = NEW_REWARD_SOURCE[placement.location]
             key_item = NEW_KEY_ITEMS[placement.item]
-
-            event_addr = self.events.get_addr(source.event_id)
-            event_source = pparse(f"{key_item.reward}\n\n{source.event}")
-            event = easm.parse(event_source, event_addr)
-            self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
-
-            if source.map_init is not None:
-                map_event_addr = self.our_events.current_addr()
-
-                if placement.location == "nerrick" or placement.location == "smith":
-                    if placement.location == "nerrick":
-                        nerrik_reward = key_item.reward.replace("%reward_flag", "%nerrik_reward_flag").replace(
-                            "%text_id", "%nerrik_text_id")
-                    else:
-                        smyth_reward = key_item.reward.replace("%reward_flag", "%smyth_reward_flag").replace("%text_id",
-                                                                                                             "%myth_text_id")
-
-                    if nerrik_reward is not None and smyth_reward is not None:
-                        map_event_source = pparse(f"{nerrik_reward}\n{smyth_reward}\n\n{source.map_init}")
-                    else:
-                        map_event_source = None
-                else:
-                    map_event_source = pparse(f"{key_item.reward}\n\n{source.map_init}")
-
-                if map_event_source is not None:
-                    map_event = easm.parse(map_event_source, map_event_addr)
-                    self.map_events.set_addr(source.map_id, map_event_addr)
-                    self.our_events.put_bytes(map_event)
-
-                if placement.location == "ordeals":
-                    citadel_of_trials_3f_map_id = 0x4F
-                    map_event_addr = self.our_events.current_addr()
-                    map_event_source = pparse(f"{key_item.reward}\n\n{citadel_of_trials_f3_init}")
-                    map_event = easm.parse(map_event_source, map_event_addr)
-                    self.map_events.set_addr(citadel_of_trials_3f_map_id, map_event_addr)
-                    self.our_events.put_bytes(map_event)
-
-            if isinstance(source, NewNpcSource):
+            if isinstance(source, NpcSource):
                 self._replace_map_npc(source.map_id, source.npc_index, key_item.sprite, key_item.movable)
 
                 # Special case for "Sara" -- also update Chaos Shrine.
                 if placement.location == "sara":
                     self._replace_map_npc(0x1f, 6, key_item.sprite, key_item.movable)
-
-        self._unite_mystic_key_doors()
-        self._better_earth_plate()
-        self._rewrite_give_texts()
-
-        # Write out our (moved) rewritten events along with the updated
-        # LUTs for them.
-        self.rom = self.rom.apply_patches({
-            0x7050: self.map_events.get_lut(),
-            0x7788: self.events.get_lut(),
-            0x223F4C: self.our_events.get_buffer()
-        })
-        self.rom = self.maps.write(self.rom)
+            elif isinstance(source, ChestSource):
+                if source.map_id is not None:
+                    self._replace_chest(source.map_id, source.chest_id, key_item.sprite)
 
     def _unite_mystic_key_doors(self):
         maps_with_doors = [
@@ -269,17 +274,13 @@ class KeyItemPlacement(object):
         # In order to simplify some of the logic, change the 3 instances of the second to the first
         # since it's more generic.
         for map_id in maps_with_doors:
-            for sprite in self.maps._maps[map_id].sprites:
+            map = self.maps.get_map(map_id)
+            for sprite in map.sprites:
                 if sprite.event == 0x23cd:
                     sprite.event = 0x1f4a
 
     def _better_earth_plate(self):
-        self.maps._maps[0x3].npcs[0xe].event = 0x139c
-
-        event_addr = self.our_events.current_addr()
-        event = easm.parse(better_earth_plate, event_addr)
-        self.rom = self.rom.apply_patch(Rom.pointer_to_offset(event_addr), event)
-        self.events.set_addr(0x139c, event_addr)
+        self.maps.get_map(0x3).npcs[0xe].event = 0x139c
 
     def _rewrite_give_texts(self):
         self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\x00")
@@ -287,14 +288,56 @@ class KeyItemPlacement(object):
         self.event_text_block.strings[0x1d2] = TextBlock.encode_text("You obtain class change.\x00")
         self.event_text_block.strings[0x1bf] = TextBlock.encode_text("You obtain a bottle.\x00")
         self.event_text_block.strings[0x235] = TextBlock.encode_text("You can now speak Lufenian.\x00")
+        self.event_text_block.strings[0x47a] = TextBlock.encode_text("Possession of the crown is required\n"
+                                                                     "to undertake trials..\x00")
+        self.event_text_block.strings[0x47b] = TextBlock.encode_text("The titan is so hungry.\n"
+                                                                     "If you were to feed them\\u8163\x00")
+        self.event_text_block.strings[0x47c] = TextBlock.encode_text("You obtain a Megalixir.\x00")
         self.rom = self.event_text_block.pack(self.rom)
 
     def _replace_map_npc(self, map_id: int, npc_index: int, sprite: int, movable: bool):
-        self.maps._maps[map_id].npcs[npc_index].sprite_id = sprite
+        map = self.maps.get_map(map_id)
+        map.npcs[npc_index].sprite_id = sprite
 
         # Some sprites weren't designed to move, so hold them still.
         if not movable:
-            self.maps._maps[map_id].npcs[npc_index].move_speed = 0
+            map.npcs[npc_index].move_speed = 0
+
+    def _replace_chest(self, map_id: int, chest_id: int, sprite_id: int):
+        map = self.maps.get_map(map_id)
+        chest, sprite = map.get_event_chest(chest_id)
+        map.chests.remove(chest)
+        map.sprites.remove(sprite)
+
+        chest_npc = Npc()
+        chest_npc.identifier = 0x2
+        chest_npc.in_room = 0x1
+        chest_npc.x_pos = sprite.x_pos
+        chest_npc.y_pos = sprite.y_pos
+        chest_npc.move_speed = 0
+        chest_npc.event = sprite.event
+
+        if map_id in [0x38, 0x5b, 0x1e]:
+            # Use a chest in Cornelia, Marsh, and the mermaid floor in Sea.
+            chest_npc.sprite_id = 0xc7
+        else:
+            chest_npc.sprite_id = sprite_id
+        map.npcs.append(chest_npc)
+
+    def _load_chests(self) -> list:
+        chest_stream = self.rom.open_bytestream(0x217FB4, 0x400)
+        chests = []
+        for index in range(256):
+            chest = TreasureChest.read(chest_stream)
+            chests.append(chest)
+        return chests
+
+    def _save_chests(self):
+        # Save the chests (without key items in them).
+        chest_data = OutputStream()
+        for chest in self.chests:
+            chest.write(chest_data)
+        self.rom = self.rom.apply_patch(0x217FB4, chest_data.get_buffer())
 
     @staticmethod
     def _solve_placement(seed: int) -> tuple:
@@ -315,12 +358,42 @@ class KeyItemPlacement(object):
         clingo_out = json.loads(run(command, stdout=PIPE).stdout)
         pairings = clingo_out['Call'][0]['Witnesses'][0]['Value']
 
-        # All pairings are of the form "pair(item,location)" - need to parse the info
-        Placement = namedtuple("Placement", ["item", "location"])
-
         ki_placement = []
         for pairing in pairings:
             pairing = Placement(*pairing[5:len(pairing) - 1].split(","))
             ki_placement.append(pairing)
 
         return tuple(ki_placement)
+
+    @staticmethod
+    def _vanilla_placement() -> tuple:
+        return (
+            Placement("bridge", "king"),
+            Placement("lute", "sara"),
+            Placement("ship", "bikke"),
+            Placement("crown", "marsh"),
+            Placement("crystal", "astos"),
+            Placement("jolt_tonic", "matoya"),
+            Placement("mystic_key", "elf"),
+            Placement("nitro_powder", "locked_cornelia"),
+            Placement("canal", "nerrick"),
+            Placement("star_ruby", "vampire"),
+            Placement("rod", "sarda"),
+            Placement("canoe", "lukahn"),
+            Placement("levistone", "ice"),
+            Placement("airship", "desert"),
+            Placement("rats_tail", "citadel_of_trials"),
+            Placement("promotion", "bahamut"),
+            Placement("bottle", "caravan"),
+            Placement("oxyale", "fairy"),
+            Placement("rosetta_stone", "mermaids"),
+            Placement("lufienish", "dr_unne"),
+            Placement("chime", "lefien"),
+            Placement("warp_cube", "waterfall"),
+            Placement("adamantite", "sky2"),
+            Placement("excalibur", "smyth"),
+            Placement("earth", "lich"),
+            Placement("fire", "kary"),
+            Placement("water", "kraken"),
+            Placement("air", "tiamat"),
+        )
