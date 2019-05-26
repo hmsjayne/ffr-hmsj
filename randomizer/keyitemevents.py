@@ -1946,10 +1946,9 @@ desert_event = """
 world_map_init = """
     %airship_visible 0x15
     %have_chime 0x1f
-    %item_from_desert 0x28
 
     set_flag %airship_visible
-    check_flag %item_from_desert jz .Label_2
+    check_flag %desert_reward_flag jz .Label_2
     remove_trigger 0x138e
     .Label_2:
     check_flag %have_chime jnz .Label_3
