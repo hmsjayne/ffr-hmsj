@@ -189,7 +189,6 @@ class KeyItemPlacement(object):
             # See if the event fits into it's vanilla location.
             event = easm.parse(event_source, event_addr)
             if len(event) > event_space:
-                print(f"Event {hex(event_id)} didn't fit: {hex(len(event))} vs {hex(event_space)}")
                 # Didn't fit. Move it to our space.
                 event_addr = self.our_events.current_addr()
                 self.events.set_addr(event_id, event_addr)
@@ -241,14 +240,13 @@ class KeyItemPlacement(object):
 
     def _update_npcs(self, key_item_locations: tuple):
 
-        for placement in key_item_locations:
+        print(f"Key Items: {key_item_locations}")
 
+        for placement in key_item_locations:
             if placement.location not in NEW_REWARD_SOURCE:
                 continue
             if placement.item not in NEW_KEY_ITEMS:
                 continue
-
-            print(f"Placement: {placement}")
 
             source = NEW_REWARD_SOURCE[placement.location]
             key_item = NEW_KEY_ITEMS[placement.item]

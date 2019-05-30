@@ -46,6 +46,8 @@ BASE_PATCHES = [
 def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     rng = random.Random()
     rng.seed(rom_seed)
+
+    print(f"Randomize ROM: {flags.text()}, seed='{rom_seed}'")
     patches_to_load = BASE_PATCHES
     if flags.encounters is not None:
         patches_to_load.append("data/FF1EncounterToggle.ips")

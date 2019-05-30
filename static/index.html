@@ -19,7 +19,7 @@
   </label>
   <label>
     Flags:
-    <input id="rom-flags" name="flags" type="text">
+    <input id="rom-flags" name="flags" type="text" readonly>
     Seed:
     <input id="rom-seed" name="seed" type="text" maxlength="10">
   </label>
@@ -30,7 +30,6 @@
     <label>Encounter toggle: <input id="encounter-toggle" type="checkbox"/></label>
     <label>Magic shuffle: <input id="magic-shuffle" type="checkbox"/></label>
     <label>Treasure shuffle: <input id="treasure-shuffle" type="checkbox"/></label>
-    <label>Debug mode: <input id="debug-mode" type="checkbox"/></label>
     <label>Exp Scale:
       <input id="exp-scale" type="range" min="100" max="500" value="200" step="10" class="slider">
     </label>
@@ -61,9 +60,6 @@
       if ($("#treasure-shuffle").prop("checked")) {
         flags += "Ts "
       }
-      if ($("#debug-mode").prop("checked")) {
-        flags += " -hax "
-      }
       flags += "XP=" + ($("#exp-scale").val() / 100);
       $("#rom-flags").val(flags.trim());
     }
@@ -77,7 +73,6 @@
       $("#encounter-toggle").change(updateFlags);
       $("#magic-shuffle").change(updateFlags);
       $("#treasure-shuffle").change(updateFlags);
-      $("#debug-mode").change(updateFlags);
       $("#exp-scale").on("input change", updateFlags);
     });
 
