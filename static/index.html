@@ -16,15 +16,6 @@
 <hr>
 <form method="post" enctype="multipart/form-data" action="randomize">
   <div>
-    <label>
-      Flags:
-      <input id="rom-flags" name="flags" type="text" tabindex="-1" readonly>
-      Seed:
-      <input id="rom-seed" name="seed" type="text" maxlength="10">
-    </label>
-  </div>
-
-  <div>
     <h2>
       Select a <i>Final Fantasy I & II: Dawn of Souls</i> ROM to randomize:
     </h2>
@@ -39,6 +30,11 @@
       Select options for the randomized ROM:
     </h2>
 
+    <label>
+      Flags:
+      <input id="rom-flags" name="flags" type="text" tabindex="-1" readonly>
+    </label>
+
     <div id="flags">
       <label>Shuffle Key Items: <input id="key-item" type="checkbox"/></label>
       <label>Encounter toggle: <input id="encounter-toggle" type="checkbox"/></label>
@@ -48,6 +44,19 @@
         <input id="exp-scale" type="range" min="100" max="500" value="200" step="10" class="slider">
       </label>
     </div>
+  </div>
+
+  <div>
+    <h2>
+      Optionally, enter a seed value:
+    </h2>
+    <label>
+      Seed:
+      <input id="rom-seed" name="seed" type="text" maxlength="10">
+      <p>
+        Seeds may be up to 10 ASCII characters long.
+      </p>
+    </label>
   </div>
 
   <div>
