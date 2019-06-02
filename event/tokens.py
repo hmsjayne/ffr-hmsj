@@ -43,11 +43,15 @@ class RawCommandToken(str):
     pass
 
 
+class EndEventToken(list):
+    pass
+
+
 class NopToken(list):
     pass
 
 
-class EndEventToken(list):
+class LoadMapToken(list):
     pass
 
 
@@ -92,6 +96,14 @@ class JumpChestEmptyToken(str):
 
 
 class MusicToken(str):
+    pass
+
+
+class AddNpcToken(list):
+    pass
+
+
+class RemoveNpcToken(list):
     pass
 
 

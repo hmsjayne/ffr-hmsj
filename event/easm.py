@@ -25,6 +25,7 @@ GRAMMAR = {
     # If a string is not defined here, it will likely cause a SyntaxError exception.
     "end_event": EndEventToken([0x0, 0x4, 0xff, 0xff]),
     "nop": NopToken([0x1, 0x4, 0xff, 0xff]),
+    "load_map": LoadMapToken([0x3, 0xc, 0x1, "$0", "$(u:1)", "$(u:2)", "$3", "$4", 0xff, 0xff]),
     "load_text": LoadTextToken("load_text"),
     "close_dialog": CloseDialogToken("close_dialog"),
     "delay": DelayToken([0x9, 0x4, "$(u:0)"]),
@@ -32,6 +33,8 @@ GRAMMAR = {
     "jump": JumpToken("jump"),
     "jump_chest_empty": JumpChestEmptyToken("jump_chest_empty"),
     "music": MusicToken("music"),
+    "add_npc": AddNpcToken([0x13, 0xc, "$0", "$1", 0x0, 0x0, 0x0, 0xff, "$(u:2)", "$(u:3)"]),
+    "remove_npc": RemoveNpcToken([0x14, 0x4, "$(u:0)"]),
     "set_repeat": SetRepeatToken("set_repeat"),
     "repeat": RepeatToken("repeat"),
     "set_npc_frame": SetNpcFrameToken([0x1f, 0x4, "$0", "$1"]),
@@ -77,6 +80,7 @@ GRAMMAR = {
     #
     EndEventToken: None,
     NopToken: None,
+    LoadMapToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$", "$$value$$"],
     LoadTextToken: [(LoadTextTopToken(), LoadTextBottomToken()), "$$value$$"],
     CloseDialogToken: [(CloseDialogAutoToken(), CloseDialogWaitToken())],
     DelayToken: ["$$value$$"],
@@ -84,6 +88,8 @@ GRAMMAR = {
     JumpToken: [LabelToken()],
     JumpChestEmptyToken: [LabelToken()],
     MusicToken: ["$$value$$", "$$value$$"],
+    AddNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
+    RemoveNpcToken: ["$$value$$"],
     SetRepeatToken: ["$$value$$"],
     RepeatToken: ["$$value$$", LabelToken()],
     SetNpcFrameToken: ["$$value$$", "$$value$$"],
