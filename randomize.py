@@ -154,13 +154,13 @@ def gen_seed(rom_seed: str) -> str:
     return str(out_seed)
 
 
-def get_filename(base_path: str, flags: Flags, seed: str) -> str:
+def get_filename(base_path: str, flags: Flags, rom_seed: str) -> str:
     filename = base_path
     if filename.find(os.sep) > -1:
         filename = filename[0:filename.rfind(os.sep)]
     if filename.endswith(".gba"):
         filename = filename[:len(filename) - 4]
-    return f"{filename}_{flags.text()}_{seed}.gba"
+    return f"{filename}_{flags.text()}_{rom_seed}.gba"
 
 
 def randomize(rom_path: str, flags: Flags, rom_seed: str):

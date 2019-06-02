@@ -15,8 +15,8 @@
 from flask import Flask, request, make_response
 
 from doslib.rom import Rom
+from randomize import randomize_rom, get_filename, gen_seed
 from randomizer.flags import Flags
-from randomize import randomize_rom
 
 app = Flask(__name__)
 
@@ -31,15 +31,16 @@ def randomize():
     uploaded_rom = request.files['rom']
     rom = Rom(data=uploaded_rom.read())
     flags_string = request.form['flags']
-    seed = request.form['seed']
+    flags = Flags(flags_string)
+    rom_seed = gen_seed(request.form['seed'])
 
-    rom = randomize_rom(rom, Flags(flags_string), seed)
+    rom = randomize_rom(rom, flags, rom_seed)
 
     filename = uploaded_rom.filename
     index = filename.rfind(".gba")
     if index < 0:
         return f"Bad filename: {filename}"
-    filename = f"{filename[0:index]}.{seed}.gba"
+    filename = get_filename(filename, flags, rom_seed)
 
     response = make_response(rom.rom_data)
     response.headers['Content-Type'] = "application/octet-stream"
