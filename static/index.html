@@ -12,28 +12,52 @@
   </style>
 </head>
 <body onload="">
+<h1>Final Fantasy Randomizer: HMS Jayne</h1>
+<hr>
 <form method="post" enctype="multipart/form-data" action="randomize">
-  <label>Upload ROM</label><br/>
-  <label>
-    <input name="rom" type="file" accept=".gba">
-  </label>
-  <label>
-    Flags:
-    <input id="rom-flags" name="flags" type="text" readonly>
-    Seed:
-    <input id="rom-seed" name="seed" type="text" maxlength="10">
-  </label>
-  <input type="submit" value="Randomize">
-
-  <div id="flags">
-    <label>Shuffle Key Items: <input id="key-item" type="checkbox"/></label>
-    <label>Encounter toggle: <input id="encounter-toggle" type="checkbox"/></label>
-    <label>Magic shuffle: <input id="magic-shuffle" type="checkbox"/></label>
-    <label>Treasure shuffle: <input id="treasure-shuffle" type="checkbox"/></label>
-    <label>Exp Scale:
-      <input id="exp-scale" type="range" min="100" max="500" value="200" step="10" class="slider">
+  <div>
+    <label>
+      Flags:
+      <input id="rom-flags" name="flags" type="text" tabindex="-1" readonly>
+      Seed:
+      <input id="rom-seed" name="seed" type="text" maxlength="10">
     </label>
   </div>
+
+  <div>
+    <h2>
+      Select a <i>Final Fantasy I & II: Dawn of Souls</i> ROM to randomize:
+    </h2>
+    <label>Upload ROM</label><br/>
+    <label>
+      <input name="rom" type="file" accept=".gba">
+    </label>
+  </div>
+
+  <div>
+    <h2>
+      Select options for the randomized ROM:
+    </h2>
+
+    <div id="flags">
+      <label>Shuffle Key Items: <input id="key-item" type="checkbox"/></label>
+      <label>Encounter toggle: <input id="encounter-toggle" type="checkbox"/></label>
+      <label>Magic shuffle: <input id="magic-shuffle" type="checkbox"/></label>
+      <label>Treasure shuffle: <input id="treasure-shuffle" type="checkbox"/></label>
+      <label>Exp Scale:
+        <input id="exp-scale" type="range" min="100" max="500" value="200" step="10" class="slider">
+      </label>
+    </div>
+  </div>
+
+  <div>
+    <h2>
+      Submit ROM:
+    </h2>
+
+    <input type="submit" value="Randomize">
+  </div>
+
 </form>
 </body>
 
@@ -66,6 +90,7 @@
 
     $(document).ready(function() {
       genSeed();
+      updateFlags();
 
       $("#rom-seed").blur(genSeed);
 
