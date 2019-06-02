@@ -24,6 +24,7 @@ from doslib.gen.enemy import EnemyStats
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from ipsfile import load_ips_files
+from randomizer.credits import add_credits
 from randomizer.flags import Flags
 from randomizer.keyitemsolver import KeyItemPlacement
 from randomizer.spellshuffle import SpellShuffle
@@ -58,6 +59,7 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     rom = rom.apply_patches(base_patch)
 
     rom = init_free_airship(rom)
+    rom = add_credits(rom)
 
     event_text_block = EventTextBlock(rom)
     event_text_block.shrink()
