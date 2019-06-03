@@ -158,7 +158,7 @@ def get_filename(base_path: str, flags: Flags, rom_seed: str) -> str:
     filename = base_path
     if filename.find(os.sep) > -1:
         filename = filename[0:filename.rfind(os.sep)]
-    if filename.endswith(".gba"):
+    if filename.lower().endswith(".gba"):
         filename = filename[:len(filename) - 4]
     return f"{filename}_{flags.text()}_{rom_seed}.gba"
 
