@@ -37,7 +37,7 @@ def randomize():
     rom = randomize_rom(rom, flags, rom_seed)
 
     filename = uploaded_rom.filename
-    index = filename.rfind(".gba")
+    index = filename.lower().rfind(".gba")
     if index < 0:
         return f"Bad filename: {filename}"
     filename = get_filename(filename, flags, rom_seed)
