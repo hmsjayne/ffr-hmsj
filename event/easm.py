@@ -56,12 +56,6 @@ GRAMMAR = {
     "jz": JzToken(0x2),
     "jnz": JnzToken(0x3),
 
-    # Here are various other keywords that are command specific.
-    "top": LoadTextTopToken(0x0),
-    "bot": LoadTextBottomToken(0x1),
-    "wait": CloseDialogWaitToken(0x1),
-    "auto": CloseDialogAutoToken(0x0),
-
     #
     # Define various non-terminal tokens here.
     #
@@ -81,8 +75,8 @@ GRAMMAR = {
     EndEventToken: None,
     NopToken: None,
     LoadMapToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$", "$$value$$"],
-    LoadTextToken: [(LoadTextTopToken(), LoadTextBottomToken()), "$$value$$"],
-    CloseDialogToken: [(CloseDialogAutoToken(), CloseDialogWaitToken())],
+    LoadTextToken: ["$$value$$", "$$value$$"],
+    CloseDialogToken: ["$$value$$"],
     DelayToken: ["$$value$$"],
     MoveNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
     JumpToken: [LabelToken()],

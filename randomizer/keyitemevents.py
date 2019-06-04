@@ -52,11 +52,11 @@ sara_event = """
     GIVE_SARA_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %sara_text_id
+    load_text WINDOW_TOP %sara_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -174,11 +174,11 @@ king_event = """
     GIVE_KING_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %king_text_id
+    load_text WINDOW_TOP %king_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x20 0x4 0x21 0xff
     db 0x20 0x4 0x23 0xff
@@ -268,11 +268,11 @@ bikke_event = """
     db 0x1f 0x4 0x20 0x0
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %bikke_text_id
+    load_text WINDOW_TOP %bikke_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x26 0x4 0x1 0xff
     db 0x16 0x4 0x1 0xff
@@ -304,19 +304,19 @@ marsh_event = """
     GIVE_MARSH_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %marsh_text_id
+    load_text WINDOW_TOP %marsh_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
     jump .End
     .Empty:
-    load_text top 0xf2
+    load_text WINDOW_TOP 0xf2
     show_dialog
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     .End:
     end_event
 """
@@ -432,11 +432,11 @@ astos_event = """
     GIVE_ASTOS_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %astos_text_id
+    load_text WINDOW_TOP %astos_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x15 0x8 0x2 0x0 0x0 0x0 0x0 0x0
     db 0x3b 0x4 0xff 0xff
@@ -459,11 +459,11 @@ matoya_event = """
     GIVE_MATOYA_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %matoya_text_id
+    load_text WINDOW_TOP %matoya_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -526,11 +526,11 @@ elf_prince_event = """
     GIVE_ELF_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %elf_text_id
+    load_text WINDOW_TOP %elf_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -552,19 +552,19 @@ locked_cornelia_event = """
     GIVE_LOCKED_CORNELIA_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %locked_cornelia_text_id
+    load_text WINDOW_TOP %locked_cornelia_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
     jump .End
     .Empty:
-    load_text top 0xf2
+    load_text WINDOW_TOP 0xf2
     show_dialog
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     .End:
     end_event
 """
@@ -834,11 +834,11 @@ nerrik_event = """
     GIVE_NERRICK_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %nerrick_text_id
+    load_text WINDOW_TOP %nerrick_text_id
     music 0x0 0x20          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x1f 0x4 0xb 0x4
     db 0x9 0x4 0x8 0x0
@@ -884,11 +884,11 @@ vampire_event = """
     GIVE_VAMPIRE_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %vampire_text_id
+    load_text WINDOW_TOP %vampire_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -901,9 +901,9 @@ sarda_event = """
     %fed_titan 0x0e
 
     check_flag %fed_titan jnz .Fed_Titan
-    load_text top 0x47b
+    load_text WINDOW_TOP 0x47b
     show_dialog
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     jump .End
 
     .Fed_Titan:
@@ -917,11 +917,11 @@ sarda_event = """
     GIVE_SARDA_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %sarda_text_id
+    load_text WINDOW_TOP %sarda_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -942,11 +942,11 @@ lukahn_event = """
     GIVE_LUKAHN_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %lukahn_text_id
+    load_text WINDOW_TOP %lukahn_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -967,11 +967,11 @@ levistone_event = """
     GIVE_ICE_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %ice_text_id
+    load_text WINDOW_TOP %ice_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -990,11 +990,11 @@ citadel_of_trials_chest_event = """
     GIVE_CITADEL_OF_TRIALS_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %citadel_of_trials_text_id
+    load_text WINDOW_TOP %citadel_of_trials_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -1265,11 +1265,11 @@ bahamuts_cave_event = """
     db 0x1f 0x4 0x23 0x1a
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %bahamut_text_id
+    load_text WINDOW_TOP %bahamut_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x9 0x4 0x3c 0x0
     db 0x1f 0x4 0x20 0x0
@@ -1309,11 +1309,11 @@ waterfall_robot_event = """
     GIVE_WATERFALL_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %waterfall_text_id
+    load_text WINDOW_TOP %waterfall_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x1f 0x4 0x20 0x0
     db 0x13 0x8 0x4d 0xd 0x0 0x0 0x0 0x0
@@ -1435,11 +1435,11 @@ fairy_event = """
     GIVE_FAIRY_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %fairy_text_id
+    load_text WINDOW_TOP %fairy_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -1461,20 +1461,20 @@ slab_chest_event = """
     GIVE_MERMAIDS_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %mermaids_text_id
+    load_text WINDOW_TOP %mermaids_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
     db 0x1 0x4 0xff 0xff
     jump .End
     .Empty:
-    load_text top 0xf2
+    load_text WINDOW_TOP 0xf2
     show_dialog
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     .End:
     end_event
 """
@@ -1621,11 +1621,11 @@ dr_unne_event = """
     GIVE_DR_UNNE_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %dr_unne_text_id
+    load_text WINDOW_TOP %dr_unne_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x1f 0x4 0x20 0x10
     db 0x9 0x4 0x28 0x0
@@ -1651,11 +1651,11 @@ lefein_event = """
     GIVE_LEFIEN_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %lefien_text_id
+    load_text WINDOW_TOP %lefien_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -1675,11 +1675,11 @@ sky2_adamantite_event = """
     GIVE_SKY2_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %sky2_text_id
+    load_text WINDOW_TOP %sky2_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -1795,11 +1795,11 @@ smyth_event = """
     GIVE_SMYTH_REWARD
     music 0x5 0x2           ; Fade BGM (fast)
     music 0xa 0xffff        ; Wait for fade
-    load_text top %smyth_text_id
+    load_text WINDOW_TOP %smyth_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x16 0x4 0x1 0xff
     db 0x14 0x4 0x0 0x1
@@ -1905,11 +1905,11 @@ desert_event = """
     set_npc_frame 0x23 0x21
     delay 16
     GIVE_DESERT_REWARD
-    load_text top %desert_text_id
+    load_text WINDOW_TOP %desert_text_id
     music 0x0 0x21          ; Play fanfare
     show_dialog
     music 0x9 0xffff        ; Wait for fanfare to finish
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     music 0x4 0x4           ; Resume BGM
     db 0x14 0x4 0xf 0x0     ; Remove the reward sprite
     delay 30
@@ -2500,9 +2500,9 @@ better_earth_plate = """
     jump .Event_End
 
     .No_Earth_Rod:
-    load_text top 0xff
+    load_text WINDOW_TOP 0xff
     show_dialog
-    close_dialog wait
+    close_dialog DIALOG_WAIT
 
     .Event_End:
     end_event
@@ -2513,15 +2513,15 @@ citadel_guide = """
     %can_undertake_trial 0x16
     
     check_flag %have_crown jnz .Allow_Entrance
-    load_text top 0x47a
+    load_text WINDOW_TOP 0x47a
     show_dialog
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     jump .EndEvent
     
     .Allow_Entrance:
-    load_text top 0x2d
+    load_text WINDOW_TOP 0x2d
     show_dialog
-    close_dialog wait
+    close_dialog DIALOG_WAIT
     delay 30
     db 0xab 0x4 0x0 0x0
     db 0x14 0x4 0x0 0x0

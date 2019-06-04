@@ -97,17 +97,17 @@ def _da_03(cmd: bytearray) -> str:
 def _da_05(cmd: bytearray) -> str:
     dialog_id = array.array("H", cmd[2:4])[0]
     if cmd[4] == 0:
-        location = "top"
+        location = "WINDOW_TOP"
     else:
-        location = "bot"
+        location = "WINDOW_BOTTOM"
     return f"load_text {location} {hex(dialog_id)}"
 
 
 def _da_06(cmd: bytearray) -> str:
     if cmd[3] == 0:
-        method = "auto"
+        method = "DIALOG_AUTO_CLOSE"
     else:
-        method = "wait"
+        method = "DIALOG_WAIT"
     return f"close_dialog {method}"
 
 

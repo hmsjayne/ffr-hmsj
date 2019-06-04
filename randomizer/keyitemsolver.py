@@ -216,7 +216,7 @@ class KeyItemPlacement(object):
         self.rom = self.maps.write(self.rom)
 
     def _prepare_header(self, key_item_locations: tuple) -> str:
-        working_header = ""
+        working_header = STD_HEADER
 
         for placement in key_item_locations:
             if placement.location not in NEW_REWARD_SOURCE:
@@ -395,3 +395,11 @@ class KeyItemPlacement(object):
             Placement("water", "kraken"),
             Placement("air", "tiamat"),
         )
+
+
+STD_HEADER = """
+#define WINDOW_TOP 0x0
+#define WINDOW_BOTTOM 0x1
+#define DIALOG_WAIT 0x1
+#define DIALOG_AUTO_CLOSE 0x0
+"""

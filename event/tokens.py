@@ -59,23 +59,7 @@ class LoadTextToken(str):
     pass
 
 
-class LoadTextTopToken(int):
-    pass
-
-
-class LoadTextBottomToken(int):
-    pass
-
-
 class CloseDialogToken(str):
-    pass
-
-
-class CloseDialogAutoToken(int):
-    pass
-
-
-class CloseDialogWaitToken(int):
     pass
 
 
