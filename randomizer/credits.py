@@ -64,17 +64,14 @@ leggystarscream
 
 
 
+Website Design:
+a tiny fairy
+
+
+
+
 Playtest:
 Demerine
 leggystarscream
 
-
-
-
-Special Thanks:
-a tiny fairy
-
-"""
-PH = """
-that trick of fate also gave birth
 """
