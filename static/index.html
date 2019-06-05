@@ -1,11 +1,56 @@
+
 <!doctype html>
 <html itemscope="" itemtype="http://schema.org/WebPage" lang="en">
 <head>
   <meta charset="utf-8">
   <title>Final Fantasy Randomizer: HMS Jayne</title>
   <style type="text/css">
+    #flags {
+      display: inline-block;
+    }
     #flags label {
       display: block;
+      text-align: left;
+    }
+    label {
+      margin: 4px 0px;
+    }
+    h1 {
+      display: none;
+    }
+    body {
+ 	  background: #000;
+  	  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      font-size: 100%;
+      color: GhostWhite;
+      text-shadow: 2px 1px black;
+      width: 800px;
+	  margin: 5%;
+    }
+    div {
+      border: 16px solid transparent;
+      margin: 32px 0px -32px;
+      padding: 16px;
+      border-image: url(border.png) 16 repeat;
+      background-image: linear-gradient(#3838d8,#000060);
+      background-clip: padding-box;
+      font-size: 1.2em;
+    }
+    input {
+  	  font-size: 100%;
+      margin: 4px 0px;
+    }
+    input[type="file" i] {
+  	  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      font-size: 100%;
+      color: GhostWhite;
+      text-shadow: 2px 1px black;
+      width: 100%;
+    }
+    input[type="checkbox" i] {
+      display: inline-block;
+      float: right;
+      padding: 4px;
     }
 
 
@@ -13,7 +58,10 @@
 </head>
 <body onload="">
 <h1>Final Fantasy Randomizer: HMS Jayne</h1>
-<hr>
+<div style="background: #fff; padding:20px 40px; margin:-10px; border: 0px;">
+ <img src="hmslogo.jpg" width=720 />
+</div>
+
 <form method="post" enctype="multipart/form-data" action="randomize">
   <div>
     <h2>
@@ -31,9 +79,11 @@
     </h2>
 
     <label>
-      Flags:
+      Flagstring:
       <input id="rom-flags" name="flags" type="text" tabindex="-1" readonly>
     </label>
+    
+    <br />
 
     <div id="flags">
       <label>Shuffle Key Items: <input id="key-item" type="checkbox"/></label>

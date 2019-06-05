@@ -26,6 +26,16 @@ def root():
     return app.send_static_file('index.html')
 
 
+@app.route('/hmslogo.jpg')
+def hms_logo():
+    return app.send_static_file('hmslogo.jpg')
+
+
+@app.route('/border.png')
+def border():
+    return app.send_static_file('border.png')
+
+
 @app.route('/randomize', methods=['POST'])
 def randomize():
     uploaded_rom = request.files['rom']
