@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from urllib import parse
 
 from flask import Flask, request, make_response
 
@@ -50,7 +51,7 @@ def randomize():
     index = filename.lower().rfind(".gba")
     if index < 0:
         return f"Bad filename: {filename}"
-    filename = get_filename(filename, flags, rom_seed)
+    filename = parse.quote(get_filename(filename, flags, rom_seed))
 
     response = make_response(rom.rom_data)
     response.headers['Content-Type'] = "application/octet-stream"
