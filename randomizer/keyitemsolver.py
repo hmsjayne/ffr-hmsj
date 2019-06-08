@@ -281,16 +281,16 @@ class KeyItemPlacement(object):
         self.maps.get_map(0x3).npcs[0xe].event = 0x139c
 
     def _rewrite_give_texts(self):
-        self.event_text_block.strings[0x127] = TextBlock.encode_text("You obtain the bridge.\x00")
-        self.event_text_block.strings[0x1e8] = TextBlock.encode_text("You obtain the canal.\x00")
-        self.event_text_block.strings[0x1d2] = TextBlock.encode_text("You obtain class change.\x00")
-        self.event_text_block.strings[0x1bf] = TextBlock.encode_text("You obtain a bottle.\x00")
-        self.event_text_block.strings[0x235] = TextBlock.encode_text("You can now speak Lufenian.\x00")
-        self.event_text_block.strings[0x47a] = TextBlock.encode_text("Possession of the crown is required\n"
-                                                                     "to undertake trials..\x00")
-        self.event_text_block.strings[0x47b] = TextBlock.encode_text("The titan is so hungry.\n"
-                                                                     "If you were to feed them\\u8163\x00")
-        self.event_text_block.strings[0x47c] = TextBlock.encode_text("You obtain a Megalixir.\x00")
+        with open("data/event_text.tsv", "r") as event_text:
+            for line in event_text.readlines():
+                string_num, text = line.strip().split('\t')
+                string_num = int(string_num, 16)
+
+                if not text.endswith('\x00'):
+                    text += '\x00'
+
+                self.event_text_block.strings[string_num] = TextBlock.encode_text(text)
+
         self.rom = self.event_text_block.pack(self.rom)
 
     def _replace_map_npc(self, map_id: int, npc_index: int, sprite: int, movable: bool):

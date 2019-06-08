@@ -105,7 +105,7 @@ class TextBlock(object):
                 char = stream.get_char()
                 if char == 'x':
                     # \x designates a 2 digit hex code
-                    chars = stream.get_char() + stream.get_char()
+                    chars = int("0x" + stream.get_char() + stream.get_char(), 16)
                 elif char == 'u':
                     # \u designates a 4 digit hex code
                     num = ""
