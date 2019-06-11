@@ -19,6 +19,12 @@
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 sara_event = """
+    check_flag %sara_reward_flag jz .GiveReward
+    load_text WINDOW_TOP 0x7
+    show_dialog
+    close_dialog DIALOG_WAIT
+    jump .EndEvent
+    .GiveReward:
     db 0x60 0x4 0x1 0xff
     jump .Label_1
     db 0x60 0x4 0x1 0xff
@@ -63,6 +69,7 @@ sara_event = """
     db 0x1 0x4 0xff 0xff
     db 0x60 0x4 0x0 0xff
     remove_trigger 0x13cb
+    .EndEvent:
     end_event
 """
 
