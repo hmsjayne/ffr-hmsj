@@ -2561,3 +2561,14 @@ citadel_guide = """
     .EndEvent:
     end_event
 """
+
+wow_chancellor = """
+    load_text WINDOW_TOP 0x19
+    show_dialog
+    close_dialog DIALOG_WAIT
+    add_npc 0x2D 0x4 21 8
+    delay 30
+    add_npc 0x5C 0x4 21 8
+    set_npc_event 0x4 0x1f60
+    end_event
+"""

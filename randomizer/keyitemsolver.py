@@ -92,6 +92,7 @@ EVENT_SOURCE_MAP = {
     0x13B7: vampire_event,
     0x13b8: sarda_event,
     0x13BD: waterfall_robot_event,
+    0x1f60: wow_chancellor,
 }
 
 NEW_REWARD_SOURCE = {
