@@ -16,14 +16,14 @@
 import os
 import random
 from argparse import ArgumentParser
-from random import seed, randint
+from random import randint
 
 from doslib.event import EventTextBlock
 from doslib.gen.classes import JobClass
 from doslib.gen.enemy import EnemyStats
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from ipsfile import load_ips_files
+from ips_util import Patch
 from randomizer.credits import add_credits
 from randomizer.flags import Flags
 from randomizer.keyitemsolver import KeyItemPlacement
@@ -55,8 +55,11 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     if flags.default_party is not None:
         patches_to_load.append("data/RandomDefault.ips")
 
-    base_patch = load_ips_files(*patches_to_load)
-    rom = rom.apply_patches(base_patch)
+    patched_rom_data = rom.rom_data
+    for patch_path in patches_to_load:
+        patch = Patch.load(patch_path)
+        patched_rom_data = patch.apply(patched_rom_data)
+    rom = Rom(data=bytearray(patched_rom_data))
 
     rom = init_free_airship(rom)
     rom = add_credits(rom)
@@ -165,8 +168,8 @@ def get_filename(base_path: str, flags: Flags, rom_seed: str) -> str:
 
 def randomize(rom_path: str, flags: Flags, rom_seed: str):
     rom_seed = gen_seed(rom_seed)
-    rom = Rom(rom_path)
-    rom = randomize_rom(rom, flags, rom_seed)
+    vanilla_rom = Rom(rom_path)
+    rom = randomize_rom(vanilla_rom, flags, rom_seed)
 
     rom.write(get_filename(rom_path, flags, rom_seed))
 
