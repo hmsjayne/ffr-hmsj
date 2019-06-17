@@ -14,6 +14,7 @@
 from urllib import parse
 
 from flask import Flask, request, make_response
+from ips_util import Patch
 
 from doslib.rom import Rom
 from randomize import randomize_rom, get_filename, gen_seed
@@ -25,6 +26,11 @@ app = Flask(__name__)
 @app.route('/')
 def root():
     return app.send_static_file('index.html')
+
+
+@app.route('/test')
+def patch_ui():
+    return app.send_static_file('test.html')
 
 
 @app.route('/hmslogo.jpg')
@@ -54,6 +60,25 @@ def randomize():
     filename = parse.quote(get_filename(filename, flags, rom_seed))
 
     response = make_response(rom.rom_data)
+    response.headers['Content-Type'] = "application/octet-stream"
+    response.headers['Content-Disposition'] = f"inline; filename={filename}"
+    return response
+
+
+@app.route('/patch', methods=['POST'])
+def create_patch():
+    vanilla_rom = Rom("ff-dos.gba")
+    flags_string = request.form['flags']
+    flags = Flags(flags_string)
+    rom_seed = gen_seed(request.form['seed'])
+
+    rom = randomize_rom(vanilla_rom, flags, rom_seed)
+
+    gba_name = get_filename("ff-dos", flags, rom_seed)
+    filename = parse.quote(gba_name[:len(gba_name) - 4] + ".ips")
+
+    patch = Patch.create(vanilla_rom.rom_data, rom.rom_data)
+    response = make_response(patch.encode())
     response.headers['Content-Type'] = "application/octet-stream"
     response.headers['Content-Disposition'] = f"inline; filename={filename}"
     return response
