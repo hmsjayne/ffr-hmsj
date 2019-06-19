@@ -2255,6 +2255,21 @@ sky_f2_init = """
     end_event
 """
 
+chaos_temple_3f_init = """
+    %have_lute 0x4
+    %lute_plate_broken 0x25
+
+    db 0x18 0x8 0x0 0x1 0x3 0x0 0xff 0xff
+    check_flag %have_lute jz .Label_2
+    check_flag %lute_plate_broken jz .Label_1
+    remove_trigger 0x1ff7
+    jump .Label_2
+    .Label_1:
+    set_npc_event 0x0 0x13ab
+    .Label_2:
+    end_event
+"""
+
 # * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 #
 # Key Item Reward snippets

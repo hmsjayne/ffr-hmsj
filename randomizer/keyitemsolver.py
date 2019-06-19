@@ -48,6 +48,7 @@ EVENT_SOURCE_MAP = {
     0x06: elven_castle_init,
     0x1E: mermaid_floor_init,
     0x1F: chaos_shrine_init,
+    0x22: chaos_temple_3f_init,
     0x2F: crescent_lake_init,
     0x37: sages_cave_init,
     0x38: cornelia_castle_1f_event,
