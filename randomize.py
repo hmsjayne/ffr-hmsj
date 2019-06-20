@@ -26,6 +26,7 @@ from doslib.textblock import TextBlock
 from ips_util import Patch
 from randomizer.credits import add_credits
 from randomizer.flags import Flags
+from randomizer.formations import FormationRandomization
 from randomizer.keyitemsolver import KeyItemPlacement
 from randomizer.spellshuffle import SpellShuffle
 from randomizer.treasures import treasure_shuffle
@@ -100,6 +101,10 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
             job_class.write(class_out_stream)
 
         rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
+
+    if flags.shuffle_formations:
+        formation = FormationRandomization(rom, rng)
+        rom = rom.apply_patches(formation.patches())
 
     if True:
         enemy_data_stream = rom.open_bytestream(0x1DE044, 0x1860)
