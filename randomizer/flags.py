@@ -23,6 +23,8 @@ class Flags(object):
         self.key_item_shuffle = None
         self.exp_mult = 1.0
 
+        self.shuffle_formations = None
+
         self.debug = None
 
         for flag in flags_str.split():
@@ -30,6 +32,8 @@ class Flags(object):
                 self.key_item_shuffle = "shuffle"
             elif flag == "Et":
                 self.encounters = "toggle"
+            elif flag == "Fs":
+                self.shuffle_formations = "shuffle"
             elif flag == "Ms":
                 self.magic = "shuffle"
             elif flag == "Ts":
