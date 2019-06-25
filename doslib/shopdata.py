@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from __future__ import annotations
-
 from doslib.rom import Rom
 from stream.inputstream import InputStream
 from stream.outputstream import OutputStream
@@ -142,19 +140,19 @@ class ShopInventoryBuilder(object):
         self._weapons = []
         self._items = []
 
-    def add_magic(self, magic_id: int) -> ShopInventoryBuilder:
+    def add_magic(self, magic_id: int) -> 'ShopInventoryBuilder':
         self._magic.append(magic_id)
         return self
 
-    def add_armor(self, armor_id: int) -> ShopInventoryBuilder:
+    def add_armor(self, armor_id: int) -> 'ShopInventoryBuilder':
         self._armor.append(armor_id)
         return self
 
-    def add_weapon(self, weapon_in: int) -> ShopInventoryBuilder:
+    def add_weapon(self, weapon_in: int) -> 'ShopInventoryBuilder':
         self._weapons.append(weapon_in)
         return self
 
-    def add_item(self, item_id: int) -> ShopInventoryBuilder:
+    def add_item(self, item_id: int) -> 'ShopInventoryBuilder':
         self._items.append(item_id)
         return self
 
