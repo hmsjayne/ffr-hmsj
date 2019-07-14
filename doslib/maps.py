@@ -24,8 +24,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from __future__ import annotations
-
 from doslib.gen.map import MapHeader, Tile, Npc, Chest, Sprite, Shop
 from doslib.rom import Rom
 from stream.inputstream import InputStream
@@ -46,7 +44,7 @@ class Maps(object):
             # Collect the dummy chests together
             self.dummy_chests += map.dummy_chests
 
-    def get_map(self, map_id: int) -> MapFeatures:
+    def get_map(self, map_id: int) -> 'MapFeatures':
         return self._maps[map_id]
 
     def get_map_offset(self, map_id: int) -> int:

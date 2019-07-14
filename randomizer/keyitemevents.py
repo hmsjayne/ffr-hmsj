@@ -2099,13 +2099,15 @@ elven_castle_init = """
     %have_mystic_key 0x9
     
     check_flag %have_mystic_key jz .Label_1
-    db 0x45 0x8 0x7 0x0 0x11 0x0 0xf 0x0
     remove_all 0x1f4a
     .Label_1:
-    check_flag %elf_reward_flag jnz .Label_2 
-    check_flag %have_jolt_tonic jz .Label_2
+    check_flag %elf_reward_flag jz .Prince_Asleep 
+    move_npc 0x7 0 17 15
+    jump .End_Event
+    .Prince_Asleep:
+    check_flag %have_jolt_tonic jz .End_Event
     set_npc_event 0x6 0x139a
-    .Label_2:
+    .End_Event:
     end_event
 """
 
