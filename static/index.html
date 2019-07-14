@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html itemscope="" itemtype="http://schema.org/WebPage" lang="en">
 <head>
@@ -19,26 +18,55 @@
       display: none;
     }
     body {
- 	  background: #000;
+   	  background: #000;
+   	  margin-left: auto;
+   	  margin-right: auto;
   	  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
       font-size: 100%;
       color: GhostWhite;
       text-shadow: 2px 1px black;
-      width: 800px;
-	  margin: 5%;
+      width: 720px;
     }
     div {
-      border: 16px solid transparent;
-      margin: 32px 0px -32px;
-      padding: 16px;
-      border-image: url(border.png) 16 repeat;
-      background-image: linear-gradient(#3838d8,#000060);
-      background-clip: padding-box;
-      font-size: 1.2em;
+      border: solid 1px #424542;
+      box-shadow: 3px 3px #e7dfe7,
+                  -3px -3px #e7dfe7,
+                  3px -3px #e7dfe7,
+                  -3px 3px #e7dfe7,
+                  0 -5px #9c9a9c,
+                  -5px 0 #7b757b,
+                  0 3px #424542;
+      padding: 5px 10px;
+      margin: 20px 0px;
+
+      background: #04009d;
+      background: -moz-linear-gradient(top,  #04009d 0%, #06004d 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#04009d), color-stop(100%,#06004d));
+      background: -webkit-linear-gradient(top,  #04009d 0%,#06004d 100%);
+      background: -o-linear-gradient(top,  #04009d 0%,#06004d 100%);
+      background: -ms-linear-gradient(top,  #04009d 0%,#06004d 100%);
+      background: linear-gradient(to bottom,  #04009d 0%,#06004d 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04009d', endColorstr='#06004d',GradientType=0 );
+
+
+      -webkit-border-radius: 7px;
+      -moz-border-radius: 7px;
+      border-radius: 7px;
+    }
+    div * {
+      color: #eff1ff;
+      text-shadow: 2px 2px #212421,
+                   1px 1px #212021;
+      font-family: monospace;
+      font-size: 20px;
+      font-weight: normal;
+      margin: 5px 0;
     }
     input {
   	  font-size: 100%;
       margin: 4px 0px;
+      background: none;
+      padding: 3px;
     }
     input[type="file" i] {
   	  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
@@ -53,13 +81,51 @@
       padding: 4px;
     }
 
+    div.logo {
+      background: white;
+      border: none;
+    }
+    img.logo {
+      width: 720px;
+    }
+
+    #links {
+      background: #049d00;
+      background: -moz-linear-gradient(top,  #049d00 0%, #064d00 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#049d00), color-stop(100%,#064d00));
+      background: -webkit-linear-gradient(top,  #049d00 0%,#064d00 100%);
+      background: -o-linear-gradient(top,  #049d00 0%,#064d00 100%);
+      background: -ms-linear-gradient(top,  #049d00 0%,#064d00 100%);
+      background: linear-gradient(to bottom,  #049d00 0%,#064d00 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#049d00', endColorstr='#064d00',GradientType=0 );
+    }
+    #links a {
+      text-decoration: none;
+    }
+    #links img {
+      width: 64px;
+      vertical-align: middle;
+    }
 
   </style>
 </head>
-<body onload="">
-<h1>Final Fantasy Randomizer: HMS Jayne</h1>
-<div style="background: #fff; padding:20px 40px; margin:-10px; border: 0px;">
- <img src="hmslogo.jpg" width=720 />
+<body>
+<h1>
+  Final Fantasy Randomizer: HMS Jayne
+</h1>
+
+<img class="logo" src="hmslogo.jpg"/>
+
+<div id="links">
+  <a href="https://github.com/hmsjayne/ffr-hmsj/issues">
+    <img src="github.png"/>
+    Report an issue
+  </a>
+  <br/>
+  <a id="discord" href="https://discord.gg/kPxkH5W">
+    <img src="discord.png"/>
+    Join the community
+  </a>
 </div>
 
 <form method="post" enctype="multipart/form-data" action="randomize">
@@ -67,9 +133,10 @@
     <h2>
       Select a <i>Final Fantasy I & II: Dawn of Souls</i> ROM to randomize:
     </h2>
-    <label>Upload ROM</label><br/>
     <label>
-      <input name="rom" type="file" accept=".gba">
+      Upload ROM:
+      <input id="rom-file" name="rom" type="file" accept=".gba" style="display: none;" onchange="updateRom()">
+      <input id="rom-button" type="button" value="Select ROM" onclick="document.getElementById('rom-file').click()">
     </label>
   </div>
 
@@ -79,11 +146,11 @@
     </h2>
 
     <label>
-      Flagstring:
-      <input id="rom-flags" name="flags" type="text" tabindex="-1" readonly>
+      Flagstring: <span id="rom-flags"></span>
+      <input id="rom-flags-input" name="flags" style="display: none;">
     </label>
-    
-    <br />
+
+    <br/>
 
     <div id="flags">
       <label>Shuffle Key Items: <input id="key-item" type="checkbox"/></label>
@@ -92,7 +159,7 @@
       <label>Treasure shuffle: <input id="treasure-shuffle" type="checkbox"/></label>
       <label>Formation shuffle: <input id="formation-shuffle" type="checkbox"/></label>
       <label>Exp Scale:
-        <input id="exp-scale" type="range" min="100" max="500" value="200" step="10" class="slider">
+        <input id="exp-scale" type="range" min="50" max="500" value="150" step="10" class="slider">
       </label>
     </div>
   </div>
@@ -130,6 +197,20 @@
       }
     }
 
+    function updateRom() {
+      var fullPath = document.getElementById('rom-file').value;
+      if (fullPath) {
+        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+        var filename = fullPath.substring(startIndex);
+        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+        }
+        document.getElementById("rom-button").value = filename;
+      } else {
+        document.getElementById("rom-button").value = "Select ROM"
+      }
+    }
+
     function updateFlags() {
       var flags = "";
       if ($("#key-item").prop("checked")) {
@@ -147,8 +228,13 @@
       if ($("#formation-shuffle").prop("checked")) {
         flags += "Fs "
       }
-      flags += "XP=" + ($("#exp-scale").val() / 100);
-      $("#rom-flags").val(flags.trim());
+
+      expScale = document.getElementById("exp-scale");
+      flags += "XP=" + parseInt(expScale.value) / 100;
+      flags = flags.trim();
+
+      document.getElementById("rom-flags").textContent = flags;
+      document.getElementById("rom-flags-input").value = flags;
     }
 
     $(document).ready(function() {
@@ -163,6 +249,11 @@
       $("#treasure-shuffle").change(updateFlags);
       $("#exp-scale").on("input change", updateFlags);
     });
+
+
+
+
+
 
 
 

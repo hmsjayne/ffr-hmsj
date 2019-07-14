@@ -38,9 +38,14 @@ def hms_logo():
     return app.send_static_file('hmslogo.jpg')
 
 
-@app.route('/border.png')
-def border():
-    return app.send_static_file('border.png')
+@app.route('/discord.png')
+def discord():
+    return app.send_static_file('discord.png')
+
+
+@app.route('/github.png')
+def github():
+    return app.send_static_file('github.png')
 
 
 @app.route('/randomize', methods=['POST'])
