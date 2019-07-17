@@ -36,7 +36,13 @@ def add_credits(rom: Rom) -> Rom:
 
     # And EOF marker
     new_lut.put_u32(0xffffffff)
+
+    # Change the duration so it doesn't take so long to scroll
+    duration = OutputStream()
+    duration.put_u16(60 * 60)
+
     return rom.apply_patches({
+        0x016848: duration.get_buffer(),
         0x1D871C: new_lut.get_buffer(),
         Rom.pointer_to_offset(base_addr): data_stream.get_buffer()
     })
