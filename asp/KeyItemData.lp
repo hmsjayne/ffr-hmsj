@@ -90,5 +90,3 @@ pair(bottle,caravan).
 
 %Bahamut's event needs extra work
 pair(promotion, bahamut).
-
-pair(gear, sara).
