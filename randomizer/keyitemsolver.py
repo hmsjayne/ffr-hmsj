@@ -39,8 +39,8 @@ from randomizer.keyitemevents import *
 from stream.outputstream import AddressableOutputStream, OutputStream
 
 KeyItem = namedtuple("KeyItem", ["sprite", "movable", "key_item", "reward"])
-NpcSource = namedtuple("NpcSource", ["map_id", "npc_index", "event_id", "event", "map_init"])
-ChestSource = namedtuple("ChestSource", ["map_id", "chest_id", "sprite_id", "event_id", "event", "map_init"])
+NpcSource = namedtuple("NpcSource", ["map_id", "npc_index"])
+ChestSource = namedtuple("ChestSource", ["map_id", "chest_id", "sprite_id"])
 
 EVENT_SOURCE_MAP = {
     0x00: world_map_init,
@@ -97,36 +97,29 @@ EVENT_SOURCE_MAP = {
 }
 
 NEW_REWARD_SOURCE = {
-    "king": NpcSource(map_id=0x39, npc_index=2, event_id=0x138B, event=king_event, map_init=None),
-    "sara": NpcSource(map_id=0x39, npc_index=3, event_id=0x13A7, event=sara_event, map_init=cornelia_castle_2f_init),
-    "bikke": NpcSource(map_id=0x62, npc_index=2, event_id=0x13B5, event=bikke_event, map_init=pravoka_init),
-    "marsh": ChestSource(map_id=0x5B, chest_id=5, sprite_id=0, event_id=0x1398, event=marsh_event,
-                         map_init=marsh_cave_b3_init),
-    "astos": NpcSource(map_id=0x58, npc_index=0, event_id=0x1390, event=astos_event, map_init=nw_keep_init),
-    "matoya": NpcSource(map_id=0x61, npc_index=4, event_id=0x1391, event=matoya_event, map_init=matoyas_cave_init),
-    "elf": NpcSource(map_id=0x06, npc_index=7, event_id=0x139A, event=elf_prince_event, map_init=elven_castle_init),
-    "locked_cornelia": ChestSource(map_id=0x38, chest_id=2, sprite_id=2, event_id=0x13ad, event=locked_cornelia_event,
-                                   map_init=cornelia_castle_1f_event),
-    "nerrick": NpcSource(map_id=0x57, npc_index=11, event_id=0x1393, event=nerrik_event, map_init=mt_duergar_init),
-    "vampire": ChestSource(map_id=0x03, chest_id=1, sprite_id=0, event_id=0x13B7, event=vampire_event,
-                           map_init=earth_b3_init),
-    "sarda": NpcSource(map_id=0x37, npc_index=0, event_id=0x13b8, event=sarda_event, map_init=sages_cave_init),
-    "lukahn": NpcSource(map_id=0x2F, npc_index=13, event_id=0x1394, event=lukahn_event, map_init=crescent_lake_init),
-    "ice": NpcSource(map_id=0x44, npc_index=0, event_id=0x139F, event=levistone_event, map_init=ice_b3_init),
-    "citadel_of_trials": ChestSource(map_id=0x4F, chest_id=8, sprite_id=0, event_id=0x13AA,
-                                     event=citadel_of_trials_chest_event, map_init=citadel_of_trials_f1_init),
-    "bahamut": NpcSource(map_id=0x54, npc_index=2, event_id=0x1396, event=bahamuts_cave_event,
-                         map_init=bahamuts_cave_init),
-    "waterfall": NpcSource(map_id=0x53, npc_index=0, event_id=0x13BD, event=waterfall_robot_event,
-                           map_init=waterfall_init),
-    "fairy": NpcSource(map_id=0x47, npc_index=11, event_id=0x138F, event=fairy_event, map_init=gaia_init),
-    "mermaids": ChestSource(map_id=0x1E, chest_id=12, sprite_id=0, event_id=0x13B4, event=slab_chest_event,
-                            map_init=mermaid_floor_init),
-    "dr_unne": NpcSource(map_id=0x6A, npc_index=0, event_id=0x13A5, event=dr_unne_event, map_init=melmond_init),
-    "lefien": NpcSource(map_id=0x70, npc_index=11, event_id=0x1395, event=lefein_event, map_init=lefein_init),
-    "sky2": NpcSource(map_id=0x5D, npc_index=0, event_id=0x138D, event=sky2_adamantite_event, map_init=sky_f2_init),
-    "smyth": NpcSource(map_id=0x57, npc_index=4, event_id=0x139D, event=smyth_event, map_init=mt_duergar_init),
-    "desert": ChestSource(map_id=None, chest_id=12, sprite_id=0, event_id=0x13B4, event=None, map_init=None),
+    "king": NpcSource(map_id=0x39, npc_index=2),
+    "sara": NpcSource(map_id=0x39, npc_index=3),
+    "bikke": NpcSource(map_id=0x62, npc_index=2),
+    "marsh": ChestSource(map_id=0x5B, chest_id=5, sprite_id=0),
+    "astos": NpcSource(map_id=0x58, npc_index=0),
+    "matoya": NpcSource(map_id=0x61, npc_index=4),
+    "elf": NpcSource(map_id=0x06, npc_index=7),
+    "locked_cornelia": ChestSource(map_id=0x38, chest_id=2, sprite_id=2),
+    "nerrick": NpcSource(map_id=0x57, npc_index=11),
+    "vampire": ChestSource(map_id=0x03, chest_id=1, sprite_id=0),
+    "sarda": NpcSource(map_id=0x37, npc_index=0),
+    "lukahn": NpcSource(map_id=0x2F, npc_index=13),
+    "ice": NpcSource(map_id=0x44, npc_index=0),
+    "citadel_of_trials": ChestSource(map_id=0x4F, chest_id=8, sprite_id=0),
+    "bahamut": NpcSource(map_id=0x54, npc_index=2),
+    "waterfall": NpcSource(map_id=0x53, npc_index=0),
+    "fairy": NpcSource(map_id=0x47, npc_index=11),
+    "mermaids": ChestSource(map_id=0x1E, chest_id=12, sprite_id=0),
+    "dr_unne": NpcSource(map_id=0x6A, npc_index=0),
+    "lefien": NpcSource(map_id=0x70, npc_index=11),
+    "sky2": NpcSource(map_id=0x5D, npc_index=0),
+    "smyth": NpcSource(map_id=0x57, npc_index=4),
+    "desert": ChestSource(map_id=None, chest_id=12, sprite_id=0),
 }
 
 NEW_KEY_ITEMS = {
