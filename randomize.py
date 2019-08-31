@@ -23,7 +23,7 @@ from doslib.gen.classes import JobClass
 from doslib.gen.enemy import EnemyStats
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-#from ips_util import Patch
+from ips_util import Patch
 from randomizer.credits import add_credits
 from randomizer.flags import Flags
 from randomizer.formations import FormationRandomization
