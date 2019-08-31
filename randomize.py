@@ -23,13 +23,14 @@ from doslib.gen.classes import JobClass
 from doslib.gen.enemy import EnemyStats
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from ips_util import Patch
+#from ips_util import Patch
 from randomizer.credits import add_credits
 from randomizer.flags import Flags
 from randomizer.formations import FormationRandomization
 from randomizer.keyitemsolver import KeyItemPlacement
 from randomizer.spellshuffle import SpellShuffle
 from randomizer.treasures import treasure_shuffle
+from randomizer.randomtreasure import random_treasures, random_bucketed_treasures
 from stream.outputstream import OutputStream
 
 BASE_PATCHES = [
@@ -57,6 +58,8 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
         patches_to_load.append("data/RandomDefault.ips")
 
     patched_rom_data = rom.rom_data
+
+    rom = random_bucketed_treasures(rom, rng)
     for patch_path in patches_to_load:
         patch = Patch.load(patch_path)
         patched_rom_data = patch.apply(patched_rom_data)
@@ -71,6 +74,8 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
 
     rom = update_xp_requirements(rom, flags.exp_mult)
 
+    rom = random_treasures(rom, rng)
+    
     if flags.key_item_shuffle is not None:
         placement = KeyItemPlacement(rom, rng.randint(0, 0xffffffff))
     else:
