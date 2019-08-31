@@ -161,6 +161,10 @@
       <label>Encounter toggle: <input id="encounter-toggle" type="checkbox"/></label>
       <label>Magic shuffle: <input id="magic-shuffle" type="checkbox"/></label>
       <label>Treasure shuffle: <input id="treasure-shuffle" type="checkbox"/></label>
+      <label>Random Treasures?: <input id="treasure-random" type="checkbox"/></label>
+      <label>Wealth Level: 
+          <input id="wealth" type="range" min="-1" max="1" value="0" step="1" class="slider">
+      </label>
       <label>Formation shuffle: <input id="formation-shuffle" type="checkbox"/></label>
       <label>Exp Scale:
         <input id="exp-scale" type="range" min="50" max="500" value="150" step="10" class="slider">
@@ -227,8 +231,20 @@
         flags += "Ms "
       }
       if ($("#treasure-shuffle").prop("checked")) {
-        flags += "Ts "
+        if ($("#treasure-random").prop("checked")){
+            wealth = document.getElementById("wealth");
+            flags += "T" + parseInt(wealth.value) + " ";
+        }
+        else
+          {
+              flags += "Ts "
+          }
+        
       }
+        else if ($("#treasure-random").prop("checked")){
+            wealth = document.getElementById("wealth");
+            flags += "T" + parseInt(wealth.value) + " ";
+        }
       if ($("#formation-shuffle").prop("checked")) {
         flags += "Fs "
       }
@@ -251,7 +267,9 @@
       $("#encounter-toggle").change(updateFlags);
       $("#magic-shuffle").change(updateFlags);
       $("#treasure-shuffle").change(updateFlags);
+      $("#treasure-random").change(updateFlags);
       $("#exp-scale").on("input change", updateFlags);
+      $("#wealth").on("input change", updateFlags);
     });
 
 

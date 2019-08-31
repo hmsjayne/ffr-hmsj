@@ -30,6 +30,7 @@ from randomizer.formations import FormationRandomization
 from randomizer.keyitemsolver import KeyItemPlacement
 from randomizer.spellshuffle import SpellShuffle
 from randomizer.treasures import treasure_shuffle
+from randomizer.randomtreasure import random_treasures, random_bucketed_treasures
 from stream.outputstream import OutputStream
 
 BASE_PATCHES = [
@@ -57,6 +58,7 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
         patches_to_load.append("data/RandomDefault.ips")
 
     patched_rom_data = rom.rom_data
+
     for patch_path in patches_to_load:
         patch = Patch.load(patch_path)
         patched_rom_data = patch.apply(patched_rom_data)
@@ -71,6 +73,8 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
 
     rom = update_xp_requirements(rom, flags.exp_mult)
 
+    rom = random_treasures(rom, rng)
+    
     if flags.key_item_shuffle is not None:
         placement = KeyItemPlacement(rom, rng.randint(0, 0xffffffff))
     else:
@@ -82,7 +86,10 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
         rom = shuffle_magic.write(rom)
 
     if flags.treasures is not None:
-        rom = treasure_shuffle(rom, rng)
+        if flags.treasures == "shuffle":
+            rom = treasure_shuffle(rom, rng)
+        else:
+            rom = random_bucketed_treasures(rom, rng, flags.wealth)
 
     if flags.debug is not None:
         class_stats_stream = rom.open_bytestream(0x1E1354, 96)
