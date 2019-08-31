@@ -59,7 +59,6 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
 
     patched_rom_data = rom.rom_data
 
-    rom = random_bucketed_treasures(rom, rng)
     for patch_path in patches_to_load:
         patch = Patch.load(patch_path)
         patched_rom_data = patch.apply(patched_rom_data)
@@ -87,7 +86,10 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
         rom = shuffle_magic.write(rom)
 
     if flags.treasures is not None:
-        rom = treasure_shuffle(rom, rng)
+        if flags.treasures == "shuffle":
+            rom = treasure_shuffle(rom, rng)
+        else:
+            rom = random_bucketed_treasures(rom, rng, flags.wealth)
 
     if flags.debug is not None:
         class_stats_stream = rom.open_bytestream(0x1E1354, 96)

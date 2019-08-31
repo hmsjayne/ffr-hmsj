@@ -24,6 +24,8 @@ class Flags(object):
         self.exp_mult = 1.0
 
         self.shuffle_formations = None
+        self.treasures = None
+        self.wealth = 0
 
         self.debug = None
 
@@ -38,6 +40,9 @@ class Flags(object):
                 self.magic = "shuffle"
             elif flag == "Ts":
                 self.treasures = "shuffle"
+            elif flag[:1] == "T":
+                self.treasures = "wealth"
+                self.wealth = int(flag[1:])
             elif flag == "-who":
                 self.default_party = "random"
             elif flag == "-hax":
@@ -60,7 +65,10 @@ class Flags(object):
         if self.magic is not None:
             value += "Ms"
         if self.treasures is not None:
-            value += "Ts"
+            if self.treasures == "shuffle":
+                value += "Ts"
+            if self.treasures == "random":
+                value += "T" + str(self.wealth)
         if self.key_item_shuffle is not None:
             value += "K"
         if self.exp_mult is not None:
