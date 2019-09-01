@@ -99,7 +99,6 @@ def random_bucketed_treasures(rom: Rom, rng: Random, wealth_level: int=0) -> Rom
             moneyCount += 1
         else:
             print("BAD CHEST")
-    return
     rng.shuffle(chests_to_shuffle)
 
     chest_data = OutputStream()
@@ -111,4 +110,3 @@ def random_bucketed_treasures(rom: Rom, rng: Random, wealth_level: int=0) -> Rom
             chest.write(chest_data)
 
     return rom.apply_patch(0x217FB4, chest_data.get_buffer())
-    

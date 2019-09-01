@@ -72,8 +72,6 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     rom = event_text_block.pack(rom)
 
     rom = update_xp_requirements(rom, flags.exp_mult)
-
-    rom = random_treasures(rom, rng)
     
     if flags.key_item_shuffle is not None:
         placement = KeyItemPlacement(rom, rng.randint(0, 0xffffffff))
