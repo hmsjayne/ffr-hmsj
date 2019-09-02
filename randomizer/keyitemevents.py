@@ -1997,7 +1997,11 @@ cornelia_castle_2f_init = """
     .Label_3:
     check_flag %sara_reward_flag jnz .Label_4
     set_npc_event 0x3 0x13a7
-    db 0x2f 0x8 0xcb 0x13 0xff 0x14 0xa 0x8
+    ; TODO: Add this event back in and fix even 0x13CB
+    ; This adds the event to stop the party from leaving without the Lute in vanilla.
+    ; There's a bug related to it, probably related to how the jump to the event works, but since
+    ; I'm not sure the best way to deal with it at the moment, we'll just remove it.
+    ; db 0x2f 0x8 0xcb 0x13 0xff 0x14 0xa 0x8
     .Label_4:
     end_event
 """
