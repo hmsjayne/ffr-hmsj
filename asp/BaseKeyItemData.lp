@@ -70,13 +70,13 @@ open(matoya) :- has(ship), has(crystal).
 open(matoya) :- has(airship), has(crystal).
 open(elf) :- has(ship), has(jolt_tonic).
 open(locked_cornelia) :- has(mystic_key).
-open(nerrick) :- has(nitro_powder).
+open(nerrick) :- has(ship), has(nitro_powder).
+open(nerrick) :- has(airship), has(nitro_powder).
 open(vampire) :- has(airship).
 open(vampire) :- has(ship), has(canal).
 open(sarda) :- has(star_ruby), has(airship).
 open(sarda) :- has(ship), has(canal), has(star_ruby).
 open(sarda) :- has(airship), has(star_ruby).
-open(lukahn) :- has(airship), has(earth).
 open(lukahn) :- has(airship), has(earth).
 open(lukahn) :- has(ship), has(canal), has(earth).
 open(lukahn) :- has(ship), has(canoe), has(earth).

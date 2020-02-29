@@ -16,8 +16,5 @@ pair(fire,kary).
 pair(water,kraken).
 pair(air,tiamat).
 
-%Debug stuff for PuwP
+% The bottle is _really_ hard, so leave it vanilla for now.
 pair(bottle,caravan).
-
-%Bahamut's event needs extra work
-pair(promotion, bahamut).

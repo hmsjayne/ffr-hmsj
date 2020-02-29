@@ -64,7 +64,6 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
         patched_rom_data = patch.apply(patched_rom_data)
     rom = Rom(data=bytearray(patched_rom_data))
 
-    rom = init_free_airship(rom)
     rom = add_credits(rom)
 
     event_text_block = EventTextBlock(rom)
@@ -193,15 +192,6 @@ def update_xp_requirements(rom: Rom, value) -> Rom:
         next_value = level_data.get_u32()
     rom = rom.apply_patch(0x1BE3B4, new_table.get_buffer())
     return rom
-
-
-def init_free_airship(rom: Rom) -> Rom:
-    # Move the airship's start location to right outside of Coneria Castle.
-    airship_start = OutputStream()
-    airship_start.put_u32(0x918)
-    airship_start.put_u32(0x998)
-
-    return rom.apply_patch(0x65280, airship_start.get_buffer())
 
 
 def main() -> int:

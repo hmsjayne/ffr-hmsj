@@ -69,24 +69,25 @@ open(vampire) :- has(airship).
 open(vampire) :- has(canal).
 open(sarda) :- has(star_ruby), has(airship).
 open(sarda) :- has(star_ruby), has(canal).
-open(lukahn) :- has(airship).
-open(lukahn) :- has(canal).
+open(lukahn) :- has(airship), has(earth).
+open(lukahn) :- has(canal), has(earth).
 open(ice) :- has(canoe).
+open(ice) :- has(airship).
 open(desert) :- has(canoe), has(levistone).
 open(citadel_of_trials) :- has(canoe), has(crown), has(airship).
 open(citadel_of_trials) :- has(canoe), has(crown), has(canal).
 open(caravan) :- has(airship).
 open(fairy) :- has(airship), has(bottle).
-open(mermaids) :- has(airship), has(canoe), has(oxyale).
+open(mermaids) :- has(airship), has(oxyale).
 open(lefien) :- has(airship), has(lufienish).
 open(waterfall) :- has(airship), has(canoe).
 open(sky2) :- has(airship), has(chime), has(warp_cube).
 open(smyth) :- has(adamantite).
 open(lich) :- has(rod), has(airship).
 open(lich) :- has(rod), has(canal).
-open(kary) :- has(canal).
+open(kary) :- has(canoe).
 open(kary) :- has(airship).
-open(kraken) :- has(airship), has(canoe), has(oxyale).
+open(kraken) :- has(airship), has(oxyale).
 open(tiamat) :- has(airship), has(chime), has(warp_cube).
 open(bahamut) :- has(airship).
 open(dr_unne) :- has(canal), has(rosetta_stone).

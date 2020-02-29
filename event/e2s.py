@@ -195,6 +195,13 @@ def _da_2e(cmd: bytearray) -> str:
     return f"remove_trigger {hex(event_id)}"
 
 
+def _da_2f(cmd: bytearray) -> str:
+    event_id = array.array("H", cmd[2:4])[0]
+    x_loc = array.array("H", cmd[4:6])[0]
+    y_loc = array.array("H", cmd[6:8])[0]
+    return f"add_trigger {hex(event_id)} {hex(x_loc)} {hex(y_loc)}"
+
+
 def _da_30(cmd: bytearray) -> str:
     action = cmd[2]
     npc_index = cmd[3]
@@ -235,6 +242,10 @@ def _da_37(cmd: bytearray) -> tuple:
         jump_to = addr
 
     return cmd_text, jump_to
+
+
+def _da_3d(cmd: bytearray) -> str:
+    return f"promote_pcs"
 
 
 def _da_42(cmd: bytearray) -> tuple:
@@ -331,6 +342,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = cmd_text
         elif cmd == 0x2e:
             working[offset] = _da_2e(full_cmd)
+        elif cmd == 0x2f:
+            working[offset] = _da_2f(full_cmd)
         elif cmd == 0x30:
             working[offset] = _da_30(full_cmd)
         elif cmd == 0x36:
@@ -343,6 +356,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
+        elif cmd == 0x3d:
+            working[offset] = _da_3d(full_cmd)
         elif cmd == 0x42:
             cmd_text, jump_targets = _da_42(full_cmd)
 
