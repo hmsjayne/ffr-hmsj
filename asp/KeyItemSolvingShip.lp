@@ -11,10 +11,11 @@ notHas(I) :- item(I), not has(I).
 #show pair/2.
 
 %Force fiends to be Vanilla
-pair(earth,lich).
 pair(fire,kary).
 pair(water,kraken).
 pair(air,tiamat).
 
 % The bottle is _really_ hard, so leave it vanilla for now.
 pair(bottle,caravan).
+
+pair(earth,sara).

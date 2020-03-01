@@ -35,6 +35,7 @@ GRAMMAR = {
     "music": MusicToken("music"),
     "add_npc": AddNpcToken([0x13, 0xc, "$0", "$1", 0x0, 0x0, 0x0, 0xff, "$(u:2)", "$(u:3)"]),
     "remove_npc": RemoveNpcToken([0x14, 0x4, "$(u:0)"]),
+    "move_party": MovePartyToken([0x15, 0x8, "$0", "$1", "$2", 0x0, 0x0, 0x0]),
     "set_repeat": SetRepeatToken("set_repeat"),
     "repeat": RepeatToken("repeat"),
     "set_npc_frame": SetNpcFrameToken([0x1f, 0x4, "$0", "$1"]),
@@ -49,6 +50,7 @@ GRAMMAR = {
     "give_item_ex": GiveItemExtendedToken([0x37, 0xc, 0x40, 0x00, 0xff, 0xff, 0xff, 0xff, "$(u:0)", "$(u:1)"]),
     "take_item": TakeItemToken([0x37, 0x4, 0x1, "$0"]),
     "check_item": CheckItemToken("check_item"),
+    "promote_pcs": PromotePcsToken([0x3d, 0x4, 0xff, 0xff]),
     "jump_by_dir": JumpByDirToken("jump_by_dir"),
     "call": CallToken([0x48, 0x8, 0xff, 0xff, "$0"]),
 
@@ -84,6 +86,7 @@ GRAMMAR = {
     MusicToken: ["$$value$$", "$$value$$"],
     AddNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
     RemoveNpcToken: ["$$value$$"],
+    MovePartyToken: ["$$value$$", "$$value$$", "$$value$$"],
     SetRepeatToken: ["$$value$$"],
     RepeatToken: ["$$value$$", LabelToken()],
     SetNpcFrameToken: ["$$value$$", "$$value$$"],
@@ -98,6 +101,7 @@ GRAMMAR = {
     GiveItemExtendedToken: ["$$value$$", "$$value$$"],
     TakeItemToken: ["$$value$$"],
     CheckItemToken: ["$$value$$", JzToken(), LabelToken()],
+    PromotePcsToken: None,
     JumpByDirToken: [LabelToken(), LabelToken(), LabelToken()],
     CallToken: [LabelToken()],
     # The one special case is the `db` (define bytes).

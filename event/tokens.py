@@ -91,6 +91,10 @@ class RemoveNpcToken(list):
     pass
 
 
+class MovePartyToken(list):
+    pass
+
+
 class SetRepeatToken(str):
     pass
 
@@ -152,6 +156,10 @@ class TakeItemToken(list):
 
 
 class CheckItemToken(str):
+    pass
+
+
+class PromotePcsToken(list):
     pass
 
 

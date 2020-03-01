@@ -95,6 +95,10 @@ EVENT_SOURCE_MAP = {
     0x13b8: sarda_event,
     0x13BD: waterfall_robot_event,
     0x1f60: wow_chancellor,
+
+    0x13B3: lich_event,
+
+    0x1F49: teleport,
 }
 
 NEW_REWARD_SOURCE = {
@@ -121,6 +125,7 @@ NEW_REWARD_SOURCE = {
     "sky2": NpcSource(map_id=0x5D, npc_index=0),
     "smyth": NpcSource(map_id=0x57, npc_index=4),
     "desert": ChestSource(map_id=None, chest_id=12, sprite_id=0),
+    "lich": NpcSource(map_id=0x05, npc_index=10),
 }
 
 NEW_KEY_ITEMS = {
@@ -149,6 +154,7 @@ NEW_KEY_ITEMS = {
     "excalibur": KeyItem(sprite=0x3C, movable=True, key_item=0x11, reward=excalibur_reward),
     "airship": KeyItem(sprite=0xac, movable=False, key_item=None, reward=airship_reward),
     "gear": KeyItem(sprite=0xc7, movable=False, key_item=None, reward=gear_reward),
+    "earth": KeyItem(sprite=0x51, movable=False, key_item=None, reward=earth_reward),
 }
 
 SHIP_LOCATIONS = {
@@ -175,6 +181,7 @@ SHIP_LOCATIONS = {
     "sky2": VehiclePosition(x=-1, y=-1),
     "smyth": VehiclePosition(x=0x738, y=0x838),
     "desert": VehiclePosition(x=-1, y=-1),
+    "lich": VehiclePosition(x=-1, y=-1),
 }
 
 AIRSHIP_LOCATIONS = {
@@ -201,6 +208,7 @@ AIRSHIP_LOCATIONS = {
     "sky2": VehiclePosition(x=-1, y=-1),
     "smyth": VehiclePosition(x=0x5d8, y=0x958),
     "desert": VehiclePosition(x=0xd68, y=0xe68),
+    "lich": VehiclePosition(x=0x3a8, y=0xb48),
 }
 
 # All pairings are of the form "pair(item,location)" - need to parse the info

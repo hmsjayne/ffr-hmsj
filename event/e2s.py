@@ -152,6 +152,13 @@ def _da_14(cmd: bytearray) -> str:
     return f"remove_npc {hex(npc_id)}"
 
 
+def _da_15(cmd: bytearray) -> str:
+    tile_count = cmd[2]
+    speed = cmd[3]
+    direction = cmd[4]
+    return f"move_party {tile_count} {speed} {direction}"
+
+
 def _da_19(cmd: bytearray) -> tuple:
     if cmd[1] == 0x4:
         return f"set_repeat {hex(cmd[3])}", None
@@ -268,11 +275,9 @@ def _da_48(cmd: bytearray) -> tuple:
     return "call $$addr$$", sub_addr
 
 
-def disassemble(rom: Rom, offset: int) -> dict:
+def disassemble(rom: Rom, offset: int, labels: dict) -> dict:
     rom_data = rom.rom_data
     working = dict()
-
-    labels = dict()
 
     if offset < 0 or offset > len(rom_data):
         print(f"Invalid address: {hex(offset)}")
@@ -320,6 +325,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = _da_13(full_cmd)
         elif cmd == 0x14:
             working[offset] = _da_14(full_cmd)
+        elif cmd == 0x15:
+            working[offset] = _da_15(full_cmd)
         elif cmd == 0x19:
             cmd_text, jump_target = _da_19(full_cmd)
             if jump_target is not None:
@@ -377,8 +384,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
             if jump_target is not None:
                 if jump_target not in labels:
                     labels[jump_target] = f".Sub_{len(labels) + 1}"
-                    print(f"{labels[jump_target]}:")
-                    disassemble(rom, addr_to_offset(jump_target))
+                    # print(f"{labels[jump_target]}:")
+                    disassemble(rom, addr_to_offset(jump_target), labels)
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
@@ -398,4 +405,4 @@ def disassemble(rom: Rom, offset: int) -> dict:
 def disassemble_event(rom: Rom, event_id: int) -> dict:
     # Decompile the event in a function so it can recurse.
     offset = lookup_event(rom, event_id)
-    return disassemble(rom, offset)
+    return disassemble(rom, offset, dict())
