@@ -17,6 +17,7 @@ class Flags(object):
     def __init__(self, flags_str: str):
         self.encounters = None
         self.default_party = None
+        self.start_gear = None
 
         self.magic = None
         self.treasures = None
@@ -45,6 +46,8 @@ class Flags(object):
                 self.wealth = int(flag[1:])
             elif flag == "-who":
                 self.default_party = "random"
+            elif flag == "-gear":
+                self.start_gear = "random"
             elif flag == "-hax":
                 self.debug = "iddqd"
             elif flag[:2] == "XP":

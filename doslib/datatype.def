@@ -131,3 +131,43 @@ class: JobClass
     weapon_id, 8
     armor_id, 8
     unused, 8
+
+module: items
+
+class: Weapon
+    sort_order, 16
+    equip_classes, 16
+    atk, 8
+    acc, 8
+    evade, 8
+    spell, 8
+    elements, 16
+    family_effect, 8
+    str_mod, 8
+    sta_mod, 8
+    agi_mod, 8
+    int_mod, 8
+    crit_rate, 8
+    hp_boost, 8
+    mp_boost, 8
+    unused, 16
+    cost, 32
+    sale_price, 32
+
+class: Armor
+    sort_order, 16
+    equip_classes, 16
+    defence, 8
+    weight, 8
+    evade, 8
+    spell, 8
+    elemental_resists, 16
+    str_mod, 8
+    sta_mod, 8
+    agi_mod, 8
+    int_mod, 8
+    hp_boost, 8
+    mp_boost, 8
+    unused, 32
+    cost, 32
+    sale_price, 32

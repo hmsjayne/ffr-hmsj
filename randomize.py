@@ -18,19 +18,21 @@ import random
 from argparse import ArgumentParser
 from random import randint
 
+from ips_util import Patch
+
 from doslib.event import EventTextBlock
 from doslib.gen.classes import JobClass
 from doslib.gen.enemy import EnemyStats
+from doslib.gen.items import Weapon, Armor
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from ips_util import Patch
 from randomizer.credits import add_credits
 from randomizer.flags import Flags
 from randomizer.formations import FormationRandomization
 from randomizer.keyitemsolver import KeyItemPlacement
+from randomizer.randomtreasure import random_bucketed_treasures
 from randomizer.spellshuffle import SpellShuffle
 from randomizer.treasures import treasure_shuffle
-from randomizer.randomtreasure import random_treasures, random_bucketed_treasures
 from stream.outputstream import OutputStream
 
 BASE_PATCHES = [
@@ -71,7 +73,7 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     rom = event_text_block.pack(rom)
 
     rom = update_xp_requirements(rom, flags.exp_mult)
-    
+
     if flags.key_item_shuffle is not None:
         placement = KeyItemPlacement(rom, rng.randint(0, 0xffffffff))
     else:
@@ -100,6 +102,41 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
             # very fair and balanced: Masamune + Diamond Armlet. :)
             job_class.weapon_id = 0x28
             job_class.armor_id = 0x0e
+
+            # Write the (very balanced) new data out
+            job_class.write(class_out_stream)
+
+        rom = rom.apply_patch(0x1E1354, class_out_stream.get_buffer())
+    elif flags.start_gear is not None:
+        class_stats_stream = rom.open_bytestream(0x1E1354, 96)
+        class_stats = []
+        while not class_stats_stream.is_eos():
+            class_stats.append(JobClass(class_stats_stream))
+
+        weapon_stream = rom.open_bytestream(0x19F33C, 0x71C)
+        weapons = []
+        while not weapon_stream.is_eos():
+            weapons.append(Weapon(weapon_stream))
+
+        armor_stream = rom.open_bytestream(0x19FA58, 0x7C4)
+        armors = []
+        while not armor_stream.is_eos():
+            armors.append(Armor(armor_stream))
+
+        class_bit = 0x1
+        class_out_stream = OutputStream()
+        for job_class in class_stats:
+            pick_weapon = 0
+            while pick_weapon == 0 or weapons[pick_weapon].equip_classes & class_bit == 0:
+                pick_weapon = rng.randint(0, len(weapons))
+
+            pick_armor = 0
+            while pick_armor == 0 or armors[pick_armor].equip_classes & class_bit == 0:
+                pick_armor = rng.randint(0, 0x1B)
+
+            job_class.weapon_id = pick_weapon
+            job_class.armor_id = pick_armor
+            class_bit = class_bit << 1
 
             # Write the (very balanced) new data out
             job_class.write(class_out_stream)
