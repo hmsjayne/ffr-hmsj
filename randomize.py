@@ -168,6 +168,7 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
         # We'll also lower everyone's INT just to see how that works
         for index in range(0x80):
             enemies[index].intel = int(.666 * enemies[index].intel)
+            #enemies[index].max_hp = 10
             # print(f"{hex(index)} HP: {enemies[index].max_hp}, INT: {enemies[index].intel}")
 
         out = OutputStream()

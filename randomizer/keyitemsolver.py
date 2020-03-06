@@ -46,10 +46,13 @@ VehiclePosition = namedtuple("VehiclePosition", ["x", "y"])
 EVENT_SOURCE_MAP = {
     0x00: world_map_init,
     0x03: earth_b3_init,
+    0x05: earth_b5_init,
     0x06: elven_castle_init,
+    0x17: suken_shrine_1f,
     0x1E: mermaid_floor_init,
     0x1F: chaos_shrine_init,
     0x22: chaos_temple_3f_init,
+    0x2e: volcano_b5_init,
     0x2F: crescent_lake_init,
     0x37: sages_cave_init,
     0x38: cornelia_castle_1f_event,
@@ -95,8 +98,11 @@ EVENT_SOURCE_MAP = {
     0x13b8: sarda_event,
     0x13BD: waterfall_robot_event,
     0x1f60: wow_chancellor,
-    0x13b3: lich_event,
+    0x13a3: kraken_event,
     0x13a8: kary_event,
+    0x13b3: lich_event,
+
+    0x1F49: teleport
 }
 
 NEW_REWARD_SOURCE = {
@@ -125,6 +131,7 @@ NEW_REWARD_SOURCE = {
     "desert": ChestSource(map_id=None, chest_id=12, sprite_id=0),
     "lich": NpcSource(map_id=0x05, npc_index=10),
     "kary": NpcSource(map_id=0x2E, npc_index=0),
+    "kraken": NpcSource(map_id=0x17, npc_index=0),
 }
 
 NEW_KEY_ITEMS = {
@@ -155,6 +162,7 @@ NEW_KEY_ITEMS = {
     "gear": KeyItem(sprite=0xc7, movable=False, key_item=None, reward=gear_reward),
     "earth": KeyItem(sprite=0x51, movable=False, key_item=None, reward=earth_reward),
     "fire": KeyItem(sprite=0x52, movable=False, key_item=None, reward=fire_reward),
+    "water": KeyItem(sprite=0x50, movable=False, key_item=None, reward=water_reward),
 }
 
 SHIP_LOCATIONS = {
@@ -183,6 +191,7 @@ SHIP_LOCATIONS = {
     "desert": VehiclePosition(x=-1, y=-1),
     "lich": VehiclePosition(x=-1, y=-1),
     "kary": VehiclePosition(x=-1, y=-1),
+    "kraken": VehiclePosition(x=-1, y=-1),
 }
 
 AIRSHIP_LOCATIONS = {
@@ -211,6 +220,7 @@ AIRSHIP_LOCATIONS = {
     "desert": VehiclePosition(x=0xd68, y=0xe68),
     "lich": VehiclePosition(x=0x3a8, y=0xb48),
     "kary": VehiclePosition(x=0xb68, y=0xc68),
+    "kraken": VehiclePosition(x=-1, y=-1),
 }
 
 # All pairings are of the form "pair(item,location)" - need to parse the info
