@@ -10,8 +10,5 @@ notHas(I) :- item(I), not has(I).
 #show notHas/1.
 #show pair/2.
 
-%Force fiends to be Vanilla
-pair(air,tiamat).
-
 % The bottle is _really_ hard, so leave it vanilla for now.
 pair(bottle,caravan).

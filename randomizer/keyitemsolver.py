@@ -68,6 +68,7 @@ EVENT_SOURCE_MAP = {
     0x58: nw_keep_init,
     0x5B: marsh_cave_b3_init,
     0x5D: sky_f2_init,
+    0x60: sky_f5_init,
     0x61: matoyas_cave_init,
     0x62: pravoka_init,
     0x6A: melmond_init,
@@ -101,6 +102,7 @@ EVENT_SOURCE_MAP = {
     0x13a3: kraken_event,
     0x13a8: kary_event,
     0x13b3: lich_event,
+    0x13bb: tiamat_event,
 
     0x1F49: teleport
 }
@@ -132,6 +134,7 @@ NEW_REWARD_SOURCE = {
     "lich": NpcSource(map_id=0x05, npc_index=10),
     "kary": NpcSource(map_id=0x2E, npc_index=0),
     "kraken": NpcSource(map_id=0x17, npc_index=0),
+    "tiamat": NpcSource(map_id=0x60, npc_index=0),
 }
 
 NEW_KEY_ITEMS = {
@@ -163,6 +166,7 @@ NEW_KEY_ITEMS = {
     "earth": KeyItem(sprite=0x51, movable=False, key_item=None, reward=earth_reward),
     "fire": KeyItem(sprite=0x52, movable=False, key_item=None, reward=fire_reward),
     "water": KeyItem(sprite=0x50, movable=False, key_item=None, reward=water_reward),
+    "air": KeyItem(sprite=0x4F, movable=False, key_item=None, reward=air_reward),
 }
 
 SHIP_LOCATIONS = {
@@ -192,6 +196,7 @@ SHIP_LOCATIONS = {
     "lich": VehiclePosition(x=-1, y=-1),
     "kary": VehiclePosition(x=-1, y=-1),
     "kraken": VehiclePosition(x=-1, y=-1),
+    "tiamat": VehiclePosition(x=-1, y=-1),
 }
 
 AIRSHIP_LOCATIONS = {
@@ -221,6 +226,7 @@ AIRSHIP_LOCATIONS = {
     "lich": VehiclePosition(x=0x3a8, y=0xb48),
     "kary": VehiclePosition(x=0xb68, y=0xc68),
     "kraken": VehiclePosition(x=-1, y=-1),
+    "tiamat": VehiclePosition(x=-1, y=-1),
 }
 
 # All pairings are of the form "pair(item,location)" - need to parse the info
