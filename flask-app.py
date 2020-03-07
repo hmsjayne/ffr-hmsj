@@ -28,9 +28,9 @@ def root():
     return app.send_static_file('index.html')
 
 
-@app.route('/test')
+@app.route('/legacy')
 def patch_ui():
-    return app.send_static_file('test.html')
+    return app.send_static_file('legacy.html')
 
 
 @app.route('/hmslogo.jpg')

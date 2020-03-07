@@ -300,13 +300,13 @@ class KeyItemPlacement(object):
                     ship_location = SHIP_LOCATIONS["king"]
                     print(f"Ship placed at {placement.location} -> moved to Cornelia")
                 else:
-                    print(f"Ship placed: {ship_location}")
+                    print(f"Ship placed: {placement.location} -> {ship_location}")
             elif placement.item == "airship":
                 airship_location = AIRSHIP_LOCATIONS[placement.location]
                 if airship_location.x == -1 or airship_location.y == -1:
                     raise RuntimeError(f"Airship placed in an impossible spot? {airship_location}")
                 else:
-                    print(f"Airship placed: {airship_location}")
+                    print(f"Airship placed: {placement.location} -> {airship_location}")
 
         if ship_location is None:
             ship_location = SHIP_LOCATIONS["king"]

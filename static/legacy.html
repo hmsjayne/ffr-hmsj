@@ -190,7 +190,7 @@
       Submit ROM:
     </h2>
 
-    <input type="button" value="Randomize" onclick="randomize()">
+    <input type="submit" value="Randomize">
   </div>
 
 </form>
@@ -394,5 +394,83 @@
       };
     }());
 
+</script>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script type="text/javascript">
+    function genSeed() {
+      var seed = Math.floor(Math.random() * 0xffffffff).toString(16);
+      if ($("#rom-seed").val().length == 0) {
+        $("#rom-seed").val(seed);
+      }
+    }
+
+    function updateRom() {
+      var fullPath = document.getElementById('rom-file').value;
+      if (fullPath) {
+        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+        var filename = fullPath.substring(startIndex);
+        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+        }
+        document.getElementById("rom-button").value = filename;
+      } else {
+        document.getElementById("rom-button").value = "Select ROM"
+      }
+    }
+
+    function updateFlags() {
+      var flags = "";
+      if ($("#key-item").prop("checked")) {
+        flags += "K "
+      }
+      if ($("#encounter-toggle").prop("checked")) {
+        flags += "Et "
+      }
+      if ($("#magic-shuffle").prop("checked")) {
+        flags += "Ms "
+      }
+      if ($("#treasure-shuffle").prop("checked")) {
+        if ($("#treasure-random").prop("checked")){
+            wealth = document.getElementById("wealth");
+            flags += "T" + parseInt(wealth.value) + " ";
+        }
+        else
+          {
+              flags += "Ts "
+          }
+        
+      }
+        else if ($("#treasure-random").prop("checked")){
+            wealth = document.getElementById("wealth");
+            flags += "T" + parseInt(wealth.value) + " ";
+        }
+      if ($("#formation-shuffle").prop("checked")) {
+        flags += "Fs "
+      }
+
+      expScale = document.getElementById("exp-scale");
+      flags += "XP=" + parseInt(expScale.value) / 100;
+      flags = flags.trim();
+
+      document.getElementById("rom-flags").textContent = flags;
+      document.getElementById("rom-flags-input").value = flags;
+    }
+
+    $(document).ready(function() {
+      genSeed();
+      updateFlags();
+
+      $("#rom-seed").blur(genSeed);
+
+      $("#key-item").change(updateFlags);
+      $("#encounter-toggle").change(updateFlags);
+      $("#magic-shuffle").change(updateFlags);
+      $("#treasure-shuffle").change(updateFlags);
+      $("#treasure-random").change(updateFlags);
+      $("#exp-scale").on("input change", updateFlags);
+      $("#wealth").on("input change", updateFlags);
+    });
 </script>
 </html>

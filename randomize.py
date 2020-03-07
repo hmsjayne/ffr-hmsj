@@ -128,7 +128,7 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
         for job_class in class_stats:
             pick_weapon = 0
             while pick_weapon == 0 or weapons[pick_weapon].equip_classes & class_bit == 0:
-                pick_weapon = rng.randint(0, len(weapons))
+                pick_weapon = rng.randint(0, len(weapons) - 1)
 
             pick_armor = 0
             while pick_armor == 0 or armors[pick_armor].equip_classes & class_bit == 0:
