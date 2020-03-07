@@ -103,8 +103,6 @@ EVENT_SOURCE_MAP = {
     0x13a8: kary_event,
     0x13b3: lich_event,
     0x13bb: tiamat_event,
-
-    0x1F49: teleport
 }
 
 NEW_REWARD_SOURCE = {
