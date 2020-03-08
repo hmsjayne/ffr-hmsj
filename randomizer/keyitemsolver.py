@@ -291,16 +291,6 @@ class KeyItemPlacement(object):
 
         # And, finally, update the vehicle start positions based on where they were
 
-        if self.flags.start_item == "ship":
-            ship_location = SHIP_LOCATIONS["king"]
-            airship_location = None
-        elif self.flags.start_item == "airship":
-            ship_location = None
-            airship_location = AIRSHIP_LOCATIONS["king"]
-        else:
-            ship_location = None
-            airship_location = None
-
         for placement in key_item_locations:
             if placement.item == "ship":
                 ship_location = SHIP_LOCATIONS[placement.location]
@@ -315,6 +305,13 @@ class KeyItemPlacement(object):
                     raise RuntimeError(f"Airship placed in an impossible spot? {airship_location}")
                 else:
                     print(f"Airship placed: {placement.location} -> {airship_location}")
+
+        if self.flags.start_item == "ship":
+            print(f"Start with ship -> moved to Cornelia")
+            ship_location = SHIP_LOCATIONS["king"]
+        elif self.flags.start_item == "airship":
+            print(f"Start with airship -> moved to Cornelia")
+            airship_location = AIRSHIP_LOCATIONS["king"]
 
         vehicle_starts = OutputStream()
         vehicle_starts.put_u32(ship_location.x)
