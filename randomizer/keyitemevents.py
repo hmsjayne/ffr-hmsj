@@ -1687,7 +1687,7 @@ world_map_init = """
     %airship_visible 0x15
     %have_chime 0x1f
 
-    set_flag %ship_visible
+    FREE_START
     check_flag %desert_reward_flag jz .Label_2
     remove_trigger 0x138e
     .Label_2:

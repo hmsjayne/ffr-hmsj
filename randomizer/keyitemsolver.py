@@ -35,6 +35,7 @@ from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from event import easm
 from event.epp import pparse
+from randomizer.flags import Flags
 from randomizer.keyitemevents import *
 from stream.outputstream import AddressableOutputStream, OutputStream
 
@@ -233,8 +234,9 @@ Placement = namedtuple("Placement", ["item", "location"])
 
 class KeyItemPlacement(object):
 
-    def __init__(self, rom: Rom, clingo_seed: int = None):
+    def __init__(self, rom: Rom, flags: Flags, clingo_seed: int = None):
         self.rom = rom
+        self.flags = flags
         self.maps = Maps(rom)
         self.events = EventTables(rom)
         self.event_text_block = EventTextBlock(rom)
@@ -289,8 +291,16 @@ class KeyItemPlacement(object):
 
         # And, finally, update the vehicle start positions based on where they were
 
-        ship_location = None
-        airship_location = None
+        if self.flags.start_item == "ship":
+            ship_location = SHIP_LOCATIONS["king"]
+            airship_location = None
+        elif self.flags.start_item == "airship":
+            ship_location = None
+            airship_location = AIRSHIP_LOCATIONS["king"]
+        else:
+            ship_location = None
+            airship_location = None
+
         for placement in key_item_locations:
             if placement.item == "ship":
                 ship_location = SHIP_LOCATIONS[placement.location]
@@ -306,9 +316,6 @@ class KeyItemPlacement(object):
                 else:
                     print(f"Airship placed: {placement.location} -> {airship_location}")
 
-        if ship_location is None:
-            ship_location = SHIP_LOCATIONS["king"]
-
         vehicle_starts = OutputStream()
         vehicle_starts.put_u32(ship_location.x)
         vehicle_starts.put_u32(ship_location.y)
@@ -319,6 +326,16 @@ class KeyItemPlacement(object):
 
     def _prepare_header(self, key_item_locations: tuple) -> str:
         working_header = STD_HEADER
+
+        if self.flags.start_item == "ship":
+            print(f"Starting with the ship...")
+            working_header += "\n#define FREE_START set_flag 0x05\n"
+        elif self.flags.start_item == "airship":
+            print(f"Starting with the airship...")
+            working_header += "\n#define FREE_START set_flag 0x15\n"
+        else:
+            print(f"Starting with nothing...")
+            working_header += "\n#define FREE_START nop\n"
 
         for placement in key_item_locations:
             if placement.location not in NEW_REWARD_SOURCE:
@@ -439,8 +456,7 @@ class KeyItemPlacement(object):
             chest.write(chest_data)
         self.rom = self.rom.apply_patch(0x217FB4, chest_data.get_buffer())
 
-    @staticmethod
-    def _solve_placement(seed: int) -> tuple:
+    def _solve_placement(self, seed: int) -> tuple:
         """Create a random distribution for key items (KI).
 
         Note: this requires an installation of Clingo 4.5 or better
@@ -448,8 +464,19 @@ class KeyItemPlacement(object):
         :param seed: The random number seed to use for the solver.
         :return: A list of tuples that contain item+location for each KI.
         """
+
+        if self.flags.start_item == "ship":
+            solving_file = "KeyItemSolvingShip.lp"
+            data_file = "KeyItemDataShip.lp"
+        elif self.flags.start_item == "airship":
+            solving_file = "KeyItemSolving.lp"
+            data_file = "KeyItemData.lp"
+        else:
+            solving_file = "BaseKeyItemSolving.lp"
+            data_file = "BaseKeyItemData.lp"
+
         command = [
-            "clingo", "asp/KeyItemSolvingShip.lp", "asp/KeyItemDataShip.lp",
+            "clingo", f"asp/{solving_file}", f"asp/{data_file}",
             "--sign-def=rnd",
             "--seed=" + str(seed),
             "--outf=2"

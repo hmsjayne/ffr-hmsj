@@ -79,14 +79,5 @@ requires(sarda,star_ruby).
 has(sky_access) :- has(chime), has(warp_cube).
 has(trials_access) :- has(canoe), has(crown).
 
-%Force fiends to be Vanilla
-pair(earth,lich).
-pair(fire,kary).
-pair(water,kraken).
-pair(air,tiamat).
-
 %Debug stuff for PuwP
 pair(bottle,caravan).
-
-%Bahamut's event needs extra work
-pair(promotion, bahamut).

@@ -75,9 +75,9 @@ def randomize_rom(rom: Rom, flags: Flags, rom_seed: str) -> Rom:
     rom = update_xp_requirements(rom, flags.exp_mult)
 
     if flags.key_item_shuffle is not None:
-        placement = KeyItemPlacement(rom, rng.randint(0, 0xffffffff))
+        placement = KeyItemPlacement(rom, flags, rng.randint(0, 0xffffffff))
     else:
-        placement = KeyItemPlacement(rom)
+        placement = KeyItemPlacement(rom, flags)
     rom = placement.rom
 
     if flags.magic is not None:

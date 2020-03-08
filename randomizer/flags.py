@@ -18,6 +18,7 @@ class Flags(object):
         self.encounters = None
         self.default_party = None
         self.start_gear = None
+        self.start_item = "None"
 
         self.magic = None
         self.treasures = None
@@ -50,6 +51,13 @@ class Flags(object):
                 self.start_gear = "random"
             elif flag == "-hax":
                 self.debug = "iddqd"
+            elif flag[:1] == "I":
+                if flag == "Is":
+                    self.start_item = "ship"
+                elif flag == "Ia":
+                    self.start_item = "airship"
+                else:
+                    self.start_item = "None"
             elif flag[:2] == "XP":
                 self.exp_mult /= float(flag.split("=")[1])
 
