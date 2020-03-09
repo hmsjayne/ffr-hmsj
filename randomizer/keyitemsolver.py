@@ -74,6 +74,7 @@ EVENT_SOURCE_MAP = {
     0x62: pravoka_init,
     0x6A: melmond_init,
     0x70: lefein_init,
+    0xfa6: bridge_scene,
     0x138B: king_event,
     0x138D: sky2_adamantite_event,
     0x138E: desert_event,

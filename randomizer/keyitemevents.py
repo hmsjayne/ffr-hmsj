@@ -73,6 +73,10 @@ sara_event = """
     end_event
 """
 
+bridge_scene = """
+    end_event
+"""
+
 king_event = """
     %garland_defeated 0x1
 
