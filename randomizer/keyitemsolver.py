@@ -291,6 +291,8 @@ class KeyItemPlacement(object):
         self.rom = self.maps.write(self.rom)
 
         # And, finally, update the vehicle start positions based on where they were
+        ship_location = None
+        airship_location = None
 
         for placement in key_item_locations:
             if placement.item == "ship":
