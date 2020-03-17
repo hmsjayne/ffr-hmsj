@@ -134,6 +134,16 @@ class: JobClass
 
 module: items
 
+class: Item
+    sort_order, 16
+    field_effect, 8
+    targeting, 8
+    usage, 8
+    graphic, 8
+    power, 16
+    cost, 32
+    sale_price, 32
+
 class: Weapon
     sort_order, 16
     equip_classes, 16
