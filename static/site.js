@@ -179,6 +179,10 @@ function newSeed() {
 
 function updateHash() {
     var seed = document.getElementById("rom-seed").value
+    if (seed == "") {
+        seed = Math.floor(Math.random() * 0xffffffff).toString(16);
+        document.getElementById("rom-seed").value = seed
+    }
 
     var originalProgression = document.getElementById("original-progression").checked
     var standardShops = document.getElementById("standard-shops").checked
