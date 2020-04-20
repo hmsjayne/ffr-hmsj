@@ -11,10 +11,18 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from doslib.gen.spells import SpellData
+from collections import namedtuple
+
+from doslib.dos_utils import load_tsv, decode_permission_string
 from doslib.rom import Rom
+from doslib.spell import SpellData
 from doslib.textblock import TextBlock
 from stream.outputstream import OutputStream
+
+SpellExtraData = namedtuple("SpellExtraData",
+                            ["spell_index", "name", "school", "permissions", "usage", "target", "power", "elements",
+                             "type",
+                             "graphic_index", "accuracy", "level", "mp_cost", "price", "grade"])
 
 
 class Spells(object):
@@ -24,17 +32,41 @@ class Spells(object):
         # Spell name + help text for each = 64 x 2 = 128
         # Slot 0 is skipped = 128 + 2 (blank name + empty help) = 130
         self._name_help = TextBlock(rom, 0x1A1650, 130)
+        self.spell_data = []
+        self.permissions = []
+        self.shuffled_permission = []
 
         spell_data_stream = rom.open_bytestream(0x1A1980, 0x740)
-        self._spell_data = []
         for index in range(65):
-            self._spell_data.append(SpellData(spell_data_stream))
+            self.spell_data.append(SpellData(spell_data_stream))
+            self.shuffled_permission.append(0)
 
-    def write(self, rom: Rom) -> Rom:
+        for spell_data in load_tsv("data/SpellData.tsv"):
+            extra = SpellExtraData(*spell_data)
+            self.shuffled_permission[extra.spell_index] = decode_permission_string(extra.permissions)
+
+            self.spell_data[extra.spell_index].name = extra.name
+            self.spell_data[extra.spell_index].school = extra.school
+            self.spell_data[extra.spell_index].grade = extra.grade
+            self.spell_data[extra.spell_index].spell_index = extra.spell_index
+
+        permissions_stream = rom.open_bytestream(0x1A20C0, 0x82)
+        while not permissions_stream.is_eos():
+            self.permissions.append(permissions_stream.get_u16())
+
+    def get_patches(self) -> dict:
         spell_stream = OutputStream()
-        for spell in self._spell_data:
+        for spell in self.spell_data:
             spell.write(spell_stream)
-        return rom.apply_patch(0x1A1980, spell_stream.get_buffer())
+
+        permissions_stream = OutputStream()
+        for permission in self.permissions:
+            permissions_stream.put_u16(permission)
+
+        return {
+            0x1A1980: spell_stream.get_buffer(),
+            0x1A20C0: permissions_stream.get_buffer()
+        }
 
     def spell_name(self, index: int) -> str:
         return self._name_help[index * 2]
@@ -43,10 +75,10 @@ class Spells(object):
         return self._name_help[(index * 2) + 1]
 
     def spell_data(self, index: int) -> SpellData:
-        return self._spell_data[index]
+        return self.spell_data[index]
 
     def __getitem__(self, index):
-        return self._spell_data[index]
+        return self.spell_data[index]
 
     @staticmethod
     def index_for_level(school: chr, level: int, index: int) -> int:

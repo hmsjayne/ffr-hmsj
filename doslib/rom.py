@@ -11,7 +11,9 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 import struct
+from collections import namedtuple
 
 from stream.inputstream import InputStream
 
@@ -19,14 +21,9 @@ from stream.inputstream import InputStream
 class Rom(object):
     """Class that represents a Dawn of Souls ROM."""
 
-    def __init__(self, path: str = None, data: bytearray = None):
-        if path is not None and data is None:
-            with open(path, "rb") as rom_file:
-                self.rom_data = rom_file.read()
-        elif path is None and data is not None:
-            self.rom_data = data
-        else:
-            raise RuntimeError("Pass only the path of the ROM to load")
+    def __init__(self, data: bytearray = None):
+        self.rom_data = data
+        self._free_block = FreeBlock(0x8223F4C, 0x1860)
 
     def open_bytestream(self, offset: int, size: int = -1, check_alignment: bool = True) -> InputStream:
         """
@@ -93,38 +90,6 @@ class Rom(object):
 
         return InputStream(self.rom_data[offset:end_offset])
 
-    def get_event(self, offset: int) -> InputStream:
-        """
-        Creates an InputStream from a simple event.
-
-        Note: This does *not* follow jumps. Many events only include one "end of event" command at the end,
-        and this method will work to read them. Some SoC events, however, include multiple end of event commands,
-        and this method would only read to the first one.
-
-        :param offset: Offset of the start of the event.
-        :return: InputStream representing the event.
-        """
-        end_offset = offset
-        last_cmd = -1
-        while last_cmd != 0:
-            cmd_len = self.rom_data[end_offset + 1]
-            last_cmd = self.rom_data[end_offset]
-            end_offset += cmd_len
-
-        return InputStream(self.rom_data[offset:end_offset])
-
-    def apply_patch(self, offset: int, patch: bytearray):
-        """Applies a patch to the rom.
-
-        :param offset: The offset to apply the patch at
-        :param patch: The patch to apply as a byte array
-        :return: A new copy of the rom with the patch applied.
-        """
-        new_data = self.rom_data[0:offset]
-        new_data.extend(patch)
-        new_data.extend(self.rom_data[(offset + len(patch)):])
-        return Rom(data=new_data)
-
     def apply_patches(self, patches):
         """Applies a set of patches to a the rom.
 
@@ -154,14 +119,31 @@ class Rom(object):
 
         return Rom(data=new_data)
 
-    def write(self, path: str):
+    def get_event_size(self, offset: int) -> int:
         """
-        Writes a ROM as a file.
-        :param path: Path to output the ROM data.
+        Naively calculates the size of an event.
+
+        Note: This does *not* follow jumps. Many events only include one "end of event" command at the end,
+        and this method will work to read them. Some SoC events, however, include multiple end of event commands,
+        and this method would only read to the first one.
+
+        :param offset: Offset of the start of the event.
+        :return: InputStream representing the event.
         """
-        with open(path, "wb") as rom_file:
-            rom_file.write(self.rom_data)
-            rom_file.close()
+        if Rom._is_pointer(offset):
+            offset = Rom.pointer_to_offset(offset)
+
+        end_offset = offset
+        last_cmd = -1
+        while last_cmd != 0:
+            cmd_len = self.rom_data[end_offset + 1]
+            last_cmd = self.rom_data[end_offset]
+            end_offset += cmd_len
+
+        return end_offset - offset
+
+    def get_free_space(self, owner: str, size: int) -> int:
+        return self._free_block.allocate(owner, size)
 
     @staticmethod
     def pointer_to_offset(pointer: int) -> int:
@@ -170,7 +152,7 @@ class Rom(object):
         :param pointer: Pointer to convert.
         :return: Offset in the ROM file.
         """
-        if pointer >= 0x8000000:
+        if Rom._is_pointer(pointer):
             return pointer - 0x8000000
         raise RuntimeError(f"Not a pointer {hex(pointer)}")
 
@@ -184,3 +166,33 @@ class Rom(object):
         if offset <= 0x8000000:
             return offset + 0x8000000
         raise RuntimeError(f"Not a pointer {hex(offset)}")
+
+    @staticmethod
+    def _is_pointer(offset: int) -> int:
+        return True if offset >= 0x8000000 else False
+
+
+FreeBlockOwner = namedtuple("FreeBlockOwner", ["name", "address", "size"])
+
+
+class FreeBlock(object):
+    def __init__(self, base_addr: int, size: int):
+        self._base_addr = base_addr
+        self._total_size = size
+        self._current_ptr = self._base_addr
+        self._owners = []
+
+    def allocate(self, owner: str, size: int) -> int:
+        if self._remaining() >= size:
+            owner = FreeBlockOwner(name=owner, address=self._current_ptr, size=size)
+            self._current_ptr += size
+            self._owners.append(owner)
+            return owner.address
+        else:
+            print(f"No free space for alloc: {owner} needs {size} bytes; {self._remaining()} free")
+            for allocated in self._owners:
+                print(f"Allocated block: {allocated}")
+            raise RuntimeError("No free space!")
+
+    def _remaining(self):
+        return self._total_size - (self._current_ptr - self._base_addr)

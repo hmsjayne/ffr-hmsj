@@ -100,7 +100,7 @@ class: MapHeader
     high_x, 16
     high_y, 16
 
-module: spells
+module: spell
 
 class: SpellData
     usage, 8
@@ -113,6 +113,10 @@ class: SpellData
     level, 8
     mp_cost, 16
     price, 32
+    synth, spell_index, 0
+    synth, name, None
+    synth, school, None
+    synth, grade, None
 
 module: classes
 
@@ -132,7 +136,7 @@ class: JobClass
     armor_id, 8
     unused, 8
 
-module: items
+module: item
 
 class: Item
     sort_order, 16
@@ -143,6 +147,11 @@ class: Item
     power, 16
     cost, 32
     sale_price, 32
+    synth, id, 0
+    synth, item_type, None
+    synth, name, ""
+    synth, is_soc, False
+    synth, grade, None
 
 class: Weapon
     sort_order, 16
@@ -163,6 +172,11 @@ class: Weapon
     unused, 16
     cost, 32
     sale_price, 32
+    synth, id, 0
+    synth, item_type, None
+    synth, name, ""
+    synth, is_soc, False
+    synth, grade, None
 
 class: Armor
     sort_order, 16
@@ -181,3 +195,8 @@ class: Armor
     unused, 32
     cost, 32
     sale_price, 32
+    synth, id, 0
+    synth, item_type, None
+    synth, name, ""
+    synth, is_soc, False
+    synth, grade, None

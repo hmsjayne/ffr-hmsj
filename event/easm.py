@@ -16,9 +16,15 @@ from event import codegen
 from event.codegen import simple_gen
 from event.parseinputstring import ParseInputString
 from event.tokens import *
-
-# The grammar for `easm` is very simple, and is defined in the dict here.
 from stream.outputstream import OutputStream
+
+
+class ICode(object):
+    def __init__(self, bytecode: list, symbols: dict, size: int):
+        self.bytecode = bytecode
+        self.symbols = symbols
+        self.size = size
+
 
 GRAMMAR = {
     # Here we define mappings of strings to terminal tokens.
@@ -145,10 +151,10 @@ def def_symbol(parameters: list, symbol_table: dict):
     return None
 
 
-def parse(source: str, base_addr: int, debug=False) -> bytearray:
+def parse(source: str) -> ICode:
     symbol_table = {}
     icode = []
-    current_addr = base_addr
+    current_addr = 0
 
     for line_number, line in enumerate(source.splitlines()):
         tokens = TokenStream(line_number, line)
@@ -231,23 +237,22 @@ def parse(source: str, base_addr: int, debug=False) -> bytearray:
                     icode.append(output)
                     current_addr += output[1]
 
+    return ICode(icode, symbol_table, current_addr)
+
+
+def link(icode: ICode, base_addr: int) -> bytearray:
     # At this point, all of the intermediate code is built and the only thing left is to resolve
     # the left over symbols, which will all bel labels.
     bytecode = OutputStream()
-    for code in icode:
-        txt = ""
+    for code in icode.bytecode:
         for bd in code:
             if isinstance(bd, LabelToken):
                 label = bd
-                if label not in symbol_table:
+                if label not in icode.symbols:
                     raise UndefinedLabel(label)
-                bytecode.put_u32(symbol_table[label])
-                txt += f"{label} ({hex(symbol_table[label])}) "
+                bytecode.put_u32(icode.symbols[label] + base_addr)
             else:
-                txt += f"{hex(bd)} "
                 bytecode.put_u8(bd)
-        if debug:
-            print(txt)
 
     # Done!
     return bytecode.get_buffer()
@@ -298,7 +303,8 @@ class TokenStream(object):
     def reset(self):
         self._index = 0
 
-    def _tokenize(self, line: str) -> list:
+    @staticmethod
+    def _tokenize(line: str) -> list:
         tokens = []
 
         current = ParseInputString(line)

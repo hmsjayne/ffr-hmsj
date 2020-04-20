@@ -32,7 +32,7 @@ class ShopData(object):
                                       shop.shop_data_length)
             self.shop_inventories.append(inventory)
 
-    def write(self, rom: Rom) -> Rom:
+    def get_patches(self) -> dict:
         # Since there's a LUT and the data that it points to, create two output streams.
         # This should work because both are continuous.
         data_lut_stream = OutputStream()
@@ -41,7 +41,6 @@ class ShopData(object):
         next_shop_addr = self.shop_data_pointers[0].pointer
         start_size = 0
         for index in range(51):
-
             new_shop_length = self.shop_inventories[index].write(shop_inventory)
             sdp = self.shop_data_pointers[index]
             sdp.contents = ((sdp.shop_graphic << 4) & 0xf0) | (new_shop_length & 0x0f)
@@ -54,11 +53,10 @@ class ShopData(object):
             start_size = shop_inventory.size()
 
         # Make a dictionary for the two parts so we only have to write the new Rom once.
-        patches = {
+        return {
             0x1E070C: data_lut_stream.get_buffer(),
             Rom.pointer_to_offset(self.shop_data_pointers[0].pointer): shop_inventory.get_buffer()
         }
-        return rom.apply_patches(patches)
 
 
 class ShopDataPointer(object):

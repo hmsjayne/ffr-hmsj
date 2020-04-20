@@ -1,408 +1,80 @@
+
+
 <!doctype html>
 <html itemscope="" itemtype="http://schema.org/WebPage" lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Final Fantasy Randomizer: HMS Jayne</title>
-  <style type="text/css">
-    #flags {
-      display: inline-block;
-    }
-    #flags label {
-      display: block;
-      text-align: left;
-    }
-    label {
-      margin: 4px 0px;
-    }
-    h1 {
-      display: none;
-    }
-    body {
-   	  background: #000;
-   	  margin-left: auto;
-   	  margin-right: auto;
-  	  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-      font-size: 100%;
-      color: GhostWhite;
-      text-shadow: 2px 1px black;
-      width: 720px;
-    }
-    div {
-      border: solid 1px #424542;
-      box-shadow: 3px 3px #e7dfe7,
-                  -3px -3px #e7dfe7,
-                  3px -3px #e7dfe7,
-                  -3px 3px #e7dfe7,
-                  0 -5px #9c9a9c,
-                  -5px 0 #7b757b,
-                  0 3px #424542;
-      padding: 5px 10px;
-      margin: 20px 0px;
+    <head>
+        <meta charset="utf-8">
+        <title>Final Fantasy Randomizer: HMS Jayne</title>
+        <script type="text/javascript" src="site.js" defer></script>
+        <link rel="stylesheet" type="text/css" href="site.css">
+    </head>
+    <body>
+        <h1>
+            Final Fantasy Randomizer: HMS Jayne
+        </h1>
+        <img class="logo" src="hmslogo.jpg"/>
+        <div id="links">
+            <a href="https://github.com/hmsjayne/ffr-hmsj/issues">
+            <img src="github.png"/>
+            Report an issue
+            </a>
+            <br/>
+            <a id="discord" href="https://discord.gg/kPxkH5W">
+            <img src="discord.png"/>
+            Join the community
+            </a>
+        </div>
+        <form method="post" enctype="multipart/form-data" action="patch">
+            <div>
+                <h2>
+                    Select a <i>Final Fantasy I & II: Dawn of Souls</i> ROM to randomize:
+                </h2>
+                <label>
+                Upload ROM:
+                <input id="rom-file" name="rom" type="file" accept=".gba" style="display: none;" onchange="updateRom()">
+                <input id="rom-button" type="button" value="Select ROM" onclick="document.getElementById('rom-file').click()">
+                </label>
+                <div id="gen-box">
+                    <input id="gen" type="button" value="Generate ROM" onclick="randomize()">
+                </div>
+            </div>
+            <div>
+                <h2>
+                    Optionally, enter a seed value:
+                </h2>
+                <label>
+                    Seed:
+                    <input id="rom-seed" name="seed" type="text" maxlength="10" onchange="updateHash()">
+                    <input id="random-seed" type="button" value="New seed" onclick="newSeed()">
+                    <p>
+                        Seeds may be up to 10 ASCII characters long.
+                    </p>
+                </label>
+            </div>
+            <div>
+                <h2>
+                    Select options for the randomized ROM:
+                </h2>
 
-      background: #04009d;
-      background: -moz-linear-gradient(top,  #04009d 0%, #06004d 100%);
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#04009d), color-stop(100%,#06004d));
-      background: -webkit-linear-gradient(top,  #04009d 0%,#06004d 100%);
-      background: -o-linear-gradient(top,  #04009d 0%,#06004d 100%);
-      background: -ms-linear-gradient(top,  #04009d 0%,#06004d 100%);
-      background: linear-gradient(to bottom,  #04009d 0%,#06004d 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04009d', endColorstr='#06004d',GradientType=0 );
+                  <label>Exp Scale:
+                    <input id="exp-scale" type="range" min="50" max="500" value="150" step="10" class="flag slider">
+                  </label>
+                <p id="exp-scale-p">Gain experience at x% of normal</p>
+                <div id="flags">
+                  <label>Use original progression: <input id="original-progression" type="checkbox" class="flag"/></label>
+                  <p>Do not shuffle key items to keep the general flow of the game "vanilla".</p>
 
+                  <label>Standard Shops: <input id="standard-shops" type="checkbox" class="flag"/></label>
+                  <p>Do not change the inventory of item, weapon, armor, or magic shops.</p>
 
-      -webkit-border-radius: 7px;
-      -moz-border-radius: 7px;
-      border-radius: 7px;
-    }
-    div * {
-      color: #eff1ff;
-      text-shadow: 2px 2px #212421,
-                   1px 1px #212021;
-      font-family: monospace;
-      font-size: 20px;
-      font-weight: normal;
-      margin: 5px 0;
-    }
-    input {
-  	  font-size: 100%;
-      margin: 4px 0px;
-      background: none;
-      padding: 3px;
-    }
-    input[type="file" i] {
-  	  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-      font-size: 100%;
-      color: GhostWhite;
-      text-shadow: 2px 1px black;
-      width: 100%;
-    }
-    input[type="checkbox" i] {
-      display: inline-block;
-      float: right;
-      padding: 4px;
-    }
+                  <label>Standard Treasure: <input id="standard-treasure" type="checkbox" class="flag"/></label>
+                  <p>Do not change the contents of treasure chests.</p>
 
-    div.logo {
-      background: white;
-      border: none;
-    }
-    img.logo {
-      width: 720px;
-    }
-
-    #exp-scale {
-      vertical-align: middle;
-    }
-
-    #links {
-      background: #049d00;
-      background: -moz-linear-gradient(top,  #049d00 0%, #064d00 100%);
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#049d00), color-stop(100%,#064d00));
-      background: -webkit-linear-gradient(top,  #049d00 0%,#064d00 100%);
-      background: -o-linear-gradient(top,  #049d00 0%,#064d00 100%);
-      background: -ms-linear-gradient(top,  #049d00 0%,#064d00 100%);
-      background: linear-gradient(to bottom,  #049d00 0%,#064d00 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#049d00', endColorstr='#064d00',GradientType=0 );
-    }
-    #links a {
-      text-decoration: none;
-    }
-    #links img {
-      width: 64px;
-      vertical-align: middle;
-    }
-
-
-  </style>
-</head>
-<body>
-<h1>
-  Final Fantasy Randomizer: HMS Jayne
-</h1>
-
-<img class="logo" src="hmslogo.jpg"/>
-
-<div id="links">
-  <a href="https://github.com/hmsjayne/ffr-hmsj/issues">
-    <img src="github.png"/>
-    Report an issue
-  </a>
-  <br/>
-  <a id="discord" href="https://discord.gg/kPxkH5W">
-    <img src="discord.png"/>
-    Join the community
-  </a>
-</div>
-
-<form method="post" enctype="multipart/form-data" action="randomize">
-  <div>
-    <h2>
-      Select a <i>Final Fantasy I & II: Dawn of Souls</i> ROM to randomize:
-    </h2>
-    <label>
-      Upload ROM:
-      <input id="rom-file" name="rom" type="file" accept=".gba" style="display: none;" onchange="updateRom()">
-      <input id="rom-button" type="button" value="Select ROM" onclick="document.getElementById('rom-file').click()">
-    </label>
-  </div>
-
-  <div>
-    <h2>
-      Select options for the randomized ROM:
-    </h2>
-
-    <label>
-      Flagstring: <span id="rom-flags"></span>
-      <input id="rom-flags-input" name="flags" style="display: none;">
-    </label>
-
-    <br/>
-
-    <div id="flags">
-      <label>Start with:
-        <select id="start-item">
-          <option value="">Nothing</option>
-          <option value="Is" selected>Ship</option>
-          <option value="Ia">Airship</option>
-        </select>
-      </label>
-      <label>Shuffle Key Items: <input id="key-item" type="checkbox"/></label>
-      <label>Encounter toggle: <input id="encounter-toggle" type="checkbox"/></label>
-      <label>Magic shuffle: <input id="magic-shuffle" type="checkbox"/></label>
-      <label>Treasure shuffle: <input id="treasure-shuffle" type="checkbox"/></label>
-      <label>Random Treasures?: <input id="treasure-random" type="checkbox"/></label>
-      <label>Wealth Level:
-        <input id="wealth" type="range" min="-1" max="1" value="0" step="1" class="slider">
-      </label>
-      <label>Randomize starter gear: <input id="random-starting-gear" type="checkbox"/></label>
-      <label>Exp Scale:
-        <input id="exp-scale" type="range" min="50" max="500" value="150" step="10" class="slider">
-      </label>
-    </div>
-  </div>
-
-  <div>
-    <h2>
-      Optionally, enter a seed value:
-    </h2>
-    <label>
-      Seed:
-      <input id="rom-seed" name="seed" type="text" maxlength="10">
-      <p>
-        Seeds may be up to 10 ASCII characters long.
-      </p>
-    </label>
-  </div>
-
-  <div>
-    <h2>
-      Submit ROM:
-    </h2>
-
-    <input type="button" value="Randomize" onclick="randomize()">
-  </div>
-
-</form>
-</body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<script type="text/javascript">
-    function genSeed() {
-      var seed = Math.floor(Math.random() * 0xffffffff).toString(16);
-      if ($("#rom-seed").val().length == 0) {
-        $("#rom-seed").val(seed);
-      }
-    }
-
-    function updateRom() {
-      var fullPath = document.getElementById('rom-file').value;
-      if (fullPath) {
-        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-        var filename = fullPath.substring(startIndex);
-        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-            filename = filename.substring(1);
-        }
-        document.getElementById("rom-button").value = filename;
-        loadRom();
-      } else {
-        document.getElementById("rom-button").value = "Select ROM"
-      }
-    }
-
-    function updateFlags() {
-      var flags = $("#start-item").prop("value") + " ";
-      if ($("#key-item").prop("checked")) {
-        flags += "K "
-      }
-      if ($("#encounter-toggle").prop("checked")) {
-        flags += "Et "
-      }
-      if ($("#magic-shuffle").prop("checked")) {
-        flags += "Ms "
-      }
-      if ($("#treasure-random").prop("checked")){
-        wealth = document.getElementById("wealth");
-        flags += "T" + parseInt(wealth.value) + " ";
-      } else if ($("#treasure-shuffle").prop("checked")) {
-        flags += "Ts "
-      }
-      if ($("#random-starting-gear").prop("checked")) {
-        flags += "-gear "
-      }
-
-      expScale = document.getElementById("exp-scale");
-      flags += "XP=" + parseInt(expScale.value) / 100;
-      flags = flags.trim();
-
-      document.getElementById("rom-flags").textContent = flags;
-      document.getElementById("rom-flags-input").value = flags;
-    }
-
-    $(document).ready(function() {
-      genSeed();
-      updateFlags();
-
-      $("#rom-seed").blur(genSeed);
-
-      $("#start-item").change(updateFlags);
-      $("#key-item").change(updateFlags);
-      $("#encounter-toggle").change(updateFlags);
-      $("#magic-shuffle").change(updateFlags);
-      $("#treasure-shuffle").change(updateFlags);
-      $("#treasure-random").change(updateFlags);
-      $("#random-starting-gear").change(updateFlags);
-      $("#exp-scale").on("input change", updateFlags);
-      $("#wealth").on("input change", updateFlags);
-    });
-
-    $("#post-btn").click(function(){
-      $.post("process.php", $("#reg-form").serialize(), function(data) {
-          alert(data);
-      });
-    });
-
-    function randomize() {
-      if (romData == null) {
-        alert("Please select a ROM.");
-        return;
-      }
-
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", '/patch', true);
-
-      //Send the proper header information along with the request
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.responseType = "arraybuffer";
-      xhr.onreadystatechange = function() { // Call a function when the state changes.
-          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-              console.log("got data: " + xhr.response);
-              applyPatch(xhr.response)
-          }
-      }
-
-      let flagsInput = document.getElementById("rom-flags-input");
-      let seedInput = document.getElementById("rom-seed");
-      formData = flagsInput.name + "=" + flagsInput.value + "&" + seedInput.name + "=" + seedInput.value + "&"
-      console.log(formData);
-      xhr.send(formData);
-    }
-
-    function applyPatch(patchBuffer) {
-      return new Promise(resolve => {
-        let ipsData = new Ips(patchBuffer);
-        applyPatchAsync(ipsData);
-      });
-    }
-
-    async function applyPatchAsync(ipsData) {
-      let patchedRom = Uint8Array.from(romData)
-      let first = true;
-      let patch = ipsData.nextPatch()
-      while (patch != null) {
-        for (let index = 0; index < patch.data.length; ++index) {
-          patchedRom[patch.offset + index] = patch.data[index];
-        }
-        patch = ipsData.nextPatch();
-      }
-      saveData(patchedRom, "ff-dos-randomized.gba");
-    }
-
-    class Ips {
-      constructor(patchBuffer) {
-        this.patchData = new Uint8Array(patchBuffer);
-
-        // Check the magic
-        const magic = new Uint8Array([0x50, 0x41, 0x54, 0x43, 0x48]);
-        for (let magicIndex = 0; magicIndex < magic.length; ++magicIndex) {
-          if (this.patchData[magicIndex] != magic[magicIndex]) {
-            throw "Not an IPS file!"
-          }
-        }
-
-        // Checked out! First byte of the actual patch data is next.
-        this.index = magic.length;
-      }
-
-      getByte() {
-        if (this.index < this.patchData.length) {
-          return this.patchData[this.index++]
-        }
-        throw "Index out of bounds"
-      }
-
-      nextPatch() {
-        let offset = (this.getByte() << 16) | (this.getByte() << 8) | this.getByte();
-
-        if (offset == 0x454f46) {
-          console.log("EOF found");
-          return null;
-        }
-
-        let size = (this.getByte() << 8) | (this.getByte());
-        let data = []
-
-        if (size > 0) {
-          for (let index = 0; index < size; ++index) {
-            data.push(this.getByte());
-          }
-        } else {
-          let rleSize = (this.getByte() << 8) | (this.getByte());
-          let rleData = this.getByte();
-          for (let index = 0; index < rleSize; ++index) {
-            data.push(rleData);
-          }
-        }
-
-        return {
-          "offset": offset,
-          "data": data
-        };
-      }
-
-    }
-
-    let romData = null;
-    function loadRom() {
-      const reader = new FileReader();
-      const file = document.getElementById("rom-file").files[0];
-      reader.onload = function() {
-        romData = new Uint8Array(reader.result.slice(0));
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    const saveData = (function () {
-      var a = document.createElement("a");
-      document.body.appendChild(a);
-      a.style = "display: none";
-      return function (data, fileName) {
-        let url = window.URL.createObjectURL(new Blob([data], {type: "octet/stream"}));
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        window.URL.revokeObjectURL(url);
-      };
-    }());
-
-
-</script>
+                  <label>Default starting gear: <input id="default-start-gear" type="checkbox" class="flag"/></label>
+                  <p>Do not generate random starting gear.</p>
+                </div>
+            </div>
+        </form>
+    </body>
 </html>
+

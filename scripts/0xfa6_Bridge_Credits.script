@@ -1,0 +1,4 @@
+; Event script for Bridge Credits
+begin script=0xfa6
+    end_event
+

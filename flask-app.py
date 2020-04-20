@@ -11,16 +11,14 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from urllib import parse
 
-from flask import Flask, request, make_response
+from flask import Flask, make_response, request
 from ips_util import Patch
 
-from doslib.rom import Rom
-from randomize import randomize_rom, get_filename, gen_seed
 from randomizer.flags import Flags
+from randomizer.randomize import randomize
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", static_url_path='')
 
 
 @app.route('/')
@@ -28,62 +26,35 @@ def root():
     return app.send_static_file('index.html')
 
 
-@app.route('/legacy')
-def patch_ui():
-    return app.send_static_file('legacy.html')
-
-
-@app.route('/hmslogo.jpg')
-def hms_logo():
-    return app.send_static_file('hmslogo.jpg')
-
-
-@app.route('/discord.png')
-def discord():
-    return app.send_static_file('discord.png')
-
-
-@app.route('/github.png')
-def github():
-    return app.send_static_file('github.png')
-
-
-@app.route('/randomize', methods=['POST'])
-def randomize():
-    uploaded_rom = request.files['rom']
-    rom = Rom(data=uploaded_rom.read())
-    flags_string = request.form['flags']
-    flags = Flags(flags_string)
-    rom_seed = gen_seed(request.form['seed'])
-
-    rom = randomize_rom(rom, flags, rom_seed)
-
-    filename = uploaded_rom.filename
-    index = filename.lower().rfind(".gba")
-    if index < 0:
-        return f"Bad filename: {filename}"
-    filename = parse.quote(get_filename(filename, flags, rom_seed))
-
-    response = make_response(rom.rom_data)
-    response.headers['Content-Type'] = "application/octet-stream"
-    response.headers['Content-Disposition'] = f"inline; filename={filename}"
-    return response
-
-
 @app.route('/patch', methods=['POST'])
 def create_patch():
-    vanilla_rom = Rom("ff-dos.gba")
+    patch = bytearray()
+    filename = "patch.ips"
+
     flags_string = request.form['flags']
-    flags = Flags(flags_string)
-    rom_seed = gen_seed(request.form['seed'])
+    rom_seed = request.form['seed']
 
-    rom = randomize_rom(vanilla_rom, flags, rom_seed)
+    flags = Flags()
+    flags.no_shuffle = flags_string.find("Op") != -1
+    flags.standard_shops = flags_string.find("Sv") != -1
+    flags.standard_treasure = flags_string.find("Tv") != -1
+    flags.default_start_gear = flags_string.find("Gv") != -1
 
-    gba_name = get_filename("ff-dos", flags, rom_seed)
-    filename = parse.quote(gba_name[:len(gba_name) - 4] + ".ips")
+    xp_start = flags_string.find("Xp")
+    if xp_start >= 0:
+        xp_start += 2
+        xp_str = ""
+        while xp_start < len(flags_string) and flags_string[xp_start].isdigit():
+            xp_str += flags_string[xp_start]
+            xp_start += 1
+        flags.scale_levels = 1.0 / (int(xp_str) / 10.0)
 
-    patch = Patch.create(vanilla_rom.rom_data, rom.rom_data)
-    response = make_response(patch.encode())
-    response.headers['Content-Type'] = "application/octet-stream"
-    response.headers['Content-Disposition'] = f"inline; filename={filename}"
-    return response
+    with open("ff-dos.gba", "rb") as rom_file:
+        rom_data = bytearray(rom_file.read())
+        randomized_rom = randomize(rom_data, rom_seed, flags)
+
+        patch = Patch.create(rom_data, randomized_rom)
+        response = make_response(patch.encode())
+        response.headers['Content-Type'] = "application/octet-stream"
+        response.headers['Content-Disposition'] = f"inline; filename={filename}"
+        return response

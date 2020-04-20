@@ -11,20 +11,8 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
 
-from doslib.gen.map import MapHeader, Tile, Npc, Chest, Sprite, Shop
+from doslib.map import MapHeader, Tile, Npc, Chest, Sprite, Shop
 from doslib.rom import Rom
 from stream.inputstream import InputStream
 from stream.outputstream import OutputStream
@@ -38,11 +26,11 @@ class Maps(object):
         self._map_lut = rom.get_lut(0x1E4F40, 124)
         for map_id, map_addr in enumerate(self._map_lut):
             map_stream = rom.get_stream(Rom.pointer_to_offset(map_addr), bytearray.fromhex("ffff"))
-            map = MapFeatures(map_id, map_stream)
-            self._maps.append(map)
+            map_features = MapFeatures(map_id, map_stream)
+            self._maps.append(map_features)
 
             # Collect the dummy chests together
-            self.dummy_chests += map.dummy_chests
+            self.dummy_chests += map_features.dummy_chests
 
     def get_map(self, map_id: int) -> 'MapFeatures':
         return self._maps[map_id]
@@ -50,18 +38,31 @@ class Maps(object):
     def get_map_offset(self, map_id: int) -> int:
         return Rom.pointer_to_offset(self._map_lut[map_id])
 
-    def write(self, rom: Rom) -> Rom:
+    def get_patches(self) -> dict:
         patches = {}
-        for index, map in enumerate(self._maps):
+
+        lut = OutputStream()
+        base_addr = self._map_lut[0]
+        for index, map_features in enumerate(self._maps):
             # TODO: Figure out what breaks the Caravan.
-            if index == 0x73:
-                continue
+            if index >= 0x73:
+                if base_addr > self._map_lut[index]:
+                    raise RuntimeError("Ran out of room in map features!")
+                break
 
             data = OutputStream()
-            map.write(data)
+            map_features.write(data)
 
-            patches[Rom.pointer_to_offset(self._map_lut[index])] = data.get_buffer()
-        return rom.apply_patches(patches)
+            # Update the LUT and add this map features data to the patch list.
+            lut.put_u32(base_addr)
+            patches[Rom.pointer_to_offset(base_addr)] = data.get_buffer()
+
+            # Update the pointer to the next map's features
+            base_addr += data.size()
+
+        # Lastly, update the LUT in the patches
+        patches[0x1E4F40] = lut.get_buffer()
+        return patches
 
 
 class MapFeatures(object):
@@ -114,6 +115,12 @@ class MapFeatures(object):
             if chest.x_pos == sprite.x_pos and chest.y_pos == sprite.y_pos:
                 return chest, sprite
         raise RuntimeError(f"Chest {chest_id} does not have matching sprite!")
+
+    def find_npc(self, sprite: int) -> int:
+        for index, npc in enumerate(self.npcs):
+            if npc.sprite_id == sprite:
+                return index
+        raise RuntimeError(f"Could not fine NPC with sprite {hex(sprite)} in map.")
 
     def write(self, stream: OutputStream):
         self.header.write(stream)

@@ -1,0 +1,257 @@
+chest_index	type	contents	description	map	grade	notes
+0	item	0x11	\u8751Tent	Chaos Shrine		
+1	item	0x1	\u874fPotion	Chaos Shrine		
+2	armor	0x2a	\u874bLeather Cap	Chaos Shrine		
+3	weapon	0x1a	\u8740Werebuster	Chaos Shrine		
+4	item	0xc	\u8750Gold Needle	Chaos Shrine		
+5	weapon	0x1b	\u8740Rune Blade	Chaos Shrine		
+6	armor	0x4	\u8748Iron Armor	Castle Cornelia 1F		
+7	item	0x11	\u8751Tent	Castle Cornelia 1F		
+8	key_item	0x6	Nitro Powder	Castle Cornelia 1F		
+9	item	0x12	\u8751Cottage	Castle Cornelia 1F		
+10	weapon	0xc	\u8740Saber	Castle Cornelia 1F		
+11	weapon	0x10	\u8742Mythril Knife	Castle Cornelia 1F		
+12	weapon	0x12	\u8745Mythril Hammer	Elven Castle		
+13	gil	800	Gil	Elven Castle		
+14	gil	700	Gil	Elven Castle		
+15	armor	0x3b	\u874cBronze Gloves	Elven Castle		
+16	weapon	0x1c	\u8746Power Staff	Western Keep		
+17	weapon	0xf	\u8741Falchion	Western Keep		
+18	armor	0x3c	\u874cSteel Gloves	Western Keep		
+19	armor	0x3e	\u874cGauntlets	Citadel of Trials 3F		
+20	weapon	0x1e	\u8746Healing Staff	Citadel of Trials 3F		
+21	armor	0xd	\u8749Ruby Armlet	Citadel of Trials 3F		
+22	weapon	0x15	\u8740Ice Brand	Citadel of Trials 3F		
+23	armor	0x3c	\u874cSteel Gloves	Citadel of Trials 3F		
+24	armor	0x3e	\u874cGauntlets	???		
+25	item	0x12	\u8751Cottage	Citadel of Trials 3F		
+26	gil	1455	Gil	Citadel of Trials 3F		
+27	gil	7340	Gil	Citadel of Trials 3F		
+28	key_item	0xd	Rat Tail	Citadel of Trials 3F		
+29	gil	1975	Gil	Earth Cave B1		
+30	gil	880	Gil	Earth Cave B1		
+31	item	0x1	\u874fPotion	Earth Cave B1		
+32	item	0xb	\u8750Antidote	Earth Cave B1		
+33	gil	795	Gil	Earth Cave B1		
+34	weapon	0x19	\u8740Coral Sword	Earth Cave B2		
+35	item	0x11	\u8751Tent	Earth Cave B2		
+36	gil	330	Gil	Earth Cave B2		
+37	gil	5000	Gil	Earth Cave B2		
+38	armor	0x1c	\u874aLeather Shield	Earth Cave B2		
+39	gil	575	Gil	Earth Cave B2		
+40	gil	1020	Gil	Earth Cave B3		
+41	key_item	0x9	Star Ruby	Earth Cave B3		
+42	gil	3400	Gil	Earth Cave B3		
+43	item	0xc	\u8750Gold Needle	Earth Cave B3		
+44	item	0x10	\u8751Sleeping Bag	Earth Cave B3		
+45	gil	1455	Gil	Earth Cave B4		
+46	gil	5450	Gil	Earth Cave B4		
+47	gil	1520	Gil	Earth Cave B4		
+48	weapon	0x3	\u8746Staff	Earth Cave B4		
+49	gil	3400	Gil	Earth Cave B4		
+50	key_item	0x0	???	???		
+51	item	0x11	\u8751Tent	Earth Cave B4		
+52	gil	1250	Gil	Earth Cave B4		
+53	armor	0x1e	\u874aMythril Shield	Earth Cave B4		
+54	key_item	0x0	???	???		
+55	armor	0x30	\u874bRibbon	Sunken Shrine 2F		
+56	gil	9900	Gil	Sunken Shrine 2F		
+57	gil	7340	Gil	Sunken Shrine 2F		
+58	gil	2750	Gil	Sunken Shrine 2F		
+59	gil	7690	Gil	Sunken Shrine 2F		
+60	gil	8135	Gil	Sunken Shrine 2F		
+61	gil	5450	Gil	Sunken Shrine 2F		
+62	gil	385	Gil	Sunken Shrine 2F		
+63	armor	0x3f	\u874cGiant\u8166s Gloves	Sunken Shrine 2F		
+64	weapon	0x1d	\u8744Light Axe	Sunken Shrine 2F		
+65	gil	9900	Gil	Sunken Shrine 3Fa		
+66	gil	2000	Gil	Sunken Shrine 3Fa		
+67	gil	110	Gil	Sunken Shrine 3Fb		
+68	gil	450	Gil	Sunken Shrine 3Fb		
+69	gil	20	Gil	Sunken Shrine 4Fa	A	TFC
+70	armor	0x9	\u8748Diamond Armor	Sunken Shrine 4Fa	A	Top, past TFC
+71	weapon	0x1d	\u8744Light Axe	Sunken Shrine 4Fa		
+72	weapon	0x1f	\u8746Mage\u8166s Staff	Sunken Shrine 4Fa		
+73	gil	12350	Gil	Sunken Shrine 4Fa		
+74	gil	2750	Gil	Sunken Shrine 5F		
+75	gil	9000	Gil	Sunken Shrine 5F		
+76	gil	1760	Gil	Sunken Shrine 5F		
+77	armor	0xe	\u8749Diamond Armlet	Sunken Shrine 5F		
+78	gil	10000	Gil	Sunken Shrine 5F		
+79	gil	10	Gil	Sunken Shrine 5F		
+80	gil	4150	Gil	Sunken Shrine 5F		
+81	item	0xb	\u8750Antidote	Sunken Shrine 5F		
+82	armor	0x2e	\u874bDiamond Helm	Sunken Shrine 5F		
+83	armor	0x40	\u874cDiamond Gloves	Sunken Shrine 5F		
+84	gil	5000	Gil	Sunken Shrine 5F		
+85	armor	0x21	\u874aDiamond Shield	Sunken Shrine 5F		
+86	item	0x11	\u8751Tent	Mirage Tower 1F		
+87	armor	0x22	\u874aAegis Shield	Mirage Tower 1F		
+88	gil	2750	Gil	Mirage Tower 1F		
+89	gil	3400	Gil	Mirage Tower 1F		
+90	gil	18010	Gil	Mirage Tower 1F		
+91	weapon	0x22	\u8740Vorpal Sword	Mirage Tower 1F		
+92	gil	800	Gil	Mirage Tower 1F		
+93	armor	0x2f	\u874bHealing Helm	Mirage Tower 1F		
+94	gil	13000	Gil	Mirage Tower 2F		
+95	gil	12350	Gil	Mirage Tower 2F		
+96	weapon	0x24	\u8745Thor\u8166s Hammer	Mirage Tower 2F		
+97	gil	7900	Gil	Mirage Tower 2F		
+98	gil	8135	Gil	Mirage Tower 2F		
+99	item	0x12	\u8751Cottage	Mirage Tower 2F		
+100	gil	7600	Gil	Mirage Tower 2F		
+101	weapon	0x18	\u8740Sun Blade	Mirage Tower 2F		
+102	gil	10000	Gil	Mirage Tower 2F		
+103	armor	0xa	\u8748Dragon Mail	Mirage Tower 2F		
+104	item	0x11	\u8751Tent	Dragon Caves B1		
+105	item	0x6	\u874fDry Ether	Dragon Caves B1		
+106	item	0xc	\u8750Gold Needle	Dragon Caves B1		
+107	item	0x7	\u874fElixir	Dragon Caves B1		
+108	item	0x12	\u8751Cottage	Dragon Caves B1		
+109	gil	500	Gil	Dragon Caves B1		
+110	item	0x3	\u874fX-Potion	Dragon Caves B1		
+111	gil	9500	Gil	Dragon Caves B1		
+112	gil	2750	Gil	Dragon Caves B1		
+113	gil	1520	Gil	Dragon Caves B1		
+114	gil	2750	Gil	Dragon Caves B1		
+115	gil	2000	Gil	Dragon Caves B1		
+116	gil	1455	Gil	Dragon Caves B1		
+117	gil	450	Gil	Mt. Duergar		
+118	gil	575	Gil	Mt. Duergar		
+119	item	0x11	\u8751Tent	Mt. Duergar		
+120	armor	0x2c	\u874bGreat Helm	Mt. Duergar		
+121	weapon	0x16	\u8740Wyrmkiller	Mt. Duergar		
+122	item	0x4	\u874fEther	Mt. Duergar		
+123	item	0x1	\u874fPotion	Mt. Duergar		
+124	armor	0x6	\u8748Mythril Mail	Mt. Duergar		
+125	gil	575	Gil	Mt. Duergar		
+126	item	0x12	\u8751Cottage	Mt. Duergar		
+127	gil	680	Gil	Marsh Cave B2		
+128	weapon	0xa	\u8742Dagger	Marsh Cave B2		
+129	weapon	0x6	\u8740Broadsword	Marsh Cave B2		
+130	gil	620	Gil	Marsh Cave B2		
+131	key_item	0x0	???	???		Probably the linked chests?
+132	key_item	0x0	???	???		Probably the linked chests?
+133	key_item	0x0	???	???		Probably the linked chests?
+134	item	0x9	\u8750Phoenix Down	Marsh Cave B3		
+135	gil	295	Gil	Marsh Cave B3		
+136	armor	0xb	\u8749Copper Armlet	Marsh Cave B3		
+137	item	0x12	\u8751Cottage	Marsh Cave B3		
+138	key_item	0x0	???	???		Probably the linked chests?
+139	key_item	0x2	Crown	Marsh Cave B3		
+140	gil	385	Gil	Marsh Cave B3		
+141	key_item	0x0	???	Marsh Cave B3		Probably the linked chests?
+142	armor	0xc	\u8749Silver Armlet	Marsh Cave B3		
+143	item	0xb	\u8750Antidote	Marsh Cave B3		
+144	gil	1020	Gil	Marsh Cave B3		
+145	weapon	0x21	\u8746Wizard\u8166s Staff	Waterfall Cavern		
+146	armor	0x30	\u874bRibbon	Waterfall Cavern		
+147	gil	13450	Gil	Waterfall Cavern		
+148	gil	6400	Gil	Waterfall Cavern		
+149	gil	5000	Gil	Waterfall Cavern		
+150	weapon	0x20	\u8740Defender	Waterfall Cavern		
+151	armor	0x2d	\u874bMythril Helm	Giant's Cave		
+152	gil	450	Gil	Giant's Cave		
+153	gil	620	Gil	Giant's Cave		
+154	weapon	0xe	\u8744Great Axe	Giant's Cave		
+155	armor	0x2d	\u874bMythril Helm	Mt. Gulg B2		
+156	gil	1520	Gil	Mt. Gulg B2		
+157	gil	4150	Gil	Mt. Gulg B2		
+158	weapon	0x17	\u8740Great Sword	Mt. Gulg B2		Right hairpin, forced
+159	gil	750	Gil	Mt. Gulg B2		
+160	gil	795	Gil	Mt. Gulg B2		
+161	item	0x2	\u874fHi-Potion	Mt. Gulg B2		Armory
+162	armor	0x2d	\u874bMythril Helm	Mt. Gulg B2		Armory
+163	item	0x11	\u8751Tent	Mt. Gulg B2		Armory
+164	armor	0x3d	\u874cMythril Gloves	Mt. Gulg B2		Armory
+165	gil	1975	Gil	Mt. Gulg B2		Armory
+166	gil	1520	Gil	Mt. Gulg B2		Armory
+167	item	0xb	\u8750Antidote	Mt. Gulg B2	A+	Armory; forced
+168	gil	1760	Gil	Mt. Gulg B2		Armory
+169	armor	0x1e	\u874aMythril Shield	Mt. Gulg B2		Armory
+170	gil	1455	Gil	Mt. Gulg B2	A+	Armory; forced
+171	item	0x9	\u8750Phoenix Down	Mt. Gulg B2		Armory
+172	weapon	0x13	\u8744Mythril Axe	Mt. Gulg B2		Armory
+173	item	0xb	\u8750Antidote	Mt. Gulg B4		
+174	gil	7340	Gil	Mt. Gulg B4		
+175	armor	0x1f	\u874aFlame Shield	Mt. Gulg B4		
+176	weapon	0x15	\u8740Ice Brand	Mt. Gulg B4		
+177	gil	880	Gil	Mt. Gulg B4		
+178	gil	1760	Gil	Mt. Gulg B4		
+179	gil	2750	Gil	Mt. Gulg B4		
+180	item	0xc	\u8750Gold Needle	Mt. Gulg B5		
+181	gil	10	Gil	Mt. Gulg B4		
+182	gil	155	Gil	Mt. Gulg B4		
+183	item	0x12	\u8751Cottage	Mt. Gulg B4		
+184	gil	2000	Gil	Mt. Gulg B4		
+185	key_item	0x0	???	Mt. Gulg B4		Probably the linked chests?
+186	weapon	0x3	\u8746Staff	Mt. Gulg B4		
+187	gil	1250	Gil	Mt. Gulg B4		
+188	key_item	0x0	???	Mt. Gulg B5		Probably the linked chests?
+189	item	0xc	\u8750Gold Needle	Mt. Gulg B5		
+190	armor	0x7	\u8748Flame Mail	Mt. Gulg B5		
+191	key_item	0x0	???	Mt. Gulg B5		Probably the linked chests?
+192	item	0x4	\u874fEther	Cavern of Ice B1		
+193	gil	10000	Gil	Cavern of Ice B1		
+194	gil	9500	Gil	Cavern of Ice B1		
+195	item	0x10	\u8751Sleeping Bag	Cavern of Ice B1		
+196	armor	0x20	\u874aIce Shield	Cavern of Ice B1		
+197	weapon	0x14	\u8740Flame Sword	Cavern of Ice B2b	A	Left of Levistone
+198	key_item	0xb	Levistone	Cavern of Ice B2b		Levistone
+199	armor	0x1	\u8747Clothes	Cavern of Ice B2b	A	Right of Levistone
+200	armor	0x3d	\u874cMythril Gloves	Cavern of Ice B3b	S	Top; 2x forced
+201	armor	0x8	\u8748Ice Armor	Cavern of Ice B3b	A+	Top; forced
+202	gil	180	Gil	Cavern of Ice B3b		Treasury
+203	gil	5454	Gil	Cavern of Ice B3b		Treasury
+204	gil	7900	Gil	Cavern of Ice B3b		Treasury
+205	gil	12350	Gil	Cavern of Ice B3b		Treasury
+206	gil	5000	Gil	Cavern of Ice B3b		Treasury
+207	gil	9900	Gil	Cavern of Ice B3b		Treasury
+208	gil	9900	Gil	Flying Fortress 1F		
+209	item	0x1	\u874fPotion	Flying Fortress 1F		
+210	gil	4150	Gil	Flying Fortress 1F		
+211	gil	7900	Gil	Flying Fortress 1F		
+212	gil	5000	Gil	Flying Fortress 1F		
+213	armor	0x41	\u874cProtect Ring	Flying Fortress 1F		
+214	gil	6720	Gil	Flying Fortress 1F		
+215	armor	0x2f	\u874bHealing Helm	Flying Fortress 1F		
+216	gil	180	Gil	Flying Fortress 1F		
+217	weapon	0x25	\u8740Razer	Flying Fortress 1F		
+218	armor	0x2d	\u874bMythril Helm	Flying Fortress 2F		Top-Left
+219	item	0x12	\u8751Cottage	Flying Fortress 2F		Top-Left
+220	gil	13000	Gil	Flying Fortress 2F		
+221	gil	880	Gil	Flying Fortress 2F		
+222	armor	0x40	\u874cDiamond Gloves	Flying Fortress 2F		
+223	armor	0x30	\u874bRibbon	Flying Fortress 2F		
+224	armor	0x21	\u874aDiamond Shield	Flying Fortress 2F		
+225	armor	0xf	\u8747White Robe	Flying Fortress 2F		Bottom-Right
+226	armor	0x10	\u8747Black Robe	Flying Fortress 2F		Bottom-Right
+227	gil	9000	Gil	Flying Fortress 3F	A+	Top
+228	armor	0x41	\u874cProtect Ring	Flying Fortress 3F	A+	Top
+229	item	0x1	\u874fPotion	Flying Fortress 3F	A+	Top
+230	gil	5450	Gil	Flying Fortress 3F	A+	Top
+231	item	0xc	\u8750Gold Needle	Flying Fortress 3F	A	Greed chests
+232	gil	4150	Gil	Flying Fortress 3F	A	Greed chests
+233	gil	3400	Gil	Flying Fortress 3F	A	Greed chests
+234	weapon	0x26	\u8741Sasuke\u8166s Blade	Flying Fortress 3F	A	Greed chests
+235	gil	6400	Gil	Flying Fortress 3F		Right
+236	item	0xc	\u8750Gold Needle	Flying Fortress 3F		Right
+237	armor	0x1	\u8747Clothes	Flying Fortress 3F		Right
+238	gil	9500	Gil	Flying Fortress 3F		Right
+239	armor	0x24	\u874aProtect Cloak	Flying Fortress 3F		Right
+240	gil	8135	Gil	Flying Fortress 3F		Right
+241	item	0x1	\u874fPotion	Matoya's Cave		
+242	item	0x1	\u874fPotion	Matoya's Cave		
+243	item	0xb	\u8750Antidote	Matoya's Cave		
+244	key_item	0x8	Rosetta Stone	Sunken Shrine 5F		
+245	item	0x6	\u874fDry Ether	Chaos Temple 3F		Validation chests
+246	item	0x7	\u874fElixir	Chaos Temple 3F		Validation chests
+247	armor	0x41	\u874cProtect Ring	Chaos Temple B2		Left Entrance
+248	armor	0x24	\u874aProtect Cloak	Chaos Temple B2		Right Entrance
+249	weapon	0x26	\u8741Sasuke\u8166s Blade	Chaos Temple B2		Left Bottom
+250	item	0x8	\u874fMegalixir	Chaos Temple B2		Right Bottom
+251	weapon	0x28	\u8741Masamune	Chaos Temple B4		
+252	item	0x8	\u874fMegalixir	Earthgift Shrine		
+253	armor	0x30	\u874bRibbon	Hellfire Chasm		
+254	armor	0x27	\u874aHero\u8166s Shield	Lifespring Grotto		
+255	weapon	0x29	\u8740Ultima Weapon	Whisperwind Cove		

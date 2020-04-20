@@ -74,7 +74,7 @@ def main(argv):
     for module in modules:
         current_module = modules[module]
 
-        with open(f"gen/{module}.py", 'w') as module_file:
+        with open(f"{module}.py", 'w') as module_file:
             module_file.writelines(LICENSE_HEADER)
 
             for a_class in current_module:
@@ -92,32 +92,55 @@ def main(argv):
                     field_name = field_data[0].lstrip().rstrip()
                     field_size = field_data[1].lstrip().rstrip()
 
+                    is_synth = False
+                    if field_name == "synth":
+                        field_name = field_size
+                        field_size = field_data[2].lstrip().rstrip()
+                        is_synth = True
+
                     if field_size.find("[") > 0:
                         real_size = field_size[0:field_size.find("[")]
                         array_size = field_size[field_size.find("[") + 1:field_size.find("]")]
 
-                        init_text += f"            self.{field_name} = []\n"
                         new_init_text += f"            self.{field_name} = []\n"
-                        init_text += f"            for index in range({array_size}):\n"
-                        if real_size.isnumeric():
-                            init_text += f"                self.{field_name}.append(stream.get_u{real_size}())\n"
-                        else:
-                            init_text += f"                self.{field_name}.append({real_size}(stream))\n"
 
-                        write_text += f"        for data in self.{field_name}:\n"
-                        if real_size.isnumeric():
-                            write_text += f"            stream.put_u{real_size}(data)\n"
+                        if not is_synth:
+                            init_text += f"            self.{field_name} = []\n"
+                            init_text += f"            for index in range({array_size}):\n"
+                            if real_size.isnumeric():
+                                init_text += f"                self.{field_name}.append(stream.get_u{real_size}())\n"
+                            else:
+                                init_text += f"                self.{field_name}.append({real_size}(stream))\n"
+
+                            write_text += f"        for data in self.{field_name}:\n"
+                            if real_size.isnumeric():
+                                write_text += f"            stream.put_u{real_size}(data)\n"
+                            else:
+                                write_text += f"            data.write(stream)\n"
                         else:
-                            write_text += f"            data.write(stream)\n"
+                            init_text += f"            self.{field_name} = []\n"
                     else:
                         if field_size.isnumeric():
-                            init_text += f"            self.{field_name} = stream.get_u{field_size}()\n"
                             new_init_text += f"            self.{field_name} = 0\n"
-                            write_text += f"        stream.put_u{field_size}(self.{field_name})\n"
+                            if not is_synth:
+                                init_text += f"            self.{field_name} = stream.get_u{field_size}()\n"
+                                write_text += f"        stream.put_u{field_size}(self.{field_name})\n"
+                            else:
+                                init_text += f"            self.{field_name} = {field_size}\n"
                         else:
-                            init_text += f"            self.{field_name} = {field_size}(stream)\n"
-                            new_init_text += f"            self.{field_name} = {field_size}()\n"
-                            write_text += f"        self.{field_name}.write(stream)\n"
+                            if not is_synth:
+                                new_init_text += f"            self.{field_name} = {field_size}()\n"
+                                init_text += f"            self.{field_name} = {field_size}(stream)\n"
+                                write_text += f"        self.{field_name}.write(stream)\n"
+                            else:
+                                new_init_text += f"            self.{field_name} = {field_size}\n"
+                                init_text += f"            self.{field_name} = {field_size}\n"
+
+                        # if not is_synth:
+                        #     if field_size.isnumeric():
+                        #         write_text += f"        stream.put_u{field_size}(self.{field_name})\n"
+                        #     else:
+                        #         write_text += f"        self.{field_name}.write(stream)\n"
 
                 # Build the full class as a string
                 class_lines = [

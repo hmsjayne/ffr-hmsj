@@ -17,7 +17,7 @@ from doslib.textblock import TextBlock
 from stream.outputstream import OutputStream
 
 
-def add_credits(rom: Rom) -> Rom:
+def add_credits(rom: Rom) -> dict:
     credits_lut = rom.get_lut(0x1D871C, 128)
     base_addr = credits_lut[0]
 
@@ -41,11 +41,11 @@ def add_credits(rom: Rom) -> Rom:
     duration = OutputStream()
     duration.put_u16(60 * 60)
 
-    return rom.apply_patches({
+    return {
         0x016848: duration.get_buffer(),
         0x1D871C: new_lut.get_buffer(),
         Rom.pointer_to_offset(base_addr): data_stream.get_buffer()
-    })
+    }
 
 
 CREDITS_TEXT = """
@@ -57,13 +57,13 @@ Final Fantasy: HMS Jayne!
 
 A proof of concept
 randomizer designed by
-Nicole Borrelli
+nic0lette
 
 
 
 
 Developers:
-Nicole Borrelli
+nic0lette
 Vennobennu
 leggystarscream
 
@@ -71,7 +71,7 @@ leggystarscream
 
 
 Website Design:
-a tiny fairy
+Seelie Fae
 
 
 
@@ -79,5 +79,9 @@ a tiny fairy
 Playtest:
 Demerine
 leggystarscream
+rabite
+
+
+
 
 """

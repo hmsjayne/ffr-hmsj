@@ -1,7 +1,0 @@
--encounter toggle, options defaults (Done)
--equipment viewing patch (Done)
--random default party (Done)
--consolidate duplicated data tables (Done)
--message display for unrunnable battles (Done)
--Update status screen (Done)
--Autorun change (Done)

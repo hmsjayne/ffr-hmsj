@@ -14,7 +14,6 @@
 
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from stream.inputstream import InputStream
 from stream.outputstream import OutputStream
 
 

@@ -1,0 +1,142 @@
+/*
+ * Copyright 2020 Nicole Borrelli
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#flags {
+  display: inline-block;
+}
+#flags label {
+  display: block;
+  text-align: left;
+  font-size: 150%;
+  margin: .5em 0 .5em 0;
+}
+#flags p {
+  margin: .25em;
+}
+#gen-box {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  display: flex;
+  justify-content: right;
+}
+#gen {
+  font-size: 150%;
+  padding: .5em;
+}
+label {
+  margin: 4px 0px;
+}
+h1 {
+  display: none;
+}
+div h2 {
+  font-size: 200%;
+  margin: .25em;
+}
+body {
+  background: #000;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 100%;
+  color: GhostWhite;
+  text-shadow: 2px 1px black;
+  width: 720px;
+}
+div {
+  border: solid 1px #424542;
+  box-shadow: 3px 3px #e7dfe7,
+              -3px -3px #e7dfe7,
+              3px -3px #e7dfe7,
+              -3px 3px #e7dfe7,
+              0 -5px #9c9a9c,
+              -5px 0 #7b757b,
+              0 3px #424542;
+  padding: 5px 10px;
+  margin: 20px 0px;
+
+  background: #04009d;
+  background: -moz-linear-gradient(top,  #04009d 0%, #06004d 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#04009d), color-stop(100%,#06004d));
+  background: -webkit-linear-gradient(top,  #04009d 0%,#06004d 100%);
+  background: -o-linear-gradient(top,  #04009d 0%,#06004d 100%);
+  background: -ms-linear-gradient(top,  #04009d 0%,#06004d 100%);
+  background: linear-gradient(to bottom,  #04009d 0%,#06004d 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#04009d', endColorstr='#06004d',GradientType=0 );
+
+
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+div * {
+  color: #eff1ff;
+  text-shadow: 2px 2px #212421,
+               1px 1px #212021;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: normal;
+  margin: 5px 0;
+}
+input {
+  font-size: 100%;
+  margin: 4px 0px;
+  background: none;
+  padding: 3px;
+}
+input[type="file" i] {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 100%;
+  color: GhostWhite;
+  text-shadow: 2px 1px black;
+  width: 100%;
+}
+input[type="checkbox" i] {
+  display: inline-block;
+  float: right;
+  padding: 4px;
+}
+
+div.logo {
+  background: white;
+  border: none;
+}
+img.logo {
+  width: 720px;
+}
+
+#exp-scale {
+  vertical-align: middle;
+}
+
+#links {
+  background: #049d00;
+  background: -moz-linear-gradient(top,  #049d00 0%, #064d00 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#049d00), color-stop(100%,#064d00));
+  background: -webkit-linear-gradient(top,  #049d00 0%,#064d00 100%);
+  background: -o-linear-gradient(top,  #049d00 0%,#064d00 100%);
+  background: -ms-linear-gradient(top,  #049d00 0%,#064d00 100%);
+  background: linear-gradient(to bottom,  #049d00 0%,#064d00 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#049d00', endColorstr='#064d00',GradientType=0 );
+}
+#links a {
+  text-decoration: none;
+}
+#links img {
+  width: 64px;
+  vertical-align: middle;
+}

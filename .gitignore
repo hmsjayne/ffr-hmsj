@@ -162,3 +162,10 @@ dmypy.json
 # Also, don't check the ROM/Save games in...
 *.gba
 *.sav
+
+# Clingo should be downloaded :)
+clingo/*
+
+# Or debug files
+*.debug
+debug/

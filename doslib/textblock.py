@@ -34,7 +34,7 @@ class TextBlock(object):
     def size(self):
         return len(self.strings)
 
-    def pack(self, rom: Rom) -> Rom:
+    def pack(self) -> dict:
         text_block = OutputStream()
         text_lut = OutputStream()
 
@@ -49,11 +49,10 @@ class TextBlock(object):
             else:
                 text_lut.put_u32(self.lut[0])
 
-        patches = {
+        return {
             self.lut_offset: text_lut.get_buffer(),
             text_block_offset: text_block.get_buffer()
         }
-        return rom.apply_patches(patches)
 
     @staticmethod
     def encode_text(text: str) -> bytearray:
