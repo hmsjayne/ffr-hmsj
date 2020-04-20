@@ -35,6 +35,7 @@ function updateRom() {
     } else {
         document.getElementById("rom-button").value = "Select ROM"
     }
+    updateForms()
 }
 
 function loadRom() {
