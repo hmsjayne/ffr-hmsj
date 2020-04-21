@@ -131,29 +131,24 @@ def load_chests(rom: Rom) -> list:
     chests = []
     while not chest_stream.is_eos():
         chest = TreasureChest.read(chest_stream)
-        if isinstance(chest, MoneyChest):
-            print(f"Gil: {hex(chest.chest_data)} -> {hex(chest.id)}")
-        else:
-            print(f"Item: {hex(chest.chest_data)} -> {hex(chest.id)}")
         chests.append(chest)
     return chests
 
 
 def pack_chests(chests: list) -> dict:
     chest_stream = OutputStream()
-    with open("debug/chest.txt", "w") as debug:
-        for index, chest in enumerate(chests):
-            chest.write(chest_stream)
-            debug.write(f"{index}: {chest}\n")
+    for index, chest in enumerate(chests):
+        chest.write(chest_stream)
     return {0x217FB4: chest_stream.get_buffer()}
 
 
 def get_random_inventory_for_shop(map_index: int, shop_type: str, count: int,
                                   inventory_generator: InventoryGenerator) -> list:
     new_items = []
-    for _ in range(0, count):
+    while len(new_items) < count:
         new_item = inventory_generator.get_inventory(map_index, shop_type)
-        new_items.append(new_item)
+        if new_item not in new_items:
+            new_items.append(new_item)
 
     new_inventory = []
     for item in sorted(new_items, key=lambda it: it.sort_order):
