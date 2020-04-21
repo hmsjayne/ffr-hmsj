@@ -52,6 +52,8 @@ function randomize() {
         return;
     }
 
+    updateHash()
+
     var xhr = new XMLHttpRequest();
     xhr.open("POST", '/patch', true);
 
@@ -234,7 +236,6 @@ window.onload = function() {
         flags[i].addEventListener("change", updateHash)
     }
     document.getElementById("exp-scale").addEventListener("input", updateHash)
-    document.getElementById("rom-file").addEventListener("change", updateHash)
 
     updateForms()
     updateHash()
