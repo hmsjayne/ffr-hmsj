@@ -35,7 +35,6 @@ function updateRom() {
     } else {
         document.getElementById("rom-button").value = "Select ROM"
     }
-    updateForms()
 }
 
 function loadRom() {
@@ -235,6 +234,7 @@ window.onload = function() {
         flags[i].addEventListener("change", updateHash)
     }
     document.getElementById("exp-scale").addEventListener("input", updateHash)
+    document.getElementById("rom-file").addEventListener("change", updateHash)
 
     updateForms()
     updateHash()
