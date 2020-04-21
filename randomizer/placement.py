@@ -43,7 +43,6 @@ class Placement(object):
                 item_type = Items.name_to_index(gear.item_type)
                 item_id = gear.id
                 gear = placement._replace(extra=f"give_item_ex {hex(item_type)} {hex(item_id)}")
-                print(f"{gear}")
                 placements.append(gear)
             else:
                 placements.append(placement)

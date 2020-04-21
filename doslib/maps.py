@@ -152,6 +152,7 @@ class TreasureChest(object):
 
 class ItemChest(TreasureChest):
     def __init__(self, chest_data: int):
+        self.chest_data = chest_data
         self.item_type = chest_data & 0xff
         self.item_id = (chest_data >> 8) & 0xffff
         self.id = (chest_data >> 24) & 0xff
@@ -166,6 +167,7 @@ class ItemChest(TreasureChest):
 
 class MoneyChest(TreasureChest):
     def __init__(self, chest_data: int):
+        self.chest_data = chest_data
         self.qty = chest_data & 0xffffff
         self.id = (chest_data >> 24) & 0xff
 

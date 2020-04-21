@@ -130,14 +130,21 @@ def load_chests(rom: Rom) -> list:
     chest_stream = rom.open_bytestream(0x217FB4, 0x400)
     chests = []
     while not chest_stream.is_eos():
-        chests.append(TreasureChest.read(chest_stream))
+        chest = TreasureChest.read(chest_stream)
+        if isinstance(chest, MoneyChest):
+            print(f"Gil: {hex(chest.chest_data)} -> {hex(chest.id)}")
+        else:
+            print(f"Item: {hex(chest.chest_data)} -> {hex(chest.id)}")
+        chests.append(chest)
     return chests
 
 
 def pack_chests(chests: list) -> dict:
     chest_stream = OutputStream()
-    for chest in chests:
-        chest.write(chest_stream)
+    with open("debug/chest.txt", "w") as debug:
+        for index, chest in enumerate(chests):
+            chest.write(chest_stream)
+            debug.write(f"{index}: {chest}\n")
     return {0x217FB4: chest_stream.get_buffer()}
 
 
@@ -190,10 +197,10 @@ def randomize_treasure(rng: random.Random, maps: Maps, chests: list, inventory_g
 
             contents = inventory_generator.get_inventory(map_index)
             if contents.item_type == "gil":
-                new_chest = MoneyChest(0x80000000)
+                new_chest = MoneyChest(0x0)
                 new_chest.qty = rng.randint(1, 0xfff) * rng.randint(1, 6)
             else:
-                new_chest = ItemChest(0x80000001)
+                new_chest = ItemChest(0x80000000)
                 new_chest.item_type = Items.name_to_index(contents.item_type)
                 new_chest.item_id = contents.id
             chests[map_chest.chest_id] = new_chest
@@ -556,10 +563,6 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         script = event_scripts[event_id]
         preprocess = pparse(f"{headers}\n\n{script}")
         event_icode = parse(preprocess)
-
-        if flags.debug:
-            with open(f"debug/event_{hex(event_id)}.debug", "w") as debug_out:
-                debug_out.writelines(preprocess)
 
         event_addr = event_tables.get_addr(event_id)
         vanilla_size = rom.get_event_size(event_addr)

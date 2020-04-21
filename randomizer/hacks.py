@@ -25,10 +25,10 @@ def trivial_enemies(enemies: list):
 def enable_early_magic_buy() -> dict:
     # Allow buying spells the class can before having the spell level
     buy_patch = OutputStream()
-    buy_patch.put_u16(0x13E0)
+    buy_patch.put_u16(0xE013)
 
     display_patch = OutputStream()
-    display_patch.put_u16(0x20E0)
+    display_patch.put_u16(0xE020)
     return {
         0x45072: buy_patch.get_buffer(),
         0x455F8: display_patch.get_buffer()
