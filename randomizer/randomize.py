@@ -285,7 +285,6 @@ def map_updates(maps: Maps):
     bat_mania_maps = [
         0x2,  # Earth B2
         0x4,  # Earth B4
-        0x5,  # Earth B5
     ]
 
     for map_id in bat_mania_maps:
