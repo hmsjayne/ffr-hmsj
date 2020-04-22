@@ -338,8 +338,7 @@ def build_headers(placements: Placement) -> str:
     #define DIALOG_WAIT 0x1
     #define DIALOG_AUTO_CLOSE 0x0
     
-    #define FREE_START set_flag 0x05 \\
-        set_flag 0x15
+    #define FREE_START set_flag 0x05
     
     ; Reward definitions
     """
@@ -571,10 +570,6 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         event_tables.set_addr(event_id, event_addr)
 
     if flags.debug:
-        for class_data in classes_data:
-            class_data.armor_id = 0xe
-            class_data.weapon_id = 0x28
-        vehicle_starts["airship"] = VehiclePosition(x=2328, y=2456)
         trivial_enemies(enemy_data)
 
     all_patches.update(add_credits(rom))
