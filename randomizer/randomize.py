@@ -284,7 +284,8 @@ def map_updates(maps: Maps):
     # There could be fewer bats... This also makes room for features in other maps.
     bat_mania_maps = [
         0x2,  # Earth B2
-        0x3,  # Earth B3
+        0x4,  # Earth B4
+        0x5,  # Earth B5
     ]
 
     for map_id in bat_mania_maps:
@@ -337,7 +338,8 @@ def build_headers(placements: Placement) -> str:
     #define DIALOG_WAIT 0x1
     #define DIALOG_AUTO_CLOSE 0x0
     
-    #define FREE_START set_flag 0x05
+    #define FREE_START set_flag 0x05 \\
+        set_flag 0x15
     
     ; Reward definitions
     """
@@ -428,9 +430,8 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     for region in encounter_regions.map_encounters:
         rng.shuffle(region)
 
+    classes_data = load_class_data(rom)
     if not flags.default_start_gear:
-        classes_data = load_class_data(rom)
-
         base_weapons = []
         base_armors = []
 
@@ -569,14 +570,17 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         event_script_patches[Rom.pointer_to_offset(event_addr)] = link(event_icode, event_addr)
         event_tables.set_addr(event_id, event_addr)
 
-    all_patches.update(event_script_patches)
-    all_patches.update(event_tables.get_patches())
-
     if flags.debug:
+        for class_data in classes_data:
+            class_data.armor_id = 0xe
+            class_data.weapon_id = 0x28
+        vehicle_starts["airship"] = VehiclePosition(x=2328, y=2456)
         trivial_enemies(enemy_data)
 
     all_patches.update(add_credits(rom))
 
+    all_patches.update(event_script_patches)
+    all_patches.update(event_tables.get_patches())
     all_patches.update(map_features.get_patches())
     all_patches.update(items.get_patches())
     all_patches.update(shop_data.get_patches())
