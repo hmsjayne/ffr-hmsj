@@ -89,6 +89,6 @@ open(kary) :- has(canoe).
 open(kary) :- has(airship).
 open(kraken) :- has(airship), has(oxyale).
 open(tiamat) :- has(airship), has(chime), has(warp_cube).
-open(bahamut) :- has(airship).
+open(bahamut) :- has(airship), has(rats_tail).
 open(dr_unne) :- has(canal), has(rosetta_stone).
 open(dr_unne) :- has(airship), has(rosetta_stone).
