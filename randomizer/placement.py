@@ -46,6 +46,7 @@ class Placement(object):
                 placements.append(gear)
             else:
                 placements.append(placement)
+        self._placement_list = placements
 
     def update_placements(self, clingo_placements: tuple):
         # To make this easier, we'll create two lookup tables - one for sources and the other for rewards
