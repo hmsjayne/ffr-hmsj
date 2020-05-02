@@ -11,8 +11,10 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+from collections import namedtuple
+from struct import unpack, iter_unpack
 
-from doslib.map import MapHeader, Tile, Npc, Chest, Sprite, Shop
+from doslib.map import MapHeader, Tile, Npc, Chest, Sprite, Shop, MainData
 from doslib.rom import Rom
 from stream.inputstream import InputStream
 from stream.outputstream import OutputStream
@@ -31,6 +33,31 @@ class Maps(object):
 
             # Collect the dummy chests together
             self.dummy_chests += map_features.dummy_chests
+
+        self.map_extras = []
+        map_ptrs = []
+        map_extra_stream = rom.open_bytestream(0x2160D0, 0x216770 - 0x2160D0)
+        while not map_extra_stream.is_eos():
+            exit_data_ptr = map_extra_stream.get_u32()
+            music_id = map_extra_stream.get_u16()
+            encounter_rate_index = map_extra_stream.get_u16()
+            self.map_extras.append(MapExtra(exit_data_ptr, music_id, encounter_rate_index))
+            map_ptrs.append(exit_data_ptr)
+
+        ptr_to_map = {}
+        for map_id, addr in enumerate(map_ptrs):
+            ptr_to_map[addr] = map_id
+        sorted_ptrs = sorted(map_ptrs)
+
+        for index in range(1, len(sorted_ptrs) - 1):
+            exit_count = int((sorted_ptrs[index + 1] - sorted_ptrs[index]) / 20)
+            map_id = ptr_to_map[sorted_ptrs[index]]
+            self.map_extras[map_id].exit_count = exit_count
+
+        self.main_data = []
+        data_stream = rom.open_bytestream(0x21F274, 0x7b * 32)
+        while not data_stream.is_eos():
+            self.main_data.append(MainData(data_stream))
 
     def get_map(self, map_id: int) -> 'MapFeatures':
         return self._maps[map_id]
@@ -62,6 +89,15 @@ class Maps(object):
 
         # Lastly, update the LUT in the patches
         patches[0x1E4F40] = lut.get_buffer()
+
+        # Map extra data
+        map_extras = OutputStream()
+        for map_extra in self.map_extras:
+            map_extras.put_u32(map_extra.exit_data_ptr)
+            map_extras.put_u16(map_extra.music_id)
+            map_extras.put_u16(map_extra.encounter_rate)
+        patches[0x2160D0] = map_extras.get_buffer()
+
         return patches
 
 
@@ -152,7 +188,6 @@ class TreasureChest(object):
 
 class ItemChest(TreasureChest):
     def __init__(self, chest_data: int):
-        self.chest_data = chest_data
         self.item_type = chest_data & 0xff
         self.item_id = (chest_data >> 8) & 0xffff
         self.id = (chest_data >> 24) & 0xff
@@ -167,7 +202,6 @@ class ItemChest(TreasureChest):
 
 class MoneyChest(TreasureChest):
     def __init__(self, chest_data: int):
-        self.chest_data = chest_data
         self.qty = chest_data & 0xffffff
         self.id = (chest_data >> 24) & 0xff
 
@@ -177,3 +211,11 @@ class MoneyChest(TreasureChest):
     def write(self, stream: OutputStream):
         chest_data = (self.id << 24) | self.qty
         stream.put_u32(chest_data)
+
+
+class MapExtra(object):
+    def __init__(self, exit_data_ptr: int, music_id: int, encounter_rate: int):
+        self.exit_data_ptr = exit_data_ptr
+        self.music_id = music_id
+        self.encounter_rate = encounter_rate
+        self.exit_count = 0

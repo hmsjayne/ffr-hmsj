@@ -100,6 +100,16 @@ class: MapHeader
     high_x, 16
     high_y, 16
 
+class: MainData
+    compressed_map, 32
+    tileset_id, 32
+    map_type, 32
+    map_name_pause, 32
+    map_name_title, 32
+    map_name, 32
+    door_data_ptr, 32
+    door_count, 32
+
 module: spell
 
 class: SpellData
