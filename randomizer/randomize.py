@@ -22,7 +22,7 @@ from doslib.dos_utils import load_tsv
 from doslib.encounterregions import EncounterRegions
 from doslib.enemy import EnemyStats
 from doslib.event import EventTables, EventTextBlock
-from doslib.item import Item, Weapon
+from doslib.item import Item
 from doslib.items import Items
 from doslib.map import Npc
 from doslib.maps import Maps, MapFeatures, TreasureChest, ItemChest, MoneyChest
@@ -39,7 +39,7 @@ from randomizer.hacks import trivial_enemies, enable_early_magic_buy
 from randomizer.ipsfile import load_ips_files
 from randomizer.placement import Placement, PlacementDetails
 from randomizer.spellgenerator import SpellGenerator
-from randomizer.treasure import InventoryGenerator
+from randomizer.treasure import InventoryGenerator, MapToArea
 from stream.outputstream import OutputStream
 
 VehiclePosition = namedtuple("VehiclePosition", ["x", "y"])
@@ -417,10 +417,47 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     spells = Spells(rom)
     chest_data = load_chests(rom)
     map_features = Maps(rom)
+    event_tables = EventTables(rom)
     vehicle_starts = load_vehicle_starts(rom)
 
     items = Items(rom)
     enemy_data = load_enemy_data(rom, items)
+
+    map_names = ["Overworld"]
+    for map_area in load_tsv("data/MapToArea.tsv"):
+        map_area_data = MapToArea(*map_area)
+        map_names.append(map_area_data.name)
+
+    sprite_names = []
+    for sprite_data in load_tsv("sprites.tsv"):
+        sprite_names.append(sprite_data[1])
+
+    with open("text.md", "w") as debug:
+        for map_id in range(0x0, 0x73):
+            map_data = map_features.get_map(map_id)
+            header = f"\n\n# Map: {map_names[map_id]} ({hex(map_id)})\n\n" \
+                     f"|NPC|Sprite ID|Text ID|Text|\n" \
+                     "|---|---|---|---|\n"
+            for npc in map_data.npcs:
+                if npc.event > 0x100:
+                    lead = f"|{sprite_names[npc.sprite_id]}|({hex(npc.sprite_id)})||\n"
+
+                    event_base = Rom.pointer_to_offset(event_tables.get_addr(npc.event))
+                    while rom_data[event_base] != 0x0:
+                        if rom_data[event_base] == 0x5:
+                            string_id = (rom_data[event_base + 3] << 8) | rom_data[event_base + 2]
+                            text = event_text_block[string_id]
+                            text = text[:len(text) - 1]
+                            text = text.replace("\n","<br>")
+
+                            if header is not None:
+                                debug.write(header)
+                                header = None
+                            if lead is not None:
+                                debug.write(lead)
+                                lead = None
+                            debug.write(f"|||{hex(string_id)}|{text}|\n")
+                        event_base += rom_data[event_base + 1]
 
     encounter_regions = EncounterRegions(rom)
     for region in encounter_regions.overworld_regions:
@@ -551,7 +588,6 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     update_strings(event_text_block)
     all_patches.update(event_text_block.pack())
 
-    event_tables = EventTables(rom)
     event_script_patches = {}
     for event_id in sorted(event_scripts.keys()):
         script = event_scripts[event_id]

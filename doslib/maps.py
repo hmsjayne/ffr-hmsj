@@ -11,8 +11,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-from collections import namedtuple
-from struct import unpack, iter_unpack
 
 from doslib.map import MapHeader, Tile, Npc, Chest, Sprite, Shop, MainData
 from doslib.rom import Rom
