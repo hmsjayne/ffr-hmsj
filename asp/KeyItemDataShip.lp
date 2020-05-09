@@ -67,15 +67,15 @@ open(locked_cornelia) :- has(mystic_key).
 open(nerrick) :- has(nitro_powder).
 open(vampire) :- has(airship).
 open(vampire) :- has(canal).
-open(sarda) :- has(star_ruby), has(airship).
+open(sarda) :- has(airship).
 open(sarda) :- has(star_ruby), has(canal).
 open(lukahn) :- has(airship), has(earth).
 open(lukahn) :- has(canal), has(earth).
 open(ice) :- has(canoe).
 open(ice) :- has(airship).
 open(desert) :- has(canoe), has(levistone).
-open(citadel_of_trials) :- has(canoe), has(crown), has(airship).
-open(citadel_of_trials) :- has(canoe), has(crown), has(canal).
+open(citadel_of_trials) :- has(canoe), has(airship).
+open(citadel_of_trials) :- has(canoe), has(canal).
 open(caravan) :- has(airship).
 open(fairy) :- has(airship), has(bottle).
 open(mermaids) :- has(airship), has(oxyale).

@@ -300,6 +300,13 @@ def map_updates(maps: Maps):
 
     prevent_canal_soft_lock(maps.get_map(0x0))
 
+    # Citadel of trials -- can enter w/o the stolen Crown
+    citadel_of_trials = maps.get_map(0x4d)
+    citadel_of_trials.npcs = []
+    for tile in citadel_of_trials.tiles:
+        if tile.event == 0x23d0:
+            citadel_of_trials.tiles.remove(tile)
+
 
 def load_event_scripts() -> dict:
     scripts = {}
