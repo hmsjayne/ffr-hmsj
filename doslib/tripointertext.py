@@ -16,15 +16,29 @@ from doslib.rom import Rom
 from doslib.textblock import TextBlock
 
 
-class ItemTextBlock(TextBlock):
+class TriPointerTextBlock(TextBlock):
+    """
+    Dawn of Souls makes relatively frequent use of a 3-pointer
+    text block. In this format, the first and second pointers are
+    often used for the name of the thing, and the 3rd for its
+    description.
+    Items, Armor, Weapons, and Key Items all use this format.
+    """
+
     def __init__(self, rom: Rom, lut_offset: int, count: int):
         # There are 3 pointers per item
         super().__init__(rom, lut_offset, count * 3)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int):
         return super().__getitem__(index * 3)
 
-    def __setitem__(self, index, value):
+    def __setitem__(self, index: int, value: str):
+        return super().__setitem__(index * 3, value)
+
+    def get_description(self, index: int):
+        return super().__getitem__((index * 3) + 2)
+
+    def set_description(self, index: int, value: str):
         return super().__setitem__(index * 3, value)
 
     def size(self):

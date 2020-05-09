@@ -25,11 +25,11 @@ class TextBlock(object):
         for addr in self.lut:
             self.strings.append(rom.get_string(Rom.pointer_to_offset(addr)))
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int):
         return TextBlock._as_ascii(InputStream(self.strings[index], check_alignment=False))
 
-    def __setitem__(self, index, value):
-        self.strings[index] = TextBlock._encode_text(InputStream(value, check_alignment=False))
+    def __setitem__(self, index: int, value: str):
+        self.strings[index] = TextBlock._encode_text(InputStream(bytearray(value), check_alignment=False))
 
     def size(self):
         return len(self.strings)
