@@ -220,7 +220,7 @@ function updateForms() {
             if (part.indexOf("Xp") >= 0) {
                 scale = parseInt(part.substring(part.indexOf("Xp") + 2)) * 10
                 document.getElementById("exp-scale").value = scale
-                document.getElementById("exp-scale-p").innerText = "Gain experience at " + (scale) + "% of normal"
+                document.getElementById("exp-scale-p").innerText = "Level-up " + (scale) + "% of normal"
             }
         }
     }
