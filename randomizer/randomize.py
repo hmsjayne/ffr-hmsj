@@ -242,10 +242,9 @@ def spell_shuffle(maps: Maps, shops: ShopData, spells: Spells, spell_generator: 
 def prevent_canal_soft_lock(overworld: MapFeatures):
     # The easiest way to do this is create an NPC and place them on top of the canal spot.
     # This prevents walking across and the airship landing there.
-    # This creates a small visual glitch, but better than soft-locking?
     canal_splash = Npc()
     canal_splash.identifier = 0x2
-    canal_splash.in_room = 0x0
+    canal_splash.in_room = 0x1
     canal_splash.x_pos = 95
     canal_splash.y_pos = 157
     canal_splash.move_speed = 0
