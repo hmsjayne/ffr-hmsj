@@ -43,6 +43,8 @@ def main() -> int:
     # Ensure there's at most 1 seed.
     if parsed.seed is not None:
         seed_value = parsed.seed.pop()
+        if len(seed_value) > 10:
+            seed_value = seed_value[0:10]
     else:
         rng = random.Random()
         seed_value = hex(rng.randint(0, 0xffffffff))

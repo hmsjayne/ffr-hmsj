@@ -156,7 +156,7 @@ armor	0x2c	\u874bGreat Helm	360	180	FALSE	C
 armor	0x2d	\u874bMythril Helm	2000	1000	FALSE	C
 armor	0x2e	\u874bDiamond Helm	10000	5000	FALSE	C
 armor	0x2f	\u874bHealing Helm	20000	10000	FALSE	B
-armor	0x30	\u874bRibbon	2	1	FALSE	S
+armor	0x30	\u874bRibbon	200000	1	FALSE	S
 armor	0x31	\u874bGenji Helm	36800	18400	TRUE	A
 armor	0x32	\u874bCrystal Helm	45300	22650	TRUE	A
 armor	0x33	\u874bBlack Cowl	45300	22650	TRUE	A

@@ -34,6 +34,21 @@ class Flags(object):
             self.debug = False
             self.scale_levels = 1.0
 
+    def encode(self) -> str:
+        encoded = ""
+        if not self.no_shuffle:
+            encoded += "K"
+        if not self.standard_shops:
+            encoded += "S"
+        if not self.standard_treasure:
+            encoded += "T"
+        if not self.default_start_gear:
+            encoded += "G"
+        if self.debug:
+            encoded += "\\u819a"
+        encoded += str(int((self.scale_levels * 10)))
+        return encoded
+
     def __str__(self):
         out = []
         for property, value in vars(self).items():

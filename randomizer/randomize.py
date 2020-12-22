@@ -20,7 +20,7 @@ from copy import deepcopy
 from doslib.classes import JobClass
 from doslib.dos_utils import load_tsv
 from doslib.encounterregions import EncounterRegions
-from doslib.enemy import EnemyStats
+from doslib.enemy import EnemyStats, Encounter
 from doslib.event import EventTables, EventTextBlock
 from doslib.item import Item, Weapon
 from doslib.items import Items
@@ -104,6 +104,7 @@ def load_enemy_data(rom: Rom, items: Items) -> list:
                                  "drop_item"])
     for item_data in load_tsv("data/EnemyData.tsv"):
         extra = EnemyExtraData(*item_data)
+        enemies[extra.enemy_index].name = extra.name
         enemies[extra.enemy_index].max_hp = extra.max_hp
         enemies[extra.enemy_index].atk = extra.atk
         enemies[extra.enemy_index].pdef = extra.pdef
@@ -124,6 +125,42 @@ def pack_enemy_data(enemies: list) -> dict:
     return {
         0x1DE044: out.get_buffer()
     }
+
+
+def load_formation_data(rom: Rom, enemies: list):
+    formation_data_stream = rom.open_bytestream(0x2288B4, 0x1CD4)
+
+    formations = "\t".join(["formation_index", "power", "config", "unrunnable", "surprise_chance",
+                            "enemy_1", "enemy_1_min", "enemy_1_max",
+                            "enemy_2", "enemy_2_min", "enemy_2_max",
+                            "enemy_3", "enemy_3_min", "enemy_3_max",
+                            "enemy_4", "enemy_4_min", "enemy_4_max"]) + "\n"
+    formation_configs = ["Small", "Large/Small", "Large", "Fiend", "Miniboss", "Flying", "DoS Boss"]
+    formation_id = -1
+    while not formation_data_stream.is_eos():
+        formation = Encounter(formation_data_stream)
+        monsters = ""
+        power = 0
+        formation_id += 1
+        for monster in formation.groups:
+            if monster.enemy_id == 0xff:
+                monsters += f"None\t0\t0\t"
+            else:
+                monsters += f"{enemies[monster.enemy_id].name}\t{monster.min_count}\t{monster.max_count}\t"
+                if enemies[monster.enemy_id].exp_reward == 1:
+                    power += enemies[monster.enemy_id].gil_reward * monster.max_count
+                else:
+                    power += enemies[monster.enemy_id].exp_reward * monster.max_count
+
+        if formation.unrunnable:
+            unrunnable = "yes"
+        else:
+            unrunnable = "no"
+        formations += f"{hex(formation_id)}\t{power}\t{formation_configs[formation.config]}\t{unrunnable}\t" \
+                      f"{formation.surprise_chance}\t{monsters}\n"
+
+    with open("formations.tsv", "w") as formation_tsv:
+        formation_tsv.writelines(formations)
 
 
 def load_chests(rom: Rom) -> list:
@@ -398,7 +435,7 @@ def pick_gear_reward(rng: random.Random, gear_placement: PlacementDetails,
 
 
 def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
-    print(f"Randomizing with seed {seed}")
+    print(f"Randomizing with seed {seed}, {flags.encode()}")
 
     # Start with the list of standard patches to improve gameplay.
     all_patches = load_ips_files("patches/DataPointerConsolidation.ips",
@@ -427,6 +464,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
 
     items = Items(rom)
     enemy_data = load_enemy_data(rom, items)
+    load_formation_data(rom, enemy_data)
 
     encounter_regions = EncounterRegions(rom)
     for region in encounter_regions.overworld_regions:
@@ -577,7 +615,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     if flags.debug:
         trivial_enemies(enemy_data)
 
-    all_patches.update(add_credits(rom))
+    all_patches.update(add_credits(rom, seed, flags))
 
     all_patches.update(event_script_patches)
     all_patches.update(event_tables.get_patches())

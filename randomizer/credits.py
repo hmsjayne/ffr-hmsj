@@ -14,10 +14,11 @@
 
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
+from randomizer.flags import Flags
 from stream.outputstream import OutputStream
 
 
-def add_credits(rom: Rom) -> dict:
+def add_credits(rom: Rom, seed: str, flags: Flags) -> dict:
     credits_lut = rom.get_lut(0x1D871C, 128)
     base_addr = credits_lut[0]
 
@@ -41,10 +42,20 @@ def add_credits(rom: Rom) -> dict:
     duration = OutputStream()
     duration.put_u16(60 * 60)
 
+    # Add the seed + flags to the party creation screen.
+    seed_str = TextBlock.encode_text(f"Seed:\n{seed}\nFlags:\n{flags.encode()}\x00")
+    pointer = OutputStream()
+    pointer.put_u32(0x8227054)
+
     return {
+        # Credits update
         0x016848: duration.get_buffer(),
         0x1D871C: new_lut.get_buffer(),
-        Rom.pointer_to_offset(base_addr): data_stream.get_buffer()
+        Rom.pointer_to_offset(base_addr): data_stream.get_buffer(),
+
+        # Show flags + seed
+        0x227054: seed_str,
+        0x4d8d4: pointer.get_buffer()
     }
 
 
@@ -80,6 +91,7 @@ Playtest:
 Demerine
 leggystarscream
 rabite
+
 
 
 
