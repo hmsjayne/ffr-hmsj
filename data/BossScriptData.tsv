@@ -1,0 +1,64 @@
+Iteration	Enemy Index	Name	Spell Chance	Ability Chance	Spell 1	Spell 2	Spell 3	Spell 4	Spell 5	Spell 6	Spell 7	Spell 8	Ability 1	Ability 2	Ability 3	Ability 4
+0	118	Death Machine\x00	0	32									4	20		
+0	119	Lich\x00	96	0	48	45	46	43	42	41	40	34				
+0	121	Marilith\x00	48	0	41	38	41	38	41	42	41	42				
+0	123	Kraken\x00	0	32									21	21	21	21
+0	125	Tiamat\x00	0	48									26	13	0	16
+0	128	Echidna\x00	40	16	54	41							6			
+0	129	Cerberus\x00	0	24									17			
+0	130	Ahriman\x00	60	32	9								6	11	10	17
+0	131	2-Headed Dragon\x00	0	0												
+0	133	Scarmiglione\x00	48	64	36								16			
+0	134	Cagnazzo\x00	40	0	9	9	9	46	9	9	9	9				
+0	135	Barbariccia\x00	0	32									28	25		
+0	136	Rubicante\x00	66	32	41	41							27			
+0	137	Gilgamesh\x00	40	48	3	31							29	29	29	30
+0	138	Omega\x00	0	32									6			
+0	139	Shinryu\x00	40	64	41								17	10		
+0	140	Atomos\x00	40	32	41								33	34		
+0	141	Typhon\x00	0	32									19			
+0	142	Orthros\x00	0	64									21			
+0	143	Phantom Train\x00	40	32	43								36			
+0	144	Death Gaze\x00	40	0	32	54										
+1	118	Death Machine\x00	0	16									20	20	20	20
+1	119	Lich\x00	96	0	57	55	40	53	42	49	40	34				
+1	121	Marilith\x00	48	0	49	38	49	54	49	42	49	42				
+1	123	Kraken\x00	0	32									21	21	21	21
+1	125	Tiamat\x00	0	64									17	16	10	11
+1	128	Echidna\x00	40	64	54	61							6			
+1	129	Cerberus\x00	0	64									17			
+1	130	Ahriman\x00	40	64	9								6	11	10	17
+1	131	2-Headed Dragon\x00	0	0												
+1	133	Scarmiglione\x00	0	64									16			
+1	134	Cagnazzo\x00	40	0	46	17							24			
+1	135	Barbariccia\x00	0	64									28	25		
+1	136	Rubicante\x00	66	64	49	41							27			
+1	137	Gilgamesh\x00	40	48	3	31							29	30		
+1	138	Omega\x00	0	64									6	31	31	
+1	139	Shinryu\x00	40	64	61								17	24	10	24
+1	140	Atomos\x00	40	64	49								33	34		
+1	141	Typhon\x00	0	64									19			
+1	142	Orthros\x00	0	64									21			
+1	143	Phantom Train\x00	0	96									36			
+1	144	Death Gaze\x00	40	0	32	54	64									
+2	118	Death Machine\x00	0	32									20	20	20	20
+2	119	Lich\x00	96	0	61	62	63	64	61	62	63	64				
+2	121	Marilith\x00	48	0	49	54	49	54	49	56	49	56				
+2	123	Kraken\x00	48	32	43	43	43	43	43	43	43	43	21	21	21	21
+2	125	Tiamat\x00	64	64	50	48	43	41	50	48	43	41	17	16	10	11
+2	128	Echidna\x00	40	64	54	61							6			
+2	129	Cerberus\x00	0	64									17			
+2	130	Ahriman\x00	40	64	9								6	11	10	17
+2	131	2-Headed Dragon\x00	0	0												
+2	133	Scarmiglione\x00	0	64									16			
+2	134	Cagnazzo\x00	40	48	46	17							24			
+2	135	Barbariccia\x00	0	64									28	25		
+2	136	Rubicante\x00	66	64	49	41							27			
+2	137	Gilgamesh\x00	40	48	3	31							29	30		
+2	138	Omega\x00	0	64									6	31	31	
+2	139	Shinryu\x00	40	64	61								17	24	10	24
+2	140	Atomos\x00	40	64	49								33	34		
+2	141	Typhon\x00	0	64									19			
+2	142	Orthros\x00	0	64									21			
+2	143	Phantom Train\x00	0	96									36			
+2	144	Death Gaze\x00	40	0	32	54	64									

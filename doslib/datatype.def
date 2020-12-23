@@ -57,6 +57,14 @@ class: EncounterGroup
     max_count, 8
     unused, 8
 
+class: EnemyName
+    namePtr, 32
+    
+class: EnemyGraphics
+    tileData, 32
+    palette, 32
+    tileArrangement, 32
+
 module: map
 
 class: Npc
