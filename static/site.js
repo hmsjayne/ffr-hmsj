@@ -190,12 +190,14 @@ function updateHash() {
     var standardShops = document.getElementById("standard-shops").checked
     var standardTreasure = document.getElementById("standard-treasure").checked
     var defaultGear = document.getElementById("default-start-gear").checked
+    var defaultBosses = document.getElementById("default-boss-fights").checked
     var levelScale = document.getElementById("exp-scale").value
 
     var flags = originalProgression ? "Op" : "";
     flags += standardShops ? "Sv" : "";
     flags += standardTreasure ? "Tv" : "";
     flags += defaultGear ? "Gv" : "";
+    flags += defaultBosses ? "B" : "";
     flags += "Xp" + (levelScale / 10)
 
     baseFile = getFilename().replace(".gba", "")

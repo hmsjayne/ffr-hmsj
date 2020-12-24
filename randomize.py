@@ -36,7 +36,7 @@ def main() -> int:
                         help="Don't randomize the contents of chests")
     parser.add_argument("--default-start-gear", dest="default_start_gear", action="store_true",
                         help="Don't generate new starting equipment for the classes")
-    parser.add_argument("--no-boss-shuffle", dest="boss_shuffle", action="store_true",
+    parser.add_argument("--default-boss-fights", dest="boss_shuffle", action="store_true",
                         help="Keep original Fiend fights")
     parser.add_argument("--debug", dest="debug", action="store_true", help="Enable debugging")
 
