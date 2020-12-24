@@ -40,6 +40,7 @@ from randomizer.ipsfile import load_ips_files
 from randomizer.placement import Placement, PlacementDetails
 from randomizer.spellgenerator import SpellGenerator
 from randomizer.treasure import InventoryGenerator
+from randomizer.bossshuffle import BossData
 from stream.outputstream import OutputStream
 
 VehiclePosition = namedtuple("VehiclePosition", ["x", "y"])
@@ -460,6 +461,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     spells = Spells(rom)
     chest_data = load_chests(rom)
     map_features = Maps(rom)
+    boss_data = BossData(rom)
     vehicle_starts = load_vehicle_starts(rom)
 
     items = Items(rom)
@@ -471,6 +473,9 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         rng.shuffle(region)
     for region in encounter_regions.map_encounters:
         rng.shuffle(region)
+        
+    if not flags.boss_shuffle:
+        boss_data.randomize_bosses(rng)
 
     classes_data = load_class_data(rom)
     if not flags.default_start_gear:
@@ -624,6 +629,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     all_patches.update(shop_data.get_patches())
     all_patches.update(spells.get_patches())
     all_patches.update(encounter_regions.get_patches())
+    all_patches.update(boss_data.get_patches())
     all_patches.update(pack_enemy_data(enemy_data))
     all_patches.update(pack_chests(chest_data))
     all_patches.update(pack_vehicle_starts(vehicle_starts))

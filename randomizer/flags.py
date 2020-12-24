@@ -21,6 +21,7 @@ class Flags(object):
             self.standard_treasure = parsed.standard_treasure
             self.default_start_gear = parsed.default_start_gear
             self.debug = parsed.debug
+            self.boss_shuffle = parsed.boss_shuffle
 
             if parsed.exp_mult is not None:
                 self.scale_levels = 1.0 / parsed.exp_mult
@@ -32,6 +33,7 @@ class Flags(object):
             self.standard_treasure = False
             self.default_start_gear = False
             self.debug = False
+            self.boss_shuffle = False
             self.scale_levels = 1.0
 
     def encode(self) -> str:
@@ -44,6 +46,8 @@ class Flags(object):
             encoded += "T"
         if not self.default_start_gear:
             encoded += "G"
+        if not self.boss_shuffle:
+            encoded += "B"
         if self.debug:
             encoded += "\\u819a"
         encoded += str(int((self.scale_levels * 10)))

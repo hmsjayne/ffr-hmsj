@@ -45,6 +45,32 @@ class: EnemyStats
     drop_chance, 8
     padding, 8[3]
 
+class: EnemyName
+    namePtr, 32
+    
+class: EnemyGraphics
+    tileData, 32
+    palette, 32
+    tileArrangement, 32
+    
+class: EnemyScript
+    spell_chance, 8
+    ability_chance, 8
+    spell_1, 8
+    spell_2, 8
+    spell_3, 8
+    spell_4, 8
+    spell_5, 8
+    spell_6, 8
+    spell_7, 8
+    spell_8, 8
+    spell_null, 8
+    ability_1, 8
+    ability_2, 8
+    ability_3, 8
+    ability_4, 8
+    ability_null, 8
+
 class: Encounter
     config, 8
     unrunnable, 8
@@ -56,14 +82,6 @@ class: EncounterGroup
     min_count, 8
     max_count, 8
     unused, 8
-
-class: EnemyName
-    namePtr, 32
-    
-class: EnemyGraphics
-    tileData, 32
-    palette, 32
-    tileArrangement, 32
 
 module: map
 
