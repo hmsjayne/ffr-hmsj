@@ -464,7 +464,9 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
 
     items = Items(rom)
     enemy_data = load_enemy_data(rom, items)
-    load_formation_data(rom, enemy_data)
+
+    # Don't load formation data (since we don't do anything with it)
+    # load_formation_data(rom, enemy_data)
 
     encounter_regions = EncounterRegions(rom)
     for region in encounter_regions.overworld_regions:
