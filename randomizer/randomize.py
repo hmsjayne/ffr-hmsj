@@ -179,21 +179,41 @@ def pack_chests(chests: list) -> dict:
     return {0x217FB4: chest_stream.get_buffer()}
 
 
-def get_random_inventory_for_shop(map_index: int, shop_type: str, count: int,
+def get_random_inventory_for_shop(map_index: int, shop_type: str, count: int, ids: bool,
                                   inventory_generator: InventoryGenerator) -> list:
     new_items = []
+
+    # Cornelia Item Shop gets special treatment
+    if map_index == 0x3E:
+        items = inventory_generator.items.get_by_type("item")
+
+        # Ensure Antidote and Gold Needle are in Cornelia
+        new_items.append(items[0xb])
+        new_items.append(items[0xc])
+
+        # Make sure there aren't too many items there...
+        count = max(count, 3)
+
     while len(new_items) < count:
         new_item = inventory_generator.get_inventory(map_index, shop_type)
         if new_item not in new_items:
             new_items.append(new_item)
 
-    new_inventory = []
-    for item in sorted(new_items, key=lambda it: it.sort_order):
-        new_inventory.append(item.id)
-    return new_inventory
+    if ids:
+        new_inventory = []
+        for item in sorted(new_items, key=lambda it: it.sort_order):
+            new_inventory.append(item.id)
+        return new_inventory
+    else:
+        return new_items
 
 
 def randomize_shops(rng: random.Random, maps: Maps, shops: ShopData, inventory_generator: InventoryGenerator):
+    weapon_inventory = get_random_inventory_for_shop(0x0, "weapon", 40, False, inventory_generator)
+    rng.shuffle(weapon_inventory)
+    armor_inventory = get_random_inventory_for_shop(0x0, "armor", 40, False, inventory_generator)
+    rng.shuffle(armor_inventory)
+
     for map_index in range(1, 0x76):
         map_features = maps.get_map(map_index)
         if len(map_features.shops) < 1:
@@ -202,14 +222,24 @@ def randomize_shops(rng: random.Random, maps: Maps, shops: ShopData, inventory_g
         for shop_feature in map_features.shops:
             shop_inventories = shops.shop_inventories[shop_feature.event]
 
-            count = rng.randint(2, 5)
             if len(shop_inventories.items) > 0:
-                shop_inventories.items = get_random_inventory_for_shop(map_index, "item", count, inventory_generator)
+                count = rng.randint(3, 5)
+                shop_inventories.items = get_random_inventory_for_shop(map_index, "item", count, True,
+                                                                       inventory_generator)
             if len(shop_inventories.weapons) > 0:
-                shop_inventories.weapons = get_random_inventory_for_shop(map_index, "weapon", count,
-                                                                         inventory_generator)
+                count = rng.randint(4, 6)
+                items = []
+                for index in range(0, count):
+                    items.append(weapon_inventory.pop())
+                items.sort(key=lambda it: it.sort_order)
+                shop_inventories.weapons = list(map(lambda it: it.id, items))
             if len(shop_inventories.armor) > 0:
-                shop_inventories.armor = get_random_inventory_for_shop(map_index, "armor", count, inventory_generator)
+                count = rng.randint(4, 6)
+                items = []
+                for index in range(0, count):
+                    items.append(armor_inventory.pop())
+                items.sort(key=lambda it: it.sort_order)
+                shop_inventories.armor = list(map(lambda it: it.id, items))
             elif len(shop_inventories.magic) > 0:
                 # Magic shops don't get randomized as much as shuffled...
                 continue
