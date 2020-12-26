@@ -58,8 +58,10 @@ def main() -> int:
     rom_data = bytearray(rom_file.read())
     rom_file.close()
 
+    base_name = rom_file.name.replace(".gba", "")
+    output_name = f"{base_name}_{flags.encode()}_{seed_value}.gba"
     randomized_rom = randomize(rom_data, seed_value, flags)
-    with open("hmsjayne.gba", "wb") as output:
+    with open(output_name, "wb") as output:
         output.write(randomized_rom)
 
     return 0
