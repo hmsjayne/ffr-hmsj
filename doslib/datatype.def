@@ -56,20 +56,10 @@ class: EnemyGraphics
 class: EnemyScript
     spell_chance, 8
     ability_chance, 8
-    spell_1, 8
-    spell_2, 8
-    spell_3, 8
-    spell_4, 8
-    spell_5, 8
-    spell_6, 8
-    spell_7, 8
-    spell_8, 8
+    spells, 8[8]
     spell_null, 8
-    ability_1, 8
-    ability_2, 8
-    ability_3, 8
-    ability_4, 8
-    ability_null, 8
+    abilities, 8[4]
+	ability_null, 8
 
 class: Encounter
     config, 8

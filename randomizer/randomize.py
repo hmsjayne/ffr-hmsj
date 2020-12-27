@@ -119,6 +119,24 @@ def load_enemy_data(rom: Rom, items: Items) -> list:
     return enemies
 
 
+def load_encounter_data(rom: Rom) -> list:
+    encounter_stream = rom.open_bytestream(0x2288B4, 0x1CD4)
+    formations = []
+    while not encounter_stream.is_eos():
+        formations.append(Encounter(encounter_stream))
+    return formations
+
+
+def pack_encounter_data(encounters: list) -> dict:
+    out = OutputStream()
+    for encounter in encounters:
+        encounter.write(out)
+    return {
+        0x2288B4: out.get_buffer(),
+        0x22D3E4: out.get_buffer()
+    }
+
+
 def pack_enemy_data(enemies: list) -> dict:
     out = OutputStream()
     for enemy in enemies:
@@ -493,6 +511,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     map_features = Maps(rom)
     boss_data = BossData(rom)
     vehicle_starts = load_vehicle_starts(rom)
+    encounters = load_encounter_data(rom)
 
     items = Items(rom)
     enemy_data = load_enemy_data(rom, items)
@@ -507,7 +526,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         rng.shuffle(region)
         
     if not flags.boss_shuffle:
-        boss_data.randomize_bosses(rng)
+        boss_data.randomize_bosses(encounters, enemy_data, rng)
 
     classes_data = load_class_data(rom)
     if not flags.default_start_gear:
@@ -662,6 +681,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     all_patches.update(spells.get_patches())
     all_patches.update(encounter_regions.get_patches())
     all_patches.update(boss_data.get_patches())
+    all_patches.update(pack_encounter_data(encounters))
     all_patches.update(pack_enemy_data(enemy_data))
     all_patches.update(pack_chests(chest_data))
     all_patches.update(pack_vehicle_starts(vehicle_starts))

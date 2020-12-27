@@ -20,7 +20,7 @@ from collections import namedtuple
 from doslib.dos_utils import load_tsv
 from stream.outputstream import OutputStream
 
-NewScript = namedtuple("NewScript", ["iteration", "index", "name", "spell_chance", "ability_chance", 
+NewScript = namedtuple("NewScript", ["iteration", "index", "name", "formation_size", "spell_chance", "ability_chance", 
                                      "spell_1", "spell_2", "spell_3", "spell_4", "spell_5", "spell_6", 
                                      "spell_7", "spell_8", "ability_1", "ability_2", "ability_3", "ability_4"])
 
@@ -30,6 +30,8 @@ Fiend1Offsets = [119,121,123,125]
 Fiend2Offsets = [120,122,124,126]
 Fiend1ScriptOffsets = [34,36,38,40]
 Fiend2ScriptOffsets = [35,37,39,41]
+Fiend1Encounters = [122,121,120,119]
+Fiend2Encounters = [115,116,117,118]
 
 class BossData:
     def __init__(self, rom: Rom):
@@ -55,34 +57,40 @@ class BossData:
         while not enemy_script_stream.is_eos():
             self.scripts.append(EnemyScript(enemy_script_stream))
             
-        self.bossData = {}
+        self.boss_data = {}
         for script in load_tsv("data/BossScriptData.tsv"):
             entry = NewScript(*script)
-            if entry.name not in self.bossData:
-                self.bossData[entry.name] = [None,None,None]
-            self.bossData[entry.name][entry.iteration] = entry
-        self.bossList = list(self.bossData.keys())
+            if entry.name not in self.boss_data:
+                self.boss_data[entry.name] = [None,None,None]
+            self.boss_data[entry.name][entry.iteration] = entry
+        self.boss_list = list(self.boss_data.keys())
         
         #Finally, load in the script data from the ROM - we can read in the tsv if/when randomize gets called
     
-    def randomize_bosses(self, rng: random.Random):
-        bossChoices = rng.sample(self.bossList,4)
-        rng.shuffle(bossChoices)
+    def randomize_bosses(self, encounters:list, enemy_data:list, rng: random.Random):
+        boss_choices = rng.sample(self.boss_list,4)
+        rng.shuffle(boss_choices)
         newFiend1s = []
-        newFiend1s.append(self.bossData[bossChoices[0]][0])
-        newFiend1s.append(self.bossData[bossChoices[1]][0])
-        newFiend1s.append(self.bossData[bossChoices[2]][1])
-        newFiend1s.append(self.bossData[bossChoices[3]][1])
+        newFiend1s.append(self.boss_data[boss_choices[0]][0])
+        newFiend1s.append(self.boss_data[boss_choices[1]][0])
+        newFiend1s.append(self.boss_data[boss_choices[2]][1])
+        newFiend1s.append(self.boss_data[boss_choices[3]][1])
         
         newFiend2s = []
-        newFiend2s.append(self.bossData[bossChoices[0]][2])
-        newFiend2s.append(self.bossData[bossChoices[1]][2])
-        newFiend2s.append(self.bossData[bossChoices[2]][2])
-        newFiend2s.append(self.bossData[bossChoices[3]][2])
+        newFiend2s.append(self.boss_data[boss_choices[0]][2])
+        newFiend2s.append(self.boss_data[boss_choices[1]][2])
+        newFiend2s.append(self.boss_data[boss_choices[2]][2])
+        newFiend2s.append(self.boss_data[boss_choices[3]][2])
         
         for idx in range(4):
             fiend1 = newFiend1s[idx]
             fiend2 = newFiend2s[idx]
+            
+            fiend1_encounter = Fiend1Encounters[idx]
+            fiend2_encounter = Fiend2Encounters[idx]
+            encounters[fiend1_encounter].config = fiend1.formation_size
+            encounters[fiend2_encounter].config = fiend2.formation_size
+            
             self.graphics_pointers[Fiend1Offsets[idx]] = self.graphics_pointers[fiend1.index]
             self.graphics_pointers[Fiend2Offsets[idx]] = self.graphics_pointers[fiend2.index]
             self.attack_animations[Fiend1Offsets[idx]] = self.attack_animations[fiend1.index]
@@ -91,38 +99,39 @@ class BossData:
             self.name_pointers[Fiend2Offsets[idx]] = self.name_pointers[fiend2.index]
             
             fiend1Script = Fiend1ScriptOffsets[idx]
-            
-            self.scripts[fiend1Script].spell_chance = fiend1.spell_chance
-            self.scripts[fiend1Script].ability_chance = fiend1.ability_chance
-            self.scripts[fiend1Script].spell_1 = fiend1.spell_1
-            self.scripts[fiend1Script].spell_2 = fiend1.spell_2
-            self.scripts[fiend1Script].spell_3 = fiend1.spell_3
-            self.scripts[fiend1Script].spell_4 = fiend1.spell_4
-            self.scripts[fiend1Script].spell_5 = fiend1.spell_5
-            self.scripts[fiend1Script].spell_6 = fiend1.spell_6
-            self.scripts[fiend1Script].spell_7 = fiend1.spell_7
-            self.scripts[fiend1Script].spell_8 = fiend1.spell_8
-            self.scripts[fiend1Script].ability_1 = fiend1.ability_1
-            self.scripts[fiend1Script].ability_2 = fiend1.ability_2
-            self.scripts[fiend1Script].ability_3 = fiend1.ability_3
-            self.scripts[fiend1Script].ability_4 = fiend1.ability_4
-            
             fiend2Script = Fiend2ScriptOffsets[idx]
             
+            fiend1_spells = [fiend1.spell_1, fiend1.spell_2, fiend1.spell_3, fiend1.spell_4,
+                            fiend1.spell_5, fiend1.spell_6, fiend1.spell_7, fiend1.spell_8]
+            fiend2_spells = [fiend2.spell_1, fiend2.spell_2, fiend2.spell_3, fiend2.spell_4,
+                            fiend2.spell_5, fiend2.spell_6, fiend2.spell_7, fiend2.spell_8]
+            
+            fiend1_abilities = [fiend1.ability_1, fiend1.ability_2, fiend1.ability_3, fiend1.ability_4]
+            fiend2_abilities = [fiend2.ability_1, fiend2.ability_2, fiend2.ability_3, fiend2.ability_4]
+            
+            self.scripts[fiend1Script].spell_chance = fiend1.spell_chance
             self.scripts[fiend2Script].spell_chance = fiend2.spell_chance
+            self.scripts[fiend1Script].ability_chance = fiend1.ability_chance
             self.scripts[fiend2Script].ability_chance = fiend2.ability_chance
-            self.scripts[fiend2Script].spell_1 = fiend2.spell_1
-            self.scripts[fiend2Script].spell_2 = fiend2.spell_2
-            self.scripts[fiend2Script].spell_3 = fiend2.spell_3
-            self.scripts[fiend2Script].spell_4 = fiend2.spell_4
-            self.scripts[fiend2Script].spell_5 = fiend2.spell_5
-            self.scripts[fiend2Script].spell_6 = fiend2.spell_6
-            self.scripts[fiend2Script].spell_7 = fiend2.spell_7
-            self.scripts[fiend2Script].spell_8 = fiend2.spell_8
-            self.scripts[fiend2Script].ability_1 = fiend2.ability_1
-            self.scripts[fiend2Script].ability_2 = fiend2.ability_2
-            self.scripts[fiend2Script].ability_3 = fiend2.ability_3
-            self.scripts[fiend2Script].ability_4 = fiend2.ability_4
+            for idx in range(8):
+                self.scripts[fiend1Script].spells[idx] = fiend1_spells[idx]
+                self.scripts[fiend2Script].spells[idx] = fiend2_spells[idx]
+                
+            for idx in range(4):
+                self.scripts[fiend1Script].abilities[idx] = fiend1_abilities[idx]
+                self.scripts[fiend2Script].abilities[idx] = fiend2_abilities[idx]
+            
+            old_enemy_index_1 = fiend1.index
+            old_enemy_index_2 = fiend1.index
+            if old_enemy_index_1 in Fiend1Offsets:
+                old_enemy_index_2 += 1
+            
+            for idx_pair in [[Fiend1Offsets[idx], old_enemy_index_1],[Fiend2Offsets[idx], old_enemy_index_2]]:
+                enemy_data[idx_pair[0]].status_atk_elem = enemy_data[idx_pair[1]].status_atk_elem
+                enemy_data[idx_pair[0]].status_atk_ailment = enemy_data[idx_pair[1]].status_atk_ailment
+                enemy_data[idx_pair[0]].elem_weakness = enemy_data[idx_pair[1]].elem_weakness
+                enemy_data[idx_pair[0]].elem_resists = enemy_data[idx_pair[1]].elem_resists
+
     
     def get_patches(self):
         out_name_pointers = OutputStream()

@@ -43,7 +43,11 @@ def solve_placement_for_seed(seed: int) -> tuple:
         "--outf=2"
     ]
 
-    clingo_out = json.loads(run(command, stdout=PIPE).stdout)
+    try:
+        clingo_out = json.loads(run(command, stdout=PIPE).stdout)
+    except:
+        command[0] = "clingo"
+        clingo_out = json.loads(run(command, stdout=PIPE).stdout)
     pairings = clingo_out['Call'][0]['Witnesses'][0]['Value']
 
     ki_placement = []
