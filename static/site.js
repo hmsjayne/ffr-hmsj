@@ -218,6 +218,7 @@ function updateForms() {
             document.getElementById("standard-shops").checked = part.indexOf("Sv") >= 0
             document.getElementById("standard-treasure").checked = part.indexOf("Tv") >= 0
             document.getElementById("default-start-gear").checked = part.indexOf("Gv") >= 0
+            document.getElementById("default-boss-fights").checked = part.indexOf("B") >= 0
 
             if (part.indexOf("Xp") >= 0) {
                 scale = parseInt(part.substring(part.indexOf("Xp") + 2)) * 10
