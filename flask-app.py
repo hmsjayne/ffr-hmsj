@@ -39,6 +39,7 @@ def create_patch():
     flags.standard_shops = flags_string.find("Sv") != -1
     flags.standard_treasure = flags_string.find("Tv") != -1
     flags.default_start_gear = flags_string.find("Gv") != -1
+    flags.boss_shuffle = flags_string.find("B") != -1
 
     xp_start = flags_string.find("Xp")
     if xp_start >= 0:
