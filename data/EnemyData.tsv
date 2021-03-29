@@ -118,13 +118,13 @@ enemy_index	name	max_hp	atk	pdef	mdef	drop_chance	drop_type	drop_item
 0x74	Crazy Horse\x00	64	10	2	40	5	item	\u874fPotion
 0x75	Nightmare\x00	200	30	24	100	0	None	None
 0x76	Death Machine\x00	2000	128	80	200	5	armor	\u8748Genji Armor
-0x77	Lich\x00	1200	40	40	120	2	item	\u874fDry Ether
+0x77	Lich\x00	1200	40	40	120	100	armor	\u874bRibbon
 0x78	Lich\x00	2800	50	80	140	0	None	None
-0x79	Marilith\x00	1440	40	50	183	3	item	\u8750Golden Apple
+0x79	Marilith\x00	1440	40	50	183	100	armor	\u874bRibbon
 0x7a	Marilith\x00	3200	60	80	183	0	None	None
-0x7b	Kraken\x00	1800	50	60	160	2	weapon	\u8741Kikuichimonji
+0x7b	Kraken\x00	1800	50	60	160	100	armor	\u874bRibbon
 0x7c	Kraken\x00	3600	60	80	200	8	item	\u8750Eye Drops
-0x7d	Tiamat\x00	2400	53	80	200	0	None	None
+0x7d	Tiamat\x00	2400	53	80	200	100	armor	\u874bRibbon
 0x7e	Tiamat\x00	5500	75	90	200	4	weapon	\u8746Rune Staff
 0x7f	Chaos\x00	20000	170	100	200	0	None	None
 0x80	Echidna\x00	4800	50	50	70	100	item	\u874fX-Potion

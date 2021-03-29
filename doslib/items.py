@@ -24,7 +24,7 @@ ItemDataExtra = namedtuple("ItemDataExtra",
 
 
 class Items(object):
-    def __init__(self, rom: Rom):
+    def __init__(self, rom: Rom, new_weights: bool):
         self.by_type = [
             [],  # dummy
             [],  # items
@@ -41,8 +41,9 @@ class Items(object):
         armor_stream = rom.open_bytestream(0x19fa58, 0x1a021b - 0x19fa58)
         while not armor_stream.is_eos():
             self.by_type[3].append(Armor(armor_stream))
+        data_file = "data/ItemData_2.tsv" if new_weights else "data/ItemData.tsv"
 
-        for item_data in load_tsv("data/ItemData.tsv"):
+        for item_data in load_tsv(data_file):
             extra = ItemDataExtra(*item_data)
 
             index = Items.name_to_index(extra.type)

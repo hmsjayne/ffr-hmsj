@@ -27,24 +27,28 @@ MapToArea = namedtuple("MapToArea", ["map_index", "name", "area"])
 
 
 class InventoryGenerator(object):
-    def __init__(self, seed: str, items: Items):
+    def __init__(self, seed: str, items: Items, new_distribution: bool):
         self.rng = random.Random()
         self.rng.seed(seed)
 
         self.items = deepcopy(items)
 
         self.chests_data = []
-        for chest in load_tsv("data/ChestData.tsv"):
+        chest_data_file = "data/ChestData.tsv"
+        map_to_area_file = "data/MapToArea_2.tsv" if new_distribution else "data/MapToArea.tsv"
+        area_weights_file = "data/AreaWeights_2.tsv" if new_distribution else "data/AreaWeights.tsv"
+        for chest in load_tsv(chest_data_file):
             self.chests_data.append(ChestData(*chest))
 
         self.maps_to_area = {}
-        for map_area in load_tsv("data/MapToArea.tsv"):
+        for map_area in load_tsv(map_to_area_file):
             map_area_data = MapToArea(*map_area)
             self.maps_to_area[map_area_data.map_index] = map_area_data.area
 
         self.area_weights = {}
-        for area_weight in load_tsv("data/AreaWeights.tsv"):
+        for area_weight in load_tsv(area_weights_file):
             self.area_weights[area_weight[0]] = area_weight[1:]
+
 
         self.item_grades = {}
         for item_type in self.items.by_type:
@@ -53,7 +57,7 @@ class InventoryGenerator(object):
                     self.item_grades[item.grade] = []
                 if item not in self.item_grades[item.grade]:
                     self.item_grades[item.grade].append(item)
-
+        
         # Add gil chests too
         gil = Item()
         gil.item_type = "gil"
@@ -91,6 +95,7 @@ class InventoryGenerator(object):
     def get_inventory(self, map_index: int, item_type: str = None) -> Item:
         area = self.maps_to_area[map_index]
         area_weight = self.area_weights[area]
+        #print(area_weight)
         index_to_letter = ["S", "A", "B", "C", "D", "E", "F"]
 
         item_pool = []
