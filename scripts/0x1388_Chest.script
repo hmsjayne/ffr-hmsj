@@ -1,0 +1,19 @@
+; Event script for normal chests
+begin script=0x1388
+    jump_chest_empty .Label_1
+    music 0x0 0x68
+    load_text WINDOW_TOP 0xf0
+    show_dialog
+    close_dialog DIALOG_WAIT
+    jump .Label_2
+    .Label_1:
+    load_text WINDOW_TOP 0xf2
+    show_dialog
+    close_dialog DIALOG_WAIT
+    jump .Label_2
+    load_text WINDOW_TOP 0xf1
+    show_dialog
+    close_dialog DIALOG_WAIT
+    db 0xd 0x4 0x1 0xff
+    .Label_2:
+    end_event
