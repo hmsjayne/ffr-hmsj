@@ -14,7 +14,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, FileType
 
 from doslib.rom import Rom
 from event.e2s import disassemble_event
@@ -22,12 +22,15 @@ from event.e2s import disassemble_event
 
 def main():
     parser = ArgumentParser(description="Final Fantasy: Dawn of Souls Event->Script")
-    parser.add_argument("rom", metavar="ROM file", type=str, help="ROM source file")
+    parser.add_argument("rom_file", type=FileType('rb', 0), help="The ROM file to randomize.")
     parser.add_argument("--event", dest="event", type=str, help="Event to disassemble")
     parsed = parser.parse_args()
 
     # Opening the ROM is simple.
-    rom = Rom(parsed.rom)
+    rom_file = parsed.rom_file
+    rom_data = bytearray(rom_file.read())
+    rom_file.close()
+    rom = Rom(rom_data)
 
     # The event id is a bit trickier. The parser won't recognize hex values, so we need to accept it as a
     # string and convert it ourselves.
