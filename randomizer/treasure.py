@@ -95,7 +95,6 @@ class InventoryGenerator(object):
     def get_inventory(self, map_index: int, item_type: str = None) -> Item:
         area = self.maps_to_area[map_index]
         area_weight = self.area_weights[area]
-        #print(area_weight)
         index_to_letter = ["S", "A", "B", "C", "D", "E", "F"]
 
         item_pool = []

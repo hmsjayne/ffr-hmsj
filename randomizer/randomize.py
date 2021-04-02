@@ -94,7 +94,7 @@ def pack_xp_requirements(exp_for_level: list) -> dict:
     return {0x1BE3B4: level_data.get_buffer()}
 
 
-def load_enemy_data(rom: Rom, items: Items, new_item: bool) -> list:
+def load_enemy_data(rom: Rom, items: Items, fiend_ribbons: bool) -> list:
     enemy_data_stream = rom.open_bytestream(0x1DE044, 0x1860)
     enemies = []
     while not enemy_data_stream.is_eos():
@@ -103,9 +103,7 @@ def load_enemy_data(rom: Rom, items: Items, new_item: bool) -> list:
     EnemyExtraData = namedtuple("EnemyExtraData",
                                 ["enemy_index", "name", "max_hp", "atk", "pdef", "mdef", "drop_chance", "drop_type",
                                  "drop_item"])
-    file_name = "data/EnemyData.tsv"
-    if new_item:
-        fileName = "data/EnemyData_2.tsv"
+    file_name = "data/EnemyData_2.tsv" if fiend_ribbons else "data/EnemyData.tsv"
     for item_data in load_tsv(file_name):
         extra = EnemyExtraData(*item_data)
         enemies[extra.enemy_index].name = extra.name
@@ -510,7 +508,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     encounters = load_encounter_data(rom)
 
     items = Items(rom, flags.new_items)
-    enemy_data = load_enemy_data(rom, items, flags.new_items)
+    enemy_data = load_enemy_data(rom, items, flags.fiend_ribbons)
 
     # Don't load formation data (since we don't do anything with it)
     # load_formation_data(rom, enemy_data)

@@ -41,6 +41,7 @@ def create_patch():
     flags.default_start_gear = flags_string.find("Gv") != -1
     flags.boss_shuffle = flags_string.find("B") != -1
     flags.new_items = flags_string.find("Ni") != -1
+    flags.fiend_ribbons = flags_string.find("R") != -1
 
     xp_start = flags_string.find("Xp")
     if xp_start >= 0:

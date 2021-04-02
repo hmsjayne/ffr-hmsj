@@ -40,6 +40,8 @@ def main() -> int:
                         help="Keep original Fiend fights")
     parser.add_argument("--new-items", dest="new_items", action="store_true",
                         help="Experimental Item Distribution")
+    parser.add_argument("--fiend_ribbons", dest="fiend_ribbons", action="store_true",
+                        help="Fiend 1's drop ribbons")
     parser.add_argument("--debug", dest="debug", action="store_true", help="Enable debugging")
 
     parsed = parser.parse_args()

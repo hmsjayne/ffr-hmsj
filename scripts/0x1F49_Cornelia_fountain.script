@@ -8,7 +8,7 @@ begin script=0x1f49
     ; since it's accessible directly from the start
     ; of the game.
     ; An example would be the following command:
-    ; load_map 0x5 13 37 1 0
+    load_map 0x5 13 37 1 0
     ;
     ; That would teleport the party to map 5
     ; (Earth Cave B5), at the location 13, 37.
