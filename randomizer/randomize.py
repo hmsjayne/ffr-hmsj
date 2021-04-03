@@ -94,7 +94,7 @@ def pack_xp_requirements(exp_for_level: list) -> dict:
     return {0x1BE3B4: level_data.get_buffer()}
 
 
-def load_enemy_data(rom: Rom, items: Items) -> list:
+def load_enemy_data(rom: Rom, items: Items, fiend_ribbons: bool) -> list:
     enemy_data_stream = rom.open_bytestream(0x1DE044, 0x1860)
     enemies = []
     while not enemy_data_stream.is_eos():
@@ -103,7 +103,8 @@ def load_enemy_data(rom: Rom, items: Items) -> list:
     EnemyExtraData = namedtuple("EnemyExtraData",
                                 ["enemy_index", "name", "max_hp", "atk", "pdef", "mdef", "drop_chance", "drop_type",
                                  "drop_item"])
-    for item_data in load_tsv("data/EnemyData.tsv"):
+    file_name = "data/EnemyData_2.tsv" if fiend_ribbons else "data/EnemyData.tsv"
+    for item_data in load_tsv(file_name):
         extra = EnemyExtraData(*item_data)
         enemies[extra.enemy_index].name = extra.name
         enemies[extra.enemy_index].max_hp = extra.max_hp
@@ -228,10 +229,6 @@ def get_random_inventory_for_shop(map_index: int, shop_type: str, count: int, id
 
 
 def randomize_shops(rng: random.Random, maps: Maps, shops: ShopData, inventory_generator: InventoryGenerator):
-    weapon_inventory = get_random_inventory_for_shop(0x0, "weapon", 40, False, inventory_generator)
-    rng.shuffle(weapon_inventory)
-    armor_inventory = get_random_inventory_for_shop(0x0, "armor", 40, False, inventory_generator)
-    rng.shuffle(armor_inventory)
 
     for map_index in range(1, 0x76):
         map_features = maps.get_map(map_index)
@@ -246,17 +243,15 @@ def randomize_shops(rng: random.Random, maps: Maps, shops: ShopData, inventory_g
                 shop_inventories.items = get_random_inventory_for_shop(map_index, "item", count, True,
                                                                        inventory_generator)
             if len(shop_inventories.weapons) > 0:
-                count = rng.randint(4, 6)
-                items = []
-                for index in range(0, count):
-                    items.append(weapon_inventory.pop())
+                count = rng.randint(3, 5)
+                items = get_random_inventory_for_shop(map_index, "weapon", count, False,
+                                                                       inventory_generator)
                 items.sort(key=lambda it: it.sort_order)
                 shop_inventories.weapons = list(map(lambda it: it.id, items))
             if len(shop_inventories.armor) > 0:
-                count = rng.randint(4, 6)
-                items = []
-                for index in range(0, count):
-                    items.append(armor_inventory.pop())
+                count = rng.randint(3, 5)
+                items = get_random_inventory_for_shop(map_index, "armor", count, False,
+                                                                       inventory_generator)
                 items.sort(key=lambda it: it.sort_order)
                 shop_inventories.armor = list(map(lambda it: it.id, items))
             elif len(shop_inventories.magic) > 0:
@@ -485,7 +480,6 @@ def pick_gear_reward(rng: random.Random, gear_placement: PlacementDetails,
 
 def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     print(f"Randomizing with seed {seed}, {flags.encode()}")
-
     # Start with the list of standard patches to improve gameplay.
     all_patches = load_ips_files("patches/DataPointerConsolidation.ips",
                                  "patches/Earth__CitadelMap.ips",
@@ -513,8 +507,8 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     vehicle_starts = load_vehicle_starts(rom)
     encounters = load_encounter_data(rom)
 
-    items = Items(rom)
-    enemy_data = load_enemy_data(rom, items)
+    items = Items(rom, flags.new_items)
+    enemy_data = load_enemy_data(rom, items, flags.fiend_ribbons)
 
     # Don't load formation data (since we don't do anything with it)
     # load_formation_data(rom, enemy_data)
@@ -529,11 +523,24 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         boss_data.randomize_bosses(encounters, enemy_data, rng)
 
     classes_data = load_class_data(rom)
+
+    inventory_generator = InventoryGenerator(seed, items, flags.new_items)
+    if not flags.standard_shops:
+        randomize_shops(rng, map_features, shop_data, inventory_generator)
+
+        spell_generator = SpellGenerator(seed, spells)
+        spell_shuffle(map_features, shop_data, spells, spell_generator)
+
+    inventory_generator.update_with_new_shops(shop_data)
+    if not flags.standard_treasure:
+        randomize_treasure(rng, map_features, chest_data, inventory_generator)
+        
     if not flags.default_start_gear:
         base_weapons = []
         base_armors = []
 
         # Find weapons & armor that can be used by the base classes
+        # Also cap the power level of the gear
         for weapon in items.get_by_type("weapon"):
             if weapon.id > 0 and weapon.equip_classes & 0x003f != 0:
                 base_weapons.append(weapon)
@@ -563,17 +570,6 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         for level_req in level_reqs:
             scaled_level_reqs.append(int(level_req * flags.scale_levels))
         all_patches.update(pack_xp_requirements(scaled_level_reqs))
-
-    inventory_generator = InventoryGenerator(seed, items)
-    if not flags.standard_shops:
-        randomize_shops(rng, map_features, shop_data, inventory_generator)
-
-        spell_generator = SpellGenerator(seed, spells)
-        spell_shuffle(map_features, shop_data, spells, spell_generator)
-
-    inventory_generator.update_with_new_shops(shop_data)
-    if not flags.standard_treasure:
-        randomize_treasure(rng, map_features, chest_data, inventory_generator)
 
     # The key feature of HMS Janye is starting with the Ship (the HMS Janye), so move the ship to Cornelia harbor.
     vehicle_starts["ship"] = VehiclePosition(x=2328, y=2600)
@@ -687,5 +683,5 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     all_patches.update(pack_vehicle_starts(vehicle_starts))
 
     randomized_rom = rom.apply_patches(all_patches)
-
+    print("Randomization Finished")
     return randomized_rom.rom_data

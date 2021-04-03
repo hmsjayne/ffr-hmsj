@@ -1,0 +1,196 @@
+enemy_index	name	max_hp	atk	pdef	mdef	drop_chance	drop_type	drop_item
+0x0	Goblin\x00	8	4	4	16	0	None	None
+0x1	Goblin Guard\x00	16	8	6	23	3	item	\u874fPotion
+0x2	Wolf\x00	20	8	0	28	0	None	None
+0x3	Warg Wolf\x00	72	14	0	46	4	item	\u8750Antidote
+0x4	Werewolf\x00	68	14	6	45	0	None	None
+0x5	Winter Wolf\x00	92	25	0	55	2	armor	\u874aIce Shield
+0x6	Lizard\x00	92	18	12	55	0	None	None
+0x7	Fire Lizard\x00	296	31	18	143	0	None	None
+0x8	Basilisk\x00	196	30	20	91	7	item	\u8750Gold Needle
+0x9	Hill Gigas\x00	240	38	12	120	3	item	\u8751Tent
+0xa	Ice Gigas\x00	336	60	16	150	0	None	None
+0xb	Fire Gigas\x00	300	73	20	135	0	None	None
+0xc	Sahagin\x00	28	10	4	28	5	item	\u874fPotion
+0xd	Sahagin Chief\x00	64	15	8	46	0	None	None
+0xe	Sahagin Prince\x00	204	47	20	101	0	None	None
+0xf	Pirate\x00	24	10	0	35	2	armor	\u874aLeather Shield
+0x10	Buccaneer\x00	50	14	6	37	3	weapon	\u8740Saber
+0x11	Shark\x00	120	22	0	70	0	None	None
+0x12	White Shark\x00	344	50	8	170	3	weapon	\u8740Wyrmkiller
+0x13	Bigeyes\x00	10	4	0	14	0	None	None
+0x14	Deepeyes\x00	304	30	16	156	0	None	None
+0x15	Skeleton\x00	10	10	0	17	4	item	\u8750Echo Grass
+0x16	Bloodbones\x00	144	26	12	76	0	None	None
+0x17	Gigas Worm\x00	56	17	8	40	0	None	None
+0x18	Crawler\x00	84	1	8	51	0	None	None
+0x19	Hyenadon\x00	120	22	4	76	1	item	\u8750Power Plus
+0x1a	Hellhound\x00	192	30	8	103	0	None	None
+0x1b	Ogre\x00	100	18	10	65	0	None	None
+0x1c	Ogre Chief\x00	132	23	14	71	0	None	None
+0x1d	Ogre Mage\x00	144	23	10	80	2	item	\u8750Eye Drops
+0x1e	Cobra\x00	56	6	6	46	0	None	None
+0x1f	Anaconda\x00	80	22	10	56	0	None	None
+0x20	Sea Snake\x00	224	35	12	116	0	None	None
+0x21	Scorpion\x00	84	22	10	55	3	item	\u8750Spider\u8166s Silk
+0x22	Sea Scorpion\x00	148	35	18	85	0	None	None
+0x23	Minotaur\x00	164	22	4	95	6	weapon	\u8742Knife
+0x24	Minotaur Zombie\x00	224	40	14	116	1	weapon	\u8744Great Axe
+0x25	Troll\x00	184	24	12	100	0	None	None
+0x26	Sea Troll\x00	216	40	20	110	0	None	None
+0x27	Shadow\x00	50	10	0	37	0	None	None
+0x28	Wraith\x00	86	22	4	52	1	weapon	\u8746Crosier
+0x29	Specter\x00	114	40	12	67	0	None	None
+0x2a	Ghost\x00	180	93	30	85	0	None	None
+0x2b	Zombie\x00	20	10	0	25	2	weapon	\u8746Staff
+0x2c	Ghoul\x00	48	8	6	36	0	None	None
+0x2d	Ghast\x00	56	8	10	40	0	None	None
+0x2e	Wight\x00	52	20	12	45	0	None	None
+0x2f	Purple Worm\x00	448	65	10	200	3	item	\u8750Emergency Exit
+0x30	Sand Worm\x00	200	46	14	103	0	None	None
+0x31	Lava Worm\x00	280	50	31	143	0	None	None
+0x32	Evil Eye\x00	162	30	30	92	0	None	None
+0x33	Death Eye\x00	360	120	60	160	1	item	\u874fElixir
+0x34	Medusa\x00	68	20	10	55	0	None	None
+0x35	Earth Medusa\x00	96	11	12	70	0	None	None
+0x36	Weretiger\x00	160	30	16	93	2	item	\u8751Sleeping Bag
+0x37	Rakshasa\x00	110	20	30	62	0	None	None
+0x38	Ankheg\x00	222	39	20	116	0	None	None
+0x39	Remorazz\x00	320	73	24	185	0	None	None
+0x3a	Lesser Tiger\x00	132	22	8	85	4	item	\u874fX-Potion
+0x3b	Sabertooth\x00	200	24	8	106	0	None	None
+0x3c	Vampire\x00	280	76	26	75	0	None	None
+0x3d	Vampire Lord\x00	300	90	28	84	3	item	\u8750Hermes\u8166 Shoes
+0x3e	Gargoyle\x00	80	12	8	53	0	None	None
+0x3f	Horned Devil\x00	94	10	32	127	0	None	None
+0x40	Earth Elemental\x00	288	66	20	130	3	item	\u8750Remedy
+0x41	Fire Elemental\x00	276	50	20	130	0	None	None
+0x42	White Dragon\x00	200	53	8	196	0	None	None
+0x43	Red Dragon\x00	248	75	30	200	0	None	None
+0x44	Dragon Zombie\x00	268	56	30	135	1	item	\u874fMegalixir
+0x45	Green Slime\x00	24	1	255	36	2	item	\u874fHi-Potion
+0x46	Gray Ooze\x00	76	30	7	55	0	None	None
+0x47	Ochre Jelly\x00	76	32	6	55	0	None	None
+0x48	Black Flan\x00	156	49	255	85	0	None	None
+0x49	Black Widow\x00	28	10	0	28	0	None	None
+0x4a	Tarantula\x00	64	5	12	46	0	None	None
+0x4b	Manticore\x00	164	22	8	95	3	item	\u8751Tent
+0x4c	Sphinx\x00	228	23	12	115	0	None	None
+0x4d	Baretta\x00	256	60	38	130	0	None	None
+0x4e	Desert Baretta\x00	352	98	48	156	0	None	None
+0x4f	Mummy\x00	80	30	20	60	0	None	None
+0x50	King Mummy\x00	188	43	24	95	0	None	None
+0x51	Cockatrice\x00	50	1	4	47	7	item	\u8750Gold Needle
+0x52	Pyrolisk\x00	44	20	4	45	2	item	\u8750Gold Needle
+0x53	Wyvern\x00	212	30	12	115	0	None	None
+0x54	Wyrm\x00	260	40	22	131	0	None	None
+0x55	Allosaurus\x00	480	65	10	200	1	item	\u874fStrength Tonic
+0x56	Tyrannosaur\x00	600	115	10	200	1	item	\u874fGiant\u8166s Tonic
+0x57	Piranha\x00	92	22	0	68	0	None	None
+0x58	Red Piranha\x00	172	37	20	83	0	None	None
+0x59	Crocodile\x00	184	42	16	103	3	item	\u8751Cottage
+0x5a	White Croc\x00	288	56	20	143	5	item	\u874fHi-Potion
+0x5b	Ochu\x00	208	20	24	116	0	None	None
+0x5c	Neochu\x00	344	35	32	170	0	None	None
+0x5d	Hydra\x00	212	30	14	116	0	None	None
+0x5e	Fire Hydra\x00	182	20	14	103	2	item	\u8750Red Fang
+0x5f	Guardian\x00	200	25	40	110	0	None	None
+0x60	Soldier\x00	400	102	48	160	4	item	\u8750Phoenix Down
+0x61	Water Elemental\x00	300	69	20	130	0	None	None
+0x62	Air Elemental\x00	358	53	4	130	2	item	\u874fEther
+0x63	Water Naga\x00	356	9	8	116	0	None	None
+0x64	Spirit Naga\x00	420	7	16	143	0	None	None
+0x65	Chimera\x00	300	30	20	130	0	None	None
+0x66	Rhyos\x00	350	40	18	143	5	weapon	\u8746Power Staff
+0x67	Piscodemon\x00	84	30	16	98	0	None	None
+0x68	Mindflayer\x00	112	1	12	187	3	item	\u8750Phoenix Down
+0x69	Garland\x00	212	15	8	64	2	weapon	\u8740Longsword
+0x6a	Green Dragon\x00	352	72	16	200	0	None	None
+0x6b	Blue Dragon\x00	454	92	20	200	0	None	None
+0x6c	Clay Golem\x00	176	64	7	93	1	item	\u874fPotion
+0x6d	Stone Golem\x00	200	70	16	110	0	None	None
+0x6e	Iron Golem\x00	304	93	100	143	0	None	None
+0x6f	Black Knight\x00	260	44	38	135	1	weapon	\u8740Deathbringer
+0x70	Death Knight\x00	190	55	32	173	0	None	None
+0x71	Astos\x00	420	30	18	170	4	weapon	\u8740Mythril Sword
+0x72	Dark Wizard\x00	105	26	40	170	3	item	\u8750Red Curtain
+0x73	Dark Fighter\x00	200	40	38	186	0	None	None
+0x74	Crazy Horse\x00	64	10	2	40	5	item	\u874fPotion
+0x75	Nightmare\x00	200	30	24	100	0	None	None
+0x76	Death Machine\x00	2000	128	80	200	5	armor	\u8748Genji Armor
+0x77	Lich\x00	1200	40	40	120	100	armor	\u874bRibbon
+0x78	Lich\x00	2800	50	80	140	0	None	None
+0x79	Marilith\x00	1440	40	50	183	100	armor	\u874bRibbon
+0x7a	Marilith\x00	3200	60	80	183	0	None	None
+0x7b	Kraken\x00	1800	50	60	160	100	armor	\u874bRibbon
+0x7c	Kraken\x00	3600	60	80	200	8	item	\u8750Eye Drops
+0x7d	Tiamat\x00	2400	53	80	200	100	armor	\u874bRibbon
+0x7e	Tiamat\x00	5500	75	90	200	4	weapon	\u8746Rune Staff
+0x7f	Chaos\x00	20000	170	100	200	0	None	None
+0x80	Echidna\x00	4800	50	50	70	100	item	\u874fX-Potion
+0x81	Cerberus\x00	4000	40	50	60	100	weapon	\u8741Kotetsu
+0x82	Ahriman\x00	5000	60	50	100	100	item	\u874fDry Ether
+0x83	2-Headed Dragon\x00	4500	60	50	50	100	armor	\u8747Bard\u8166s Tunic
+0x84	Scarmiglione\x00	4000	19	10	140	0	None	None
+0x85	Scarmiglione\x00	7046	46	20	140	100	item	\u8750Lunar Curtain
+0x86	Cagnazzo\x00	7968	44	20	180	100	item	\u8750Light Curtain
+0x87	Barbariccia\x00	12954	88	10	190	100	weapon	\u8740Braveheart
+0x88	Rubicante\x00	15000	88	40	220	100	weapon	\u8741Kikuichimonji
+0x89	Gilgamesh\x00	8888	70	50	220	100	armor	\u874cGenji Gloves
+0x8a	Omega\x00	35000	115	190	220	100	weapon	\u8741Murasame
+0x8b	Shinryu\x00	35000	220	60	220	100	weapon	\u8740Ragnarok
+0x8c	Atomos\x00	13000	50	70	200	100	weapon	\u8746Judgment Staff
+0x8d	Typhon\x00	10000	70	100	190	100	armor	\u874bGenji Helm
+0x8e	Orthros\x00	17000	60	40	180	100	weapon	\u8746Rune Staff
+0x8f	Phantom Train\x00	9999	200	80	180	100	item	\u874fMegalixir
+0x90	Death Gaze\x00	30000	90	150	220	100	weapon	\u8740Lightbringer
+0x91	Devil Wizard\x00	700	50	50	170	0	None	None
+0x92	Abyss Worm\x00	2500	95	30	200	15	item	\u874fMegalixir
+0x93	Elm Gigas\x00	250	40	15	120	0	None	None
+0x94	Flare Gigas\x00	1050	80	30	150	8	item	\u8750Red Curtain
+0x95	Unicorn\x00	150	20	8	80	15	item	\u874fEther
+0x96	Yellow Ogre\x00	150	25	15	60	0	None	None
+0x97	Mad Ogre\x00	1000	75	40	50	8	item	\u874fStrength Tonic
+0x98	Mage Chimera\x00	600	55	30	150	8	item	\u8750Hermes\u8166 Shoes
+0x99	Yellow Dragon\x00	500	50	16	200	12	item	\u8750Lunar Curtain
+0x9a	Holy Dragon\x00	1374	100	50	200	3	item	\u874fDry Ether
+0x9b	Mythril Golem\x00	848	84	160	170	1	weapon	\u8740Dark Claymore
+0x9c	Killer Shark\x00	1200	60	20	120	0	None	None
+0x9d	Death Manticore\x00	243	22	12	90	0	None	None
+0x9e	Blood Tiger\x00	213	22	16	90	0	None	None
+0x9f	Dark Eye\x00	450	45	20	156	0	None	None
+0xa0	Bloody Eye\x00	720	100	80	160	20	item	\u8750Remedy
+0xa1	Flood Gigas\x00	400	45	10	50	0	None	None
+0xa2	Poison Eagle\x00	200	30	5	52	15	item	\u8750Cockatrice Claw
+0xa3	Black Goblin\x00	50	10	4	16	30	item	\u874fPotion
+0xa4	Knocker\x00	450	40	40	23	15	item	\u874fHi-Potion
+0xa5	Desertpede\x00	120	35	15	85	15	item	\u8750Antidote
+0xa6	Gloom Widow\x00	71	8	20	40	15	item	\u8750Antidote
+0xa7	Duel Knight\x00	520	60	50	140	3	weapon	\u8740Enhancer
+0xa8	Squidraken\x00	480	40	32	160	1	weapon	\u8746Sage\u8166s Staff
+0xa9	Pharaoh\x00	1220	75	44	92	2	weapon	\u8741Asura
+0xaa	Bonesnatch\x00	500	45	12	81	0	None	None
+0xab	Silver Dragon\x00	200	53	10	180	0	None	None
+0xac	Black Dragon\x00	1600	95	30	200	5	item	\u8750Lunar Curtain
+0xad	Blue Troll\x00	132	20	10	85	0	None	None
+0xae	Earth Troll\x00	566	50	45	100	0	None	None
+0xaf	Poison Naga\x00	232	6	8	120	0	None	None
+0xb0	Earth Plant\x00	675	35	60	170	5	item	\u874fTurbo Ether
+0xb1	Yamatano Orochi\x00	1068	50	42	180	1	weapon	\u8740Braveheart
+0xb2	Dark Elemental\x00	200	66	20	120	0	None	None
+0xb3	Devil Hound\x00	150	22	8	76	0	None	None
+0xb4	Sekhret\x00	1400	110	25	116	1	weapon	\u8745War Hammer
+0xb5	Catoblepas\x00	200	30	20	100	15	item	\u8750Remedy
+0xb6	Hundlegs\x00	235	40	20	120	0	None	None
+0xb7	Undergrounder\x00	690	75	50	190	1	armor	\u8747Gaia Gear
+0xb8	Death Elemental\x00	160	35	4	120	2	armor	\u874aZephyr Cape
+0xb9	Wild Nakk\x00	80	15	20	30	5	item	\u8750White Fang
+0xba	Dark Wolf\x00	360	30	25	50	10	item	\u8750White Fang
+0xbb	Rock Gargoyle\x00	337	30	72	130	0	None	None
+0xbc	Sahagin Queen\x00	100	30	15	80	10	item	\u8750Blue Curtain
+0xbd	Reaper\x00	350	90	20	200	1	weapon	\u8740Deathbringer
+0xbe	Python\x00	85	22	15	50	15	item	\u8750Antidote
+0xbf	Skuldier\x00	120	25	6	42	0	None	None
+0xc0	Red Flan\x00	390	50	255	80	0	None	None
+0xc1	Prototype\x00	1500	85	45	150	1	weapon	\u8744Rune Axe
+0xc2	Revenant\x00	68	20	15	45	0	None	None

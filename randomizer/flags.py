@@ -21,6 +21,8 @@ class Flags(object):
             self.standard_treasure = parsed.standard_treasure
             self.default_start_gear = parsed.default_start_gear
             self.debug = parsed.debug
+            self.new_items = parsed.new_items
+            self.fiend_ribbons = parsed.fiend_ribbons
             self.boss_shuffle = parsed.boss_shuffle
 
             if parsed.exp_mult is not None:
@@ -32,7 +34,9 @@ class Flags(object):
             self.standard_shops = False
             self.standard_treasure = False
             self.default_start_gear = False
+            self.new_items = False
             self.debug = False
+            self.fiend_ribbons = False
             self.boss_shuffle = False
             self.scale_levels = 1.0
 
@@ -48,6 +52,10 @@ class Flags(object):
             encoded += "G"
         if not self.boss_shuffle:
             encoded += "B"
+        if self.new_items:
+            encoded += "Ni"
+        if self.fiend_ribbons:
+            encoded += "R"
         if self.debug:
             encoded += "\\u819a"
         encoded += str(int((self.scale_levels * 10)))
