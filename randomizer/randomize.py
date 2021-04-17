@@ -229,7 +229,6 @@ def get_random_inventory_for_shop(map_index: int, shop_type: str, count: int, id
 
 
 def randomize_shops(rng: random.Random, maps: Maps, shops: ShopData, inventory_generator: InventoryGenerator):
-
     for map_index in range(1, 0x76):
         map_features = maps.get_map(map_index)
         if len(map_features.shops) < 1:
@@ -245,13 +244,13 @@ def randomize_shops(rng: random.Random, maps: Maps, shops: ShopData, inventory_g
             if len(shop_inventories.weapons) > 0:
                 count = rng.randint(3, 5)
                 items = get_random_inventory_for_shop(map_index, "weapon", count, False,
-                                                                       inventory_generator)
+                                                      inventory_generator)
                 items.sort(key=lambda it: it.sort_order)
                 shop_inventories.weapons = list(map(lambda it: it.id, items))
             if len(shop_inventories.armor) > 0:
                 count = rng.randint(3, 5)
                 items = get_random_inventory_for_shop(map_index, "armor", count, False,
-                                                                       inventory_generator)
+                                                      inventory_generator)
                 items.sort(key=lambda it: it.sort_order)
                 shop_inventories.armor = list(map(lambda it: it.id, items))
             elif len(shop_inventories.magic) > 0:
@@ -416,15 +415,15 @@ def parse_script(script: str) -> dict:
     return events
 
 
-def build_headers(placements: Placement) -> str:
-    header = """
+def build_headers(placements: Placement, start_cmds: str) -> str:
+    header = f"""
     ; Standard defines
     #define WINDOW_TOP 0x0
     #define WINDOW_BOTTOM 0x1
     #define DIALOG_WAIT 0x1
     #define DIALOG_AUTO_CLOSE 0x0
     
-    #define FREE_START set_flag 0x05
+    {start_cmds}
     
     ; Reward definitions
     """
@@ -518,7 +517,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         rng.shuffle(region)
     for region in encounter_regions.map_encounters:
         rng.shuffle(region)
-        
+
     if not flags.boss_shuffle:
         boss_data.randomize_bosses(encounters, enemy_data, rng)
 
@@ -534,7 +533,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     inventory_generator.update_with_new_shops(shop_data)
     if not flags.standard_treasure:
         randomize_treasure(rng, map_features, chest_data, inventory_generator)
-        
+
     if not flags.default_start_gear:
         base_weapons = []
         base_armors = []
@@ -571,24 +570,61 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
             scaled_level_reqs.append(int(level_req * flags.scale_levels))
         all_patches.update(pack_xp_requirements(scaled_level_reqs))
 
-    # The key feature of HMS Janye is starting with the Ship (the HMS Janye), so move the ship to Cornelia harbor.
-    vehicle_starts["ship"] = VehiclePosition(x=2328, y=2600)
-
     # Do some basic updates to the maps
     map_updates(map_features)
+
+    # String to insert for free items at the start (usually the ship + bridge)
+    free_header = ""
+
+    # Update game strings -- do this _before_ updating placements or the strings for gear won't replace them.
+    update_strings(event_text_block)
 
     # Are Key Items being shuffled? If so, figure out their placement.
     placement = Placement()
     if not flags.no_shuffle:
+        free_items = ["bridge", "ship"]
+
         rng = random.Random()
         rng.seed(seed)
-        placement.update_placements(solve_placement_for_seed(rng.randint(0, 0xffffffff)))
+        clingo_placements = solve_placement_for_seed(rng.randint(0, 0xffffffff))
+        placement.update_placements(clingo_placements)
 
-    # Generate a nice piece of gear for the 'gear' position
-    gear_placement = placement.find_gear()
-    gear = pick_gear_reward(rng, gear_placement, inventory_generator)
-    placement.update_gear(gear)
-    event_text_block.strings[0x47c] = TextBlock.encode_text(f"You obtain: {gear.name}\x00")
+        # The key feature of HMS Janye is starting with the Ship (the HMS Janye), so move the ship to Cornelia harbor.
+        vehicle_starts["ship"] = VehiclePosition(x=2328, y=2600)
+
+        # At the moment it doesn't really matter, but we only want to give the free items once when the game
+        # starts, which would allow us to give a starter pack at some point. To do this check, we need to
+        # check for a particular plot flag.
+        # This check _could_ be made to work even without any free key items, but since this is HMS Jayne anyway,
+        # I'll keep the logic simple by assuming we have access to at least one.
+        start_flag = None
+
+        # If a given placement is "free", put a piece of gear in its place
+        free_cmds = []
+        for ki_placement in placement.all_placements():
+            if ki_placement.reward in free_items:
+                # Before replacing the item, grab the commands needed to give the item
+                if ki_placement.plot_flag is not None:
+                    free_cmds.append(f"set_flag {hex(ki_placement.plot_flag)}")
+                    start_flag = ki_placement.plot_flag if start_flag is None else start_flag
+                if ki_placement.plot_item is not None:
+                    free_cmds.append(f"give_item {hex(ki_placement.plot_item)}")
+                if ki_placement.extra is not None:
+                    free_cmds.append(f"{ki_placement.extra}")
+
+                gear = pick_gear_reward(rng, ki_placement, inventory_generator)
+                placement.update_gear(ki_placement.reward, gear)
+                event_text_block.strings[ki_placement.reward_text_id] = TextBlock.encode_text(
+                    f"You obtain: {gear.name}\x00")
+
+        free_header = "#define FREE_START " + "\\\n".join(free_cmds)
+    else:
+        # We have to define FREE_START even though progress is vanilla. The safe thing to do
+        # is just set flag 0x28, which is the flag that usually means we've talked to the
+        # guards in Cornelia/listened to the King.
+        # In HMS Jayne this _usually_ gets mapped to the first piece of free gear the party gets, but
+        # since there aren't any gear replacements, it's safe to use here.
+        free_header = "#define FREE_START set_flag 0x28"
 
     # This doesn't have to be done unless shuffling key items, but doing it this way allows a player
     # to see how certain items are represented better, so we do it anyway.
@@ -596,6 +632,8 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         # If this is the airship, reset where it comes out.
         if ki_placement.reward == "airship":
             vehicle_starts["airship"] = VehiclePosition(x=ki_placement.airship_x, y=ki_placement.airship_y)
+        elif ki_placement.reward == "ship":
+            vehicle_starts["ship"] = VehiclePosition(x=ki_placement.ship_x, y=ki_placement.ship_y)
 
         # This is really just for the desert, but this feels safer, somehow?
         if ki_placement.map_id is None:
@@ -640,11 +678,9 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         else:
             raise RuntimeError(f"Unknown placement type: {ki_placement.type} at {ki_placement.source}")
 
-    headers = build_headers(placement)
+    headers = build_headers(placement, free_header)
     event_scripts = load_event_scripts()
 
-    # Update game strings.
-    update_strings(event_text_block)
     all_patches.update(event_text_block.pack())
 
     event_tables = EventTables(rom)

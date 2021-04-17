@@ -11,7 +11,7 @@ item(star_ruby).
 item(rod).
 item(canoe).
 item(levistone).
-item(gear).
+item(ship).
 item(rats_tail).
 item(bottle).
 item(oxyale).

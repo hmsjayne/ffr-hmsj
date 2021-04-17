@@ -5,7 +5,10 @@ begin script=0x0
     %have_chime 0x1f
     %canal_open 0x0b
 
+    check_flag %ship_visible jnz .Received_Start
     FREE_START
+    .Received_Start:
+
     check_flag %canal_open jz .Label_1
     remove_all 0x1f62
     .Label_1:

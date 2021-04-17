@@ -23,6 +23,7 @@ PlacementDetails = namedtuple("Placement",
                                'plot_flag', 'plot_item', 'extra'])
 
 
+# noinspection PyProtectedMember
 class Placement(object):
     def __init__(self):
         self._placement_list = Placement._parse_data("data/KeyItemPlacement.tsv")
@@ -30,21 +31,23 @@ class Placement(object):
     def all_placements(self) -> list:
         return self._placement_list
 
-    def find_gear(self) -> PlacementDetails:
-        for placement in self._placement_list:
-            if placement.reward == "gear":
-                return placement
-        raise RuntimeError("No gear placement?")
-
-    def update_gear(self, gear: Item):
+    def update_gear(self, reward: str, gear: Item):
         placements = []
+        free_flag_index = 0x28
         for placement in self._placement_list:
-            if placement.reward == "gear":
+            if placement.reward == reward:
                 item_type = Items.name_to_index(gear.item_type)
                 item_id = gear.id
-                gear = placement._replace(extra=f"give_item_ex {hex(item_type)} {hex(item_id)}")
+                gear = placement._replace(
+                    reward=f"free_{reward}",
+                    plot_flag=free_flag_index,
+                    plot_item=None,
+                    extra=f"give_item_ex {hex(item_type)} {hex(item_id)}"
+                )
                 placements.append(gear)
             else:
+                if placement.reward.startswith("free_"):
+                    free_flag_index += 1
                 placements.append(placement)
         self._placement_list = placements
 
