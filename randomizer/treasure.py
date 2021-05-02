@@ -92,7 +92,7 @@ class InventoryGenerator(object):
                     self.item_grades[item.grade] = []
                 self.item_grades[item.grade].append(item)
 
-    def get_inventory(self, map_index: int, item_type: str = None) -> Item:
+    def get_inventory(self, map_index: int, item_type: str = None, using_soc_items: bool = True) -> Item:
         area = self.maps_to_area[map_index]
         area_weight = self.area_weights[area]
         index_to_letter = ["S", "A", "B", "C", "D", "E", "F"]
@@ -117,7 +117,7 @@ class InventoryGenerator(object):
             else:
                 item_pool = []
                 for item in self.item_grades[grade_letter]:
-                    if item.item_type == item_type:
+                    if item.item_type == item_type and (using_soc_items or not item.is_soc):
                         item_pool.append(item)
 
             # If there's nothing left, try again

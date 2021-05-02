@@ -3,38 +3,38 @@ Overworld	15	15	15	15	15	25	100
 Chaos Shrine	0	0	10	20	30	40	100
 Matoya's Cave	0	0	10	20	30	40	100
 Elven Castle	0	10	30	30	30	0	100
-Marsh Cave	5	20	30	40	5	0	100
+Marsh Cave	0	15	35	35	15	0	100
 Western Keep	5	20	30	40	5	0	100
 Castle Cornelia	0	10	30	30	30	0	100
 Mt. Duergar	0	10	30	30	30	0	100
-Earth Cave	5	20	30	40	5	0	100
-Giant's Cave	5	20	30	40	5	0	100
+Earth Cave	0	25	30	40	5	0	100
+Giant's Cave	0	25	30	40	5	0	100
 Sage's Cave	0	0	0	0	0	100	100
-Deep Earth Cave	5	20	30	40	5	0	100
-Mt. Gulg	5	20	30	40	5	0	100
+Deep Earth Cave	5	25	30	40	0	0	100
+Mt. Gulg	5	25	30	40	0	0	100
 Cavern of Ice	10	20	30	40	0	0	100
-Citadel of Trials	15	30	30	20	5	0	100
-Dragon Caves	15	30	30	20	5	0	100
+Citadel of Trials	15	30	30	25	0	0	100
+Dragon Caves	5	20	30	40	5	0	100
 Caravan	35	40	20	5	0	0	100
-Waterfall Cavern	5	20	30	40	5	0	100
-Sunken Shrine	15	30	30	25	0	0	100
-Mirage Tower	15	30	30	25	0	0	100
+Waterfall Cavern	5	25	30	40	0	0	100
+Sunken Shrine	5	25	30	40	0	0	100
+Mirage Tower	5	25	30	40	0	0	100
 Flying Fortress	15	30	30	25	0	0	100
 Chaos Temple	25	50	25	0	0	0	100
 None	0	0	0	0	0	100	100
 Cornelia Items	0	0	0	20	30	50	100
-Cornelia Weapon	0	0	0	20	30	50	100
+Cornelia Weapons	0	0	0	20	30	50	100
 Cornelia Armor	0	0	0	20	30	50	100
 Cornelia Magic	5	5	5	20	30	35	100
 Pravoka Items	0	0	5	30	30	35	100
-Pravoka Weapon	0	0	5	30	30	35	100
+Pravoka Weapons	0	0	5	30	30	35	100
 Pravoka Armor	0	0	5	30	30	35	100
 Pravoka Magic	5	5	5	25	25	35	100
 Elfheim Items	0	0	15	40	35	10	100
-Elfheim Weapon	0	0	15	40	35	10	100
+Elfheim Weapons	0	0	15	40	35	10	100
 Elfheim Armor	0	0	15	40	35	10	100
 Elfheim Magic	5	5	30	35	20	5	100
-Melmond Weapon	0	5	20	40	30	5	100
+Melmond Weapons	0	5	20	40	30	5	100
 Melmond Armor	0	5	20	40	30	5	100
 Melmond Magic	10	30	25	25	5	5	100
 Crescent Lake Items	0	5	20	40	30	5	100
