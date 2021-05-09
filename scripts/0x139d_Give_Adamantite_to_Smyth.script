@@ -2,6 +2,7 @@
 begin script=0x139d
     %flag_have_adamantite 0x21
 
+    check_flag %smyth_reward_flag jnz .Have_Smyth_Reward
     check_flag %flag_have_adamantite jz .No_Adamantite
 
     db 0x60 0x4 0x0 0xff
@@ -124,6 +125,7 @@ begin script=0x139d
 
     .No_Adamantite:
     check_flag %smyth_reward_flag jz .No_Smyth_Reward
+    .Have_Smyth_Reward:
     load_text WINDOW_TOP 0x14
     show_dialog
     close_dialog DIALOG_WAIT

@@ -42,8 +42,22 @@ def add_credits(rom: Rom, seed: str, flags: Flags) -> dict:
     duration = OutputStream()
     duration.put_u16(60 * 60)
 
+    # We need to clean up the seed since this string is from untrusted input
+    # (It was untrusted the entire time, but this is the first time it matters)
+    safe_seed = ""
+    values = list(TextBlock.INVERTED_TEXT_TABLE.values())
+    for char in seed:
+        if char in TextBlock.INVERTED_TEXT_TABLE:
+            safe_seed += char
+        else:
+            encode_as = f"\\u{hex(values[ord(char) % len(values)])[2:]}"
+            safe_seed += encode_as
+
+    # Little extra processing
+    safe_seed = safe_seed.replace("\\u82583", "\\u82D0")
+
     # Add the seed + flags to the party creation screen.
-    seed_str = TextBlock.encode_text(f"Seed:\n{seed}\nFlags:\n{flags.encode()}\x00")
+    seed_str = TextBlock.encode_text(f"Check:\n{safe_seed}\nFlags:\n{flags.encode()}\x00")
     pointer = OutputStream()
     pointer.put_u32(0x8227054)
 
