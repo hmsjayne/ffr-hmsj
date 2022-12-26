@@ -18,6 +18,7 @@ from argparse import ArgumentParser, FileType
 
 from randomizer.flags import Flags
 from randomizer.randomize import randomize
+from ips_util import Patch
 
 
 def main() -> int:
@@ -25,20 +26,22 @@ def main() -> int:
     parser.add_argument("rom_file", type=FileType('rb', 0), help="The ROM file to randomize.")
     parser.add_argument("--seed", dest="seed", nargs=1, type=str, help="Seed value to use")
     parser.add_argument("--xp-scale", dest="exp_mult", type=float,
-                        help="Experience modifier: 1=level gain; 2=gain levels twice as fast; "
-                             "0.5=gain levels half as fast")
+        help="Experience modifier: 1=level gain; 2=gain levels twice as fast; "
+             "0.5=gain levels half as fast")
 
     parser.add_argument("--original-progression", dest="no_shuffle", action="store_true",
-                        help="Do not shuffle key items")
+        help="Do not shuffle key items")
     parser.add_argument("--standard-shops", dest="standard_shops", action="store_true",
-                        help="Don't randomize the inventory of item, weapon, armor, or magic shops")
+        help="Don't randomize the inventory of item, weapon, armor, or magic shops")
     parser.add_argument("--standard-treasure", dest="standard_treasure", action="store_true",
-                        help="Don't randomize the contents of chests")
+        help="Don't randomize the contents of chests")
     parser.add_argument("--default-start-gear", dest="default_start_gear", action="store_true",
-                        help="Don't generate new starting equipment for the classes")
+        help="Don't generate new starting equipment for the classes")
     parser.add_argument("--default-boss-fights", dest="boss_shuffle", action="store_true",
-                        help="Keep original Fiend fights")
+        help="Keep original Fiend fights")
     parser.add_argument("--debug", dest="debug", action="store_true", help="Enable debugging")
+    parser.add_argument("--patch", dest="patch", action="store_true", help="Generate a patch file (ips) instead of a "
+                                                                           "new rom")
 
     parsed = parser.parse_args()
 
@@ -49,7 +52,7 @@ def main() -> int:
             seed_value = seed_value[0:10]
     else:
         rng = random.Random()
-        seed_value = hex(rng.randint(0, 0xffffffff))
+        seed_value = hex(rng.randint(0, 0xffffffff))[2:]
 
     # Convert from command line flags to internal
     flags = Flags(parsed)
@@ -59,13 +62,20 @@ def main() -> int:
     rom_file.close()
 
     base_name = rom_file.name.replace(".gba", "")
-    output_name = f"{base_name}_{flags.encode()}_{seed_value}.gba"
     randomized_rom = randomize(rom_data, seed_value, flags)
-    with open(output_name, "wb") as output:
-        output.write(randomized_rom)
+
+    if not parsed.patch:
+        output_name = f"{base_name}_{flags.encode()}_{seed_value}.gba"
+        with open(output_name, "wb") as output:
+            output.write(randomized_rom)
+    else:
+        output_name = f"{base_name}_{flags.encode()}_{seed_value}.ips"
+        patch = Patch.create(rom_data, randomized_rom)
+        with open(output_name, "wb") as output:
+            output.write(patch.encode())
 
     return 0
 
 
-if __name__ == "__main__":
+if __name__=="__main__":
     main()

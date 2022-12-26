@@ -162,6 +162,7 @@ dmypy.json
 # Also, don't check the ROM/Save games in...
 *.gba
 *.sav
+*.ips
 
 # Clingo should be downloaded :)
 clingo/*
