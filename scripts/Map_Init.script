@@ -5,7 +5,10 @@ begin script=0x0
     %have_chime 0x1f
     %canal_open 0x0b
 
+    check_flag %ship_visible jnz .Received_Start
     FREE_START
+    .Received_Start:
+
     check_flag %canal_open jz .Label_1
     remove_all 0x1f62
     .Label_1:
@@ -298,27 +301,33 @@ begin script=0x57
     %flag_have_nitro 0x0a
     %flag_have_adamantite 0x21
 
+    ; Because we could have "lazy dwarves",
+    ; just switch Smyth and Nerrick's events
+    ; to their main event and worry about item
+    ; checks there.
+    set_npc_event 0xb 0x1393
+    set_npc_event 0x4 0x139d
+
+    ; Check to see if we have Nerrick's item
+    ; and jump if we don't.
     check_flag %nerrick_reward_flag jnz .Label_1
+
+    ; This turns on the mining sound
     music 0x0 0x85
     db 0x2f 0x8 0x0 0x0 0xff 0x16 0x2a 0x8
-    jump .Label_2
+    jump .Mystic_Key_Check
+
     .Label_1:
-    check_flag %nerrick_reward_flag jz .Label_2
+    ; If we have Nerrick's reward, update sprites
+    check_flag %nerrick_reward_flag jz .Mystic_Key_Check
     npc_update 0x2 0xb
     npc_update 0x4 0xb
-    .Label_2:
-    check_flag %flag_have_nitro jz .Label_3
-    set_npc_event 0xb 0x1393
-    .Label_3:
-    check_flag %flag_have_mystic_key jz .Label_4
+
+    .Mystic_Key_Check:
+    check_flag %flag_have_mystic_key jz .End_Event
     remove_trigger 0x1f4a
-    .Label_4:
-    check_flag %smyth_reward_flag jz .Label_5
-    jump .Label_6
-    .Label_5:
-    check_flag %flag_have_adamantite jz .Label_6
-    set_npc_event 0x4 0x139d
-    .Label_6:
+
+    .End_Event:
     end_event
 
 ; Map initialization code for Western Keep

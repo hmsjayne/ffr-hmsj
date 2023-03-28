@@ -12,49 +12,49 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-"""Tests for the codegen module. """
+"""Tests for the easm module. """
 
-from event import codegen
+from event import easm
 import unittest
 
 
-class TestCodegen(unittest.TestCase):
+class Testeasm(unittest.TestCase):
 
     def test_simple_gen_no_params(self):
         op_format = [0x0, 0x4, 0xff, 0xff]
         parameters = []
-        output = codegen.simple_gen(op_format, parameters)
+        output = easm.simple_gen(op_format, parameters)
         self.assertEqual(output, [0x0, 0x4, 0xff, 0xff])
 
     def test_simple_gen_params(self):
         op_format = [0xc, 0x8, 0xff, 0xff, "$0"]
         parameters = [".EventEnd"]
-        output = codegen.simple_gen(op_format, parameters)
+        output = easm.simple_gen(op_format, parameters)
         self.assertEqual(output, [0xc, 0x8, 0xff, 0xff, ".EventEnd"])
 
     def test_simple_gen_with_size_byte(self):
         op_format = [0xc, 0x8, 0xff, 0xff, "$(x:0)"]
         parameters = [".EventEnd"]
-        output = codegen.simple_gen(op_format, parameters)
+        output = easm.simple_gen(op_format, parameters)
         self.assertEqual(output, [0xc, 0x8, 0xff, 0xff, ".EventEnd"])
 
     def test_simple_gen_with_size_u16(self):
         op_format = [0x11, 0x8, "$0", 0xff, "$(u:1)", 0xff, 0xff]
         parameters = [0x0, 0x1234]
-        output = codegen.simple_gen(op_format, parameters)
+        output = easm.simple_gen(op_format, parameters)
         self.assertEqual(output, [0x11, 0x8, 0x0, 0xff, 0x34, 0x12, 0xff, 0xff])
 
     def test_simple_gen_with_size_u32(self):
         op_format = [0x11, 0x8, "$0", 0xff, "$(U:1)"]
         parameters = [0x0, 0x12345678]
-        output = codegen.simple_gen(op_format, parameters)
+        output = easm.simple_gen(op_format, parameters)
         self.assertEqual(output, [0x11, 0x8, 0x0, 0xff, 0x78, 0x56, 0x34, 0x12])
 
     def test_simple_gen_with_size_invalid(self):
         op_format = [0x11, 0x8, "$0", 0xff, "$(w:1)", 0xff, 0xff]
         parameters = [0x0, 0x1234]
         with self.assertRaises(RuntimeError):
-            output = codegen.simple_gen(op_format, parameters)
+            output = easm.simple_gen(op_format, parameters)
             # Fail if it doesn't raise
             self.assertNotEqual(output, output)
 

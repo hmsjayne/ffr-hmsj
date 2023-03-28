@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from event import codegen
-from event.codegen import simple_gen
 from event.parseinputstring import ParseInputString
 from event.tokens import *
 from stream.outputstream import OutputStream
@@ -32,32 +30,32 @@ GRAMMAR = {
     "end_event": EndEventToken([0x0, 0x4, 0xff, 0xff]),
     "nop": NopToken([0x1, 0x4, 0xff, 0xff]),
     "load_map": LoadMapToken([0x3, 0xc, 0x1, "$0", "$(u:1)", "$(u:2)", "$3", "$4", 0xff, 0xff]),
-    "load_text": LoadTextToken("load_text"),
-    "close_dialog": CloseDialogToken("close_dialog"),
+    "load_text": LoadTextToken([0x05, 0x8, "$(u:1)", "$0", 0xff, 0xff, 0xff]),
+    "close_dialog": CloseDialogToken([0x6, 0x4, "$0", 0xff]),
     "delay": DelayToken([0x9, 0x4, "$(u:0)"]),
     "move_npc": MoveNpcToken([0xb, 0xc, "$2", "$3", "$1", 0x0, 0x0, 0x0, "$0", 0x0, 0xff, 0xff]),
-    "jump": JumpToken("jump"),
-    "jump_chest_empty": JumpChestEmptyToken("jump_chest_empty"),
-    "music": MusicToken("music"),
+    "jump": JumpToken([0xc, 0x8, 0xff, 0xff, "$0"]),
+    "jump_chest_empty": JumpChestEmptyToken([0xd, 0xc, 0x0, 0xff, "$0", 0x0, 0x0, 0x0, 0x0]),
+    "music": MusicToken([0x11, 0x8, "$0", 0xff, "$(u:1)", 0xff, 0xff]),
     "add_npc": AddNpcToken([0x13, 0xc, "$0", "$1", 0x0, 0x0, 0x0, 0xff, "$(u:2)", "$(u:3)"]),
     "remove_npc": RemoveNpcToken([0x14, 0x4, "$(u:0)"]),
     "move_party": MovePartyToken([0x15, 0x8, "$0", "$1", "$2", 0x0, 0x0, 0x0]),
-    "set_repeat": SetRepeatToken("set_repeat"),
-    "repeat": RepeatToken("repeat"),
+    "set_repeat": SetRepeatToken([0x19, 0x4, 0x0, "$0"]),
+    "repeat": RepeatToken([0x19, 0x8, "$0", 0xff, "$1"]),
     "set_npc_frame": SetNpcFrameToken([0x1f, 0x4, "$0", "$1"]),
     "show_dialog": ShowDialogToken([0x27, 0x4, 0x0, 0xff]),
-    "set_flag": SetFlagToken("set_flag"),
-    "check_flag": CheckFlagToken("check_flag"),
-    "remove_trigger": RemoveTriggerToken("remove_trigger"),
-    "npc_update": NpcUpdateToken("npc_update"),
-    "set_npc_event": SetNpcEventToken("set_npc_event"),
+    "set_flag": SetFlagToken([0x2d, 0x4, "$0", 0x0]),
+    "check_flag": CheckFlagToken([0x2d, 0x8, "$0", "$1", "$2"]),
+    "remove_trigger": RemoveTriggerToken([0x2e, 0x4, "$(u:0)"]),
+    "npc_update": NpcUpdateToken([0x30, 0x4, "$0", "$1"]),
+    "set_npc_event": SetNpcEventToken([0x30, 0x8, 0x1, "$0", "$(u:1)", 0xff, 0xff]),
     "remove_all": RemoveAllToken([0x36, 0x4, "$(u:0)"]),
     "give_item": GiveItemToken([0x37, 0x4, 0x0, "$0"]),
     "give_item_ex": GiveItemExtendedToken([0x37, 0xc, 0x40, 0x00, 0xff, 0xff, 0xff, 0xff, "$(u:0)", "$(u:1)"]),
     "take_item": TakeItemToken([0x37, 0x4, 0x1, "$0"]),
-    "check_item": CheckItemToken("check_item"),
+    "check_item": CheckItemToken([0x37, 0x8, 0x2, "$0", "$2"]),
     "promote_pcs": PromotePcsToken([0x3d, 0x4, 0xff, 0xff]),
-    "jump_by_dir": JumpByDirToken("jump_by_dir"),
+    "jump_by_dir": JumpByDirToken([0x42, 0x10, 0xff, 0xff, "$0", "$1", "$2"]),
     "call": CallToken([0x48, 0x8, 0xff, 0xff, "$0"]),
 
     # Conditional jumps
@@ -238,6 +236,31 @@ def parse(source: str) -> ICode:
                     current_addr += output[1]
 
     return ICode(icode, symbol_table, current_addr)
+
+
+def simple_gen(op_format: list, parameters: list) -> list:
+    bytecode = []
+    for elem in op_format:
+        if isinstance(elem, str) and elem.startswith("$"):
+            if elem.startswith("$("):
+                (size, index_str) = elem[2:len(elem) - 1].split(":")
+                index = int(index_str)
+                if size == "x":
+                    bytecode.append(parameters[index])
+                elif size == "u":
+                    param = Uint16(parameters[index])
+                    bytecode.extend(param.bytes())
+                elif size == "U":
+                    param = Uint32(parameters[index])
+                    bytecode.extend(param.bytes())
+                else:
+                    raise RuntimeError(f"Invalid format specified: {size}")
+            else:
+                index = int(elem[1:])
+                bytecode.append(parameters[index])
+        else:
+            bytecode.append(elem)
+    return bytecode
 
 
 def link(icode: ICode, base_addr: int) -> bytearray:

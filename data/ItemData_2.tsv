@@ -1,0 +1,181 @@
+type	index	item	cost	sale_price	is_soc	grade
+item	0x0	Dummy	0	0	FALSE	F
+item	0x1	\u874fPotion	40	20	FALSE	E
+item	0x2	\u874fHi-Potion	150	75	FALSE	D
+item	0x3	\u874fX-Potion	500	250	FALSE	A
+item	0x4	\u874fEther	150	75	FALSE	C
+item	0x5	\u874fTurbo Ether	500	250	FALSE	A
+item	0x6	\u874fDry Ether	1000	500	FALSE	A
+item	0x7	\u874fElixir	50000	25000	FALSE	S
+item	0x8	\u874fMegalixir	100000	50000	FALSE	S
+item	0x9	\u8750Phoenix Down	500	250	FALSE	B
+item	0xa	\u8750Remedy	1500	750	FALSE	B
+item	0xb	\u8750Antidote	50	25	FALSE	E
+item	0xc	\u8750Gold Needle	500	250	FALSE	B
+item	0xd	\u8750Eye Drops	50	25	FALSE	E
+item	0xe	\u8750Echo Grass	50	25	FALSE	E
+item	0xf	\u8750Emergency Exit	2000	1000	FALSE	S
+item	0x10	\u8751Sleeping Bag	50	25	FALSE	E
+item	0x11	\u8751Tent	160	80	FALSE	C
+item	0x12	\u8751Cottage	2000	1000	FALSE	B
+item	0x13	\u8750Spider\u8166s Silk	3000	1500	TRUE	E
+item	0x14	\u8750White Fang	5000	2500	TRUE	C
+item	0x15	\u8750Red Fang	5000	2500	TRUE	C
+item	0x16	\u8750Blue Fang	5000	2500	TRUE	C
+item	0x17	\u8750Light Curtain	1000	500	TRUE	A
+item	0x18	\u8750Red Curtain	300	150	TRUE	B
+item	0x19	\u8750White Curtain	300	150	TRUE	B
+item	0x1a	\u8750Blue Curtain	300	150	TRUE	B
+item	0x1b	\u8750Lunar Curtain	500	250	TRUE	A
+item	0x1c	\u8750Hermes\u8166 Shoes	6500	3250	TRUE	S
+item	0x1d	\u8750Vampire Fang	5000	2500	TRUE	C
+item	0x1e	\u8750Cockatrice Claw	5000	2500	TRUE	C
+item	0x1f	\u874fGiant\u8166s Tonic	1500	750	FALSE	A
+item	0x20	\u874fFaerie Tonic	1500	750	FALSE	C
+item	0x21	\u874fStrength Tonic	1000	500	FALSE	A
+item	0x22	\u874fProtect Drink	1000	500	FALSE	C
+item	0x23	\u874fSpeed Drink	1000	500	FALSE	A
+item	0x24	\u8750Golden Apple	40000	20000	TRUE	S
+item	0x25	\u8750Silver Apple	25000	12500	TRUE	S
+item	0x26	\u8750Soma Drop	20000	10000	TRUE	S
+item	0x27	\u8750Power Plus	40000	20000	TRUE	S
+item	0x28	\u8750Stamina Plus	40000	20000	TRUE	S
+item	0x29	\u8750Mind Plus	40000	20000	TRUE	S
+item	0x2a	\u8750Speed Plus	40000	20000	TRUE	S
+item	0x2b	\u8750Luck Plus	40000	20000	TRUE	S
+weapon	0x0	Dummy	0	0	FALSE	F
+weapon	0x1	\u8743Nunchaku	8	4	FALSE	E
+weapon	0x2	\u8742Knife	4	2	FALSE	E
+weapon	0x3	\u8746Staff	4	2	FALSE	E
+weapon	0x4	\u8740Rapier	8	4	FALSE	E
+weapon	0x5	\u8745Hammer	8	4	FALSE	E
+weapon	0x6	\u8740Broadsword	450	225	FALSE	D
+weapon	0x7	\u8744Battle Axe	450	225	FALSE	D
+weapon	0x8	\u8741Scimitar	160	80	FALSE	E
+weapon	0x9	\u8743Iron Nunchaku	160	80	FALSE	E
+weapon	0xa	\u8742Dagger	140	70	FALSE	E
+weapon	0xb	\u8746Crosier	160	80	FALSE	E
+weapon	0xc	\u8740Saber	360	180	FALSE	D
+weapon	0xd	\u8740Longsword	1200	600	FALSE	D
+weapon	0xe	\u8744Great Axe	1600	800	FALSE	C
+weapon	0xf	\u8741Falchion	360	180	FALSE	D
+weapon	0x10	\u8742Mythril Knife	640	320	FALSE	D
+weapon	0x11	\u8740Mythril Sword	3200	1600	FALSE	B
+weapon	0x12	\u8745Mythril Hammer	2000	1000	FALSE	C
+weapon	0x13	\u8744Mythril Axe	3600	1800	FALSE	B
+weapon	0x14	\u8740Flame Sword	10000	5000	FALSE	A
+weapon	0x15	\u8740Ice Brand	15000	7500	FALSE	A
+weapon	0x16	\u8740Wyrmkiller	8000	4000	FALSE	B
+weapon	0x17	\u8740Great Sword	8000	4000	FALSE	B
+weapon	0x18	\u8740Sun Blade	20000	10000	FALSE	A
+weapon	0x19	\u8740Coral Sword	8000	4000	FALSE	B
+weapon	0x1a	\u8740Werebuster	6000	3000	FALSE	C
+weapon	0x1b	\u8740Rune Blade	5000	2500	FALSE	B
+weapon	0x1c	\u8746Power Staff	12345	6172	FALSE	D
+weapon	0x1d	\u8744Light Axe	10000	5000	FALSE	B
+weapon	0x1e	\u8746Healing Staff	25000	12500	FALSE	C
+weapon	0x1f	\u8746Mage\u8166s Staff	25000	12500	FALSE	A
+weapon	0x20	\u8740Defender	40000	20000	FALSE	A
+weapon	0x21	\u8746Wizard\u8166s Staff	50000	25000	FALSE	B
+weapon	0x22	\u8740Vorpal Sword	30000	15000	FALSE	A
+weapon	0x23	\u8742Cat Claws	52000	26000	FALSE	B
+weapon	0x24	\u8745Thor\u8166s Hammer	40000	20000	FALSE	A
+weapon	0x25	\u8740Razer	60000	30000	FALSE	A
+weapon	0x26	\u8741Sasuke\u8166s Blade	60000	30000	FALSE	A
+weapon	0x27	\u8740Excalibur	60000	30000	FALSE	S
+weapon	0x28	\u8741Masamune	60000	30000	FALSE	S
+weapon	0x29	\u8740Ultima Weapon	120000	60000	TRUE	A
+weapon	0x2a	\u8740Ragnarok	80000	40000	TRUE	S
+weapon	0x2b	\u8741Murasame	60000	30000	TRUE	A
+weapon	0x2c	\u8740Lightbringer	120000	60000	TRUE	S
+weapon	0x2d	\u8746Rune Staff	120000	60000	TRUE	S
+weapon	0x2e	\u8746Judgment Staff	120000	60000	TRUE	S
+weapon	0x2f	\u8740Dark Claymore	54200	27100	TRUE	B
+weapon	0x30	\u8740Duel Rapier	75900	37950	TRUE	A
+weapon	0x31	\u8740Braveheart	61800	30900	TRUE	B
+weapon	0x32	\u8740Deathbringer	62100	31050	TRUE	B
+weapon	0x33	\u8740Enhancer	68900	34450	TRUE	B
+weapon	0x34	\u8744Gigantaxe	51900	25950	TRUE	B
+weapon	0x35	\u8744Viking Axe	43300	21650	TRUE	B
+weapon	0x36	\u8744Rune Axe	74100	37050	TRUE	A
+weapon	0x37	\u8744Ogrekiller	37100	18550	TRUE	B
+weapon	0x38	\u8741Kikuichimonji	79800	39900	TRUE	A
+weapon	0x39	\u8741Asura	66500	33250	TRUE	A
+weapon	0x3a	\u8741Kotetsu	55900	27950	TRUE	B
+weapon	0x3b	\u8745War Hammer	38000	19000	TRUE	B
+weapon	0x3c	\u8742Assassin Dagger	95400	47700	TRUE	A
+weapon	0x3d	\u8742Orichalcum	85800	42900	TRUE	A
+weapon	0x3e	\u8742Mage Masher	69700	34850	TRUE	B
+weapon	0x3f	\u8742Gladius	73900	36950	TRUE	B
+weapon	0x40	\u8746Sage\u8166s Staff	39900	19950	TRUE	B
+armor	0x0	Dummy	0	0	FALSE	F
+armor	0x1	\u8747Clothes	8	4	FALSE	E
+armor	0x2	\u8748Leather Armor	40	20	FALSE	E
+armor	0x3	\u8748Chain Mail	65	32	FALSE	E
+armor	0x4	\u8748Iron Armor	640	320	FALSE	D
+armor	0x5	\u8748Knight\u8166s Armor	36000	18000	FALSE	B
+armor	0x6	\u8748Mythril Mail	6000	3000	FALSE	C
+armor	0x7	\u8748Flame Mail	30000	15000	FALSE	A
+armor	0x8	\u8748Ice Armor	30000	15000	FALSE	A
+armor	0x9	\u8748Diamond Armor	60000	30000	FALSE	A
+armor	0xa	\u8748Dragon Mail	60000	30000	FALSE	S
+armor	0xb	\u8749Copper Armlet	800	400	FALSE	D
+armor	0xc	\u8749Silver Armlet	4000	2000	FALSE	C
+armor	0xd	\u8749Ruby Armlet	40000	20000	FALSE	B
+armor	0xe	\u8749Diamond Armlet	65000	32500	FALSE	A
+armor	0xf	\u8747White Robe	25000	12500	FALSE	A
+armor	0x10	\u8747Black Robe	25000	12500	FALSE	A
+armor	0x11	\u8748Crystal Mail	66800	33400	FALSE	S
+armor	0x12	\u8749Thief\u8166s Armlet	68500	34250	TRUE	A
+armor	0x13	\u8747Black Garb	69900	34950	TRUE	S
+armor	0x14	\u8747Kenpogi	61200	30600	TRUE	A
+armor	0x15	\u8747Power Vest	69100	34550	TRUE	A
+armor	0x16	\u8747Red Jacket	73900	36950	TRUE	A
+armor	0x17	\u8747Sage\u8166s Surplice	70000	35000	TRUE	B
+armor	0x18	\u8747Light Robe	66000	33000	TRUE	A
+armor	0x19	\u8747Gaia Gear	66000	33000	TRUE	A
+armor	0x1a	\u8747Bard\u8166s Tunic	67300	33650	TRUE	B
+armor	0x1b	\u8748Genji Armor	57100	28550	TRUE	S
+armor	0x1c	\u874aLeather Shield	12	6	FALSE	E
+armor	0x1d	\u874aIron Shield	80	40	FALSE	E
+armor	0x1e	\u874aMythril Shield	2000	1000	FALSE	C
+armor	0x1f	\u874aFlame Shield	10000	5000	FALSE	A
+armor	0x20	\u874aIce Shield	10000	5000	FALSE	A
+armor	0x21	\u874aDiamond Shield	15000	7500	FALSE	A
+armor	0x22	\u874aAegis Shield	40000	20000	FALSE	A
+armor	0x23	\u874aBuckler	2000	1000	FALSE	C
+armor	0x24	\u874aProtect Cloak	20000	10000	FALSE	B
+armor	0x25	\u874aGenji Shield	40000	20000	TRUE	S
+armor	0x26	\u874aCrystal Shield	57100	28550	TRUE	S
+armor	0x27	\u874aHero\u8166s Shield	62000	31000	TRUE	S
+armor	0x28	\u874aZephyr Cape	51000	25500	TRUE	B
+armor	0x29	\u874aElven Cloak	55800	27900	TRUE	A
+armor	0x2a	\u874bLeather Cap	65	32	FALSE	E
+armor	0x2b	\u874bHelm	80	40	FALSE	E
+armor	0x2c	\u874bGreat Helm	360	180	FALSE	D
+armor	0x2d	\u874bMythril Helm	2000	1000	FALSE	C
+armor	0x2e	\u874bDiamond Helm	10000	5000	FALSE	C
+armor	0x2f	\u874bHealing Helm	20000	10000	FALSE	B
+armor	0x30	\u874bRibbon	200000	1	FALSE	S
+armor	0x31	\u874bGenji Helm	36800	18400	TRUE	A
+armor	0x32	\u874bCrystal Helm	45300	22650	TRUE	A
+armor	0x33	\u874bBlack Cowl	45300	22650	TRUE	A
+armor	0x34	\u874bTwist Headband	43500	21750	TRUE	A
+armor	0x35	\u874bTiger Mask	45700	22850	TRUE	B
+armor	0x36	\u874bFeathered Cap	46600	23300	TRUE	B
+armor	0x37	\u874bRed Cap	49400	24700	TRUE	A
+armor	0x38	\u874bWizard\u8166s Hat	46600	23300	TRUE	A
+armor	0x39	\u874bSage\u8166s Mitre	45200	22600	TRUE	A
+armor	0x3a	\u874cLeather Gloves	50	25	FALSE	E
+armor	0x3b	\u874cBronze Gloves	160	80	FALSE	E
+armor	0x3c	\u874cSteel Gloves	600	300	FALSE	D
+armor	0x3d	\u874cMythril Gloves	2000	1000	FALSE	C
+armor	0x3e	\u874cGauntlets	15000	7500	FALSE	A
+armor	0x3f	\u874cGiant\u8166s Gloves	10000	5000	FALSE	S
+armor	0x40	\u874cDiamond Gloves	20000	10000	FALSE	B
+armor	0x41	\u874cProtect Ring	16000	8000	FALSE	A
+armor	0x42	\u874cCrystal Gloves	45300	22650	TRUE	A
+armor	0x43	\u874cThief\u8166s Gloves	47700	23850	TRUE	A
+armor	0x44	\u874cCrystal Ring	48500	24250	TRUE	A
+armor	0x45	\u874cAngel\u8166s Ring	50100	25050	TRUE	S
+armor	0x46	\u874cGenji Gloves	35900	17950	TRUE	A

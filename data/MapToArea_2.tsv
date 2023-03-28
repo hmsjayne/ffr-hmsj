@@ -1,0 +1,125 @@
+map_index	name	area
+0x0	World Map	Overworld
+0x1	Earth Cave B1	Earth Cave
+0x2	Earth Cave B2	Earth Cave
+0x3	Earth Cave B3	Earth Cave
+0x4	Earth Cave B4	Deep Earth Cave
+0x5	Earth Cave B5	Deep Earth Cave
+0x6	Elven Castle	Elven Castle
+0x7	Elfheim	Elfheim
+0x8	Elfheim Inn	Elfheim
+0x9	Elfheim Weapon Shop	Elfheim Weapons
+0xA	Elfheim Armor Shop	Elfheim Armor
+0xB	Elfheim Item Shop	Elfheim Items
+0xC	Elfheim White Magic 1	Elfheim Magic
+0xD	Elfheim White Magic 2	Elfheim Magic
+0xE	Elfheim Black Magic 1	Elfheim Magic
+0xF	Elfheim Black Magic 2	Elfheim Magic
+0x10	Elfheim Chapel	Elfheim
+0x11	Onrac	Onrac
+0x12	Onrac Inn	Onrac
+0x13	Onrac Item Shop	Onrac Items
+0x14	Onrac White Magic	Onrac Magic
+0x15	Onrac Black Magic	Onrac Magic
+0x16	Onrac Chapel	Onrac
+0x17	Sunken Shrine 1F	Sunken Shrine
+0x18	Sunken Shrine 2F	Sunken Shrine
+0x19	Sunken Shrine 3Fa	Sunken Shrine
+0x1A	Sunken Shrine 3Fb	Sunken Shrine
+0x1B	Sunken Shrine 3Fc	Sunken Shrine
+0x1C	Sunken Shrine 4Fa	Sunken Shrine
+0x1D	Sunken Shrine 4Fb	Sunken Shrine
+0x1E	Sunken Shrine 5F	Sunken Shrine
+0x1F	Chaos Shrine	Chaos Shrine
+0x20	Chaos Temple 1F	Chaos Temple
+0x21	Chaos Temple 2F	Chaos Temple
+0x22	Chaos Temple 3F	Chaos Temple
+0x23	Chaos Temple B1	Chaos Temple
+0x24	Chaos Temple B2	Chaos Temple
+0x25	Chaos Temple B3	Chaos Temple
+0x26	Chaos Temple B4	Chaos Temple
+0x27	Chaos Temple B5	Chaos Temple
+0x28	Giant's Cave	Giant's Cave
+0x29	Mt. Gulg B1	Mt. Gulg
+0x2A	Mt. Gulg B2	Mt. Gulg
+0x2B	Mt. Gulg B3	Mt. Gulg
+0x2C	Mt. Gulg B3a	Mt. Gulg
+0x2D	Mt. Gulg B4	Mt. Gulg
+0x2E	Mt. Gulg B5	Mt. Gulg
+0x2F	Crescent Lake	Crescent Lake
+0x30	Crescent Lake Inn	Crescent Lake
+0x31	Crescent Lake Weapon Shop	Crescent Lake Weapons
+0x32	Crescent Lake Armor Shop	Crescent Lake Armor
+0x33	Crescent Lake Item Shop	Crescent Lake Items
+0x34	Crescent Lake White Magic	Crescent Lake Magic
+0x35	Crescent Lake Black Magic	Crescent Lake Magic
+0x36	Crescent Lake Chapel	Crescent Lake
+0x37	Sage's Cave	Sage's Cave
+0x38	Castle Cornelia 1F	Castle Cornelia
+0x39	Castle Cornelia 2F	Castle Cornelia
+0x3A	Cornelia	Cornelia
+0x3B	Cornelia Inn	Cornelia
+0x3C	Cornelia Weapon Shop	Cornelia Weapons
+0x3D	Cornelia Armor Shop	Cornelia Armor
+0x3E	Cornelia Item Shop	Cornelia Items
+0x3F	Cornelia White Magic	Cornelia Magic
+0x40	Cornelia Black Magic	Cornelia Magic
+0x41	Cornelia Chapel	Cornelia
+0x42	Cavern of Ice B1	Cavern of Ice
+0x43	Cavern of Ice B2a	Cavern of Ice
+0x44	Cavern of Ice B2b	Cavern of Ice
+0x45	Cavern of Ice B3a	Cavern of Ice
+0x46	Cavern of Ice B3b	Cavern of Ice
+0x47	Gaia	Gaia
+0x48	Gaia Inn	Gaia
+0x49	Gaia Weapon/Armor Shop	Gaia Gear
+0x4A	Gaia Item Shop	Gaia Items
+0x4B	Gaia White/Black Magic	Gaia Magic
+0x4C	Gaia Chapel	Gaia
+0x4D	Citadel of Trials 1F	Citadel of Trials
+0x4E	Citadel of Trials 2F	Citadel of Trials
+0x4F	Citadel of Trials 3F	Citadel of Trials
+0x50	Mirage Tower 1F	Mirage Tower
+0x51	Mirage Tower 2F	Mirage Tower
+0x52	Mirage Tower 3F	Mirage Tower
+0x53	Waterfall Cavern	Waterfall Cavern
+0x54	Dragon Caves B2	Dragon Caves
+0x55	Dragon Caves B1 (Bahamut's)	Dragon Caves
+0x56	Dragon Caves B1	Dragon Caves
+0x57	Mt. Duergar	Mt. Duergar
+0x58	Western Keep	Western Keep
+0x59	Marsh Cave B1	Marsh Cave
+0x5A	Marsh Cave B2	Marsh Cave
+0x5B	Marsh Cave B3	Marsh Cave
+0x5C	Flying Fortress 1F	Flying Fortress
+0x5D	Flying Fortress 2F	Flying Fortress
+0x5E	Flying Fortress 3F	Flying Fortress
+0x5F	Flying Fortress 4F	Flying Fortress
+0x60	Flying Fortress 5F	Flying Fortress
+0x61	Matoya's Cave	Matoya's Cave
+0x62	Pravoka	Pravoka
+0x63	Pravoka Inn	Pravoka
+0x64	Pravoka Weapon Shop	Pravoka Weapons
+0x65	Pravoka Armor Shop	Pravoka Armor
+0x66	Pravoka Item Shop	Pravoka Items
+0x67	Pravoka White Magic	Pravoka Magic
+0x68	Pravoka Black Magic	Pravoka Magic
+0x69	Pravoka Chapel	Pravoka
+0x6A	Melmond	Melmond
+0x6B	Melmond Inn	Melmond
+0x6C	Melmond Weapon Shop	Melmond Weapons
+0x6D	Melmond Armor Shop	Melmond Armor
+0x6E	Melmond White Magic	Melmond Magic
+0x6F	Melmond Black Magic	Melmond Magic
+0x70	Lufenia	Lufenia
+0x71	Lufenia White/Black Magic	Lufenia Magic
+0x72	Caravan	Caravan
+0x73	Caravan Interior	Caravan
+0x74	Gaia White Magic 2	Gaia Magic
+0x75	Gaia Black Magic 2	Gaia Magic
+0x76	Drawbridge (cutscene)	None
+0x77	Ryukahn Desert (cutscene)	None
+0x78	Earthgift Shrine Entrance	None
+0x79	Hellfire Chasm Entrance	None
+0x7A	Lifespring Grotto Entrance	None
+0x7B	Whisperwind Cove Entrance	None

@@ -26,19 +26,23 @@ def main() -> int:
     parser.add_argument("rom_file", type=FileType('rb', 0), help="The ROM file to randomize.")
     parser.add_argument("--seed", dest="seed", nargs=1, type=str, help="Seed value to use")
     parser.add_argument("--xp-scale", dest="exp_mult", type=float,
-        help="Experience modifier: 1=level gain; 2=gain levels twice as fast; "
-             "0.5=gain levels half as fast")
+                        help="Experience modifier: 1=level gain; 2=gain levels twice as fast; "
+                             "0.5=gain levels half as fast")
 
     parser.add_argument("--original-progression", dest="no_shuffle", action="store_true",
-        help="Do not shuffle key items")
+                        help="Do not shuffle key items")
     parser.add_argument("--standard-shops", dest="standard_shops", action="store_true",
-        help="Don't randomize the inventory of item, weapon, armor, or magic shops")
+                        help="Don't randomize the inventory of item, weapon, armor, or magic shops")
     parser.add_argument("--standard-treasure", dest="standard_treasure", action="store_true",
-        help="Don't randomize the contents of chests")
+                        help="Don't randomize the contents of chests")
     parser.add_argument("--default-start-gear", dest="default_start_gear", action="store_true",
-        help="Don't generate new starting equipment for the classes")
+                        help="Don't generate new starting equipment for the classes")
     parser.add_argument("--default-boss-fights", dest="boss_shuffle", action="store_true",
-        help="Keep original Fiend fights")
+                        help="Keep original Fiend fights")
+    parser.add_argument("--new-items", dest="new_items", action="store_true",
+                        help="Experimental Item Distribution")
+    parser.add_argument("--fiend_ribbons", dest="fiend_ribbons", action="store_true",
+                        help="Fiend 1's drop ribbons")
     parser.add_argument("--debug", dest="debug", action="store_true", help="Enable debugging")
     parser.add_argument("--patch", dest="patch", action="store_true", help="Generate a patch file (ips) instead of a "
                                                                            "new rom")
@@ -77,5 +81,5 @@ def main() -> int:
     return 0
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()

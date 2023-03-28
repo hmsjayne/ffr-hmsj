@@ -55,11 +55,11 @@ class LoadMapToken(list):
     pass
 
 
-class LoadTextToken(str):
+class LoadTextToken(list):
     pass
 
 
-class CloseDialogToken(str):
+class CloseDialogToken(list):
     pass
 
 
@@ -71,15 +71,15 @@ class MoveNpcToken(list):
     pass
 
 
-class JumpToken(str):
+class JumpToken(list):
     pass
 
 
-class JumpChestEmptyToken(str):
+class JumpChestEmptyToken(list):
     pass
 
 
-class MusicToken(str):
+class MusicToken(list):
     pass
 
 
@@ -95,11 +95,11 @@ class MovePartyToken(list):
     pass
 
 
-class SetRepeatToken(str):
+class SetRepeatToken(list):
     pass
 
 
-class RepeatToken(str):
+class RepeatToken(list):
     pass
 
 
@@ -111,11 +111,11 @@ class ShowDialogToken(list):
     pass
 
 
-class CheckFlagToken(str):
+class CheckFlagToken(list):
     pass
 
 
-class SetFlagToken(str):
+class SetFlagToken(list):
     pass
 
 
@@ -127,15 +127,15 @@ class JnzToken(int):
     pass
 
 
-class RemoveTriggerToken(str):
+class RemoveTriggerToken(list):
     pass
 
 
-class NpcUpdateToken(str):
+class NpcUpdateToken(list):
     pass
 
 
-class SetNpcEventToken(str):
+class SetNpcEventToken(list):
     pass
 
 
@@ -155,7 +155,7 @@ class TakeItemToken(list):
     pass
 
 
-class CheckItemToken(str):
+class CheckItemToken(list):
     pass
 
 
@@ -163,7 +163,7 @@ class PromotePcsToken(list):
     pass
 
 
-class JumpByDirToken(str):
+class JumpByDirToken(list):
     pass
 
 

@@ -4,7 +4,7 @@ Final Fantasy: HMS Jayne is a proof of concept randomizer Final Fantasy I: Dawn 
 
 ## Key Features
 
-* Start the game with the Airship!
+* Start the game with the ship!
 * Key Item shuffle
 * Magic level shuffle
 * Shuffled treasure
