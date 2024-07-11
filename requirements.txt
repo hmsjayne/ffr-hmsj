@@ -1,2 +1,4 @@
-flask>=2.2.2
-ips-util>=1.0
+clingo~=5.7.1
+flask~=2.2.2
+ips-util~=1.0
+pillow~=10.4.0

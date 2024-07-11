@@ -11,6 +11,8 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+import sys
+from pathlib import Path
 
 
 def decode_permission_string(perms: str) -> int:
@@ -26,10 +28,25 @@ def decode_permission_string(perms: str) -> int:
     return perm
 
 
+def resolve_path(path):
+    """Resolves a given relative path
+
+    Mainly used because of how PyInstaller works. This
+    fixes the paths so it works inside the bundles it
+    makes.
+
+    :param path Path to the file to resolve
+    :return The fully resolved path
+    """
+    if hasattr(sys, "_MEIPASS"):
+        return str(Path(sys._MEIPASS).joinpath(path))
+    return path
+
+
 def load_tsv(data_file_path: str) -> list:
     data = []
     properties = None
-    with open(data_file_path, "r") as data_file:
+    with open(resolve_path(data_file_path), "r") as data_file:
         first_line = True
         for line in data_file.readlines():
             if not first_line:

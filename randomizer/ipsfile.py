@@ -12,6 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from doslib.dos_utils import resolve_path
+
 IPS_MAGIC = b'PATCH'
 IPS_EOF = 0x454F46
 
@@ -22,7 +24,7 @@ def load_ips_file(path):
     :param path: Path to the IPS to load.
     :return: A dictionary where the keys are the offset of the patch and the value is the data.
     """
-    with open(path, "rb") as ips_file:
+    with open(resolve_path(path), "rb") as ips_file:
         header = ips_file.read(len(IPS_MAGIC))
         if not header == IPS_MAGIC:
             raise RuntimeError("File is not an IPS file (invalid header)")
