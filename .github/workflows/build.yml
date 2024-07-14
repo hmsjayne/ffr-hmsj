@@ -77,6 +77,6 @@ jobs:
         body: "Automatically generated release notes."
         generateReleaseNotes: true
         artifacts: |
-          hmsjayne/hmsjayne.exe
-          hmsjayne/hmsjayne
+          hmsjayne.exe
+          hmsjayne
         token: ${{ secrets.GITHUB_TOKEN }}
