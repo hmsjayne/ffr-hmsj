@@ -45,7 +45,7 @@ jobs:
     - name: Verify executable exists
       run: |
         ls -lRt
-        if [ ! -f dist/hmsjayne/hmsjayne ]; then
+        if [ ! -f dist/hmsjayne ]; then
             echo "Executable not found!" && exit 1;
         fi
 
@@ -53,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: hmsjayne
-        path: dist/hmsjayne/
+        path: dist/
 
   create-release:
     needs: [build-windows, build-linux]
