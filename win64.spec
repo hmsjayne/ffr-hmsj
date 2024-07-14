@@ -28,7 +28,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='Final Fantasy HMS Jayne',
+    name='hmsjayne',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -44,7 +44,7 @@ exe = EXE(
 )
 app = BUNDLE(
     exe,
-    name='Final Fantasy HMS Jayne.app',
+    name='hmsjayne',
     icon="icons/hms-jayne.ico",
     bundle_identifier="com.hmsjayne.app",
 )
