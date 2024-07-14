@@ -35,7 +35,7 @@ exe = EXE(
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
-    target_arch=None,
+    target_arch="universal2",
     codesign_identity=None,
     entitlements_file=None,
 )
@@ -50,7 +50,7 @@ coll = COLLECT(
 )
 app = BUNDLE(
     coll,
-    name='Final Fantasy HMS Jayne.app',
-    icon=None,
+    name="Final Fantasy HMS Jayne.app",
+    icon="static/hms-jayne.icns",
     bundle_identifier="com.hmsjayne.macos",
 )
