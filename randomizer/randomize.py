@@ -18,7 +18,7 @@ from collections import namedtuple
 from copy import deepcopy
 
 from doslib.classes import JobClass
-from doslib.dos_utils import load_tsv
+from doslib.dos_utils import load_tsv, resolve_path
 from doslib.encounterregions import EncounterRegions
 from doslib.enemy import EnemyStats, Encounter
 from doslib.event import EventTables, EventTextBlock
@@ -389,7 +389,7 @@ def map_updates(maps: Maps):
 
 def load_event_scripts() -> dict:
     scripts = {}
-    for file in os.listdir("scripts/"):
+    for file in os.listdir(resolve_path("scripts/")):
         if file.endswith(".script"):
             add_events = parse_script(f"scripts/{file}")
             for event_id, source in add_events.items():
@@ -401,7 +401,7 @@ def parse_script(script: str) -> dict:
     events = {}
     script_id = None
     script_code = ""
-    with open(script, "r") as script_text:
+    with open(resolve_path(script), "r") as script_text:
         for line in script_text.readlines():
             if line.startswith("begin script="):
                 if script_id is not None:
@@ -447,7 +447,7 @@ def build_headers(placements: Placement, start_cmds: str) -> str:
 
 
 def update_strings(event_text: EventTextBlock):
-    with open("data/TextUpdates.tsv", "r") as text_data:
+    with open(resolve_path("data/TextUpdates.tsv"), "r") as text_data:
         for line in text_data.readlines():
             string_num, text = line.strip().split('\t')
             string_num = int(string_num, 16)

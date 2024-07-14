@@ -61,3 +61,9 @@ def create_patch():
         response.headers['Content-Type'] = "application/octet-stream"
         response.headers['Content-Disposition'] = f"inline; filename={filename}"
         return response
+
+
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    # Run the Flask app
+    app.run(port=8080)

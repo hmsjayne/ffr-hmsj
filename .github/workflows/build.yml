@@ -1,0 +1,82 @@
+name: Build and Upload Applications
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Package Application
+      uses: sayyid5416/pyinstaller@v1
+      with:
+        python_ver: '3.12'
+        spec: 'win64.spec'
+        requirements: 'requirements.txt'
+        exe_path: 'dist/hmsjayne/hmsjayne.exe'
+        upload_exe_with_name: 'hmsjayne.exe'
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build executable
+      run: pyinstaller win64.spec
+
+    - name: Verify executable exists
+      run: |
+        ls -lRt
+        if [ ! -f dist/hmsjayne/hmsjayne ]; then
+            echo "Executable not found!" && exit 1;
+        fi
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: hmsjayne
+        path: dist/hmsjayne/
+
+  create-release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        merge-multiple: true
+
+    - name: Verify artifacts
+      run: |
+        ls -lR .
+
+    - name: Create and Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        name: HMS Jayne ${{ github.ref_name }}
+        body: "Automatically generated release notes."
+        generateReleaseNotes: true
+        artifacts: |
+          hmsjayne/hmsjayne.exe
+          hmsjayne/hmsjayne
+        token: ${{ secrets.GITHUB_TOKEN }}

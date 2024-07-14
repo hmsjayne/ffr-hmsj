@@ -14,6 +14,7 @@
 
 from collections import namedtuple
 
+from doslib.dos_utils import resolve_path
 from doslib.item import Item
 from doslib.items import Items
 
@@ -77,7 +78,7 @@ class Placement(object):
     def _parse_data(data_file_path: str) -> list:
         data = []
         properties = None
-        with open(data_file_path, "r") as data_file:
+        with open(resolve_path(data_file_path), "r") as data_file:
             first_line = True
             for line in data_file.readlines():
                 if not first_line:

@@ -12,10 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import json
-from sys import platform
 from collections import namedtuple
-from subprocess import PIPE, run
+
+import clingo
+
+from doslib.dos_utils import resolve_path
 
 ClingoPlacement = namedtuple("ClingoPlacement", ["reward", "source"])
 
@@ -23,36 +24,35 @@ ClingoPlacement = namedtuple("ClingoPlacement", ["reward", "source"])
 def solve_placement_for_seed(seed: int) -> tuple:
     """Create a random distribution for key items (KI).
 
-    Note: this requires an installation of Clingo 4.5 or better
-
     :param seed: The random number seed to use for the solver.
     :return: A list of tuples that contain item+location for each KI.
     """
 
-    if platform.startswith("win"):
-        clingo_name = "clingo-win.exe"
-    elif platform.startswith("darwin"):
-        clingo_name = "clingo-darwin"
-    else:
-        clingo_name = "clingo-linux"
+    prg = clingo.Control()
 
-    command = [
-        f"clingo/{clingo_name}", "asp/KeyItemSolvingShip.lp", "asp/KeyItemDataShip.lp",
-        "--sign-def=rnd",
-        "--seed=" + str(seed),
-        "--outf=2"
-    ]
+    # Add your ASP programs
+    prg.load(resolve_path("asp/KeyItemSolvingShip.lp"))
+    prg.load(resolve_path("asp/KeyItemDataShip.lp"))
 
-    try:
-        clingo_out = json.loads(run(command, stdout=PIPE).stdout)
-    except:
-        command[0] = "clingo"
-        clingo_out = json.loads(run(command, stdout=PIPE).stdout)
-    pairings = clingo_out['Call'][0]['Witnesses'][0]['Value']
+    # Set the seed and other configuration options
+    prg.configuration.solve.models = 1  # Limit to one model
+    prg.configuration.solver.sign_def = "rnd"
+    prg.configuration.solver.seed = seed
+
+    # Ground the program
+    prg.ground([("base", [])])
+
+    # Solve the problem
+    result = []
+    with prg.solve(yield_=True) as handle:
+        for model in handle:
+            result.append(model.symbols(shown=True))
+            break  # Stop after finding the first model
 
     ki_placement = []
-    for pairing in pairings:
-        pairing = ClingoPlacement(*pairing[5:len(pairing) - 1].split(","))
+    for pairing in result[0]:
+        pairing_str = str(pairing)
+        pairing = ClingoPlacement(*pairing_str[5:len(pairing_str) - 1].split(","))
         ki_placement.append(pairing)
 
     return tuple(ki_placement)
