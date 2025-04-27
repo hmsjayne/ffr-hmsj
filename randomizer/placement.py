@@ -29,7 +29,7 @@ class Placement(object):
     def __init__(self):
         self._placement_list = Placement._parse_data("data/KeyItemPlacement.tsv")
 
-    def all_placements(self) -> list:
+    def all_placements(self) -> list[PlacementDetails]:
         return self._placement_list
 
     def update_gear(self, reward: str, gear: Item):
@@ -75,7 +75,7 @@ class Placement(object):
         self._placement_list = new_placements
 
     @staticmethod
-    def _parse_data(data_file_path: str) -> list:
+    def _parse_data(data_file_path: str) -> list[PlacementDetails]:
         data = []
         properties = None
         with open(resolve_path(data_file_path), "r") as data_file:

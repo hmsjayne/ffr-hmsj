@@ -28,7 +28,15 @@
 
 import array
 
+from doslib.event import EventTextBlock
 from doslib.rom import Rom
+from randomizer.placement import Placement
+
+# Used for various pieces of data
+flag_names = {}
+item_names = {}
+
+event_text_block: EventTextBlock | None = None
 
 
 # Simple routine to convert a memory address to an index into the ROM.
@@ -100,7 +108,9 @@ def _da_05(cmd: bytearray) -> str:
         location = "WINDOW_TOP"
     else:
         location = "WINDOW_BOTTOM"
-    return f"load_text {location} {hex(dialog_id)}"
+
+    text = event_text_block[dialog_id].replace("\n", "\\n")
+    return f"load_text {location} {hex(dialog_id)} \"{text}\\x00\""
 
 
 def _da_06(cmd: bytearray) -> str:
@@ -175,7 +185,8 @@ def _da_2d(cmd: bytearray) -> tuple:
     jump_to = None
 
     if len(cmd) == 4:
-        cmd_text = f"set_flag {hex(cmd[2])}"
+        flag_name = flag_names[cmd[2]] if cmd[2] in flag_names else hex(cmd[2])
+        cmd_text = f"set_flag {flag_name}"
     else:
         check_flag_cmds = {
             0x2: "jz",
@@ -187,7 +198,8 @@ def _da_2d(cmd: bytearray) -> tuple:
         else:
             cond = hex(cmd[3])
 
-        cmd_text = f"check_flag {hex(cmd[2])} {cond} $$addr$$"
+        flag_name = flag_names[cmd[2]] if cmd[2] in flag_names else hex(cmd[2])
+        cmd_text = f"check_flag {flag_name} {cond} $$addr$$"
         jump_to = addr
 
     return cmd_text, jump_to
@@ -230,11 +242,12 @@ def _da_37(cmd: bytearray) -> tuple:
 
     jump_to = None
 
+    item_name = item_names[cmd[3]] if cmd[3] in item_names else hex(cmd[3])
     if len(cmd) == 4:
-        cmd_text = f"{actions[cmd[2]]} {hex(cmd[3])}"
+        cmd_text = f"{actions[cmd[2]]} {item_name}"
     else:
         addr = array.array("I", cmd[4:8])[0]
-        cmd_text = f"{actions[cmd[2]]} {hex(cmd[3])} jz $$addr$$"
+        cmd_text = f"{actions[cmd[2]]} {item_name} jz $$addr$$"
         jump_to = addr
 
     return cmd_text, jump_to
@@ -384,6 +397,19 @@ def disassemble(rom: Rom, offset: int) -> dict:
 
 
 def disassemble_event(rom: Rom, event_id: int) -> dict:
+    global flag_names
+    global item_names
+    global event_text_block
+
+    event_text_block = EventTextBlock(rom)
+
+    placements = Placement()
+    for placement in placements.all_placements():
+        if placement.plot_flag is not None:
+            flag_names[placement.plot_flag] = f"%{placement.source}_reward_flag"
+        if placement.plot_item is not None:
+            item_names[placement.plot_item] = f"%{placement.source}_reward_item"
+
     # Decompile the event in a function so it can recurse.
     offset = lookup_event(rom, event_id)
     return disassemble(rom, offset)

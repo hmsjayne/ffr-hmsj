@@ -448,7 +448,11 @@ def build_headers(placements: Placement, start_cmds: str) -> str:
 
 def update_strings(event_text: EventTextBlock):
     with open(resolve_path("data/TextUpdates.tsv"), "r") as text_data:
+        first_line = True
         for line in text_data.readlines():
+            if first_line:
+                first_line = False
+                continue
             string_num, text = line.strip().split('\t')
             string_num = int(string_num, 16)
 

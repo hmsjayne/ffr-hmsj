@@ -22,7 +22,7 @@ from event.e2s import disassemble_event
 
 def main():
     parser = ArgumentParser(description="Final Fantasy: Dawn of Souls Event->Script")
-    parser.add_argument("rom_file", type=FileType('rb', 0), help="The ROM file to randomize.")
+    parser.add_argument("rom_file", type=FileType('rb', 0), help="The ROM file to read.")
     parser.add_argument("--event", dest="event", type=str, help="Event to disassemble")
     parsed = parser.parse_args()
 
