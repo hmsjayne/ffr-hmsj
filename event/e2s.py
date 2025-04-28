@@ -35,6 +35,7 @@ from randomizer.placement import Placement
 # Used for various pieces of data
 flag_names = {}
 item_names = {}
+event_names = {}
 
 event_text_block: EventTextBlock | None = None
 
@@ -207,7 +208,8 @@ def _da_2d(cmd: bytearray) -> tuple:
 
 def _da_2e(cmd: bytearray) -> str:
     event_id = array.array("H", cmd[2:4])[0]
-    return f"remove_trigger {hex(event_id)}"
+    event_name = event_names[event_id] if event_id in event_names else hex(event_id)
+    return f"remove_trigger {event_name}"
 
 
 def _da_2f(cmd: bytearray) -> tuple:
@@ -232,7 +234,8 @@ def _da_30(cmd: bytearray) -> str:
 
 def _da_36(cmd: bytearray) -> str:
     event_id = array.array("H", cmd[2:4])[0]
-    return f"remove_all {hex(event_id)}"
+    event_name = event_names[event_id] if event_id in event_names else hex(event_id)
+    return f"remove_all {event_name}"
 
 
 def _da_37(cmd: bytearray) -> tuple:
@@ -353,7 +356,7 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = cmd_text
         elif cmd == 0x2e:
             working[offset] = _da_2e(full_cmd)
-        elif cmd == 0x2f and False: # Update if this is understood at some point
+        elif cmd == 0x2f and False:  # Update if this is understood at some point
             cmd_text, jump_target = _da_2f(full_cmd)
             if jump_target is not None:
                 if jump_target not in labels:
@@ -414,15 +417,24 @@ def disassemble_event(rom: Rom, event_id: int) -> dict:
     global flag_names
     global item_names
     global event_text_block
+    global event_names
 
     event_text_block = EventTextBlock(rom)
 
-    placements = Placement()
-    for placement in placements.all_placements():
-        if placement.plot_flag is not None:
-            flag_names[placement.plot_flag] = f"%{placement.reward}_flag"
-        if placement.plot_item is not None:
-            item_names[placement.plot_item] = f"%{placement.reward}_item"
+    with open("scripts/DosLib.script", "r") as std_inc:
+        for line in std_inc.readlines():
+            if line.startswith(";"):
+                continue
+            if line.startswith("%"):
+                parts = line.split(" ")
+                name = parts[0]
+                value = int(parts[1], 16)
+                if name.find("Event") > 0:
+                    event_names[value] = name
+                elif name.find("Item") > 0:
+                    item_names[value] = name
+                elif name.find("Flag") > 0:
+                    flag_names[value] = name
 
     # Decompile the event in a function so it can recurse.
     offset = lookup_event(rom, event_id)
