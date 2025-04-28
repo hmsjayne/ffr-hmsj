@@ -136,7 +136,7 @@ def _da_0b(cmd: bytearray) -> str:
 
 def _da_0c(cmd: bytearray) -> tuple:
     addr = array.array("I", cmd[4:8])[0]
-    return "jump $$addr$$", addr
+    return "goto $$addr$$", addr
 
 
 def _da_0d(cmd: bytearray) -> tuple:
@@ -189,8 +189,8 @@ def _da_2d(cmd: bytearray) -> tuple:
         cmd_text = f"set_flag {flag_name}"
     else:
         check_flag_cmds = {
-            0x2: "jz",
-            0x3: "jnz"
+            0x2: "unset",
+            0x3: "set"
         }
         addr = array.array("I", cmd[4:8])[0]
         if cmd[3] in check_flag_cmds:
@@ -199,7 +199,7 @@ def _da_2d(cmd: bytearray) -> tuple:
             cond = hex(cmd[3])
 
         flag_name = flag_names[cmd[2]] if cmd[2] in flag_names else hex(cmd[2])
-        cmd_text = f"check_flag {flag_name} {cond} $$addr$$"
+        cmd_text = f"if {flag_name} {cond} goto $$addr$$"
         jump_to = addr
 
     return cmd_text, jump_to
@@ -208,6 +208,12 @@ def _da_2d(cmd: bytearray) -> tuple:
 def _da_2e(cmd: bytearray) -> str:
     event_id = array.array("H", cmd[2:4])[0]
     return f"remove_trigger {hex(event_id)}"
+
+
+def _da_2f(cmd: bytearray) -> tuple:
+    something = array.array("H", cmd[2:4])[0]
+    addr = array.array("I", cmd[4:8])[0]
+    return f"goto_far {hex(something)} $$addr$$", addr
 
 
 def _da_30(cmd: bytearray) -> str:
@@ -347,6 +353,14 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = cmd_text
         elif cmd == 0x2e:
             working[offset] = _da_2e(full_cmd)
+        elif cmd == 0x2f and False: # Update if this is understood at some point
+            cmd_text, jump_target = _da_2f(full_cmd)
+            if jump_target is not None:
+                if jump_target not in labels:
+                    labels[jump_target] = f".Label_{len(labels) + 1}"
+                label = labels[jump_target]
+                cmd_text = cmd_text.replace("$$addr$$", label)
+            working[offset] = cmd_text
         elif cmd == 0x30:
             working[offset] = _da_30(full_cmd)
         elif cmd == 0x36:
@@ -406,9 +420,9 @@ def disassemble_event(rom: Rom, event_id: int) -> dict:
     placements = Placement()
     for placement in placements.all_placements():
         if placement.plot_flag is not None:
-            flag_names[placement.plot_flag] = f"%{placement.source}_reward_flag"
+            flag_names[placement.plot_flag] = f"%{placement.reward}_flag"
         if placement.plot_item is not None:
-            item_names[placement.plot_item] = f"%{placement.source}_reward_item"
+            item_names[placement.plot_item] = f"%{placement.reward}_item"
 
     # Decompile the event in a function so it can recurse.
     offset = lookup_event(rom, event_id)

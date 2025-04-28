@@ -210,5 +210,3 @@ class EncounterGroup(object):
         stream.put_u8(self.min_count)
         stream.put_u8(self.max_count)
         stream.put_u8(self.unused)
-
-

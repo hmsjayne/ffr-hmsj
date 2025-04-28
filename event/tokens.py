@@ -75,6 +75,10 @@ class JumpToken(list):
     pass
 
 
+class GotoToken(int):
+    pass
+
+
 class JumpChestEmptyToken(list):
     pass
 
@@ -116,6 +120,18 @@ class CheckFlagToken(list):
 
 
 class SetFlagToken(list):
+    pass
+
+
+class IfToken(list):
+    pass
+
+
+class SetToken(int):
+    pass
+
+
+class UnsetToken(int):
     pass
 
 

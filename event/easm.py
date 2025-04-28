@@ -18,10 +18,11 @@ from stream.outputstream import OutputStream
 
 
 class ICode(object):
-    def __init__(self, bytecode: list, symbols: dict, size: int):
+    def __init__(self, bytecode: list, symbols: dict, size: int, text: dict[int, str] = None):
         self.bytecode = bytecode
         self.symbols = symbols
         self.size = size
+        self.text = text
 
 
 GRAMMAR = {
@@ -35,6 +36,7 @@ GRAMMAR = {
     "delay": DelayToken([0x9, 0x4, "$(u:0)"]),
     "move_npc": MoveNpcToken([0xb, 0xc, "$2", "$3", "$1", 0x0, 0x0, 0x0, "$0", 0x0, 0xff, 0xff]),
     "jump": JumpToken([0xc, 0x8, 0xff, 0xff, "$0"]),
+    "goto": JumpToken([0xc, 0x8, 0xff, 0xff, "$0"]),
     "jump_chest_empty": JumpChestEmptyToken([0xd, 0xc, 0x0, 0xff, "$0", 0x0, 0x0, 0x0, 0x0]),
     "music": MusicToken([0x11, 0x8, "$0", 0xff, "$(u:1)", 0xff, 0xff]),
     "add_npc": AddNpcToken([0x13, 0xc, "$0", "$1", 0x0, 0x0, 0x0, 0xff, "$(u:2)", "$(u:3)"]),
@@ -46,6 +48,7 @@ GRAMMAR = {
     "show_dialog": ShowDialogToken([0x27, 0x4, 0x0, 0xff]),
     "set_flag": SetFlagToken([0x2d, 0x4, "$0", 0x0]),
     "check_flag": CheckFlagToken([0x2d, 0x8, "$0", "$1", "$2"]),
+    "if": IfToken([0x2d, 0x8, "$0", "$1", "$2"]),
     "remove_trigger": RemoveTriggerToken([0x2e, 0x4, "$(u:0)"]),
     "npc_update": NpcUpdateToken([0x30, 0x4, "$0", "$1"]),
     "set_npc_event": SetNpcEventToken([0x30, 0x8, 0x1, "$0", "$(u:1)", 0xff, 0xff]),
@@ -67,6 +70,7 @@ GRAMMAR = {
     #
     "$$value$$": (SymbolToken(), NumberToken()),
     "$$cond$$": (JzToken(), JnzToken()),
+    "$$flag_state$$": (UnsetToken(), SetToken()),
 
     # Language constructs are here.
     "$$def_label": LabelToken("def_label"),
@@ -86,6 +90,7 @@ GRAMMAR = {
     DelayToken: ["$$value$$"],
     MoveNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
     JumpToken: [LabelToken()],
+    GotoToken: [LabelToken()],
     JumpChestEmptyToken: [LabelToken()],
     MusicToken: ["$$value$$", "$$value$$"],
     AddNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
@@ -97,6 +102,7 @@ GRAMMAR = {
     ShowDialogToken: None,
     SetFlagToken: ["$$value$$"],
     CheckFlagToken: ["$$value$$", "$$cond$$", LabelToken()],
+    IfToken: ["$$value$$", "$$flag_state$$", GotoToken(), LabelToken()],
     RemoveTriggerToken: ["$$value$$"],
     NpcUpdateToken: ["$$value$$", "$$value$$"],
     SetNpcEventToken: ["$$value$$", "$$value$$"],

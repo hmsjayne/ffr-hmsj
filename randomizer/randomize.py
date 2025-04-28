@@ -20,7 +20,7 @@ from copy import deepcopy
 from doslib.classes import JobClass
 from doslib.dos_utils import load_tsv, resolve_path
 from doslib.encounterregions import EncounterRegions
-from doslib.enemy import EnemyStats, Encounter
+from doslib.enemy import EnemyStats, Encounter, EncounterGroup
 from doslib.event import EventTables, EventTextBlock
 from doslib.item import Item, Weapon
 from doslib.items import Items
@@ -120,7 +120,7 @@ def load_enemy_data(rom: Rom, items: Items, fiend_ribbons: bool) -> list:
     return enemies
 
 
-def load_encounter_data(rom: Rom) -> list:
+def load_encounter_data(rom: Rom) -> list[Encounter]:
     encounter_stream = rom.open_bytestream(0x2288B4, 0x1CD4)
     formations = []
     while not encounter_stream.is_eos():
@@ -512,6 +512,24 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
 
     items = Items(rom, flags.new_items)
     enemy_data = load_enemy_data(rom, items, flags.fiend_ribbons)
+
+    with open("Formations.tsv", "wb") as data:
+        lines = []
+        for index, encounter in enumerate(encounters):
+            grps = []
+            for grp in encounter.groups:
+                if grp.max_count == 0:
+                    continue
+                if grp.enemy_id < len(enemy_data):
+                    name = enemy_data[grp.enemy_id].name.replace("\\x00", "")
+                else:
+                    name = hex(grp.enemy_id)
+                grps.append(f"({name}, {grp.min_count}, {grp.max_count})")
+            grps_str = "(" + ",".join(grps) + ")"
+            runable = "unrunnable" if encounter.unrunnable else "runnable"
+            lstr = f"{hex(index)}\t{encounter.config}\t{runable}\t{encounter.surprise_chance}\t{grps_str}\n"
+            lines.append(lstr.encode("utf-8"))
+        data.writelines(lines)
 
     # Don't load formation data (since we don't do anything with it)
     # load_formation_data(rom, enemy_data)
