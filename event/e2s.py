@@ -36,6 +36,8 @@ from randomizer.placement import Placement
 flag_names = {}
 item_names = {}
 event_names = {}
+music_names = {}
+map_names = {}
 
 event_text_block: EventTextBlock | None = None
 
@@ -80,7 +82,10 @@ def lookup_event(rom: Rom, event_id: int) -> int:
     lut_addr = addr_to_offset(((event_id - lut_id_offset) * 4) + lut_base)
     # Since it's stored little endian, we only really need the
     # first two bytes.
-    return addr_to_offset(array.array("I", rom.rom_data[lut_addr:lut_addr + 4])[0])
+    addr = addr_to_offset(array.array("I", rom.rom_data[lut_addr:lut_addr + 4])[0])
+    if addr < 0:
+        raise ValueError("Event id invalid: " + hex(event_id))
+    return addr
 
 
 def _da_rest(cmd: bytearray) -> str:
@@ -100,7 +105,8 @@ def _da_03(cmd: bytearray) -> str:
     y_pos = array.array("H", cmd[6:8])[0]
     x_param = cmd[8]
     y_param = cmd[9]
-    return f"load_map {hex(map_id)} {x_pos} {y_pos} {x_param} {y_param}"
+    map_name = map_names[map_id] if map_id in map_names else hex(map_id)
+    return f"load_map {map_name} {x_pos} {y_pos} {x_param} {y_param}"
 
 
 def _da_05(cmd: bytearray) -> str:
@@ -150,10 +156,13 @@ def _da_0d(cmd: bytearray) -> tuple:
 
 def _da_11(cmd: bytearray) -> str:
     item_id = array.array("H", cmd[4:6])[0]
-    return f"music {hex(cmd[2])} {hex(item_id)}"
+    music_name = music_names[item_id] if item_id in music_names else hex(item_id)
+    return f"music {hex(cmd[2])} {music_name}"
 
 
 def _da_13(cmd: bytearray) -> str:
+    if len(cmd) < 12:
+        return _da_rest(cmd)
     sprite_id = cmd[2]
     npc_index = cmd[3]
     x_pos = array.array("H", cmd[8:10])[0]
@@ -162,8 +171,9 @@ def _da_13(cmd: bytearray) -> str:
 
 
 def _da_14(cmd: bytearray) -> str:
-    npc_id = array.array("H", cmd[2:4])[0]
-    return f"remove_npc {hex(npc_id)}"
+    npc_id = cmd[2]
+    mode = cmd[3]
+    return f"remove_npc {hex(npc_id)} {hex(mode)}"
 
 
 def _da_19(cmd: bytearray) -> tuple:
@@ -282,7 +292,7 @@ def _da_48(cmd: bytearray) -> tuple:
     return "call $$addr$$", sub_addr
 
 
-def disassemble(rom: Rom, offset: int) -> dict:
+def disassemble(rom: Rom, offset: int) -> (dict[int, str], dict[int, str]):
     rom_data = rom.rom_data
     working = dict()
 
@@ -406,36 +416,41 @@ def disassemble(rom: Rom, offset: int) -> dict:
         last_cmd = cmd
         offset = offset + cmd_len
 
-    for offset, cmd in sorted(working.items(), key=lambda x: x[0]):
-        addr = offset_to_addr(offset)
-        if addr in labels:
-            print(f"{labels[addr]}:")
-        print(cmd)
+    return working, labels
 
 
-def disassemble_event(rom: Rom, event_id: int) -> dict:
+def disassemble_event(rom: Rom, event_id: int = None, addr: int = None) -> (dict[int, str], dict[int, str]):
     global flag_names
     global item_names
     global event_text_block
     global event_names
+    global music_names
 
-    event_text_block = EventTextBlock(rom)
-
-    with open("scripts/DosLib.script", "r") as std_inc:
-        for line in std_inc.readlines():
-            if line.startswith(";"):
-                continue
-            if line.startswith("%"):
-                parts = line.split(" ")
-                name = parts[0]
-                value = int(parts[1], 16)
-                if name.find("Event") > 0:
-                    event_names[value] = name
-                elif name.find("Item") > 0:
-                    item_names[value] = name
-                elif name.find("Flag") > 0:
-                    flag_names[value] = name
+    if event_text_block is None:
+        event_text_block = EventTextBlock(rom)
+    if len(flag_names.keys()) == 0:
+        with open("scripts/DosLib.script", "r") as std_inc:
+            for line in std_inc.readlines():
+                if line.startswith(";"):
+                    continue
+                if line.startswith("%"):
+                    parts = line.split(" ")
+                    name = parts[0]
+                    value = int(parts[1], 16)
+                    if name.find("Event") > 0:
+                        event_names[value] = name
+                    elif name.find("Item") > 0:
+                        item_names[value] = name
+                    elif name.find("Flag") > 0:
+                        flag_names[value] = name
+                    elif name.find("Music") > 0:
+                        music_names[value] = name
+                    elif name.find("Map") > 0:
+                        map_names[value] = name
 
     # Decompile the event in a function so it can recurse.
-    offset = lookup_event(rom, event_id)
+    if addr is not None:
+        offset = addr
+    else:
+        offset = lookup_event(rom, event_id)
     return disassemble(rom, offset)
