@@ -216,6 +216,19 @@ def _da_11(cmd: bytearray) -> str:
     return f"music {hex(cmd[2])} {music_name}"
 
 
+def _da_12(cmd: bytearray) -> str:
+    sprite_id = f"%PC_Sprite_{hex(cmd[2])}"
+    coords = cmd[3]
+    mode = cmd[4]
+
+    if len(cmd) == 8:
+        return f"load_pc_at_leader {sprite_id} {hex(coords)} {hex(mode)}"
+
+    x_pos = array.array("H", cmd[6:8])[0]
+    y_pos = array.array("H", cmd[8:10])[0]
+    return f"load_pc_sprite {sprite_id} {hex(coords)} {hex(mode)} {x_pos} {y_pos}"
+
+
 def _da_13(cmd: bytearray) -> str:
     if len(cmd) < 12:
         return _da_rest(cmd)
@@ -223,7 +236,12 @@ def _da_13(cmd: bytearray) -> str:
     npc_index = cmd[3]
     x_pos = array.array("H", cmd[8:10])[0]
     y_pos = array.array("H", cmd[10:12])[0]
-    return f"add_npc {hex(sprite_id)} {hex(npc_index)} {x_pos} {y_pos}"
+
+    if sprite_id in sprite_id_to_name:
+        sprite_name = f"%Param_{sprite_id_to_name[sprite_id]}_{hex(sprite_id)}"
+    else:
+        sprite_name = hex(sprite_id)
+    return f"add_npc {sprite_name} {hex(npc_index)} {x_pos} {y_pos}"
 
 
 def _da_14(cmd: bytearray) -> str:
@@ -235,6 +253,32 @@ def _da_14(cmd: bytearray) -> str:
     return f"remove_npc {npc_name} {hex(mode)}"
 
 
+def _da_15(cmd: bytearray) -> str:
+    tiles = cmd[2]
+    speed = cmd[3]
+    return f"move_party {tiles} {hex(speed)} {cmd[4]} {cmd[5]} {cmd[6]} {cmd[7]}"
+
+
+def _da_16(cmd: bytearray) -> str:
+    if cmd[2] == 0:
+        return "hide_leader"
+    return "reveal_leader"
+
+
+def _da_18(cmd: bytearray) -> str:
+    sprite_id = cmd[2]
+    mode = cmd[3]
+    pixels = array.array("H", cmd[4:6])[0]
+
+    npc_name = get_npc_name(sprite_id)
+    mode_names = {
+        0: "%Param_Shift_X_0x0",
+        1: "%Param_Shift_Y_0x1",
+    }
+    mode_name = mode_names[mode] if mode in mode_names else hex(mode)
+    return f"shift_npc {npc_name} {mode_name} {pixels}"
+
+
 def _da_19(cmd: bytearray) -> tuple:
     if cmd[1] == 0x4:
         return f"set_repeat {hex(cmd[3])}", None
@@ -243,9 +287,37 @@ def _da_19(cmd: bytearray) -> tuple:
         return f"repeat {hex(cmd[2])} $$addr$$", addr
 
 
+def _da_1b(cmd: bytearray) -> str:
+    fade_dir = cmd[2]
+    timer = cmd[3]
+    fade_what = array.array("H", cmd[4:6])[0]
+    amount = cmd[6]
+
+    fade_dir_names = {
+        0: "%Param_Fade_In",
+        1: "%Param_Fade_Out"
+    }
+    fade_what_names = {
+        0xffff: "%Param_Fade_Screen",
+        0xff00: "%Param_Fade_NPCs",
+        0x8EFF: "%Param_Fade_All_But_Pc",
+        0x7100: "%Param_Fade_PCs",
+        0x00FF: "%Param_Fade_Map"
+    }
+    dir_name = f"{fade_dir_names[fade_dir]}_{hex(fade_dir)}" if fade_dir in fade_dir_names else hex(fade_dir)
+    fade_what_name = f"{fade_what_names[fade_what]}_{hex(fade_what)}" if fade_what in fade_what_names else hex(
+        fade_what)
+
+    return f"fade {dir_name} {hex(timer)} {fade_what_name} {hex(amount)}"
+
+
 def _da_1f(cmd: bytearray) -> str:
     npc_name = get_npc_name(cmd[2])
     return f"set_npc_frame {npc_name} {hex(cmd[3])}"
+
+
+def _da_2b(cmd: bytearray) -> str:
+    return f"trigger_battle {hex(cmd[2])}"
 
 
 def _da_27(cmd: bytearray) -> str:
@@ -339,6 +411,10 @@ def _da_37(cmd: bytearray) -> tuple:
     return cmd_text, jump_to
 
 
+def _da_3b(_: bytearray) -> str:
+    return f"wait_for_party_movement"
+
+
 def _da_42(cmd: bytearray) -> tuple:
     up_addr = array.array("I", cmd[4:8])[0]
     right_addr = array.array("I", cmd[8:12])[0]
@@ -408,10 +484,18 @@ def disassemble(rom: Rom, offset: int) -> (dict[int, str], dict[int, str]):
             working[offset] = cmd_text
         elif cmd == 0x11:
             working[offset] = _da_11(full_cmd)
+        elif cmd == 0x12:
+            working[offset] = _da_12(full_cmd)
         elif cmd == 0x13:
             working[offset] = _da_13(full_cmd)
         elif cmd == 0x14:
             working[offset] = _da_14(full_cmd)
+        elif cmd == 0x15:
+            working[offset] = _da_15(full_cmd)
+        elif cmd == 0x16:
+            working[offset] = _da_16(full_cmd)
+        elif cmd == 0x18:
+            working[offset] = _da_18(full_cmd)
         elif cmd == 0x19:
             cmd_text, jump_target = _da_19(full_cmd)
             if jump_target is not None:
@@ -420,10 +504,14 @@ def disassemble(rom: Rom, offset: int) -> (dict[int, str], dict[int, str]):
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
+        elif cmd == 0x1b:
+            working[offset] = _da_1b(full_cmd)
         elif cmd == 0x1f:
             working[offset] = _da_1f(full_cmd)
         elif cmd == 0x27:
             working[offset] = _da_27(full_cmd)
+        elif cmd == 0x2b:
+            working[offset] = _da_2b(full_cmd)
         elif cmd == 0x2d:
             cmd_text, jump_target, label_name = _da_2d(full_cmd)
             if jump_target is not None:
@@ -454,6 +542,8 @@ def disassemble(rom: Rom, offset: int) -> (dict[int, str], dict[int, str]):
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
+        elif cmd == 0x3b:
+            working[offset] = _da_3b(full_cmd)
         elif cmd == 0x42:
             cmd_text, jump_targets = _da_42(full_cmd)
 

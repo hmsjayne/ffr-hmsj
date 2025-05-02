@@ -1,13 +1,26 @@
-; ; Map initialization code for Overworld
+; Map initialization code for Overworld
 begin script=0x0
+    if %Flag_Ship_Visible_0x5 set goto .Label_Received_Free_Start
+    ; Set flags associated with the things you get automatically when the game starts
+    ; (i.e.: The ship and some other bits)
+    FREE_START
+
+    .Label_Received_Free_Start:
+    if %Flag_Canal_Open_0x0b unset goto .Label_Canal_Closed
+    remove_all 0x1f62
+
+    .Label_Canal_Closed:
 	if %Flag_Watched_Bridge_Credits_0x29 unset goto .Label_1_Flag_Watched_Bridge_Credits_0x29_Unset
 	remove_trigger %Event_Bridge_Credits
+
 	.Label_1_Flag_Watched_Bridge_Credits_0x29_Unset:
 	if %Flag_Airship_0x15 unset goto .Label_2_Flag_Airship_0x15_Unset
 	remove_trigger %Event_Airship_Rises_From_Ryukahn_Desert
+
 	.Label_2_Flag_Airship_0x15_Unset:
 	if %Flag_Chime_0x1f set goto .Label_3_Flag_Chime_0x1f_Set
 	db 0x2f 0x8 0x0 0x0 0xff 0xb8 0x38 0x2
+
 	.Label_3_Flag_Chime_0x1f_Set:
 	npc_update 0x4 %NPC_Castle_Cornelia_0x0
 	npc_update 0x4 %NPC_Chaos_Shrine_0x1
@@ -17,20 +30,19 @@ begin script=0x0
 	npc_update 0x4 %NPC_Mirage_Tower_0x5
 	end_event
 
-
-; ; Map initialization code for Earth Cave B1
+; Map initialization code for Earth Cave B1
 begin script=0x1
 	end_event
 
 
-; ; Map initialization code for Earth Cave B2
+; Map initialization code for Earth Cave B2
 begin script=0x2
 	end_event
 
 
-; ; Map initialization code for Earth Cave B3
+; Map initialization code for Earth Cave B3
 begin script=0x3
-	db 0x18 0x8 0xe 0x1 0x2 0x0 0xff 0xff
+	shift_npc %NPC_Earth_Cave_Slab_0xe %Param_Shift_Y_0x1 2
 	if %Flag_Star_Ruby_0xd unset goto .Label_1_Flag_Star_Ruby_0xd_Unset
 	remove_all %Event_Star_Ruby_Chest
 	.Label_1_Flag_Star_Ruby_0xd_Unset:
@@ -47,12 +59,12 @@ begin script=0x3
 	end_event
 
 
-; ; Map initialization code for Earth Cave B4
+; Map initialization code for Earth Cave B4
 begin script=0x4
 	end_event
 
 
-; ; Map initialization code for Earth Cave B5
+; Map initialization code for Earth Cave B5
 begin script=0x5
 	if %Flag_Earth_0x11 unset goto .Label_1_Flag_Earth_0x11_Unset
 	remove_all %Event_Confronting_Lich
@@ -61,7 +73,7 @@ begin script=0x5
 	npc_update 0x4 %NPC_Warp_Light_Yellow_0xf
 	goto .Label_2
 	.Label_1_Flag_Earth_0x11_Unset:
-	db 0x18 0x8 0xc 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Lich_0xc %Param_Shift_Y_0x1 65528
 	npc_update 0x2 %NPC_Lich_0xc
 	npc_update 0x4 %NPC_Lich_0xc
 	npc_update 0x4 %NPC_Warp_Yellow_0xd
@@ -69,14 +81,14 @@ begin script=0x5
 	npc_update 0x2 %NPC_Earth_Crystal_lit_0xe
 	npc_update 0x2 %NPC_Warp_Light_Yellow_0xf
 	npc_update 0x4 %NPC_Warp_Light_Yellow_0xf
-	db 0x18 0x8 0xb 0x1 0xfc 0xff 0xff 0xff
+	shift_npc %NPC_Earth_Crystal_0xb %Param_Shift_Y_0x1 65532
 	.Label_2:
-	db 0x18 0x8 0xe 0x1 0xfc 0xff 0xff 0xff
+	shift_npc %NPC_Earth_Crystal_lit_0xe %Param_Shift_Y_0x1 65532
 	db 0x1c 0x4 0xf 0x3
 	end_event
 
 
-; ; Map initialization code for Elven Castle
+; Map initialization code for Elven Castle
 begin script=0x6
 	if %Flag_Mystic_Key_0x9 unset goto .Label_1_Flag_Mystic_Key_0x9_Unset
 	move_npc %NPC_Elven_Prince_0x7 0 17 15
@@ -92,59 +104,59 @@ begin script=0x6
 	end_event
 
 
-; ; Map initialization code for Elfheim
+; Map initialization code for Elfheim
 begin script=0x7
 	end_event
 
 
-; ; Map initialization code for Elfheim Inn
+; Map initialization code for Elfheim Inn
 begin script=0x8
 	end_event
 
 
-; ; Map initialization code for Elfheim Weapon Shop
+; Map initialization code for Elfheim Weapon Shop
 begin script=0x9
 	end_event
 
 
-; ; Map initialization code for Elfheim Armor Shop
+; Map initialization code for Elfheim Armor Shop
 begin script=0xa
 	end_event
 
 
-; ; Map initialization code for Elfheim Item Shop
+; Map initialization code for Elfheim Item Shop
 begin script=0xb
 	end_event
 
 
-; ; Map initialization code for Elfheim White Magic 1
+; Map initialization code for Elfheim White Magic 1
 begin script=0xc
 	end_event
 
 
-; ; Map initialization code for Elfheim White Magic 2
+; Map initialization code for Elfheim White Magic 2
 begin script=0xd
 	end_event
 
 
-; ; Map initialization code for Elfheim Black Magic 1
+; Map initialization code for Elfheim Black Magic 1
 begin script=0xe
 	end_event
 
 
-; ; Map initialization code for Elfheim Black Magic 2
+; Map initialization code for Elfheim Black Magic 2
 begin script=0xf
 	end_event
 
 
-; ; Map initialization code for Elfheim Chapel
+; Map initialization code for Elfheim Chapel
 begin script=0x10
 	remove_trigger 0x10
 	remove_trigger 0x10
 	end_event
 
 
-; ; Map initialization code for Onrac
+; Map initialization code for Onrac
 begin script=0x11
 	if %Flag_Oxyale_0x1a unset goto .Label_1_Flag_Oxyale_0x1a_Unset
 	set_npc_event %NPC_Barrel_Girl_0xb 0x13a1
@@ -156,34 +168,34 @@ begin script=0x11
 	end_event
 
 
-; ; Map initialization code for Onrac Inn
+; Map initialization code for Onrac Inn
 begin script=0x12
 	end_event
 
 
-; ; Map initialization code for Onrac Item Shop
+; Map initialization code for Onrac Item Shop
 begin script=0x13
 	end_event
 
 
-; ; Map initialization code for Onrac White Magic
+; Map initialization code for Onrac White Magic
 begin script=0x14
 	end_event
 
 
-; ; Map initialization code for Onrac Black Magic
+; Map initialization code for Onrac Black Magic
 begin script=0x15
 	end_event
 
 
-; ; Map initialization code for Onrac Chapel
+; Map initialization code for Onrac Chapel
 begin script=0x16
 	remove_trigger 0x10
 	remove_trigger 0x10
 	end_event
 
 
-; ; Map initialization code for Sunken Shrine 1F
+; Map initialization code for Sunken Shrine 1F
 begin script=0x17
 	if %Flag_Water_0x1d unset goto .Label_1_Flag_Water_0x1d_Unset
 	remove_all %Event_Confronting_Kraken
@@ -192,7 +204,7 @@ begin script=0x17
 	npc_update 0x4 %NPC_Warp_Light_Blue_0x5
 	goto .Label_2
 	.Label_1_Flag_Water_0x1d_Unset:
-	db 0x18 0x8 0x3 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Kraken_0x3 %Param_Shift_Y_0x1 65528
 	npc_update 0x2 %NPC_Kraken_0x3
 	npc_update 0x4 %NPC_Kraken_0x3
 	npc_update 0x4 %NPC_Warp_Blue_0x2
@@ -200,21 +212,21 @@ begin script=0x17
 	npc_update 0x2 %NPC_Water_Crystal_lit_0x4
 	npc_update 0x2 %NPC_Warp_Light_Blue_0x5
 	npc_update 0x4 %NPC_Warp_Light_Blue_0x5
-	db 0x18 0x8 0x1 0x1 0xfc 0xff 0xff 0xff
+	shift_npc %NPC_Water_Crystal_0x1 %Param_Shift_Y_0x1 65532
 	db 0x1c 0x4 0x1 0x1
 	.Label_2:
-	db 0x18 0x8 0x4 0x1 0xfc 0xff 0xff 0xff
+	shift_npc %NPC_Water_Crystal_lit_0x4 %Param_Shift_Y_0x1 65532
 	db 0x1c 0x4 0x5 0x3
 	db 0x1c 0x4 0x4 0x1
 	end_event
 
 
-; ; Map initialization code for Sunken Shrine 2F
+; Map initialization code for Sunken Shrine 2F
 begin script=0x18
 	end_event
 
 
-; ; Map initialization code for Sunken Shrine 3Fa
+; Map initialization code for Sunken Shrine 3Fa
 begin script=0x19
 	npc_update 0x4 %NPC_Barrel_Submarine_0x1
 	set_npc_event %NPC_Barrel_Submarine_0x0 0x13b2
@@ -231,27 +243,27 @@ begin script=0x19
 	end_event
 
 
-; ; Map initialization code for Sunken Shrine 3Fb
+; Map initialization code for Sunken Shrine 3Fb
 begin script=0x1a
 	end_event
 
 
-; ; Map initialization code for Sunken Shrine 3Fc
+; Map initialization code for Sunken Shrine 3Fc
 begin script=0x1b
 	end_event
 
 
-; ; Map initialization code for Sunken Shrine 4Fa
+; Map initialization code for Sunken Shrine 4Fa
 begin script=0x1c
 	end_event
 
 
-; ; Map initialization code for Sunken Shrine 4Fb
+; Map initialization code for Sunken Shrine 4Fb
 begin script=0x1d
 	end_event
 
 
-; ; Map initialization code for Sunken Shrine 5F
+; Map initialization code for Sunken Shrine 5F
 begin script=0x1e
 	if %Flag_Rosetta_Stone_0x1c unset goto .Label_1_Flag_Rosetta_Stone_0x1c_Unset
 	remove_all %Event_Rosetta_Stone_Chest
@@ -259,7 +271,7 @@ begin script=0x1e
 	end_event
 
 
-; ; Map initialization code for Chaos Shrine
+; Map initialization code for Chaos Shrine
 begin script=0x1f
 	if %Flag_Guards_0x28 set goto .Label_1_Flag_Guards_0x28_Set
 	db 0x2f 0x8 0x4d 0x1f 0xff 0x26 0x23 0x2
@@ -294,21 +306,21 @@ begin script=0x1f
 	end_event
 
 
-; ; Map initialization code for Chaos Temple 1F
+; Map initialization code for Chaos Temple 1F
 begin script=0x20
 	npc_update 0x4 %NPC_Warp_Black_0x0
 	db 0x1c 0x4 0x0 0x3
 	end_event
 
 
-; ; Map initialization code for Chaos Temple 2F
+; Map initialization code for Chaos Temple 2F
 begin script=0x21
 	end_event
 
 
-; ; Map initialization code for Chaos Temple 3F
+; Map initialization code for Chaos Temple 3F
 begin script=0x22
-	db 0x18 0x8 0x0 0x1 0x3 0x0 0xff 0xff
+	shift_npc %NPC_Earth_Cave_Slab_0x0 %Param_Shift_Y_0x1 3
 	if 0x25 unset goto .Label_1_0x25_Unset
 	remove_trigger %Event_Lutesealed_Slab
 	goto .Label_2
@@ -318,77 +330,77 @@ begin script=0x22
 	end_event
 
 
-; ; Map initialization code for Chaos Temple B1
+; Map initialization code for Chaos Temple B1
 begin script=0x23
 	end_event
 
 
-; ; Map initialization code for Chaos Temple B2
+; Map initialization code for Chaos Temple B2
 begin script=0x24
 	end_event
 
 
-; ; Map initialization code for Chaos Temple B3
+; Map initialization code for Chaos Temple B3
 begin script=0x25
 	end_event
 
 
-; ; Map initialization code for Chaos Temple B4
+; Map initialization code for Chaos Temple B4
 begin script=0x26
 	end_event
 
 
-; ; Map initialization code for Chaos Temple B5
+; Map initialization code for Chaos Temple B5
 begin script=0x27
 	npc_update 0x2 %NPC_Chaos_0x5
 	npc_update 0x4 %NPC_Chaos_0x5
-	db 0x18 0x8 0x1 0x1 0xfc 0xff 0xff 0xff
-	db 0x18 0x8 0x2 0x1 0xfc 0xff 0xff 0xff
-	db 0x18 0x8 0x3 0x1 0xfc 0xff 0xff 0xff
-	db 0x18 0x8 0x4 0x1 0xfc 0xff 0xff 0xff
+	shift_npc %NPC_Kraken_Statue_0x1 %Param_Shift_Y_0x1 65532
+	shift_npc %NPC_Lich_Statue_0x2 %Param_Shift_Y_0x1 65532
+	shift_npc %NPC_Tiamat_Statue_0x3 %Param_Shift_Y_0x1 65532
+	shift_npc %NPC_Marilith_Statue_0x4 %Param_Shift_Y_0x1 65532
 	end_event
 
 
-; ; Map initialization code for Giants Cave
+; Map initialization code for Giants Cave
 begin script=0x28
-	db 0x18 0x8 0x0 0x1 0xf8 0xff 0xff 0xff
-	db 0x18 0x8 0x0 0x0 0xf8 0xff 0xff 0xff
-	if 0xe unset goto .Label_1_0xe_Unset
+	shift_npc %NPC_Giant_0x0 %Param_Shift_Y_0x1 65528
+	shift_npc %NPC_Giant_0x0 %Param_Shift_X_0x0 65528
+	if %Flag_Fed_Titan_0xe unset goto .Label_1_Flag_Fed_Titan_0xe_Unset
 	remove_trigger %Event_Talking_To_Giant
 	goto .Label_2
-	.Label_1_0xe_Unset:
+	.Label_1_Flag_Fed_Titan_0xe_Unset:
 	if %Flag_Star_Ruby_0xd unset goto .Label_2
 	set_npc_event %NPC_Giant_0x0 0x1399
 	.Label_2:
 	end_event
 
 
-; ; Map initialization code for Mt Gulg B1
+; Map initialization code for Mt Gulg B1
 begin script=0x29
 	end_event
 
 
-; ; Map initialization code for Mt Gulg B2
+; Map initialization code for Mt Gulg B2
 begin script=0x2a
 	end_event
 
 
-; ; Map initialization code for Mt Gulg B3
+; Map initialization code for Mt Gulg B3
 begin script=0x2b
 	end_event
 
 
-; ; Map initialization code for Mt Gulg B3a
+; Map initialization code for Mt Gulg B3a
 begin script=0x2c
 	end_event
 
 
-; ; Map initialization code for Mt Gulg B4
+; Map initialization code for Mt Gulg B4
 begin script=0x2d
 	end_event
 
 
-; ; Map initialization code for Mt Gulg B5
+; Map initialization code for Mt Gulg B5
 begin script=0x2e
 	if %Flag_Fire_0x13 unset goto .Label_1_Flag_Fire_0x13_Unset
 	remove_all %Event_Confronting_Marilith
@@ -397,7 +409,7 @@ begin script=0x2e
 	npc_update 0x4 %NPC_Warp_Light_Red_0x4
 	goto .Label_2
 	.Label_1_Flag_Fire_0x13_Unset:
-	db 0x18 0x8 0x1 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Marilith_0x1 %Param_Shift_Y_0x1 65528
 	npc_update 0x2 %NPC_Marilith_0x1
 	npc_update 0x4 %NPC_Marilith_0x1
 	npc_update 0x4 %NPC_Warp_Red_0x2
@@ -405,14 +417,14 @@ begin script=0x2e
 	npc_update 0x2 %NPC_Fire_Crystal_lit_0x5
 	npc_update 0x2 %NPC_Warp_Light_Red_0x4
 	npc_update 0x4 %NPC_Warp_Light_Red_0x4
-	db 0x18 0x8 0x3 0x1 0xfc 0xff 0xff 0xff
+	shift_npc %NPC_Fire_Crystal_0x3 %Param_Shift_Y_0x1 65532
 	.Label_2:
-	db 0x18 0x8 0x5 0x1 0xfc 0xff 0xff 0xff
+	shift_npc %NPC_Fire_Crystal_lit_0x5 %Param_Shift_Y_0x1 65532
 	db 0x1c 0x4 0x4 0x3
 	end_event
 
 
-; ; Map initialization code for Crescent Lake
+; Map initialization code for Crescent Lake
 begin script=0x2f
 	if %Flag_Fire_0x13 unset goto .Label_1_Flag_Fire_0x13_Unset
 	goto .Label_2
@@ -425,44 +437,44 @@ begin script=0x2f
 	end_event
 
 
-; ; Map initialization code for Crescent Lake Inn
+; Map initialization code for Crescent Lake Inn
 begin script=0x30
 	end_event
 
 
-; ; Map initialization code for Crescent Lake Weapon Shop
+; Map initialization code for Crescent Lake Weapon Shop
 begin script=0x31
 	end_event
 
 
-; ; Map initialization code for Crescent Lake Armor Shop
+; Map initialization code for Crescent Lake Armor Shop
 begin script=0x32
 	end_event
 
 
-; ; Map initialization code for Crescent Lake Item Shop
+; Map initialization code for Crescent Lake Item Shop
 begin script=0x33
 	end_event
 
 
-; ; Map initialization code for Crescent Lake White Magic
+; Map initialization code for Crescent Lake White Magic
 begin script=0x34
 	end_event
 
 
-; ; Map initialization code for Crescent Lake Black Magic
+; Map initialization code for Crescent Lake Black Magic
 begin script=0x35
 	end_event
 
 
-; ; Map initialization code for Crescent Lake Chapel
+; Map initialization code for Crescent Lake Chapel
 begin script=0x36
 	remove_trigger 0x10
 	remove_trigger 0x10
 	end_event
 
 
-; ; Map initialization code for Sages Cave
+; Map initialization code for Sages Cave
 begin script=0x37
 	if %Flag_Rod_0xf set goto .Label_1_Flag_Rod_0xf_Set
 	set_npc_event %NPC_Sadda_0x0 0x13b8
@@ -470,7 +482,7 @@ begin script=0x37
 	end_event
 
 
-; ; Map initialization code for Castle Cornelia 1F
+; Map initialization code for Castle Cornelia 1F
 begin script=0x38
 	if %Flag_Bridge_0x3 unset goto .Label_1_Flag_Bridge_0x3_Unset
 	remove_all %Event_Bridge_Rebuilding_Scene
@@ -492,7 +504,7 @@ begin script=0x38
 	end_event
 
 
-; ; Map initialization code for Castle Cornelia 2F
+; Map initialization code for Castle Cornelia 2F
 begin script=0x39
 	if %Flag_Guards_0x28 unset goto .Label_1_Flag_Guards_0x28_Unset
 	remove_all %Event_Cornelian_Soldiers_Teleport_To_The_King
@@ -511,7 +523,7 @@ begin script=0x39
 	end_event
 
 
-; ; Map initialization code for Cornelia
+; Map initialization code for Cornelia
 begin script=0x3a
 	if %Flag_Guards_0x28 unset goto .Label_1_Flag_Guards_0x28_Unset
 	remove_trigger %Event_Cornelian_Soldiers_Teleport_To_The_King
@@ -521,54 +533,54 @@ begin script=0x3a
 	end_event
 
 
-; ; Map initialization code for Cornelia Inn
+; Map initialization code for Cornelia Inn
 begin script=0x3b
 	end_event
 
 
-; ; Map initialization code for Cornelia Weapon Shop
+; Map initialization code for Cornelia Weapon Shop
 begin script=0x3c
 	end_event
 
 
-; ; Map initialization code for Cornelia Armor Shop
+; Map initialization code for Cornelia Armor Shop
 begin script=0x3d
 	end_event
 
 
-; ; Map initialization code for Cornelia Item Shop
+; Map initialization code for Cornelia Item Shop
 begin script=0x3e
 	end_event
 
 
-; ; Map initialization code for Cornelia White Magic
+; Map initialization code for Cornelia White Magic
 begin script=0x3f
 	end_event
 
 
-; ; Map initialization code for Cornelia Black Magic
+; Map initialization code for Cornelia Black Magic
 begin script=0x40
 	end_event
 
 
-; ; Map initialization code for Cornelia Chapel
+; Map initialization code for Cornelia Chapel
 begin script=0x41
 	remove_trigger 0x10
 	remove_trigger 0x10
 	end_event
 
 
-; ; Map initialization code for Cavern of Ice B1
+; Map initialization code for Cavern of Ice B1
 begin script=0x42
 	end_event
 
 
-; ; Map initialization code for Cavern of Ice B2a
+; Map initialization code for Cavern of Ice B2a
 begin script=0x43
 	end_event
 
 
-; ; Map initialization code for Cavern of Ice B2b
+; Map initialization code for Cavern of Ice B2b
 begin script=0x44
 	if %Flag_Levistone_0x14 unset goto .Label_1_Flag_Levistone_0x14_Unset
 	remove_trigger %Event_Levistone_Obtaining
@@ -576,17 +588,17 @@ begin script=0x44
 	end_event
 
 
-; ; Map initialization code for Cavern of Ice B3a
+; Map initialization code for Cavern of Ice B3a
 begin script=0x45
 	end_event
 
 
-; ; Map initialization code for Cavern of Ice B3b
+; Map initialization code for Cavern of Ice B3b
 begin script=0x46
 	end_event
 
 
-; ; Map initialization code for Gaia
+; Map initialization code for Gaia
 begin script=0x47
 	if %Flag_Oxyale_0x1a set goto .Label_1_Flag_Oxyale_0x1a_Set
 	if 0x19 unset goto .Label_2_0x19_Unset
@@ -600,34 +612,34 @@ begin script=0x47
 	end_event
 
 
-; ; Map initialization code for Gaia Inn
+; Map initialization code for Gaia Inn
 begin script=0x48
 	end_event
 
 
-; ; Map initialization code for Gaia WeaponArmor Shop
+; Map initialization code for Gaia WeaponArmor Shop
 begin script=0x49
 	end_event
 
 
-; ; Map initialization code for Gaia Item Shop
+; Map initialization code for Gaia Item Shop
 begin script=0x4a
 	end_event
 
 
-; ; Map initialization code for Gaia WhiteBlack Magic
+; Map initialization code for Gaia WhiteBlack Magic
 begin script=0x4b
 	end_event
 
 
-; ; Map initialization code for Gaia Chapel
+; Map initialization code for Gaia Chapel
 begin script=0x4c
 	remove_trigger 0x10
 	remove_trigger 0x10
 	end_event
 
 
-; ; Map initialization code for Citadel of Trials 1F
+; Map initialization code for Citadel of Trials 1F
 begin script=0x4d
 	if %Flag_Rats_Tail_0x17 unset goto .Label_1_Flag_Rats_Tail_0x17_Unset
 	remove_trigger %Event_Citadel_Of_Trials_Greeter
@@ -638,12 +650,12 @@ begin script=0x4d
 	end_event
 
 
-; ; Map initialization code for Citadel of Trials 2F
+; Map initialization code for Citadel of Trials 2F
 begin script=0x4e
 	end_event
 
 
-; ; Map initialization code for Citadel of Trials 3F
+; Map initialization code for Citadel of Trials 3F
 begin script=0x4f
 	if %Flag_Rats_Tail_0x17 unset goto .Label_1_Flag_Rats_Tail_0x17_Unset
 	remove_all %Event_Rat_Tail_Chest
@@ -651,17 +663,17 @@ begin script=0x4f
 	end_event
 
 
-; ; Map initialization code for Mirage Tower 1F
+; Map initialization code for Mirage Tower 1F
 begin script=0x50
 	end_event
 
 
-; ; Map initialization code for Mirage Tower 2F
+; Map initialization code for Mirage Tower 2F
 begin script=0x51
 	end_event
 
 
-; ; Map initialization code for Mirage Tower 3F
+; Map initialization code for Mirage Tower 3F
 begin script=0x52
 	if %Flag_Warp_Cube_0x20 unset goto .Label_1_Flag_Warp_Cube_0x20_Unset
 	remove_trigger 0x0
@@ -669,7 +681,7 @@ begin script=0x52
 	end_event
 
 
-; ; Map initialization code for Waterfall Cavern
+; Map initialization code for Waterfall Cavern
 begin script=0x53
 	if %Flag_Warp_Cube_0x20 set goto .Label_1_Flag_Warp_Cube_0x20_Set
 	set_npc_event %NPC_Robot_0x0 0x13bd
@@ -677,9 +689,9 @@ begin script=0x53
 	end_event
 
 
-; ; Map initialization code for Dragon Caves B2
+; Map initialization code for Dragon Caves B2
 begin script=0x54
-	db 0x18 0x8 0x2 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Bahamut_0x2 %Param_Shift_Y_0x1 65528
 	if %Flag_Promotion_0x18 unset goto .Label_1_Flag_Promotion_0x18_Unset
 	goto .Label_2
 	.Label_1_Flag_Promotion_0x18_Unset:
@@ -689,17 +701,17 @@ begin script=0x54
 	end_event
 
 
-; ; Map initialization code for Dragon Caves B1 Bahamuts
+; Map initialization code for Dragon Caves B1 Bahamuts
 begin script=0x55
 	end_event
 
 
-; ; Map initialization code for Dragon Caves B1
+; Map initialization code for Dragon Caves B1
 begin script=0x56
 	end_event
 
 
-; ; Map initialization code for Mt Duergar
+; Map initialization code for Mt Duergar
 begin script=0x57
 	if %Flag_Canal_0xb set goto .Label_1_Flag_Canal_0xb_Set
 	music 0x0 0x85
@@ -725,7 +737,7 @@ begin script=0x57
 	end_event
 
 
-; ; Map initialization code for Western Keep
+; Map initialization code for Western Keep
 begin script=0x58
 	set_npc_frame %NPC_King_Astos_0x0 0x0
 	if %Flag_Mystic_Key_0x9 unset goto .Label_1_Flag_Mystic_Key_0x9_Unset
@@ -746,17 +758,17 @@ begin script=0x58
 	end_event
 
 
-; ; Map initialization code for Marsh Cave B1
+; Map initialization code for Marsh Cave B1
 begin script=0x59
 	end_event
 
 
-; ; Map initialization code for Marsh Cave B2
+; Map initialization code for Marsh Cave B2
 begin script=0x5a
 	end_event
 
 
-; ; Map initialization code for Marsh Cave B3
+; Map initialization code for Marsh Cave B3
 begin script=0x5b
 	if %Flag_Crown_0x6 unset goto .Label_1_Flag_Crown_0x6_Unset
 	remove_all %Event_Crown_Chest
@@ -767,12 +779,12 @@ begin script=0x5b
 	end_event
 
 
-; ; Map initialization code for Flying Fortress 1F
+; Map initialization code for Flying Fortress 1F
 begin script=0x5c
 	end_event
 
 
-; ; Map initialization code for Flying Fortress 2F
+; Map initialization code for Flying Fortress 2F
 begin script=0x5d
 	if %Flag_Adamantite_0x21 unset goto .Label_1_Flag_Adamantite_0x21_Unset
 	remove_trigger %Event_Adamantite_Obtaining
@@ -780,17 +792,17 @@ begin script=0x5d
 	end_event
 
 
-; ; Map initialization code for Flying Fortress 3F
+; Map initialization code for Flying Fortress 3F
 begin script=0x5e
 	end_event
 
 
-; ; Map initialization code for Flying Fortress 4F
+; Map initialization code for Flying Fortress 4F
 begin script=0x5f
 	end_event
 
 
-; ; Map initialization code for Flying Fortress 5F
+; Map initialization code for Flying Fortress 5F
 begin script=0x60
 	if %Flag_Air_0x22 unset goto .Label_1_Flag_Air_0x22_Unset
 	remove_all %Event_Confronting_Tiamat
@@ -799,7 +811,7 @@ begin script=0x60
 	npc_update 0x4 %NPC_Warp_Light_Green_0x5
 	goto .Label_2
 	.Label_1_Flag_Air_0x22_Unset:
-	db 0x18 0x8 0x3 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Tiamat_0x3 %Param_Shift_Y_0x1 65528
 	npc_update 0x2 %NPC_Tiamat_0x3
 	npc_update 0x4 %NPC_Tiamat_0x3
 	npc_update 0x4 %NPC_Warp_Green_0x2
@@ -807,14 +819,14 @@ begin script=0x60
 	npc_update 0x2 %NPC_Wind_Crystal_lit_0x4
 	npc_update 0x2 %NPC_Warp_Light_Green_0x5
 	npc_update 0x4 %NPC_Warp_Light_Green_0x5
-	db 0x18 0x8 0x1 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Wind_Crystal_0x1 %Param_Shift_Y_0x1 65528
 	.Label_2:
-	db 0x18 0x8 0x4 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Wind_Crystal_lit_0x4 %Param_Shift_Y_0x1 65528
 	db 0x1c 0x4 0x5 0x3
 	end_event
 
 
-; ; Map initialization code for Matoyas Cave
+; Map initialization code for Matoyas Cave
 begin script=0x61
 	if %Flag_Jolt_Tonic_0x8 set goto .Label_1_Flag_Jolt_Tonic_0x8_Set
 	if %Flag_Crystal_0x7 unset goto .Label_1_Flag_Jolt_Tonic_0x8_Set
@@ -836,7 +848,7 @@ begin script=0x61
 	end_event
 
 
-; ; Map initialization code for Pravoka
+; Map initialization code for Pravoka
 begin script=0x62
 	if %Flag_Ship_0x5 unset goto .Label_1_Flag_Ship_0x5_Unset
 	remove_all %Event_Bikkes_Bikkeneers
@@ -859,44 +871,44 @@ begin script=0x62
 	end_event
 
 
-; ; Map initialization code for Pravoka Inn
+; Map initialization code for Pravoka Inn
 begin script=0x63
 	end_event
 
 
-; ; Map initialization code for Pravoka Weapon Shop
+; Map initialization code for Pravoka Weapon Shop
 begin script=0x64
 	end_event
 
 
-; ; Map initialization code for Pravoka Armor Shop
+; Map initialization code for Pravoka Armor Shop
 begin script=0x65
 	end_event
 
 
-; ; Map initialization code for Pravoka Item Shop
+; Map initialization code for Pravoka Item Shop
 begin script=0x66
 	end_event
 
 
-; ; Map initialization code for Pravoka White Magic
+; Map initialization code for Pravoka White Magic
 begin script=0x67
 	end_event
 
 
-; ; Map initialization code for Pravoka Black Magic
+; Map initialization code for Pravoka Black Magic
 begin script=0x68
 	remove_trigger 0x10
 	remove_trigger 0x10
 	end_event
 
 
-; ; Map initialization code for Pravoka Chapel
+; Map initialization code for Pravoka Chapel
 begin script=0x69
 	end_event
 
 
-; ; Map initialization code for Melmond
+; Map initialization code for Melmond
 begin script=0x6a
 	db 0x1c 0x4 0x0 0x1
 	if %Flag_Lufienish_0x1e unset goto .Label_1_Flag_Lufienish_0x1e_Unset
@@ -908,32 +920,32 @@ begin script=0x6a
 	end_event
 
 
-; ; Map initialization code for Melmond Inn
+; Map initialization code for Melmond Inn
 begin script=0x6b
 	end_event
 
 
-; ; Map initialization code for Melmond Weapon Shop
+; Map initialization code for Melmond Weapon Shop
 begin script=0x6c
 	end_event
 
 
-; ; Map initialization code for Melmond Armor Shop
+; Map initialization code for Melmond Armor Shop
 begin script=0x6d
 	end_event
 
 
-; ; Map initialization code for Melmond White Magic
+; Map initialization code for Melmond White Magic
 begin script=0x6e
 	end_event
 
 
-; ; Map initialization code for Melmond Black Magic
+; Map initialization code for Melmond Black Magic
 begin script=0x6f
 	end_event
 
 
-; ; Map initialization code for Lufenia
+; Map initialization code for Lufenia
 begin script=0x70
 	if %Flag_Lufienish_0x1e unset goto .Label_1_Flag_Lufienish_0x1e_Unset
 	if %Flag_Chime_0x1f set goto .Label_1_Flag_Lufienish_0x1e_Unset
@@ -942,42 +954,42 @@ begin script=0x70
 	end_event
 
 
-; ; Map initialization code for Lufenia WhiteBlack Magic
+; Map initialization code for Lufenia WhiteBlack Magic
 begin script=0x71
 	end_event
 
 
-; ; Map initialization code for Caravan
+; Map initialization code for Caravan
 begin script=0x72
 	end_event
 
 
-; ; Map initialization code for Caravan Interior
+; Map initialization code for Caravan Interior
 begin script=0x73
 	end_event
 
 
-; ; Map initialization code for Gaia White Magic 2
+; Map initialization code for Gaia White Magic 2
 begin script=0x74
 	end_event
 
 
-; ; Map initialization code for Gaia Black Magic 2
+; Map initialization code for Gaia Black Magic 2
 begin script=0x75
 	end_event
 
 
-; ; Map initialization code for Drawbridge cutscene
+; Map initialization code for Drawbridge cutscene
 begin script=0x76
 	end_event
 
 
-; ; Map initialization code for Ryukahn Desert cutscene
+; Map initialization code for Ryukahn Desert cutscene
 begin script=0x77
 	end_event
 
 
-; ; Map initialization code for Earthgift Shrine Entrance
+; Map initialization code for Earthgift Shrine Entrance
 begin script=0x78
 	if %Flag_Earth_0x11 unset goto .Label_1_Flag_Earth_0x11_Unset
 	remove_npc %NPC_Lich_0x1 0x0
@@ -987,12 +999,12 @@ begin script=0x78
 	db 0x6b 0x4 0x1 0x0
 	set_npc_frame %NPC_Lich_0x1 0x0
 	db 0x1c 0x4 0x1 0x2
-	db 0x18 0x8 0x1 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Lich_0x1 %Param_Shift_Y_0x1 65528
 	.Label_2:
 	end_event
 
 
-; ; Map initialization code for Hellfire Chasm Entrance
+; Map initialization code for Hellfire Chasm Entrance
 begin script=0x79
 	if %Flag_Fire_0x13 unset goto .Label_1_Flag_Fire_0x13_Unset
 	remove_npc %NPC_Marilith_0x1 0x0
@@ -1002,12 +1014,12 @@ begin script=0x79
 	db 0x6b 0x4 0x1 0x0
 	set_npc_frame %NPC_Marilith_0x1 0x0
 	db 0x1c 0x4 0x1 0x1
-	db 0x18 0x8 0x1 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Marilith_0x1 %Param_Shift_Y_0x1 65528
 	.Label_2:
 	end_event
 
 
-; ; Map initialization code for Lifespring Grotto Entrance
+; Map initialization code for Lifespring Grotto Entrance
 begin script=0x7a
 	if %Flag_Water_0x1d unset goto .Label_1_Flag_Water_0x1d_Unset
 	remove_npc %NPC_Kraken_0x1 0x0
@@ -1017,12 +1029,12 @@ begin script=0x7a
 	db 0x6b 0x4 0x1 0x0
 	set_npc_frame %NPC_Kraken_0x1 0x0
 	db 0x1c 0x4 0x1 0x2
-	db 0x18 0x8 0x1 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Kraken_0x1 %Param_Shift_Y_0x1 65528
 	.Label_2:
 	end_event
 
 
-; ; Map initialization code for Whisperwind Cove Entrance
+; Map initialization code for Whisperwind Cove Entrance
 begin script=0x7b
 	if %Flag_Air_0x22 unset goto .Label_1_Flag_Air_0x22_Unset
 	remove_npc %NPC_Tiamat_0x1 0x0
@@ -1032,8 +1044,20 @@ begin script=0x7b
 	db 0x6b 0x4 0x1 0x0
 	set_npc_frame %NPC_Tiamat_0x1 0x0
 	db 0x1c 0x4 0x1 0x2
-	db 0x18 0x8 0x1 0x1 0xf8 0xff 0xff 0xff
+	shift_npc %NPC_Tiamat_0x1 %Param_Shift_Y_0x1 65528
 	.Label_2:
 	end_event
 
+
+; Bridge_Credits
+begin script=0xfa6
+	music 0x5 %Music_Shop
+	fade 0x6 0x14 %Param_Fade_Screen_0xffff 0x20
+	db 0x3f 0x4 0xff 0xff
+	music 0x6 0xffff
+	set_flag %Flag_Watched_Bridge_Credits_0x29
+	db 0x61 0x4 0xff 0xff
+	fade 0x7 0x14 %Param_Fade_Screen_0xffff 0x20
+	db 0x3f 0x4 0xff 0xff
+	end_event
 

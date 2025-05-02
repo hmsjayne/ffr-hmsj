@@ -391,7 +391,7 @@ def load_event_scripts() -> dict:
     scripts = {}
     for file in os.listdir(resolve_path("scripts/")):
         # if file.endswith(".script"):
-        if file in ["CoreEvents.script", "MapEvents.script"]:
+        if file in ["MapEvents.script", "CoreEvents.script", "BattleEvents.script"]:
             add_events = parse_script(f"scripts/{file}")
             for event_id, source in add_events.items():
                 scripts[event_id] = source

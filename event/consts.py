@@ -139,6 +139,7 @@ flag_names = {
     0xb: "Canal",
     0xc: "Defeated_Vampire",
     0xd: "Star_Ruby",
+    0xe: "Fed_Titan",
     0xf: "Rod",
     0x10: "Broke_Stone_Slab",
     0x11: "Earth",
