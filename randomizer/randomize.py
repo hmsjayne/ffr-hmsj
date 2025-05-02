@@ -390,7 +390,8 @@ def map_updates(maps: Maps):
 def load_event_scripts() -> dict:
     scripts = {}
     for file in os.listdir(resolve_path("scripts/")):
-        if file.endswith(".script"):
+        # if file.endswith(".script"):
+        if file in ["CoreEvents.script", "MapEvents.script"]:
             add_events = parse_script(f"scripts/{file}")
             for event_id, source in add_events.items():
                 scripts[event_id] = source
@@ -427,6 +428,11 @@ def build_headers(placements: Placement, start_cmds: str) -> str:
     
     ; Reward definitions
     """
+
+    with open(resolve_path("scripts/DosLib.script"), "r") as script_text:
+        dos_headers = "\n".join(script_text.readlines())
+
+    header += f"\n{dos_headers}\n\n"
 
     text_ids = ""
     flag_names = ""

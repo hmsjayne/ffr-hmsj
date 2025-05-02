@@ -26,7 +26,3 @@ lich	npc	0x51	FALSE	outer	0x5	10	-1	-1	-1	936	2888	earth	0x47d	0x11
 kary	npc	0x52	FALSE	outer	0x2e	0	-1	-1	-1	2920	3176	fire	0x47e	0x13		
 kraken	npc	0x50	FALSE	sky	0x17	0	-1	-1	-1	-1	-1	water	0x47f	0x1d		
 tiamat	npc	0x4f	FALSE	sky	0x60	0	-1	-1	-1	-1	-1	air	0x480	0x22		
-guards				early				-1	-1	-1	-1	guards	0x31	0x28
-garland_defeated				early				-1	-1	-1	-1	garland_defeated	0x132	0x1
-bridge_commissioned				early				-1	-1	-1	-1	bridge_commissioned		0x2
-warp_gate_open				sky				-1	-1	-1	-1	warp_gate_open		0x24

@@ -75,7 +75,7 @@ class JumpToken(list):
     pass
 
 
-class GotoToken(int):
+class GotoToken(list):
     pass
 
 

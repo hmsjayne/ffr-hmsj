@@ -36,7 +36,7 @@ GRAMMAR = {
     "delay": DelayToken([0x9, 0x4, "$(u:0)"]),
     "move_npc": MoveNpcToken([0xb, 0xc, "$2", "$3", "$1", 0x0, 0x0, 0x0, "$0", 0x0, 0xff, 0xff]),
     "jump": JumpToken([0xc, 0x8, 0xff, 0xff, "$0"]),
-    "goto": JumpToken([0xc, 0x8, 0xff, 0xff, "$0"]),
+    "goto": GotoToken([0xc, 0x8, 0xff, 0xff, "$0"]),
     "jump_chest_empty": JumpChestEmptyToken([0xd, 0xc, 0x0, 0xff, "$0", 0x0, 0x0, 0x0, 0x0]),
     "music": MusicToken([0x11, 0x8, "$0", 0xff, "$(u:1)", 0xff, 0xff]),
     "add_npc": AddNpcToken([0x13, 0xc, "$0", "$1", 0x0, 0x0, 0x0, 0xff, "$(u:2)", "$(u:3)"]),
@@ -48,7 +48,7 @@ GRAMMAR = {
     "show_dialog": ShowDialogToken([0x27, 0x4, 0x0, 0xff]),
     "set_flag": SetFlagToken([0x2d, 0x4, "$0", 0x0]),
     "check_flag": CheckFlagToken([0x2d, 0x8, "$0", "$1", "$2"]),
-    "if": IfToken([0x2d, 0x8, "$0", "$1", "$2"]),
+    "if": IfToken([0x2d, 0x8, "$0", "$1", "$3"]),
     "remove_trigger": RemoveTriggerToken([0x2e, 0x4, "$(u:0)"]),
     "npc_update": NpcUpdateToken([0x30, 0x4, "$0", "$1"]),
     "set_npc_event": SetNpcEventToken([0x30, 0x8, 0x1, "$0", "$(u:1)", 0xff, 0xff]),
@@ -64,6 +64,10 @@ GRAMMAR = {
     # Conditional jumps
     "jz": JzToken(0x2),
     "jnz": JnzToken(0x3),
+
+    # Essentially pretty aliases for...
+    "unset": UnsetToken(0x2),
+    "set": SetToken(0x3),
 
     #
     # Define various non-terminal tokens here.
@@ -94,7 +98,7 @@ GRAMMAR = {
     JumpChestEmptyToken: [LabelToken()],
     MusicToken: ["$$value$$", "$$value$$"],
     AddNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
-    RemoveNpcToken: ["$$value$$"],
+    RemoveNpcToken: ["$$value$$", "$$value$$"],
     MovePartyToken: ["$$value$$", "$$value$$", "$$value$$"],
     SetRepeatToken: ["$$value$$"],
     RepeatToken: ["$$value$$", LabelToken()],
@@ -142,23 +146,27 @@ class UndefinedLabel(RuntimeError):
         super().__init__(f"Undefined label: '{label}'")
 
 
-def def_symbol(parameters: list, symbol_table: dict):
-    name = parameters[0]
-    value = parameters[1]
-
-    if name in symbol_table:
-        raise DuplicateSymbolError(name)
-
-    if isinstance(value, SymbolToken):
-        value = symbol_table[value]
-    symbol_table[name] = value
-    return None
-
-
 def parse(source: str) -> ICode:
     symbol_table = {}
     icode = []
     current_addr = 0
+
+    def get_symbol(sym_name: str):
+        if sym_name in symbol_table:
+            return symbol_table[sym_name]
+
+        # "Just In Time" symbols for things in the script that are helpful to
+        # read it, but are short enough to just store the value in the name.
+        jit_sym = sym_name.split("_")[0]
+        if jit_sym in ["Flag", "Map", "NPC", "PC", "Item"]:
+            parts = sym_name.split("_")
+            value = int(parts[len(parts) - 1], 16)
+
+            # Store it in the symbol table so it's found next time
+            symbol_table[sym_name] = NumberToken(value)
+            return symbol_table[sym_name]
+        else:
+            return None
 
     for line_number, line in enumerate(source.splitlines()):
         tokens = TokenStream(line_number, line)
@@ -173,8 +181,9 @@ def parse(source: str) -> ICode:
             token = tokens.expect(GRAMMAR["$$value$$"])
             while token is not None:
                 if isinstance(token, SymbolToken):
-                    if token in symbol_table:
-                        parameters.append(symbol_table[token])
+                    value = get_symbol(token)
+                    if value is not None:
+                        parameters.append(value)
                     else:
                         raise SymbolNotDefinedError(token, line, line_number)
                 else:
@@ -210,8 +219,9 @@ def parse(source: str) -> ICode:
                         parameters.append(token)
                     else:
                         if isinstance(token, SymbolToken):
-                            if token in symbol_table:
-                                parameters.append(symbol_table[token])
+                            value = get_symbol(token)
+                            if value is not None:
+                                parameters.append(value)
                             else:
                                 raise SymbolNotDefinedError(token, line, line_number)
                         else:
