@@ -22,13 +22,14 @@ begin script=0x0
 	db 0x2f 0x8 0x0 0x0 0xff 0xb8 0x38 0x2
 
 	.Label_3_Flag_Chime_0x1f_Set:
-	npc_update 0x4 %NPC_Castle_Cornelia_0x0
-	npc_update 0x4 %NPC_Chaos_Shrine_0x1
-	npc_update 0x4 %NPC_Elven_Castle_0x2
-	npc_update 0x4 %NPC_Citadel_of_Trials_0x3
-	npc_update 0x4 %NPC_Western_Keep_0x4
-	npc_update 0x4 %NPC_Mirage_Tower_0x5
+	npc_update %Param_Remove_Collision_0x4 %NPC_Castle_Cornelia_0x0
+	npc_update %Param_Remove_Collision_0x4 %NPC_Chaos_Shrine_0x1
+	npc_update %Param_Remove_Collision_0x4 %NPC_Elven_Castle_0x2
+	npc_update %Param_Remove_Collision_0x4 %NPC_Citadel_of_Trials_0x3
+	npc_update %Param_Remove_Collision_0x4 %NPC_Western_Keep_0x4
+	npc_update %Param_Remove_Collision_0x4 %NPC_Mirage_Tower_0x5
 	end_event
+
 
 ; Map initialization code for Earth Cave B1
 begin script=0x1
@@ -70,17 +71,17 @@ begin script=0x5
 	remove_all %Event_Confronting_Lich
 	remove_npc %NPC_Earth_Crystal_0xb 0x0
 	remove_npc %NPC_Warp_Yellow_0xd 0x0
-	npc_update 0x4 %NPC_Warp_Light_Yellow_0xf
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Yellow_0xf
 	goto .Label_2
 	.Label_1_Flag_Earth_0x11_Unset:
 	shift_npc %NPC_Lich_0xc %Param_Shift_Y_0x1 65528
-	npc_update 0x2 %NPC_Lich_0xc
-	npc_update 0x4 %NPC_Lich_0xc
-	npc_update 0x4 %NPC_Warp_Yellow_0xd
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Lich_0xc
+	npc_update %Param_Remove_Collision_0x4 %NPC_Lich_0xc
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Yellow_0xd
 	db 0x1c 0x4 0xd 0x3
-	npc_update 0x2 %NPC_Earth_Crystal_lit_0xe
-	npc_update 0x2 %NPC_Warp_Light_Yellow_0xf
-	npc_update 0x4 %NPC_Warp_Light_Yellow_0xf
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Earth_Crystal_lit_0xe
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Light_Yellow_0xf
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Yellow_0xf
 	shift_npc %NPC_Earth_Crystal_0xb %Param_Shift_Y_0x1 65532
 	.Label_2:
 	shift_npc %NPC_Earth_Crystal_lit_0xe %Param_Shift_Y_0x1 65532
@@ -201,17 +202,17 @@ begin script=0x17
 	remove_all %Event_Confronting_Kraken
 	remove_npc %NPC_Water_Crystal_0x1 0x0
 	remove_npc %NPC_Warp_Blue_0x2 0x0
-	npc_update 0x4 %NPC_Warp_Light_Blue_0x5
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Blue_0x5
 	goto .Label_2
 	.Label_1_Flag_Water_0x1d_Unset:
 	shift_npc %NPC_Kraken_0x3 %Param_Shift_Y_0x1 65528
-	npc_update 0x2 %NPC_Kraken_0x3
-	npc_update 0x4 %NPC_Kraken_0x3
-	npc_update 0x4 %NPC_Warp_Blue_0x2
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Kraken_0x3
+	npc_update %Param_Remove_Collision_0x4 %NPC_Kraken_0x3
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Blue_0x2
 	db 0x1c 0x4 0x2 0x3
-	npc_update 0x2 %NPC_Water_Crystal_lit_0x4
-	npc_update 0x2 %NPC_Warp_Light_Blue_0x5
-	npc_update 0x4 %NPC_Warp_Light_Blue_0x5
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Water_Crystal_lit_0x4
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Light_Blue_0x5
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Blue_0x5
 	shift_npc %NPC_Water_Crystal_0x1 %Param_Shift_Y_0x1 65532
 	db 0x1c 0x4 0x1 0x1
 	.Label_2:
@@ -228,12 +229,12 @@ begin script=0x18
 
 ; Map initialization code for Sunken Shrine 3Fa
 begin script=0x19
-	npc_update 0x4 %NPC_Barrel_Submarine_0x1
+	npc_update %Param_Remove_Collision_0x4 %NPC_Barrel_Submarine_0x1
 	set_npc_event %NPC_Barrel_Submarine_0x0 0x13b2
-	npc_update 0x4 %NPC_Ladder_0x2
-	npc_update 0x4 %NPC_Ladder_0x3
-	npc_update 0x4 %NPC_Ladder_0x4
-	npc_update 0x4 %NPC_Ladder_0x5
+	npc_update %Param_Remove_Collision_0x4 %NPC_Ladder_0x2
+	npc_update %Param_Remove_Collision_0x4 %NPC_Ladder_0x3
+	npc_update %Param_Remove_Collision_0x4 %NPC_Ladder_0x4
+	npc_update %Param_Remove_Collision_0x4 %NPC_Ladder_0x5
 	db 0x1c 0x4 0x2 0x3
 	db 0x1c 0x4 0x3 0x3
 	db 0x1c 0x4 0x4 0x3
@@ -273,9 +274,9 @@ begin script=0x1e
 
 ; Map initialization code for Chaos Shrine
 begin script=0x1f
-	if %Flag_Guards_0x28 set goto .Label_1_Flag_Guards_0x28_Set
-	db 0x2f 0x8 0x4d 0x1f 0xff 0x26 0x23 0x2
-	goto .Label_2
+;	if %Flag_Guards_0x28 set goto .Label_1_Flag_Guards_0x28_Set
+;	db 0x2f 0x8 0x4d 0x1f 0xff 0x26 0x23 0x2
+;	goto .Label_2
 	.Label_1_Flag_Guards_0x28_Set:
 	if %Flag_Garland_Defeated_0x1 unset goto .Label_3_Flag_Garland_Defeated_0x1_Unset
 	remove_trigger %Event_Confronting_Garland_And_Sarah_Rescue
@@ -308,7 +309,7 @@ begin script=0x1f
 
 ; Map initialization code for Chaos Temple 1F
 begin script=0x20
-	npc_update 0x4 %NPC_Warp_Black_0x0
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Black_0x0
 	db 0x1c 0x4 0x0 0x3
 	end_event
 
@@ -352,8 +353,8 @@ begin script=0x26
 
 ; Map initialization code for Chaos Temple B5
 begin script=0x27
-	npc_update 0x2 %NPC_Chaos_0x5
-	npc_update 0x4 %NPC_Chaos_0x5
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Chaos_0x5
+	npc_update %Param_Remove_Collision_0x4 %NPC_Chaos_0x5
 	shift_npc %NPC_Kraken_Statue_0x1 %Param_Shift_Y_0x1 65532
 	shift_npc %NPC_Lich_Statue_0x2 %Param_Shift_Y_0x1 65532
 	shift_npc %NPC_Tiamat_Statue_0x3 %Param_Shift_Y_0x1 65532
@@ -406,17 +407,17 @@ begin script=0x2e
 	remove_all %Event_Confronting_Marilith
 	remove_npc %NPC_Fire_Crystal_0x3 0x0
 	remove_npc %NPC_Warp_Red_0x2 0x0
-	npc_update 0x4 %NPC_Warp_Light_Red_0x4
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Red_0x4
 	goto .Label_2
 	.Label_1_Flag_Fire_0x13_Unset:
 	shift_npc %NPC_Marilith_0x1 %Param_Shift_Y_0x1 65528
-	npc_update 0x2 %NPC_Marilith_0x1
-	npc_update 0x4 %NPC_Marilith_0x1
-	npc_update 0x4 %NPC_Warp_Red_0x2
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Marilith_0x1
+	npc_update %Param_Remove_Collision_0x4 %NPC_Marilith_0x1
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Red_0x2
 	db 0x1c 0x4 0x2 0x3
-	npc_update 0x2 %NPC_Fire_Crystal_lit_0x5
-	npc_update 0x2 %NPC_Warp_Light_Red_0x4
-	npc_update 0x4 %NPC_Warp_Light_Red_0x4
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Fire_Crystal_lit_0x5
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Light_Red_0x4
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Red_0x4
 	shift_npc %NPC_Fire_Crystal_0x3 %Param_Shift_Y_0x1 65532
 	.Label_2:
 	shift_npc %NPC_Fire_Crystal_lit_0x5 %Param_Shift_Y_0x1 65532
@@ -607,7 +608,7 @@ begin script=0x47
 	remove_all %Event_Fairy_Released_From_Bottle
 	goto .Label_3
 	.Label_2_0x19_Unset:
-	npc_update 0x2 %NPC_Fairy_0xb
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Fairy_0xb
 	.Label_3:
 	end_event
 
@@ -719,8 +720,8 @@ begin script=0x57
 	goto .Label_2
 	.Label_1_Flag_Canal_0xb_Set:
 	if %Flag_Canal_0xb unset goto .Label_2
-	npc_update 0x2 %NPC_Nerrick_0xb
-	npc_update 0x4 %NPC_Nerrick_0xb
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Nerrick_0xb
+	npc_update %Param_Remove_Collision_0x4 %NPC_Nerrick_0xb
 	.Label_2:
 	if %Flag_Nitro_Powder_0xa unset goto .Label_3_Flag_Nitro_Powder_0xa_Unset
 	set_npc_event %NPC_Nerrick_0xb 0x1393
@@ -808,17 +809,17 @@ begin script=0x60
 	remove_all %Event_Confronting_Tiamat
 	remove_npc %NPC_Wind_Crystal_0x1 0x0
 	remove_npc %NPC_Warp_Green_0x2 0x0
-	npc_update 0x4 %NPC_Warp_Light_Green_0x5
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Green_0x5
 	goto .Label_2
 	.Label_1_Flag_Air_0x22_Unset:
 	shift_npc %NPC_Tiamat_0x3 %Param_Shift_Y_0x1 65528
-	npc_update 0x2 %NPC_Tiamat_0x3
-	npc_update 0x4 %NPC_Tiamat_0x3
-	npc_update 0x4 %NPC_Warp_Green_0x2
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Tiamat_0x3
+	npc_update %Param_Remove_Collision_0x4 %NPC_Tiamat_0x3
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Green_0x2
 	db 0x1c 0x4 0x2 0x3
-	npc_update 0x2 %NPC_Wind_Crystal_lit_0x4
-	npc_update 0x2 %NPC_Warp_Light_Green_0x5
-	npc_update 0x4 %NPC_Warp_Light_Green_0x5
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Wind_Crystal_lit_0x4
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Light_Green_0x5
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Green_0x5
 	shift_npc %NPC_Wind_Crystal_0x1 %Param_Shift_Y_0x1 65528
 	.Label_2:
 	shift_npc %NPC_Wind_Crystal_lit_0x4 %Param_Shift_Y_0x1 65528
@@ -855,16 +856,16 @@ begin script=0x62
 	goto .Label_2
 	.Label_1_Flag_Ship_0x5_Unset:
 	set_npc_event %NPC_Bikke_0x2 0x13b5
-	npc_update 0x2 %NPC_Man_Blue_0x3
-	npc_update 0x4 %NPC_Man_Blue_0x3
-	npc_update 0x2 %NPC_Man_Blue_0x4
-	npc_update 0x4 %NPC_Man_Blue_0x4
-	npc_update 0x2 %NPC_Man_Blue_0x5
-	npc_update 0x4 %NPC_Man_Blue_0x5
-	npc_update 0x2 %NPC_Woman_green_0x6
-	npc_update 0x4 %NPC_Woman_green_0x6
-	npc_update 0x2 %NPC_Old_Man_0x7
-	npc_update 0x4 %NPC_Old_Man_0x7
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Man_Blue_0x3
+	npc_update %Param_Remove_Collision_0x4 %NPC_Man_Blue_0x3
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Man_Blue_0x4
+	npc_update %Param_Remove_Collision_0x4 %NPC_Man_Blue_0x4
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Man_Blue_0x5
+	npc_update %Param_Remove_Collision_0x4 %NPC_Man_Blue_0x5
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Woman_green_0x6
+	npc_update %Param_Remove_Collision_0x4 %NPC_Woman_green_0x6
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Old_Man_0x7
+	npc_update %Param_Remove_Collision_0x4 %NPC_Old_Man_0x7
 	db 0x2f 0x8 0x0 0x0 0xff 0xc 0xc 0x8
 	db 0x2f 0x8 0x0 0x0 0xff 0xe 0xc 0x8
 	.Label_2:

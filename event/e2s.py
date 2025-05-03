@@ -226,6 +226,7 @@ def _da_12(cmd: bytearray) -> str:
 
     x_pos = array.array("H", cmd[6:8])[0]
     y_pos = array.array("H", cmd[8:10])[0]
+    print(f"load_pc_sprite {cmd}")
     return f"load_pc_sprite {sprite_id} {hex(coords)} {hex(mode)} {x_pos} {y_pos}"
 
 
@@ -307,7 +308,6 @@ def _da_1b(cmd: bytearray) -> str:
     dir_name = f"{fade_dir_names[fade_dir]}_{hex(fade_dir)}" if fade_dir in fade_dir_names else hex(fade_dir)
     fade_what_name = f"{fade_what_names[fade_what]}_{hex(fade_what)}" if fade_what in fade_what_names else hex(
         fade_what)
-
     return f"fade {dir_name} {hex(timer)} {fade_what_name} {hex(amount)}"
 
 
@@ -378,7 +378,13 @@ def _da_30(cmd: bytearray) -> str:
             return _da_rest(cmd)
 
     npc_name = get_npc_name(npc_index)
-    return f"npc_update {hex(action)} {npc_name}"
+    action_names = {
+        0x02: "%Param_Hide_Sprite_0x2",
+        0x04: "%Param_Remove_Collision_0x4",
+    }
+    action_name = action_names[action] if action in action_names else hex(action)
+
+    return f"npc_update {action_name} {npc_name}"
 
 
 def _da_36(cmd: bytearray) -> str:

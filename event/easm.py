@@ -39,9 +39,11 @@ GRAMMAR = {
     "goto": GotoToken([0xc, 0x8, 0xff, 0xff, "$0"]),
     "jump_chest_empty": JumpChestEmptyToken([0xd, 0xc, 0x0, 0xff, "$0", 0x0, 0x0, 0x0, 0x0]),
     "music": MusicToken([0x11, 0x8, "$0", 0xff, "$(u:1)", 0xff, 0xff]),
+    "fade": FadeToken([0x1b, 0x8, "$0", "$1", "$(u:2)", "$3", 0xff]),
     "add_npc": AddNpcToken([0x13, 0xc, "$0", "$1", 0x0, 0x0, 0x0, 0xff, "$(u:2)", "$(u:3)"]),
     "remove_npc": RemoveNpcToken([0x14, 0x4, "$0", "$1"]),
-    "move_party": MovePartyToken([0x15, 0x8, "$0", "$1", "$2", 0x0, 0x0, 0x0]),
+    "move_party": MovePartyToken([0x15, 0x8, "$0", "$1", "$2", "$3", "$4", "$5"]),
+    "wait_for_party_movement": WaitForPartyToken([0x3b, 0x4, 0xff, 0xff]),
     "set_repeat": SetRepeatToken([0x19, 0x4, 0x0, "$0"]),
     "repeat": RepeatToken([0x19, 0x8, "$0", 0xff, "$1"]),
     "set_npc_frame": SetNpcFrameToken([0x1f, 0x4, "$0", "$1"]),
@@ -51,7 +53,13 @@ GRAMMAR = {
     "if": IfToken([0x2d, 0x8, "$0", "$1", "$3"]),
     "remove_trigger": RemoveTriggerToken([0x2e, 0x4, "$(u:0)"]),
     "npc_update": NpcUpdateToken([0x30, 0x4, "$0", "$1"]),
+    "trigger_battle": TriggerBattleToken([0x2b, 0x4, "$0", 0xff]),
     "set_npc_event": SetNpcEventToken([0x30, 0x8, 0x1, "$0", "$(u:1)", 0xff, 0xff]),
+    "shift_npc": ShiftNpcEventToken([0x18, 0x8, "$0", "$1", "$(u:2)", 0xff, 0xff]),
+    "hide_leader": ShowHideLeaderToken([0x16, 0x4, 0x0, 0xff]),
+    "reveal_leader": ShowHideLeaderToken([0x16, 0x4, 0x1, 0xff]),
+    "load_pc_sprite": LoadPcSpriteToken([0x12, 0xc, "$0", "$1", "$2", 0xff, "$(u:3)", "$(u:4)", 0xff, 0xff]),
+    "load_pc_at_leader": LoadPcSpriteAtLeaderToken([0x12, 0x8, "$0", "$1", "$2", 0xff, 0xff, 0xff]),
     "remove_all": RemoveAllToken([0x36, 0x4, "$(u:0)"]),
     "give_item": GiveItemToken([0x37, 0x4, 0x0, "$0"]),
     "give_item_ex": GiveItemExtendedToken([0x37, 0xc, 0x40, 0x00, 0xff, 0xff, 0xff, 0xff, "$(u:0)", "$(u:1)"]),
@@ -92,14 +100,20 @@ GRAMMAR = {
     LoadTextToken: ["$$value$$", "$$value$$"],
     CloseDialogToken: ["$$value$$"],
     DelayToken: ["$$value$$"],
+    TriggerBattleToken: ["$$value$$"],
     MoveNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
+    FadeToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
     JumpToken: [LabelToken()],
     GotoToken: [LabelToken()],
     JumpChestEmptyToken: [LabelToken()],
+    ShowHideLeaderToken: None,
+    LoadPcSpriteToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$", "$$value$$"],
+    LoadPcSpriteAtLeaderToken: ["$$value$$", "$$value$$", "$$value$$"],
     MusicToken: ["$$value$$", "$$value$$"],
     AddNpcToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$"],
     RemoveNpcToken: ["$$value$$", "$$value$$"],
-    MovePartyToken: ["$$value$$", "$$value$$", "$$value$$"],
+    MovePartyToken: ["$$value$$", "$$value$$", "$$value$$", "$$value$$", "$$value$$", "$$value$$"],
+    WaitForPartyToken: None,
     SetRepeatToken: ["$$value$$"],
     RepeatToken: ["$$value$$", LabelToken()],
     SetNpcFrameToken: ["$$value$$", "$$value$$"],
@@ -110,6 +124,7 @@ GRAMMAR = {
     RemoveTriggerToken: ["$$value$$"],
     NpcUpdateToken: ["$$value$$", "$$value$$"],
     SetNpcEventToken: ["$$value$$", "$$value$$"],
+    ShiftNpcEventToken: ["$$value$$", "$$value$$", "$$value$$"],
     RemoveAllToken: ["$$value$$"],
     GiveItemToken: ["$$value$$"],
     GiveItemExtendedToken: ["$$value$$", "$$value$$"],
@@ -158,7 +173,7 @@ def parse(source: str) -> ICode:
         # "Just In Time" symbols for things in the script that are helpful to
         # read it, but are short enough to just store the value in the name.
         jit_sym = sym_name.split("_")[0]
-        if jit_sym in ["Flag", "Map", "NPC", "PC", "Item"]:
+        if jit_sym in ["Flag", "Map", "NPC", "PC", "Item", "Param"]:
             parts = sym_name.split("_")
             value = int(parts[len(parts) - 1], 16)
 

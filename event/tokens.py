@@ -67,6 +67,10 @@ class DelayToken(list):
     pass
 
 
+class TriggerBattleToken(list):
+    pass
+
+
 class MoveNpcToken(list):
     pass
 
@@ -87,6 +91,10 @@ class MusicToken(list):
     pass
 
 
+class FadeToken(list):
+    pass
+
+
 class AddNpcToken(list):
     pass
 
@@ -96,6 +104,10 @@ class RemoveNpcToken(list):
 
 
 class MovePartyToken(list):
+    pass
+
+
+class WaitForPartyToken(list):
     pass
 
 
@@ -151,7 +163,23 @@ class NpcUpdateToken(list):
     pass
 
 
+class LoadPcSpriteToken(list):
+    pass
+
+
+class LoadPcSpriteAtLeaderToken(list):
+    pass
+
+
 class SetNpcEventToken(list):
+    pass
+
+
+class ShiftNpcEventToken(list):
+    pass
+
+
+class ShowHideLeaderToken(list):
     pass
 
 
