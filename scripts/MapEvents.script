@@ -1,11 +1,5 @@
 ; Map initialization code for Overworld
 begin script=0x0
-    if %Flag_Ship_Visible_0x5 set goto .Label_Received_Free_Start
-    ; Set flags associated with the things you get automatically when the game starts
-    ; (i.e.: The ship and some other bits)
-    FREE_START
-
-    .Label_Received_Free_Start:
     if %Flag_Canal_Open_0x0b unset goto .Label_Canal_Closed
     remove_all 0x1f62
 
@@ -274,9 +268,17 @@ begin script=0x1e
 
 ; Map initialization code for Chaos Shrine
 begin script=0x1f
-;	if %Flag_Guards_0x28 set goto .Label_1_Flag_Guards_0x28_Set
+    ; Normally you need to talk to the guards in order to get to Garland
+    ; but that's kind of dumb? So if the party hasn't talked to the guards
+    ; that means they didn't get the "Free Start" yet, so give that instead,
+    ; (and leave the door unlocked).
+	if %Flag_Guards_0x28 set goto .Label_1_Flag_Guards_0x28_Set
+
+    FREE_START
+    set_flag %Flag_Guards_0x28
 ;	db 0x2f 0x8 0x4d 0x1f 0xff 0x26 0x23 0x2
 ;	goto .Label_2
+
 	.Label_1_Flag_Guards_0x28_Set:
 	if %Flag_Garland_Defeated_0x1 unset goto .Label_3_Flag_Garland_Defeated_0x1_Unset
 	remove_trigger %Event_Confronting_Garland_And_Sarah_Rescue
@@ -296,6 +298,7 @@ begin script=0x1f
 	remove_trigger %Event_Black_Crystal
 	goto .Label_5
 	.Label_4_Flag_Warp_Gate_Open_0x24_Unset:
+	if %Flag_Earth_0x11 unset goto .Label_5
 	if %Flag_Fire_0x13 unset goto .Label_5
 	if %Flag_Water_0x1d unset goto .Label_5
 	if %Flag_Air_0x22 unset goto .Label_5
@@ -1052,13 +1055,16 @@ begin script=0x7b
 
 ; Bridge_Credits
 begin script=0xfa6
+	set_flag %Flag_Watched_Bridge_Credits_0x29
+
+#ifdef SKIP
 	music 0x5 %Music_Shop
 	fade 0x6 0x14 %Param_Fade_Screen_0xffff 0x20
 	db 0x3f 0x4 0xff 0xff
 	music 0x6 0xffff
-	set_flag %Flag_Watched_Bridge_Credits_0x29
 	db 0x61 0x4 0xff 0xff
 	fade 0x7 0x14 %Param_Fade_Screen_0xffff 0x20
 	db 0x3f 0x4 0xff 0xff
+#endif
 	end_event
 

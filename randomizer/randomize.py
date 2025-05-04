@@ -20,9 +20,9 @@ from copy import deepcopy
 from doslib.classes import JobClass
 from doslib.dos_utils import load_tsv, resolve_path
 from doslib.encounterregions import EncounterRegions
-from doslib.enemy import EnemyStats, Encounter, EncounterGroup
+from doslib.enemy import EnemyStats, Encounter
 from doslib.event import EventTables, EventTextBlock
-from doslib.item import Item, Weapon
+from doslib.item import Item
 from doslib.items import Items
 from doslib.map import Npc
 from doslib.maps import Maps, MapFeatures, TreasureChest, ItemChest, MoneyChest
@@ -32,6 +32,7 @@ from doslib.spells import Spells
 from doslib.textblock import TextBlock
 from event.easm import parse, link
 from event.epp import pparse
+from randomizer.bossshuffle import BossData
 from randomizer.clingo import solve_placement_for_seed
 from randomizer.credits import add_credits
 from randomizer.flags import Flags
@@ -40,7 +41,6 @@ from randomizer.ipsfile import load_ips_files
 from randomizer.placement import Placement, PlacementDetails
 from randomizer.spellgenerator import SpellGenerator
 from randomizer.treasure import InventoryGenerator
-from randomizer.bossshuffle import BossData
 from stream.outputstream import OutputStream
 
 VehiclePosition = namedtuple("VehiclePosition", ["x", "y"])
@@ -440,7 +440,26 @@ def build_headers(placements: Placement, start_cmds: str) -> str:
         flag = f"\tset_flag {hex(placement.plot_flag)}\\\n" if placement.plot_flag is not None else ""
         item = f"\tgive_item {hex(placement.plot_item)}\\\n" if placement.plot_item is not None else ""
         extra = f"\t{placement.extra}\n" if placement.extra is not None else ""
-        header += f"#define GIVE_{placement.source.upper()}_REWARD \\\n{flag}{item}{extra}\n"
+        text_id = f"%{placement.source.lower()}_text_id"
+
+        reward_block = f"""
+            music 0x5 %Music_Main_Theme
+            music 0xa 0xffff
+        
+            load_text %Param_Window_Top_0x0 {text_id}
+            show_dialog
+            close_dialog %Param_Dialog_Wait_0x1
+            
+            {flag}
+            {item}
+            {extra}
+
+            music 0x0 %Music_Key_Item_Jingle
+            music 0x9 0xffff
+            music 0x4 %Music_Main_Theme
+        """
+        reward_block_formatted = "\\\n".join(reward_block.splitlines())
+        header += f"#define GIVE_{placement.source.upper()}_REWARD \\\n{reward_block_formatted}\n"
         text_ids += f"%{placement.source.lower()}_text_id {hex(placement.reward_text_id)}\n"
         flag_names += f"%{placement.source.lower()}_reward_flag {hex(placement.plot_flag)}\n"
 
