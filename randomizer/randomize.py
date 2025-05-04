@@ -445,18 +445,19 @@ def build_headers(placements: Placement, start_cmds: str) -> str:
         reward_block = f"""
             music 0x5 %Music_Main_Theme
             music 0xa 0xffff
-        
+            music 0x0 %Music_Key_Item_Jingle
+
             load_text %Param_Window_Top_0x0 {text_id}
             show_dialog
+
+            music 0x9 0xffff
+            music 0x4 %Music_Main_Theme
+
             close_dialog %Param_Dialog_Wait_0x1
             
             {flag}
             {item}
             {extra}
-
-            music 0x0 %Music_Key_Item_Jingle
-            music 0x9 0xffff
-            music 0x4 %Music_Main_Theme
         """
         reward_block_formatted = "\\\n".join(reward_block.splitlines())
         header += f"#define GIVE_{placement.source.upper()}_REWARD \\\n{reward_block_formatted}\n"

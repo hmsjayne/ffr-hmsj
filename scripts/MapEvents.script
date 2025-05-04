@@ -25,6 +25,14 @@ begin script=0x0
 	end_event
 
 
+; Prevent soft lock for canal
+begin script=0x1f62
+    load_text WINDOW_TOP 0x481
+    show_dialog
+    close_dialog DIALOG_WAIT
+    end_event
+
+
 ; Map initialization code for Earth Cave B1
 begin script=0x1
 	end_event
@@ -38,9 +46,9 @@ begin script=0x2
 ; Map initialization code for Earth Cave B3
 begin script=0x3
 	shift_npc %NPC_Earth_Cave_Slab_0xe %Param_Shift_Y_0x1 2
-	if %Flag_Star_Ruby_0xd unset goto .Label_1_Flag_Star_Ruby_0xd_Unset
+	if %vampire_reward_flag unset goto .Label_1_vampire_reward_flag
 	remove_all %Event_Star_Ruby_Chest
-	.Label_1_Flag_Star_Ruby_0xd_Unset:
+	.Label_1_vampire_reward_flag:
 	if %Flag_Defeated_Vampire_0xc unset goto .Label_2_Flag_Defeated_Vampire_0xc_Unset
 	remove_trigger %Event_Confronting_Vampire
 	.Label_2_Flag_Defeated_Vampire_0xc_Unset:
@@ -61,18 +69,25 @@ begin script=0x4
 
 ; Map initialization code for Earth Cave B5
 begin script=0x5
-	if %Flag_Earth_0x11 unset goto .Label_1_Flag_Earth_0x11_Unset
+    if %lich_reward_flag unset goto .Label_Lich_Not_Defeated
 	remove_all %Event_Confronting_Lich
-	remove_npc %NPC_Earth_Crystal_0xb 0x0
-	remove_npc %NPC_Warp_Yellow_0xd 0x0
-	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Yellow_0xf
-	goto .Label_2
-	.Label_1_Flag_Earth_0x11_Unset:
+	goto .Label_Lich_Defeated
+
+    .Label_Lich_Not_Defeated:
 	shift_npc %NPC_Lich_0xc %Param_Shift_Y_0x1 65528
 	npc_update %Param_Hide_Sprite_0x2 %NPC_Lich_0xc
 	npc_update %Param_Remove_Collision_0x4 %NPC_Lich_0xc
 	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Yellow_0xd
 	db 0x1c 0x4 0xd 0x3
+
+    .Label_Lich_Defeated:
+	if %Flag_Earth_0x11 unset goto .Label_1_Flag_Earth_0x11_Unset
+	remove_npc %NPC_Earth_Crystal_0xb 0x0
+	remove_npc %NPC_Warp_Yellow_0xd 0x0
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Yellow_0xf
+	goto .Label_2
+
+	.Label_1_Flag_Earth_0x11_Unset:
 	npc_update %Param_Hide_Sprite_0x2 %NPC_Earth_Crystal_lit_0xe
 	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Light_Yellow_0xf
 	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Yellow_0xf
@@ -85,17 +100,21 @@ begin script=0x5
 
 ; Map initialization code for Elven Castle
 begin script=0x6
-	if %Flag_Mystic_Key_0x9 unset goto .Label_1_Flag_Mystic_Key_0x9_Unset
+	if %Flag_Mystic_Key_0x9 unset goto .Label_No_Mystic_Key
+	remove_all %Event_Mystic_Key_Door
+
+	.Label_No_Mystic_Key:
+	if %elf_reward_flag unset goto .Label_Check_Jolt_Tonic
 	move_npc %NPC_Elven_Prince_0x7 0 17 15
-	remove_trigger %Event_Mystic_Key_Door
-	remove_trigger %Event_Mystic_Key_Vault
-	goto .Label_2
-	.Label_1_Flag_Mystic_Key_0x9_Unset:
+	goto .Label_End_Event
+
+	.Label_Check_Jolt_Tonic:
 	set_npc_frame %NPC_Elven_Prince_0x7 0x8
-	if %Flag_Jolt_Tonic_0x8 unset goto .Label_2
-	set_npc_event %NPC_Elf_Doctor_0x6 0x139a
-	goto .Label_2
-	.Label_2:
+
+    if %Flag_Jolt_Tonic_0x8 unset goto .Label_End_Event
+    set_npc_event %NPC_Elf_Doctor_0x6 0x139a
+
+	.Label_End_Event:
 	end_event
 
 
@@ -521,7 +540,7 @@ begin script=0x39
 	remove_trigger %Event_Talking_To_Princess_Sarah
 	goto .Label_4
 	.Label_3_Flag_Garland_Defeated_0x1_Set:
-	if %Flag_Lute_0x4 set goto .Label_4
+	if %sara_reward_flag set goto .Label_4
 	db 0x2f 0x8 0xcb 0x13 0xff 0x14 0xa 0x8
 	.Label_4:
 	end_event
