@@ -175,7 +175,7 @@ begin script=0x11
 	if %Flag_Oxyale_0x1a unset goto .Label_1_Flag_Oxyale_0x1a_Unset
 	set_npc_event %NPC_Barrel_Girl_0xb 0x13a1
 	.Label_1_Flag_Oxyale_0x1a_Unset:
-	if 0x1b unset goto .Label_2_0x1b_Unset
+	if %Flag_Saw_Sub_Engineer_Fade_Away_0x1b unset goto .Label_2_0x1b_Unset
 	remove_trigger %Event_Sub_Engineer_Fades_Away
 	.Label_2_0x1b_Unset:
 	db 0x1c 0x4 0xf 0x3
@@ -279,9 +279,9 @@ begin script=0x1d
 
 ; Map initialization code for Sunken Shrine 5F
 begin script=0x1e
-	if %Flag_Rosetta_Stone_0x1c unset goto .Label_1_Flag_Rosetta_Stone_0x1c_Unset
+	if %mermaids_reward_flag unset goto .Label_Mermaids_Reward_Remains
 	remove_all %Event_Rosetta_Stone_Chest
-	.Label_1_Flag_Rosetta_Stone_0x1c_Unset:
+	.Label_Mermaids_Reward_Remains:
 	end_event
 
 
@@ -449,14 +449,10 @@ begin script=0x2e
 
 ; Map initialization code for Crescent Lake
 begin script=0x2f
-	if %Flag_Fire_0x13 unset goto .Label_1_Flag_Fire_0x13_Unset
-	goto .Label_2
-	.Label_1_Flag_Fire_0x13_Unset:
-	if %Flag_Canoe_0x12 set goto .Label_2
-	if %Flag_Earth_0x11 unset goto .Label_2
-	set_npc_event %NPC_Old_Man_0xc 0x1394
-	goto .Label_2
-	.Label_2:
+	if %Flag_Earth_0x11 unset goto .Label_End_Event
+	if %lukahn_reward_flag set goto .Label_End_Event
+	set_npc_event %NPC_Lukahn_0xd 0x1394
+	.Label_End_Event:
 	end_event
 
 
@@ -499,26 +495,21 @@ begin script=0x36
 
 ; Map initialization code for Sages Cave
 begin script=0x37
-	if %Flag_Rod_0xf set goto .Label_1_Flag_Rod_0xf_Set
+	if %sarda_reward_flag set goto .Label_Have_Sarda_Reward
 	set_npc_event %NPC_Sadda_0x0 0x13b8
-	.Label_1_Flag_Rod_0xf_Set:
+	.Label_Have_Sarda_Reward:
 	end_event
 
 
 ; Map initialization code for Castle Cornelia 1F
 begin script=0x38
-	if %Flag_Bridge_0x3 unset goto .Label_1_Flag_Bridge_0x3_Unset
+    ; We don't want to watch the Bridge be rebuilt
 	remove_all %Event_Bridge_Rebuilding_Scene
-	goto .Label_2
-	.Label_1_Flag_Bridge_0x3_Unset:
-	if %Flag_Garland_Defeated_0x1 unset goto .Label_3_Flag_Garland_Defeated_0x1_Unset
-	goto .Label_2
-	.Label_3_Flag_Garland_Defeated_0x1_Unset:
-	remove_all %Event_Bridge_Rebuilding_Scene
-	.Label_2:
+
 	if %Flag_Nitro_Powder_0xa unset goto .Label_4_Flag_Nitro_Powder_0xa_Unset
 	remove_all %Event_Nitro_Powder_Chest
 	.Label_4_Flag_Nitro_Powder_0xa_Unset:
+
 	if %Flag_Mystic_Key_0x9 unset goto .Label_5_Flag_Mystic_Key_0x9_Unset
 	remove_trigger %Event_Mystic_Key_Door
 	remove_trigger %Event_Mystic_Key_Door
@@ -809,7 +800,7 @@ begin script=0x5c
 
 ; Map initialization code for Flying Fortress 2F
 begin script=0x5d
-	if %Flag_Adamantite_0x21 unset goto .Label_1_Flag_Adamantite_0x21_Unset
+	if %sky2_reward_flag unset goto .Label_1_Flag_Adamantite_0x21_Unset
 	remove_trigger %Event_Adamantite_Obtaining
 	.Label_1_Flag_Adamantite_0x21_Unset:
 	end_event
@@ -827,22 +818,30 @@ begin script=0x5f
 
 ; Map initialization code for Flying Fortress 5F
 begin script=0x60
-	if %Flag_Air_0x22 unset goto .Label_1_Flag_Air_0x22_Unset
+    if %tiamat_reward_flag unset goto .Label_Tiamat_Not_Defeated
 	remove_all %Event_Confronting_Tiamat
-	remove_npc %NPC_Wind_Crystal_0x1 0x0
-	remove_npc %NPC_Warp_Green_0x2 0x0
-	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Green_0x5
-	goto .Label_2
-	.Label_1_Flag_Air_0x22_Unset:
+	goto .Label_Tiamat_Defeated
+
+    .Label_Tiamat_Not_Defeated:
 	shift_npc %NPC_Tiamat_0x3 %Param_Shift_Y_0x1 65528
 	npc_update %Param_Hide_Sprite_0x2 %NPC_Tiamat_0x3
 	npc_update %Param_Remove_Collision_0x4 %NPC_Tiamat_0x3
 	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Green_0x2
 	db 0x1c 0x4 0x2 0x3
+
+    .Label_Tiamat_Defeated:
+	if %Flag_Air_0x22 unset goto .Label_1_Flag_Air_0x22_Unset
+	remove_npc %NPC_Wind_Crystal_0x1 0x0
+	remove_npc %NPC_Warp_Green_0x2 0x0
+	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Green_0x5
+	goto .Label_2
+
+	.Label_1_Flag_Air_0x22_Unset:
 	npc_update %Param_Hide_Sprite_0x2 %NPC_Wind_Crystal_lit_0x4
 	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Light_Green_0x5
 	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Green_0x5
 	shift_npc %NPC_Wind_Crystal_0x1 %Param_Shift_Y_0x1 65528
+
 	.Label_2:
 	shift_npc %NPC_Wind_Crystal_lit_0x4 %Param_Shift_Y_0x1 65528
 	db 0x1c 0x4 0x5 0x3
@@ -851,32 +850,22 @@ begin script=0x60
 
 ; Map initialization code for Matoyas Cave
 begin script=0x61
-	if %Flag_Jolt_Tonic_0x8 set goto .Label_1_Flag_Jolt_Tonic_0x8_Set
-	if %Flag_Crystal_0x7 unset goto .Label_1_Flag_Jolt_Tonic_0x8_Set
-	set_npc_event %NPC_Matoya_0x4 0x1391
-	.Label_1_Flag_Jolt_Tonic_0x8_Set:
-	if 0x27 unset goto .Label_2_0x27_Unset
+    ; Don't ever trigger Matoya's Plight scene
 	remove_trigger %Event_Matoyas_Plight
-	goto .Label_3
-	.Label_2_0x27_Unset:
-	db 0x2f 0x8 0xa9 0x13 0xff 0x11 0xf 0x8
-	db 0x2f 0x8 0xa9 0x13 0xff 0x11 0xe 0x8
-	db 0x2f 0x8 0xa9 0x13 0xff 0x11 0xd 0x8
-	db 0x2f 0x8 0xa9 0x13 0xff 0x11 0xc 0x8
-	db 0x2f 0x8 0xa9 0x13 0xff 0x11 0xb 0x8
-	db 0x2f 0x8 0xa9 0x13 0xff 0x11 0xa 0x8
-	db 0x2f 0x8 0xa9 0x13 0xff 0x11 0x9 0x8
-	db 0x2f 0x8 0xa9 0x13 0xff 0x11 0x8 0x8
-	.Label_3:
+
+	if %matoya_reward_flag set goto .Label_End_Event
+	if %Flag_Crystal_0x7 unset goto .Label_End_Event
+	set_npc_event %NPC_Matoya_0x4 0x1391
+	.Label_End_Event:
 	end_event
 
 
 ; Map initialization code for Pravoka
 begin script=0x62
-	if %Flag_Ship_0x5 unset goto .Label_1_Flag_Ship_0x5_Unset
+	if %bikke_reward_flag unset goto .Label_Need_Bikke_Reward
 	remove_all %Event_Bikkes_Bikkeneers
-	goto .Label_2
-	.Label_1_Flag_Ship_0x5_Unset:
+	goto .Label_End_Event
+	.Label_Need_Bikke_Reward:
 	set_npc_event %NPC_Bikke_0x2 0x13b5
 	npc_update %Param_Hide_Sprite_0x2 %NPC_Man_Blue_0x3
 	npc_update %Param_Remove_Collision_0x4 %NPC_Man_Blue_0x3
@@ -890,7 +879,7 @@ begin script=0x62
 	npc_update %Param_Remove_Collision_0x4 %NPC_Old_Man_0x7
 	db 0x2f 0x8 0x0 0x0 0xff 0xc 0xc 0x8
 	db 0x2f 0x8 0x0 0x0 0xff 0xe 0xc 0x8
-	.Label_2:
+	.Label_End_Event:
 	end_event
 
 
