@@ -784,9 +784,12 @@ begin script=0x5a
 
 ; Map initialization code for Marsh Cave B3
 begin script=0x5b
-	if %Flag_Crown_0x6 unset goto .Label_1_Flag_Crown_0x6_Unset
-	remove_all %Event_Crown_Chest
-	.Label_1_Flag_Crown_0x6_Unset:
+    shift_npc %NPC_Crown_Chest_0xf %Param_Shift_Y_0x1 3
+
+	if %marsh_reward_flag unset goto .Label_Need_Marsh_Reward
+	set_npc_event %NPC_Crown_Chest_0x5 0x1388
+
+	.Label_Need_Marsh_Reward:
 	if %Flag_Mystic_Key_0x9 unset goto .Label_2_Flag_Mystic_Key_0x9_Unset
 	remove_all %Event_Mystic_Key_Door
 	.Label_2_Flag_Mystic_Key_0x9_Unset:

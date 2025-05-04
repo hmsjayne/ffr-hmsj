@@ -358,7 +358,7 @@ def map_updates(maps: Maps):
     #
     # To fix this, we always have the Rod script on the tablet, and just have a check in that
     # script for the Rod, printing the "evil" text if the player doesn't have it.
-    maps.get_map(0x3).npcs[0xe].event = 0x139c
+    # maps.get_map(0x3).npcs[0xe].event = 0x139c
 
     # There could be fewer bats... This also makes room for features in other maps.
     bat_mania_maps = [
@@ -385,6 +385,12 @@ def map_updates(maps: Maps):
     for tile in citadel_of_trials.tiles:
         if tile.event == 0x23d0:
             citadel_of_trials.tiles.remove(tile)
+
+    # Get rid of the Piscodemon tile (in the event now :)
+    marsh_b3 = maps.get_map(0x5b)
+    for tile in marsh_b3.tiles:
+        if tile.x_pos == 33 and tile.y_pos == 48:
+            marsh_b3.tiles.remove(tile)
 
 
 def load_event_scripts() -> dict:
