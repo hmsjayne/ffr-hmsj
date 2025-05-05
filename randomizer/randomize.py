@@ -386,11 +386,16 @@ def map_updates(maps: Maps):
         if tile.event == 0x23d0:
             citadel_of_trials.tiles.remove(tile)
 
-    # Get rid of the Piscodemon tile (in the event now :)
-    marsh_b3 = maps.get_map(0x5b)
-    for tile in marsh_b3.tiles:
-        if tile.x_pos == 33 and tile.y_pos == 48:
-            marsh_b3.tiles.remove(tile)
+    # Remove a few forced encounter tiles so the
+    # fight is in the event instead.
+    forced_encounter_tiles = {
+        0x5b: 11,  # Piscodemon in Marsh
+        0x44: 31,  # Evil Eye in Ice Cave
+        0x4f: 3,  # Dragon Zombie in Citadel of Trials
+    }
+    for map_index in forced_encounter_tiles.keys():
+        m = maps.get_map(map_index)
+        m.tiles.remove(m.tiles[forced_encounter_tiles[map_index]])
 
 
 def load_event_scripts() -> dict:
@@ -513,6 +518,21 @@ def pick_gear_reward(rng: random.Random, gear_placement: PlacementDetails,
     return choice
 
 
+def encounter_str(encounter: Encounter, enemy_data: list) -> str:
+    grps = []
+    for grp in encounter.groups:
+        if grp.max_count == 0:
+            continue
+        if grp.enemy_id < len(enemy_data):
+            name = enemy_data[grp.enemy_id].name.replace("\\x00", "")
+        else:
+            name = hex(grp.enemy_id)
+        grps.append(f"({name}, {grp.min_count}, {grp.max_count})")
+    grps_str = "(" + ",".join(grps) + ")"
+    runable = "unrunnable" if encounter.unrunnable else "runnable"
+    return f"{encounter.config}\t{runable}\t{encounter.surprise_chance}\t{grps_str}\n"
+
+
 def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     print(f"Randomizing with seed {seed}, {flags.encode()}")
     # Start with the list of standard patches to improve gameplay.
@@ -545,26 +565,38 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     items = Items(rom, flags.new_items)
     enemy_data = load_enemy_data(rom, items, flags.fiend_ribbons)
 
-    with open("Formations.tsv", "wb") as data:
-        lines = []
-        for index, encounter in enumerate(encounters):
-            grps = []
-            for grp in encounter.groups:
-                if grp.max_count == 0:
-                    continue
-                if grp.enemy_id < len(enemy_data):
-                    name = enemy_data[grp.enemy_id].name.replace("\\x00", "")
-                else:
-                    name = hex(grp.enemy_id)
-                grps.append(f"({name}, {grp.min_count}, {grp.max_count})")
-            grps_str = "(" + ",".join(grps) + ")"
-            runable = "unrunnable" if encounter.unrunnable else "runnable"
-            lstr = f"{hex(index)}\t{encounter.config}\t{runable}\t{encounter.surprise_chance}\t{grps_str}\n"
-            lines.append(lstr.encode("utf-8"))
-        data.writelines(lines)
+    # with open("Formations.tsv", "wb") as data:
+    #     lines = []
+    #     for index, encounter in enumerate(encounters):
+    #         grps = []
+    #         for grp in encounter.groups:
+    #             if grp.max_count == 0:
+    #                 continue
+    #             if grp.enemy_id < len(enemy_data):
+    #                 name = enemy_data[grp.enemy_id].name.replace("\\x00", "")
+    #             else:
+    #                 name = hex(grp.enemy_id)
+    #             grps.append(f"({name}, {grp.min_count}, {grp.max_count})")
+    #         grps_str = "(" + ",".join(grps) + ")"
+    #         runable = "unrunnable" if encounter.unrunnable else "runnable"
+    #         lstr = f"{hex(index)}\t{encounter.config}\t{runable}\t{encounter.surprise_chance}\t{grps_str}\n"
+    #         lines.append(lstr.encode("utf-8"))
+    #     data.writelines(lines)
 
     # Don't load formation data (since we don't do anything with it)
     # load_formation_data(rom, enemy_data)
+
+    # In order to have fights inside the events in Marsh, Ice, and CoT
+    # we need to change some encounters around.
+    event_encounters = {
+        0x101: 0x1c,  # Piscodemons
+        0x102: 0x69,  # Evil Eye
+        0x103: 0x4b,  # Zombie Dragon
+    }
+    for dest_encounter, source_encounter in event_encounters.items():
+        # Make a copy so that we can change aspects of it (in theory at least)
+        encounter = deepcopy(encounters[source_encounter])
+        encounters[dest_encounter] = encounter
 
     encounter_regions = EncounterRegions(rom)
     for region in encounter_regions.overworld_regions:
