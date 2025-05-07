@@ -787,7 +787,8 @@ begin script=0x5b
     shift_npc %NPC_Crown_Chest_0xf %Param_Shift_Y_0x1 3
 
 	if %marsh_reward_flag unset goto .Label_Need_Marsh_Reward
-	set_npc_event %NPC_Crown_Chest_0x5 0x1388
+	set_npc_event %NPC_Crown_Chest_0xf 0x1388
+	set_npc_frame %NPC_Crown_Chest_0xf 0x1
 
 	.Label_Need_Marsh_Reward:
 	if %Flag_Mystic_Key_0x9 unset goto .Label_2_Flag_Mystic_Key_0x9_Unset

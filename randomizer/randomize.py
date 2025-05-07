@@ -389,7 +389,6 @@ def map_updates(maps: Maps):
     # Remove a few forced encounter tiles so the
     # fight is in the event instead.
     forced_encounter_tiles = {
-        0x5b: 11,  # Piscodemon in Marsh
         0x44: 31,  # Evil Eye in Ice Cave
         0x4f: 3,  # Dragon Zombie in Citadel of Trials
     }
@@ -589,7 +588,6 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     # In order to have fights inside the events in Marsh, Ice, and CoT
     # we need to change some encounters around.
     event_encounters = {
-        0x101: 0x1c,  # Piscodemons
         0x102: 0x69,  # Evil Eye
         0x103: 0x4b,  # Zombie Dragon
     }

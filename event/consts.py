@@ -393,7 +393,7 @@ def get_flag_name(flag: int) -> str:
     return hex(flag)
 
 
-def get_map_name(map_id: int) -> str:
+def get_map_var_name(map_id: int) -> str:
     if map_id in map_names:
         name = map_names[map_id].replace(" ", "_")
         return f"%Map_{name}_{hex(map_id)}"
@@ -404,3 +404,15 @@ def get_key_item_name(ki: int) -> str:
     if ki in key_item_names:
         return f"%Item_{key_item_names[ki]}_{hex(ki)}"
     return hex(ki)
+
+
+def get_map_name(map_id: int) -> str:
+    if map_id in map_names:
+        return map_names[map_id].replace(" ", "_")
+    return hex(map_id)
+
+
+def get_sprite_name(sprite_id: int) -> str:
+    if sprite_id in sprite_id_to_name:
+        return sprite_id_to_name[sprite_id].replace(" ", "_")
+    return hex(sprite_id)
