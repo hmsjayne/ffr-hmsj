@@ -57,6 +57,7 @@ def main():
     parser.add_argument("--maps", dest="all_maps", action="store_true", help="Disassemble all map events")
     parser.add_argument("--core", dest="core_events", action="store_true", help="Disassemble core events")
     parser.add_argument("--battle", dest="battle_events", action="store_true", help="Disassemble battle events")
+    parser.add_argument("--all", dest="all_events", action="store_true", help="Disassemble \"all\" events")
     parsed = parser.parse_args()
 
     # Opening the ROM is simple.
@@ -140,6 +141,13 @@ def main():
             0x13Bc: "Confronting_Vampire",
         }
         do_dissassemble_events(rom, core_event_names)
+    if parsed.all_events:
+        all_events = {}
+        for event_id in range(0x1388, 0x13CC + 1):
+            all_events[event_id] = f"Event_{hex(event_id)}"
+        for event_id in range(0x1F40, 0x202F):
+            all_events[event_id] = f"Event_{hex(event_id)}"
+        do_dissassemble_events(rom, all_events)
 
 
 if __name__ == "__main__":

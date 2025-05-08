@@ -24,12 +24,13 @@ from doslib.enemy import EnemyStats, Encounter
 from doslib.event import EventTables, EventTextBlock
 from doslib.item import Item
 from doslib.items import Items
-from doslib.map import Npc
+from doslib.map import Npc, Tile
 from doslib.maps import Maps, MapFeatures, TreasureChest, ItemChest, MoneyChest
 from doslib.rom import Rom
 from doslib.shopdata import ShopData
 from doslib.spells import Spells
 from doslib.textblock import TextBlock
+from event.consts import get_sprite_name
 from event.easm import parse, link
 from event.epp import pparse
 from randomizer.bossshuffle import BossData
@@ -585,15 +586,24 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     # Don't load formation data (since we don't do anything with it)
     # load_formation_data(rom, enemy_data)
 
-    # In order to have fights inside the events in Marsh, Ice, and CoT
+    # In order to have fights inside the events in Ice, and CoT
     # we need to change some encounters around.
     event_encounters = {
         0x102: 0x69,  # Evil Eye
         0x103: 0x4b,  # Zombie Dragon
     }
     for dest_encounter, source_encounter in event_encounters.items():
-        # Make a copy so that we can change aspects of it (in theory at least)
+        # Make a copy so that we can change aspects of it
         encounter = deepcopy(encounters[source_encounter])
+
+        # For the moment, because of graphics issues, just make
+        # these encounters have 1 of the enemy.
+        # This doesn't really matter for the Eye, since it is
+        # only one, but CoT could have two in vanilla, but...
+        # making it 1 just makes this easier.
+        # We could fix it later if we want.
+        encounter.groups[0].min_count = 1
+        encounter.groups[0].max_count = 1
         encounters[dest_encounter] = encounter
 
     encounter_regions = EncounterRegions(rom)
@@ -656,6 +666,11 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
 
     # Do some basic updates to the maps
     map_updates(map_features)
+
+    for npc in map_features.get_map(0x2f).npcs:
+        print(f"NPC {get_sprite_name(npc.sprite_id)} @ {npc.x_pos}, {npc.y_pos} event: {hex(npc.event)}")
+    for tile in map_features.get_map(0x2f).tiles:
+        print(f"Tile: {hex(tile.identifier)} @ {tile.x_pos}, {tile.y_pos} event: {hex(tile.event)}")
 
     # String to insert for free items at the start (usually the ship + bridge)
     free_header = ""

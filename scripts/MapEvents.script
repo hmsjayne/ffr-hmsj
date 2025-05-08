@@ -425,24 +425,32 @@ begin script=0x2d
 
 ; Map initialization code for Mt Gulg B5
 begin script=0x2e
-	if %Flag_Fire_0x13 unset goto .Label_1_Flag_Fire_0x13_Unset
-	remove_all %Event_Confronting_Marilith
-	remove_npc %NPC_Fire_Crystal_0x3 0x0
-	remove_npc %NPC_Warp_Red_0x2 0x0
-	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Red_0x4
-	goto .Label_2
-	.Label_1_Flag_Fire_0x13_Unset:
-	shift_npc %NPC_Marilith_0x1 %Param_Shift_Y_0x1 65528
-	npc_update %Param_Hide_Sprite_0x2 %NPC_Marilith_0x1
-	npc_update %Param_Remove_Collision_0x4 %NPC_Marilith_0x1
 	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Red_0x2
-	db 0x1c 0x4 0x2 0x3
-	npc_update %Param_Hide_Sprite_0x2 %NPC_Fire_Crystal_lit_0x5
-	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Light_Red_0x4
 	npc_update %Param_Remove_Collision_0x4 %NPC_Warp_Light_Red_0x4
-	shift_npc %NPC_Fire_Crystal_0x3 %Param_Shift_Y_0x1 65532
-	.Label_2:
+
+    if %kary_reward_flag unset goto .Label_Need_Kary_Reward
+	remove_all %Event_Confronting_Marilith
+    goto .Label_Check_Fire_Crystal
+
+    .Label_Need_Kary_Reward:
+	shift_npc %NPC_Marilith_0x1 %Param_Shift_Y_0x1 65528
+	npc_update %Param_Remove_Collision_0x4 %NPC_Marilith_0x1
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Marilith_0x1
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Red_0x2
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Warp_Light_Red_0x4
+	db 0x1c 0x4 0x2 0x3
+
+    .Label_Check_Fire_Crystal:
+	if %Flag_Fire_0x13 unset goto .Label_1_Flag_Fire_0x13_Unset
+	remove_npc %NPC_Fire_Crystal_0x3 0x0
 	shift_npc %NPC_Fire_Crystal_lit_0x5 %Param_Shift_Y_0x1 65532
+	goto .Label_2
+
+	.Label_1_Flag_Fire_0x13_Unset:
+	npc_update %Param_Hide_Sprite_0x2 %NPC_Fire_Crystal_lit_0x5
+	shift_npc %NPC_Fire_Crystal_0x3 %Param_Shift_Y_0x1 65532
+
+	.Label_2:
 	db 0x1c 0x4 0x4 0x3
 	end_event
 
@@ -727,23 +735,31 @@ begin script=0x56
 
 ; Map initialization code for Mt Duergar
 begin script=0x57
-	if %Flag_Canal_0xb set goto .Label_1_Flag_Canal_0xb_Set
+    ; In vanilla, there's the sound of digging until the canal
+    ; is open. Here, it should continue until you get Nerrick's
+    ; reward.
+	if %nerrick_reward_flag set goto .Label_Have_Nerrick_Reward
 	music 0x0 0x85
 	db 0x2f 0x8 0x0 0x0 0xff 0x16 0x2a 0x8
 	goto .Label_2
-	.Label_1_Flag_Canal_0xb_Set:
+
+	.Label_Have_Nerrick_Reward:
 	if %Flag_Canal_0xb unset goto .Label_2
 	npc_update %Param_Hide_Sprite_0x2 %NPC_Nerrick_0xb
 	npc_update %Param_Remove_Collision_0x4 %NPC_Nerrick_0xb
+
 	.Label_2:
 	if %Flag_Nitro_Powder_0xa unset goto .Label_3_Flag_Nitro_Powder_0xa_Unset
 	set_npc_event %NPC_Nerrick_0xb 0x1393
+
 	.Label_3_Flag_Nitro_Powder_0xa_Unset:
 	if %Flag_Mystic_Key_0x9 unset goto .Label_4_Flag_Mystic_Key_0x9_Unset
 	remove_trigger %Event_Mystic_Key_Door
+
 	.Label_4_Flag_Mystic_Key_0x9_Unset:
-	if %Flag_Excalibur_0x23 unset goto .Label_5_Flag_Excalibur_0x23_Unset
+	if %smyth_reward_flag unset goto .Label_5_Flag_Excalibur_0x23_Unset
 	goto .Label_6
+
 	.Label_5_Flag_Excalibur_0x23_Unset:
 	if %Flag_Adamantite_0x21 unset goto .Label_6
 	set_npc_event %NPC_Smyth_0x4 0x139d
@@ -787,7 +803,6 @@ begin script=0x5b
     shift_npc %NPC_Crown_Chest_0xf %Param_Shift_Y_0x1 3
 
 	if %marsh_reward_flag unset goto .Label_Need_Marsh_Reward
-	set_npc_event %NPC_Crown_Chest_0xf 0x1388
 	set_npc_frame %NPC_Crown_Chest_0xf 0x1
 
 	.Label_Need_Marsh_Reward:

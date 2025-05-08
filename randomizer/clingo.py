@@ -55,5 +55,6 @@ def solve_placement_for_seed(seed: int) -> tuple:
         pairing = ClingoPlacement(*pairing_str[5:len(pairing_str) - 1].split(","))
         ki_placement.append(pairing)
 
-    print(f"Placements: {ki_placement}")
+    for pl in sorted(ki_placement, key=lambda x: x[1]):
+        print(f"Placement: {pl}")
     return tuple(ki_placement)
