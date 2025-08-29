@@ -21,7 +21,7 @@ from doslib.classes import JobClass
 from doslib.dos_utils import load_tsv, resolve_path
 from doslib.encounterregions import EncounterRegions
 from doslib.enemy import EnemyStats, Encounter
-from doslib.event import EventTables, EventTextBlock
+from doslib.event import EventTables, EventTextBlock, KeyItemTextBlock
 from doslib.item import Item, Weapon
 from doslib.items import Items
 from doslib.map import Npc
@@ -44,6 +44,31 @@ from randomizer.bossshuffle import BossData
 from stream.outputstream import OutputStream
 
 VehiclePosition = namedtuple("VehiclePosition", ["x", "y"])
+
+New_Run_Patch = """
+; --- Keep this part from the "always dash" patch ---
+0x08056480:  02 20    movs r0, #2
+0x08056482:  08 40    ands r0, r1
+0x08056484:  00 28    cmp  r0, #0
+0x08056486:  01 D0    beq  #0x805648c
+0x08056488:  01 20    movs r0, #1
+0x0805648a:  45 40    eors r5, r0
+0x0805648c:  00 2D    cmp  r5, #0
+0x0805648e:  0B D0    beq  #0x80564a8
+
+; --- This is the part you will modify ---
+; Re-insert the vehicle check here
+0x08056490:  52 46    mov  r2, sl          ; <--- NEW
+0x08056492:  10 69    ldr  r0, [r2, #0x10] ; <--- NEW
+0x08056494:  00 28    cmp  r0, #0          ; <--- NEW
+0x08056496:  07 D1    bne  #0x80564a8      ; <--- NEW (Recalculated Branch)
+
+; --- The rest of the NOPs and code remain ---
+0x08056498:  00 00    movs r0, r0         ; This NOP is harmless
+0x0805649a:  00 00    movs r0, r0         ; This NOP is harmless
+0x0805649c:  00 00    movs r0, r0         ; This NOP is harmless
+0x0805649e:  14 4B    ldr  r3, [pc, #0x50] ; Dash action continues...
+"""
 
 
 def load_vehicle_starts(rom: Rom) -> dict:
@@ -120,7 +145,7 @@ def load_enemy_data(rom: Rom, items: Items, fiend_ribbons: bool) -> list:
     return enemies
 
 
-def load_encounter_data(rom: Rom) -> list:
+def load_encounter_data(rom: Rom) -> list[Encounter]:
     encounter_stream = rom.open_bytestream(0x2288B4, 0x1CD4)
     formations = []
     while not encounter_stream.is_eos():
@@ -477,6 +502,28 @@ def pick_gear_reward(rng: random.Random, gear_placement: PlacementDetails,
     return choice
 
 
+def apply_run_patch(rom: Rom):
+    for line in New_Run_Patch.split("\n"):
+        line = line.strip()
+        if len(line) == 0:
+            continue
+        if line[0] == ";":
+            continue
+
+        # Extract the address of the patch
+        addr, rest = line.split(":")
+        addr = int(addr, 16)
+
+        # Get the bytes + instructions
+        rest = rest.strip()
+        parts = rest.split(" ")
+        ins = [int(parts[0], 16), int(parts[1], 16)]
+
+        offset = addr - 0x8000000
+        rom.rom_data[offset] = ins[0]
+        rom.rom_data[offset + 1] = ins[1]
+
+
 def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     print(f"Randomizing with seed {seed}, {flags.encode()}")
     # Start with the list of standard patches to improve gameplay.
@@ -486,7 +533,6 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
                                  "patches/FF1EncounterToggle.ips",
                                  "patches/ImprovedEquipmentStatViewing.ips",
                                  "patches/NoEscape.ips",
-                                 "patches/RunningChange.ips",
                                  "patches/SpellLevelFix.ips",
                                  "patches/SpriteFrameLoaderFix.ips",
                                  "patches/StatusScreenExpansion.ips")
@@ -511,6 +557,16 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
 
     # Don't load formation data (since we don't do anything with it)
     # load_formation_data(rom, enemy_data)
+    encounters[0].config = 0x01
+    encounters[0].groups[0].enemy_id = 0x43
+    encounters[0].groups[0].min_count = 1
+    encounters[0].groups[0].max_count = 1
+    encounters[0].groups[1].enemy_id = 0x22
+    encounters[0].groups[1].min_count = 1
+    encounters[0].groups[1].max_count = 1
+    encounters[0].groups[2].enemy_id = 0x15
+    encounters[0].groups[2].min_count = 2
+    encounters[0].groups[2].max_count = 2
 
     encounter_regions = EncounterRegions(rom)
     for region in encounter_regions.overworld_regions:
@@ -588,9 +644,11 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         rng.seed(seed)
         clingo_placements = solve_placement_for_seed(rng.randint(0, 0xffffffff))
         placement.update_placements(clingo_placements)
+        print(f"Placements: {clingo_placements}")
 
         # The key feature of HMS Janye is starting with the Ship (the HMS Janye), so move the ship to Cornelia harbor.
         vehicle_starts["ship"] = VehiclePosition(x=2328, y=2600)
+        vehicle_starts["airship"] = VehiclePosition(x=2328, y=2456)
 
         # At the moment it doesn't really matter, but we only want to give the free items once when the game
         # starts, which would allow us to give a starter pack at some point. To do this check, we need to
@@ -719,5 +777,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     all_patches.update(pack_vehicle_starts(vehicle_starts))
 
     randomized_rom = rom.apply_patches(all_patches)
+    apply_run_patch(randomized_rom)
+
     print("Randomization Finished")
     return randomized_rom.rom_data

@@ -1,0 +1,370 @@
+formation_index	power	config	unrunnable	surprise_chance	enemy_1	enemy_1_min	enemy_1_max	enemy_2	enemy_2_min	enemy_2_max	enemy_3	enemy_3_min	enemy_3_max	enemy_4	enemy_4_min	enemy_4_max
+0x0	30	Small	no	4	Goblin\x00	3	5	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0x1	36	Small	no	4	Skeleton\x00	2	4	Crawler\x00	0	0	None	0	0	None	0	0	
+0x2	300	Small	no	4	Goblin Guard\x00	1	3	Wolf\x00	0	2	Warg Wolf\x00	0	2	Goblin\x00	0	2	
+0x3	48	Small	no	4	Wolf\x00	1	2	Warg Wolf\x00	0	0	None	0	0	None	0	0	
+0x4	96	Small	no	4	Zombie\x00	2	4	Ghoul\x00	0	0	None	0	0	None	0	0	
+0x5	60	Small	no	55	Black Widow\x00	1	2	Green Slime\x00	0	0	None	0	0	None	0	0	
+0x6	63	Large	no	4	Crazy Horse\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x7	126	Small	no	4	Gigas Worm\x00	1	2	Ogre\x00	0	0	None	0	0	None	0	0	
+0x8	93	Small	no	4	Ghoul\x00	1	1	Ghast\x00	0	0	None	0	0	None	0	0	
+0x9	153	Large	no	4	Hill Gigas\x00	0	0	Lizard\x00	1	1	None	0	0	None	0	0	
+0xa	360	Small	no	90	Shadow\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xb	537	Small	no	4	Warg Wolf\x00	2	5	Wolf\x00	0	3	None	0	0	None	0	0	
+0xc	390	Large	no	4	Ogre\x00	1	2	Hyenadon\x00	0	0	None	0	0	None	0	0	
+0xd	246	Small	no	4	Cobra\x00	1	2	None	0	0	None	0	0	None	0	0	
+0xe	2559	Large/Small	no	33	Goblin Guard\x00	0	5	Werewolf\x00	1	3	Hill Gigas\x00	0	2	Lizard\x00	0	2	
+0xf	468	Small	no	4	Wight\x00	0	0	Ghast\x00	1	4	None	0	0	None	0	0	
+0x10	396	Small	no	4	Gargoyle\x00	2	3	None	0	0	None	0	0	None	0	0	
+0x11	810	Small	no	33	Werewolf\x00	3	6	Warg Wolf\x00	0	0	None	0	0	None	0	0	
+0x12	564	Small	no	55	Ochre Jelly\x00	0	0	Tarantula\x00	1	4	None	0	0	None	0	0	
+0x13	672	Large	no	4	Ogre Chief\x00	1	1	Ogre\x00	1	2	None	0	0	None	0	0	
+0x14	282	Small	no	4	Tarantula\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x15	990	Small	no	4	Anaconda\x00	2	6	Scorpion\x00	0	0	None	0	0	None	0	0	
+0x16	1116	Small	no	4	Cockatrice\x00	2	6	Mummy\x00	0	0	None	0	0	None	0	0	
+0x17	4776	Large	no	4	Ankheg\x00	1	4	None	0	0	None	0	0	None	0	0	
+0x18	1386	Small	no	4	Wraith\x00	2	6	Specter\x00	0	0	None	0	0	None	0	0	
+0x19	1314	Large	no	27	Sabertooth\x00	0	0	Lesser Tiger\x00	1	3	None	0	0	None	0	0	
+0x1a	900	Small	no	27	Scorpion\x00	2	4	Minotaur\x00	0	0	None	0	0	None	0	0	
+0x1b	1731	Large	no	27	Troll\x00	1	2	Minotaur\x00	0	1	None	0	0	None	0	0	
+0x1c	1104	Small	yes	33	Piscodemon\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x1d	1500	Small	no	4	Mummy\x00	2	5	King Mummy\x00	0	0	None	0	0	None	0	0	
+0x1e	1758	Large	no	4	Hill Gigas\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x1f	2217	Large	no	4	Hill Gigas\x00	1	2	Lizard\x00	0	3	None	0	0	None	0	0	
+0x20	1830	Large	no	27	Hydra\x00	1	2	Crocodile\x00	0	0	None	0	0	None	0	0	
+0x21	1536	Large	yes	4	Earth Elemental\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x22	2628	Large	yes	55	Hellhound\x00	0	1	Ogre Mage\x00	1	2	None	0	0	None	0	0	
+0x23	2115	Small	no	4	Pyrolisk\x00	2	5	None	0	0	None	0	0	None	0	0	
+0x24	1215	Large	no	4	Fire Hydra\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x25	3672	Large	no	33	Ochu\x00	1	3	Piranha\x00	0	0	None	0	0	None	0	0	
+0x26	3012	Large	no	4	Fire Gigas\x00	1	2	Fire Lizard\x00	0	0	None	0	0	None	0	0	
+0x27	3240	Large	yes	4	Fire Elemental\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x28	1671	Large	no	4	Lava Worm\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x29	2472	Large	no	4	Fire Lizard\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x2a	2904	Large	no	4	Red Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x2b	600	Small	no	4	Bloodbones\x00	1	1	Skeleton\x00	2	4	Crawler\x00	1	1	None	0	0	
+0x2c	3654	Small	no	4	Specter\x00	1	5	Wraith\x00	0	3	Wight\x00	0	3	Ghast\x00	0	3	
+0x2d	2814	Small	no	4	Winter Wolf\x00	3	7	None	0	0	None	0	0	None	0	0	
+0x2e	2556	Large/Small	yes	4	Ice Gigas\x00	1	1	Winter Wolf\x00	0	2	None	0	0	None	0	0	
+0x2f	4380	Small	no	75	Dark Wizard\x00	1	4	Dark Fighter\x00	0	0	None	0	0	None	0	0	
+0x30	3402	Large	no	4	White Dragon\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x31	2244	Large	no	4	Remorazz\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x32	3150	Large	yes	4	Minotaur Zombie\x00	1	3	Troll\x00	0	0	None	0	0	None	0	0	
+0x33	3015	Small	no	4	Rakshasa\x00	3	5	Medusa\x00	0	0	None	0	0	None	0	0	
+0x34	3495	Small	no	27	Medusa\x00	2	5	Sabertooth\x00	0	0	None	0	0	None	0	0	
+0x35	4110	Small	no	4	Mindflayer\x00	2	5	Clay Golem\x00	0	0	None	0	0	None	0	0	
+0x36	3951	Large	no	4	Manticore\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x37	3654	Large	no	4	Wyrm\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x38	4284	Large	no	4	Baretta\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x39	3120	Small	no	27	Weretiger\x00	2	4	Sabertooth\x00	0	0	None	0	0	None	0	0	
+0x3a	3954	Large	no	27	Basilisk\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x3b	6192	Large	no	4	Chimera\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x3c	2683	Large	no	4	Sand Worm\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x3d	3387	Large	no	4	Allosaurus\x00	1	1	Wyvern\x00	0	0	None	0	0	None	0	0	
+0x3e	7200	Large	no	4	Wyvern\x00	0	0	Wyrm\x00	0	0	Tyrannosaur\x00	1	1	None	0	0	
+0x3f	3771	Large	no	4	Clay Golem\x00	1	3	Stone Golem\x00	0	0	None	0	0	None	0	0	
+0x40	4872	Small	no	4	Earth Medusa\x00	1	4	None	0	0	None	0	0	None	0	0	
+0x41	3189	Large	no	33	Neochu\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x42	3621	Large/Small	no	4	Sea Troll\x00	1	2	Sea Scorpion\x00	1	3	None	0	0	None	0	0	
+0x43	3834	Small	no	4	Sea Scorpion\x00	2	6	None	0	0	None	0	0	None	0	0	
+0x44	10323	Large/Small	no	4	Sea Scorpion\x00	1	6	Sea Snake\x00	2	5	Sea Troll\x00	2	2	None	0	0	
+0x45	5604	Large/Small	no	4	Sahagin Prince\x00	0	1	White Shark\x00	1	2	None	0	0	None	0	0	
+0x46	1	Large/Small	yes	4	Ghost\x00	0	0	Death Eye\x00	1	1	None	0	0	None	0	0	
+0x47	4317	Large/Small	no	4	Water Naga\x00	1	1	Water Elemental\x00	0	1	None	0	0	None	0	0	
+0x48	5952	Large	no	4	White Shark\x00	1	1	Deepeyes\x00	0	1	None	0	0	None	0	0	
+0x49	5886	Small	yes	4	Water Elemental\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x4a	12192	Flying	no	4	Cockatrice\x00	0	8	Pyrolisk\x00	0	8	King Mummy\x00	1	5	Mummy\x00	0	8	
+0x4b	4662	Large	yes	4	Dragon Zombie\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x4c	6120	Small	no	4	Guardian\x00	2	5	Soldier\x00	0	0	None	0	0	None	0	0	
+0x4d	6315	Small	no	4	Black Knight\x00	2	5	None	0	0	None	0	0	None	0	0	
+0x4e	3274	Large	yes	4	Blue Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x4f	3816	Large/Small	no	4	Nightmare\x00	1	3	Black Knight\x00	0	0	None	0	0	None	0	0	
+0x50	6606	Small	no	4	Black Flan\x00	3	6	None	0	0	None	0	0	None	0	0	
+0x51	6456	Small	no	4	Air Elemental\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x52	5103	Large/Small	no	4	Spirit Naga\x00	1	1	Air Elemental\x00	0	1	None	0	0	None	0	0	
+0x53	7155	Small	no	4	Vampire Lord\x00	1	3	Dragon Zombie\x00	0	0	None	0	0	None	0	0	
+0x54	5244	Large/Small	no	4	Death Knight\x00	1	1	Nightmare\x00	1	2	None	0	0	None	0	0	
+0x55	13296	Large	no	4	Chimera\x00	1	2	Rhyos\x00	1	2	None	0	0	None	0	0	
+0x56	32000	Large	no	75	Death Machine\x00	1	1	Dark Fighter\x00	0	0	None	0	0	None	0	0	
+0x57	8688	Large	yes	4	Purple Worm\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x58	4770	Large	no	4	Stone Golem\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x59	4068	Large	yes	4	Green Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x5a	4989	Large	no	4	White Shark\x00	1	2	Shark\x00	0	1	None	0	0	None	0	0	
+0x5b	264	Large/Small	no	4	Sahagin\x00	0	6	Sahagin Chief\x00	0	0	Bigeyes\x00	1	2	None	0	0	
+0x5c	300	Small	no	4	Buccaneer\x00	1	5	Shark\x00	0	0	None	0	0	None	0	0	
+0x5d	636	Large/Small	no	4	Shark\x00	1	2	Sahagin\x00	0	2	Bigeyes\x00	0	1	None	0	0	
+0x5e	372	Large/Small	no	4	Shark\x00	1	1	Sahagin Chief\x00	0	1	None	0	0	None	0	0	
+0x5f	1440	Small	no	4	Piranha\x00	2	6	None	0	0	None	0	0	None	0	0	
+0x60	4278	Large	no	33	Hydra\x00	1	2	Ochu\x00	0	2	None	0	0	None	0	0	
+0x61	4896	Large/Small	no	4	Sea Troll\x00	1	2	Sea Snake\x00	0	2	Sea Scorpion\x00	0	2	None	0	0	
+0x62	5418	Small	no	4	White Croc\x00	1	2	Red Piranha\x00	0	3	None	0	0	None	0	0	
+0x63	1242	Large	no	4	Troll\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x64	978	Large	no	27	Minotaur\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x65	4251	Large/Small	no	30	Piranha\x00	0	2	Crocodile\x00	0	2	Ochu\x00	1	1	Hydra\x00	0	1	
+0x66	681	Small	no	55	Tarantula\x00	1	2	Black Widow\x00	0	2	Green Slime\x00	0	1	Gray Ooze\x00	0	1	
+0x67	4902	Large/Small	no	27	Weretiger\x00	1	3	Sabertooth\x00	0	2	Lesser Tiger\x00	0	2	None	0	0	
+0x68	6000	Small	no	4	Vampire Lord\x00	0	0	Vampire\x00	2	5	None	0	0	None	0	0	
+0x69	3225	Large	yes	4	Evil Eye\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x6a	1935	Small	no	4	Horned Devil\x00	2	5	None	0	0	None	0	0	None	0	0	
+0x6b	765	Small	no	4	Gray Ooze\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x6c	2466	Small	no	4	Mindflayer\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x6d	2364	Large	no	55	Hellhound\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x6e	3021	Large	no	4	Ogre Mage\x00	1	1	Ogre Chief\x00	1	1	Hyenadon\x00	0	7	None	0	0	
+0x6f	2320	Large	no	4	Sphinx\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x70	3519	Large	no	4	Wyvern\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x71	2610	Large	no	4	Desert Baretta\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x72	3828	Small	no	4	Sea Snake\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x73	2000	Fiend	yes	4	Lich\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x74	2000	Fiend	yes	4	Marilith\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x75	2000	Fiend	yes	4	Kraken\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x76	2000	Fiend	yes	4	Tiamat\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x77	5496	Fiend	yes	4	Tiamat\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x78	4245	Fiend	yes	4	Kraken\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x79	2475	Fiend	yes	4	Marilith\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x7a	2200	Fiend	yes	4	Lich\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x7b	0	Fiend	yes	4	Chaos\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x7c	1200	Large/Small	yes	4	Vampire\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x7d	2250	Miniboss	yes	4	Astos\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x7e	360	Small	yes	4	Pirate\x00	9	9	None	0	0	None	0	0	None	0	0	
+0x7f	130	Miniboss	yes	4	Garland\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x80	108	Small	no	4	Goblin\x00	3	6	Goblin Guard\x00	0	4	None	0	0	None	0	0	
+0x81	417	Small	no	4	Skeleton\x00	3	5	Crawler\x00	0	2	None	0	0	None	0	0	
+0x82	54	Small	no	4	Goblin Guard\x00	1	3	Wolf\x00	0	0	None	0	0	None	0	0	
+0x83	237	Small	no	4	Wolf\x00	4	6	Warg Wolf\x00	0	1	None	0	0	None	0	0	
+0x84	444	Small	no	4	Zombie\x00	2	3	Ghoul\x00	2	4	None	0	0	None	0	0	
+0x85	336	Small	no	55	Black Widow\x00	0	0	Green Slime\x00	2	4	None	0	0	None	0	0	
+0x86	252	Large	no	4	Crazy Horse\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x87	384	Large/Small	no	4	Gigas Worm\x00	1	3	Ogre\x00	1	1	None	0	0	None	0	0	
+0x88	933	Small	no	4	Ghoul\x00	2	5	Ghast\x00	0	4	None	0	0	None	0	0	
+0x89	2943	Large	no	4	Hill Gigas\x00	1	3	Lizard\x00	0	2	None	0	0	None	0	0	
+0x8a	630	Small	no	90	Shadow\x00	3	7	None	0	0	None	0	0	None	0	0	
+0x8b	744	Small	no	4	Warg Wolf\x00	4	8	Wolf\x00	0	0	None	0	0	None	0	0	
+0x8c	1161	Large	no	4	Ogre\x00	1	3	Hyenadon\x00	0	2	None	0	0	None	0	0	
+0x8d	861	Small	no	4	Cobra\x00	3	7	None	0	0	None	0	0	None	0	0	
+0x8e	360	Small	no	33	Goblin Guard\x00	2	5	Werewolf\x00	0	2	None	0	0	None	0	0	
+0x8f	1335	Small	no	4	Wight\x00	2	5	Ghast\x00	2	5	None	0	0	None	0	0	
+0x90	1056	Small	no	4	Gargoyle\x00	3	8	None	0	0	None	0	0	None	0	0	
+0x91	1140	Small	no	33	Werewolf\x00	2	5	Warg Wolf\x00	0	5	None	0	0	None	0	0	
+0x92	1965	Small	no	55	Ochre Jelly\x00	2	5	Tarantula\x00	0	5	None	0	0	None	0	0	
+0x93	1518	Large	no	4	Ogre Chief\x00	1	4	Ogre\x00	0	2	None	0	0	None	0	0	
+0x94	1128	Small	no	4	Tarantula\x00	4	8	None	0	0	None	0	0	None	0	0	
+0x95	1890	Small	no	4	Anaconda\x00	2	6	Scorpion\x00	0	4	None	0	0	None	0	0	
+0x96	2616	Flying	no	4	Cockatrice\x00	2	6	Mummy\x00	1	5	None	0	0	None	0	0	
+0x97	7164	Large	no	4	Ankheg\x00	1	6	None	0	0	None	0	0	None	0	0	
+0x98	3114	Small	no	4	Wraith\x00	2	6	Specter\x00	0	4	None	0	0	None	0	0	
+0x99	3405	Large	no	27	Sabertooth\x00	1	3	Lesser Tiger\x00	0	2	None	0	0	None	0	0	
+0x9a	2328	Large/Small	no	27	Scorpion\x00	2	6	Minotaur\x00	1	2	None	0	0	None	0	0	
+0x9b	2220	Large	no	27	Troll\x00	1	2	Minotaur\x00	0	2	None	0	0	None	0	0	
+0x9c	1932	Small	yes	33	Piscodemon\x00	3	7	None	0	0	None	0	0	None	0	0	
+0x9d	3084	Small	no	4	Mummy\x00	3	7	King Mummy\x00	1	1	None	0	0	None	0	0	
+0x9e	3516	Large	no	4	Hill Gigas\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x9f	3669	Large	no	4	Hill Gigas\x00	1	4	Lizard\x00	1	1	None	0	0	None	0	0	
+0xa0	6108	Large/Small	no	27	Hydra\x00	1	4	Crocodile\x00	0	3	None	0	0	None	0	0	
+0xa1	6144	Large	yes	4	Earth Elemental\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xa2	4992	Large	yes	55	Hellhound\x00	1	3	Ogre Mage\x00	0	2	None	0	0	None	0	0	
+0xa3	3384	Small	no	4	Pyrolisk\x00	4	8	None	0	0	None	0	0	None	0	0	
+0xa4	4860	Large	no	4	Fire Hydra\x00	4	4	None	0	0	None	0	0	None	0	0	
+0xa5	1704	Large/Small	no	33	Ochu\x00	1	1	Piranha\x00	0	2	None	0	0	None	0	0	
+0xa6	8922	Large	no	4	Fire Gigas\x00	1	1	Fire Lizard\x00	0	3	None	0	0	None	0	0	
+0xa7	6480	Large	yes	4	Fire Elemental\x00	3	4	None	0	0	None	0	0	None	0	0	
+0xa8	6684	Large	no	4	Lava Worm\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xa9	9888	Large	no	4	Fire Lizard\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xaa	11616	Large	no	4	Red Dragon\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xab	2268	Small	no	4	Bloodbones\x00	3	6	None	0	0	None	0	0	None	0	0	
+0xac	2592	Small	no	4	Specter\x00	2	6	None	0	0	None	0	0	None	0	0	
+0xad	2814	Small	no	4	Winter Wolf\x00	4	7	None	0	0	None	0	0	None	0	0	
+0xae	5916	Large/Small	yes	4	Ice Gigas\x00	2	2	Winter Wolf\x00	2	6	None	0	0	None	0	0	
+0xaf	6705	Small	no	75	Dark Wizard\x00	2	3	Dark Fighter\x00	1	1	None	0	0	None	0	0	
+0xb0	6804	Large	no	4	White Dragon\x00	3	4	None	0	0	None	0	0	None	0	0	
+0xb1	4488	Large	no	4	Remorazz\x00	1	2	None	0	0	None	0	0	None	0	0	
+0xb2	5442	Large	yes	4	Minotaur Zombie\x00	1	4	Troll\x00	0	2	None	0	0	None	0	0	
+0xb3	7716	Small	no	4	Rakshasa\x00	3	7	Medusa\x00	0	5	None	0	0	None	0	0	
+0xb4	5880	Large/Small	no	27	Medusa\x00	3	6	Sabertooth\x00	1	2	None	0	0	None	0	0	
+0xb5	7446	Large/Small	no	4	Mindflayer\x00	1	6	Clay Golem\x00	1	2	None	0	0	None	0	0	
+0xb6	5268	Large	no	4	Manticore\x00	3	4	None	0	0	None	0	0	None	0	0	
+0xb7	3654	Large	no	4	Wyrm\x00	1	3	None	0	0	None	0	0	None	0	0	
+0xb8	5712	Large	no	4	Baretta\x00	1	4	None	0	0	None	0	0	None	0	0	
+0xb9	6366	Large/Small	no	27	Weretiger\x00	3	6	Sabertooth\x00	1	2	None	0	0	None	0	0	
+0xba	7908	Large	no	27	Basilisk\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xbb	8256	Large	no	4	Chimera\x00	3	4	None	0	0	None	0	0	None	0	0	
+0xbc	5366	Large	no	4	Sand Worm\x00	1	2	None	0	0	None	0	0	None	0	0	
+0xbd	4560	Large	no	4	Allosaurus\x00	1	1	Wyvern\x00	0	1	None	0	0	None	0	0	
+0xbe	9609	Large	no	4	Wyvern\x00	1	3	Wyrm\x00	0	5	None	0	0	None	0	0	
+0xbf	12183	Large	no	4	Clay Golem\x00	1	4	Stone Golem\x00	1	3	None	0	0	None	0	0	
+0xc0	8526	Small	no	4	Earth Medusa\x00	4	7	None	0	0	None	0	0	None	0	0	
+0xc1	6378	Large	no	33	Neochu\x00	1	2	None	0	0	None	0	0	None	0	0	
+0xc2	4260	Large/Small	no	4	Sea Troll\x00	1	2	Sea Scorpion\x00	1	4	None	0	0	None	0	0	
+0xc3	4473	Small	no	4	Sea Scorpion\x00	3	7	None	0	0	None	0	0	None	0	0	
+0xc4	6066	Small	no	4	Sea Scorpion\x00	1	5	Sea Snake\x00	0	3	None	0	0	None	0	0	
+0xc5	10014	Large/Small	no	4	Sahagin Prince\x00	3	6	White Shark\x00	2	2	None	0	0	None	0	0	
+0xc6	4950	Large/Small	yes	4	Ghost\x00	2	5	Death Eye\x00	0	0	None	0	0	None	0	0	
+0xc7	16482	Large/Small	no	4	Water Naga\x00	1	2	Water Elemental\x00	3	6	None	0	0	None	0	0	
+0xc8	11904	Large	no	4	White Shark\x00	1	2	Deepeyes\x00	1	2	None	0	0	None	0	0	
+0xc9	11772	Small	yes	4	Water Elemental\x00	3	6	None	0	0	None	0	0	None	0	0	
+0xca	3768	Small	no	4	King Mummy\x00	1	2	Mummy\x00	1	6	None	0	0	None	0	0	
+0xcb	9324	Large	yes	4	Dragon Zombie\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xcc	5224	Small	no	4	Guardian\x00	0	1	Soldier\x00	1	1	None	0	0	None	0	0	
+0xcd	11367	Small	no	4	Black Knight\x00	5	9	None	0	0	None	0	0	None	0	0	
+0xce	9822	Large	yes	4	Blue Dragon\x00	2	3	None	0	0	None	0	0	None	0	0	
+0xcf	5070	Large/Small	no	4	Nightmare\x00	1	2	Black Knight\x00	1	2	None	0	0	None	0	0	
+0xd0	8808	Small	no	4	Black Flan\x00	4	8	None	0	0	None	0	0	None	0	0	
+0xd1	9684	Small	no	4	Air Elemental\x00	3	6	None	0	0	None	0	0	None	0	0	
+0xd2	8331	Large/Small	no	4	Spirit Naga\x00	0	1	Air Elemental\x00	1	3	None	0	0	None	0	0	
+0xd3	11817	Large/Small	no	4	Vampire Lord\x00	1	3	Dragon Zombie\x00	1	2	None	0	0	None	0	0	
+0xd4	7944	Large/Small	no	4	Death Knight\x00	1	2	Nightmare\x00	1	2	None	0	0	None	0	0	
+0xd5	2064	Large	no	4	Chimera\x00	1	1	Rhyos\x00	0	0	None	0	0	None	0	0	
+0xd6	6840	Small	no	75	Death Machine\x00	0	0	Dark Fighter\x00	1	2	None	0	0	None	0	0	
+0xd7	17376	Large	yes	4	Purple Worm\x00	3	4	None	0	0	None	0	0	None	0	0	
+0xd8	9540	Large	no	4	Stone Golem\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xd9	16272	Large	yes	4	Green Dragon\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xda	4989	Large	no	4	White Shark\x00	1	2	Shark\x00	0	1	None	0	0	None	0	0	
+0xdb	420	Small	no	4	Sahagin\x00	3	7	Sahagin Chief\x00	0	2	None	0	0	None	0	0	
+0xdc	267	Large	no	4	Buccaneer\x00	0	0	Shark\x00	1	1	None	0	0	None	0	0	
+0xdd	180	Large/Small	no	4	Shark\x00	0	0	Sahagin\x00	4	6	None	0	0	None	0	0	
+0xde	849	Large/Small	no	4	Shark\x00	1	2	Sahagin Chief\x00	0	3	None	0	0	None	0	0	
+0xdf	1920	Small	no	4	Piranha\x00	3	8	None	0	0	None	0	0	None	0	0	
+0xe0	2139	Large	no	33	Hydra\x00	1	1	Ochu\x00	0	1	None	0	0	None	0	0	
+0xe1	3723	Large/Small	no	4	Sea Troll\x00	1	1	Sea Snake\x00	0	3	None	0	0	None	0	0	
+0xe2	4074	Small	no	4	White Croc\x00	1	1	Red Piranha\x00	1	4	None	0	0	None	0	0	
+0xe3	2484	Large	no	4	Troll\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xe4	1956	Large	no	27	Minotaur\x00	2	4	None	0	0	None	0	0	None	0	0	
+0xe5	2592	Small	no	30	Piranha\x00	2	4	Crocodile\x00	0	2	None	0	0	None	0	0	
+0xe6	906	Small	no	55	Tarantula\x00	3	6	Black Widow\x00	0	2	None	0	0	None	0	0	
+0xe7	5460	Small	no	27	Weretiger\x00	4	7	None	0	0	None	0	0	None	0	0	
+0xe8	9585	Small	no	4	Vampire Lord\x00	1	1	Vampire\x00	3	6	None	0	0	None	0	0	
+0xe9	9675	Large	yes	4	Evil Eye\x00	2	3	None	0	0	None	0	0	None	0	0	
+0xea	2709	Small	no	4	Horned Devil\x00	3	7	None	0	0	None	0	0	None	0	0	
+0xeb	1785	Small	no	4	Gray Ooze\x00	4	7	None	0	0	None	0	0	None	0	0	
+0xec	5754	Small	no	4	Mindflayer\x00	3	7	None	0	0	None	0	0	None	0	0	
+0xed	4728	Large	no	55	Hellhound\x00	3	4	None	0	0	None	0	0	None	0	0	
+0xee	2733	Large	no	4	Ogre Mage\x00	1	3	Ogre Chief\x00	0	2	None	0	0	None	0	0	
+0xef	4640	Large	no	4	Sphinx\x00	1	4	None	0	0	None	0	0	None	0	0	
+0xf0	4692	Large	no	4	Wyvern\x00	1	4	None	0	0	None	0	0	None	0	0	
+0xf1	5220	Large	no	4	Desert Baretta\x00	1	2	None	0	0	None	0	0	None	0	0	
+0xf2	5742	Small	no	4	Sea Snake\x00	3	6	None	0	0	None	0	0	None	0	0	
+0xf3	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xf4	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xf5	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xf6	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xf7	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xf8	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xf9	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xfa	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xfb	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xfc	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xfd	54	Small	no	4	Goblin\x00	9	9	Goblin Guard\x00	0	0	None	0	0	None	0	0	
+0xfe	2604	Small	yes	4	Sahagin Prince\x00	1	2	Sahagin Chief\x00	8	8	None	0	0	None	0	0	
+0xff	13434	Large	yes	4	Garland\x00	0	0	Iron Golem\x00	1	2	None	0	0	None	0	0	
+0x100	0	DoS Boss	yes	4	Echidna\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x101	0	DoS Boss	yes	4	Cerberus\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x102	0	DoS Boss	yes	4	Ahriman\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x103	0	DoS Boss	yes	4	2-Headed Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x104	0	DoS Boss	yes	4	Scarmiglione\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x105	0	DoS Boss	yes	4	Scarmiglione\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x106	0	DoS Boss	yes	4	Cagnazzo\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x107	0	DoS Boss	yes	4	Barbariccia\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x108	0	DoS Boss	yes	4	Rubicante\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x109	0	DoS Boss	yes	4	Gilgamesh\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x10a	0	DoS Boss	yes	4	Omega\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x10b	0	DoS Boss	yes	4	Shinryu\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x10c	0	DoS Boss	yes	4	Atomos\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x10d	0	DoS Boss	yes	4	Typhon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x10e	0	DoS Boss	yes	4	Orthros\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x10f	0	DoS Boss	yes	4	Phantom Train\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x110	0	DoS Boss	yes	4	Death Gaze\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x111	2400	Large	no	4	Earth Troll\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x112	3700	Large	no	27	Earth Troll\x00	1	2	Sekhret\x00	0	1	None	0	0	None	0	0	
+0x113	8880	Large	no	33	Earth Plant\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x114	8000	Large	yes	4	Abyss Worm\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x115	2500	Large	no	4	Undergrounder\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x116	600	Large	no	4	Yellow Ogre\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x117	1200	Large	no	4	Yellow Ogre\x00	1	4	None	0	0	None	0	0	None	0	0	
+0x118	2400	Large	no	4	Yellow Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x119	1450	Large/Small	yes	4	Elm Gigas\x00	1	1	Dark Wolf\x00	0	2	None	0	0	None	0	0	
+0x11a	1700	Large	no	4	Elm Gigas\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x11b	2550	Large	no	4	Elm Gigas\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x11c	3000	Large	no	27	Catoblepas\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x11d	4500	Large	no	27	Catoblepas\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x11e	3055	Large	no	4	Killer Shark\x00	1	1	Dark Eye\x00	0	1	None	0	0	None	0	0	
+0x11f	5000	Large	no	4	Killer Shark\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x120	280	Small	no	4	Gloom Widow\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x121	420	Small	no	4	Gloom Widow\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x122	560	Small	no	4	Gloom Widow\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x123	1120	Small	no	4	Gloom Widow\x00	4	8	None	0	0	None	0	0	None	0	0	
+0x124	5500	Large/Small	no	4	Sahagin Queen\x00	0	1	Killer Shark\x00	1	2	None	0	0	None	0	0	
+0x125	4000	Small	yes	4	Sahagin Queen\x00	5	8	None	0	0	None	0	0	None	0	0	
+0x126	5750	Small	no	4	Reaper\x00	1	5	Revenant\x00	0	3	None	0	0	None	0	0	
+0x127	4000	Small	no	4	Reaper\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x128	6000	Small	no	4	Reaper\x00	2	6	None	0	0	None	0	0	None	0	0	
+0x129	1800	Large	no	4	Silver Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x12a	3600	Large	no	4	Silver Dragon\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x12b	532	Small	no	4	Skuldier\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x12c	1265	Small	no	4	Skuldier\x00	3	5	Flood Gigas\x00	0	2	None	0	0	None	0	0	
+0x12d	2664	Small	yes	33	Squidraken\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x12e	3552	Small	yes	33	Squidraken\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x12f	6216	Small	yes	33	Squidraken\x00	3	7	None	0	0	None	0	0	None	0	0	
+0x130	2600	Large	no	27	Sekhret\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x131	555	Large	yes	4	Dark Eye\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x132	1500	Large	no	27	Dark Elemental\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x133	3000	Large	no	27	Dark Elemental\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x134	1000	Small	no	27	Desertpede\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x135	2259	Small	yes	4	Death Elemental\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x136	3012	Small	yes	4	Death Elemental\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x137	3200	Large	no	4	Death Manticore\x00	3	4	None	0	0	None	0	0	None	0	0	
+0x138	3800	Small	no	75	Devil Wizard\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x139	7600	Small	no	75	Devil Wizard\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x13a	300	Large	no	55	Devil Hound\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x13b	600	Large	no	55	Devil Hound\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x13c	2200	Large/Small	no	4	Duel Knight\x00	1	1	Unicorn\x00	1	2	None	0	0	None	0	0	
+0x13d	2400	Small	no	4	Duel Knight\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x13e	6000	Small	no	4	Duel Knight\x00	2	5	None	0	0	None	0	0	None	0	0	
+0x13f	2500	Small	no	4	Knocker\x00	1	5	None	0	0	None	0	0	None	0	0	
+0x140	1000	Large	no	4	Mad Ogre\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x141	800	Small	no	4	Python\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x142	1200	Small	no	4	Python\x00	2	6	None	0	0	None	0	0	None	0	0	
+0x143	1400	Small	no	4	Python\x00	3	7	None	0	0	None	0	0	None	0	0	
+0x144	4000	Large	no	4	Hundlegs\x00	1	4	None	0	0	None	0	0	None	0	0	
+0x145	4000	Small	no	4	Poison Eagle\x00	4	8	None	0	0	None	0	0	None	0	0	
+0x146	3084	Small	no	4	Pharaoh\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x147	1500	Small	no	4	Dark Wolf\x00	2	5	None	0	0	None	0	0	None	0	0	
+0x148	2100	Small	no	4	Dark Wolf\x00	3	7	None	0	0	None	0	0	None	0	0	
+0x149	6600	Large/Small	no	33	Black Goblin\x00	0	5	Dark Wolf\x00	1	3	Elm Gigas\x00	0	2	Catoblepas\x00	0	2	
+0x14a	1800	Small	no	4	Black Goblin\x00	1	4	Knocker\x00	0	2	None	0	0	None	0	0	
+0x14b	1000	Small	no	4	Black Goblin\x00	1	5	None	0	0	None	0	0	None	0	0	
+0x14c	1480	Small	no	33	Black Goblin\x00	2	5	Wild Nakk\x00	0	2	None	0	0	None	0	0	
+0x14d	6000	Large	yes	4	Black Dragon\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x14e	2000	Large	yes	4	Bloody Eye\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x14f	900	Large	no	27	Blood Tiger\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x150	680	Large	no	4	Blue Troll\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x151	1080	Large/Small	no	4	Blue Troll\x00	1	2	Python\x00	0	2	None	0	0	None	0	0	
+0x152	4000	Large	no	4	Flare Gigas\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x153	2000	Small	no	4	Prototype\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x154	1713	Large/Small	no	4	Poison Naga\x00	1	1	Death Elemental\x00	0	1	None	0	0	None	0	0	
+0x155	22020	Large	no	4	Holy Dragon\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x156	1332	Small	no	4	Bonesnatch\x00	1	1	Skuldier\x00	2	4	Flood Gigas\x00	1	1	None	0	0	
+0x157	1532	Small	no	4	Bonesnatch\x00	1	2	Skuldier\x00	2	4	None	0	0	None	0	0	
+0x158	1500	Small	no	4	Bonesnatch\x00	1	3	None	0	0	None	0	0	None	0	0	
+0x159	2000	Small	no	4	Bonesnatch\x00	2	4	None	0	0	None	0	0	None	0	0	
+0x15a	6000	Large	no	4	Mythril Golem\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x15b	5000	Large	no	4	Mage Chimera\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x15c	4050	Large	no	4	Yamatano Orochi\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x15d	8100	Large	no	4	Yamatano Orochi\x00	1	2	None	0	0	None	0	0	None	0	0	
+0x15e	6250	Small	no	55	Red Flan\x00	2	5	Gloom Widow\x00	0	5	None	0	0	None	0	0	
+0x15f	6660	Small	no	4	Red Flan\x00	3	6	None	0	0	None	0	0	None	0	0	
+0x160	1250	Small	no	4	Revenant\x00	1	5	None	0	0	None	0	0	None	0	0	
+0x161	750	Small	no	4	Revenant\x00	2	3	None	0	0	None	0	0	None	0	0	
+0x162	360	Small	no	4	Rock Gargoyle\x00	2	3	None	0	0	None	0	0	None	0	0	
+0x163	600	Small	no	4	Rock Gargoyle\x00	2	5	None	0	0	None	0	0	None	0	0	
+0x164	960	Small	no	4	Rock Gargoyle\x00	3	8	None	0	0	None	0	0	None	0	0	
+0x165	1440	Small	no	33	Wild Nakk\x00	2	6	None	0	0	None	0	0	None	0	0	
+0x166	1920	Small	no	33	Wild Nakk\x00	4	8	None	0	0	None	0	0	None	0	0	
+0x167	2904	Large	yes	4	Red Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x168	1701	Large	yes	4	White Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x169	4068	Large	yes	4	Green Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x16a	3274	Large	yes	4	Blue Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x16b	2331	Large	yes	4	Dragon Zombie\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x16c	2400	Large	yes	4	Yellow Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x16d	5505	Large	yes	4	Holy Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x16e	3000	Large	yes	4	Black Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x16f	1800	Large	yes	4	Silver Dragon\x00	1	1	None	0	0	None	0	0	None	0	0	
+0x170	1542	Small	no	4	Pharaoh\x00	1	1	None	0	0	None	0	0	None	0	0	

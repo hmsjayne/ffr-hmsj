@@ -1,0 +1,66 @@
+# basic_grammar.py
+
+basic_grammar = r"""
+    // The 'start' rule is the entry point. A program is one or more lines.
+    ?start: line+
+
+    // A line can be a label definition, or a statement followed by a newline.
+    // We use a general 'line' rule to handle the structure of the code.
+    ?line: (statement | label) _NL
+
+    // A label is a name followed by a colon. e.g., "yay:"
+    label: CNAME ":"
+
+    // This is the main rule for all executable commands.
+    // If you want to add a new command, you'll add it here with a pipe (|).
+    // The parentheses make the choice non-ambiguous.
+    ?statement: let_statement
+              | if_statement
+              | print_statement
+              | goto_statement
+              | return_statement
+              // ** ADD NEW STATEMENTS HERE, e.g., | input_statement **
+
+    // --- Statement Definitions ---
+
+    let_statement: "let" CNAME "=" expression      // e.g., let myVar = 1
+    print_statement: "print" expression          // e.g., print "Hello"
+    goto_statement: "goto" CNAME                 // e.g., goto end
+    return_statement: "return"                   // e.g., return
+
+    // The 'if' statement requires a condition and a statement to execute.
+    // For now, we'll hard-code it to only allow 'goto' after 'then'.
+    // We could make this more general later by changing 'goto_statement' to just 'statement'.
+    if_statement: "if" condition "then" goto_statement
+
+    // --- Expressions and Conditions ---
+
+    // A condition compares two expressions.
+    // ** ADD NEW OPERATORS HERE, e.g., | expression "!=" expression **
+    condition: expression "==" expression
+
+    // An expression is a simple value for now.
+    // This could be expanded to include arithmetic (e.g., expression "+" term).
+    ?expression: value
+
+    // A value can be a number, a string, or a variable name.
+    ?value: SIGNED_NUMBER
+          | ESCAPED_STRING
+          | CNAME
+
+    // --- Terminals and Imports ---
+
+    // Import common terminal rules from the Lark library.
+    // CNAME is for identifiers (variables, labels).
+    // ESCAPED_STRING handles quoted strings.
+    // SIGNED_NUMBER handles integers and floats.
+    %import common.CNAME
+    %import common.ESCAPED_STRING
+    %import common.SIGNED_NUMBER
+    %import common.WS_INLINE
+    %import common.NEWLINE -> _NL
+
+    // Ignore whitespace and inline whitespace between tokens.
+    %ignore WS_INLINE
+    %ignore " "
+"""

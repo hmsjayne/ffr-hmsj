@@ -97,3 +97,28 @@ class EventTextBlock(TextBlock):
                 # nothing, we'll update the pointer in the LUT to point to string 0, which will serve as a single
                 # placeholder string.
                 self.strings[index] = None
+
+
+class KeyItemTextBlock(TextBlock):
+    def __init__(self, rom: Rom):
+        ki_count = 0x25
+        super().__init__(rom, 0x19e650, ki_count * 3)
+
+    def shrink(self):
+        space = 0
+
+        for index, estr in enumerate(self.strings):
+            if index == 0:
+                continue
+
+            placeholder_text = hex(index).replace("0x", "")
+
+            ascii_str = self[index]
+            if ascii_str.startswith(placeholder_text) or ascii_str.startswith("NOT USED"):
+                # Space saved!
+                space += len(estr)
+
+                # We set the string to None here, and then when the text block is written out, instead of writing
+                # nothing, we'll update the pointer in the LUT to point to string 0, which will serve as a single
+                # placeholder string.
+                self.strings[index] = None

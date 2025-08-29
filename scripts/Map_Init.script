@@ -74,14 +74,15 @@ begin script=0x5
 begin script=0x6
     %have_jolt_tonic 0x8
     %have_mystic_key 0x9
-    
+
     check_flag %have_mystic_key jz .Label_1
     remove_all 0x1f4a
     .Label_1:
-    check_flag %elf_reward_flag jz .Prince_Asleep 
+    check_flag %elf_reward_flag jz .Prince_Asleep
     move_npc 0x7 0 17 15
     jump .End_Event
     .Prince_Asleep:
+    set_npc_frame 0x7 0x8
     check_flag %have_jolt_tonic jz .End_Event
     set_npc_event 0x6 0x139a
     .End_Event:

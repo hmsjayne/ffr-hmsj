@@ -70,6 +70,11 @@ def load_ips_files(*args) -> dict:
 
             # Save data for debugging
             offset_file[offset] = file
+
+        if file == "patches/EventUpdates.ips":
+            for loc in patches.keys():
+                data = ", ".join([f"{num:x}" for num in patches[loc]])
+                print(f"Event patch: {hex(loc)}: {data}")
     return complete
 
 
