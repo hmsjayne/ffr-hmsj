@@ -1,5 +1,3 @@
-# main_parser.py
-
 from lark import Lark
 
 # 1. The grammar we defined in Step 2.
@@ -71,16 +69,23 @@ print "This was great!"
 
 end:
 return
+
 """
 
-# 3. Create the parser instance.
-# The 'start' argument tells Lark which rule to begin parsing with.
-basic_parser = Lark(basic_grammar, start='start')
 
-# 4. Parse the code!
-try:
-    parse_tree = basic_parser.parse(code_to_parse)
-    # The .pretty() method gives a nice, indented view of the tree.
-    print(parse_tree.pretty())
-except Exception as e:
-    print(f"Error parsing code: {e}")
+def main():
+    # 3. Create the parser instance.
+    # The 'start' argument tells Lark which rule to begin parsing with.
+    basic_parser = Lark(basic_grammar, start='start')
+
+    # 4. Parse the code!
+    try:
+        parse_tree = basic_parser.parse(code_to_parse)
+        # The .pretty() method gives a nice, indented view of the tree.
+        print(parse_tree.pretty())
+    except Exception as e:
+        print(f"Error parsing code: {e}")
+
+
+if __name__ == '__main__':
+    main()

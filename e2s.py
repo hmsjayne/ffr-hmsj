@@ -17,13 +17,13 @@
 from argparse import ArgumentParser, FileType
 
 from doslib.rom import Rom
-from event.e2s import disassemble_event
 
 
 def main():
     parser = ArgumentParser(description="Final Fantasy: Dawn of Souls Event->Script")
     parser.add_argument("rom_file", type=FileType('rb', 0), help="The ROM file to randomize.")
     parser.add_argument("--event", dest="event", type=str, help="Event to disassemble")
+    parser.add_argument("--new", dest="use_new", action="store_true", help="Use the new disassembler")
     parsed = parser.parse_args()
 
     # Opening the ROM is simple.
@@ -39,7 +39,12 @@ def main():
     else:
         event_id = int(parsed.event)
 
-    disassemble_event(rom, event_id)
+    if parsed.use_new:
+        from new_events.e2sim import disassemble_event
+        disassemble_event(rom, event_id)
+    else:
+        from event.e2s import disassemble_event
+        disassemble_event(rom, event_id)
 
 
 if __name__ == "__main__":
