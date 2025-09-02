@@ -46,6 +46,12 @@ def branch(ins: bytearray) -> tuple[tuple, list[int]]:
     return branch_ins, [branch_ins.addr]
 
 
+def loop(ins: bytearray) -> tuple[tuple, list[int]]:
+    unpacked = struct.unpack("<BBhI", ins)
+    loop_ins = Loop(*unpacked)
+    return loop_ins, [loop_ins.addr]
+
+
 def branch_flag(ins: bytearray) -> tuple[tuple, list[int]]:
     unpacked = struct.unpack("<BBBBI", ins)
     branch_ins = BranchOnFlag(*unpacked)
@@ -64,6 +70,13 @@ def call(ins: bytearray) -> tuple[tuple, list[int]]:
     return call_ins, [call_ins.addr]
 
 
+def loop_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
+    if ins[1] == 8:
+        pass
+    else:
+        return fallback(ins)
+
+
 def flag_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
     if ins[1] == 8:
         return branch_flag(ins)
@@ -73,6 +86,7 @@ def flag_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
 
 instruction_handlers = {
     0xc: branch,
+    0x19: branch,
     0x2d: flag_handler,
     0x42: branch_by_dir,
     0x48: call

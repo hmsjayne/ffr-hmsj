@@ -2,6 +2,7 @@ from collections import OrderedDict, defaultdict, namedtuple
 import pprint
 
 Branch = namedtuple("Branch", "opcode, size, addr")
+Loop = namedtuple("Loop", "opcode, size, step, addr")
 BranchOnFlag = namedtuple("BranchOnFlag", "opcode, size, flag_id, cond, addr")
 BranchByDir = namedtuple("BranchByDir", "opcode, size, addr_up, addr_right, addr_left")
 Call = namedtuple("Call", "opcode, size, addr")
