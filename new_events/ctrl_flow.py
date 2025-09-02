@@ -2,7 +2,8 @@ from collections import OrderedDict, defaultdict, namedtuple
 import pprint
 
 Branch = namedtuple("Branch", "opcode, size, addr")
-Loop = namedtuple("Loop", "opcode, size, step, addr")
+LoopStart = namedtuple("LoopStart", "opcode, size, repeat_count")
+LoopEnd = namedtuple("LoopEnd", "opcode, size, step, addr")
 BranchOnFlag = namedtuple("BranchOnFlag", "opcode, size, flag_id, cond, addr")
 BranchByDir = namedtuple("BranchByDir", "opcode, size, addr_up, addr_right, addr_left")
 Call = namedtuple("Call", "opcode, size, addr")
@@ -30,6 +31,8 @@ def parse_jump_target(code: tuple) -> int:
         return code.addr
     elif type(code) == Call:
         return code.addr
+    elif type(code) == LoopEnd:
+        return code.addr
     else:
         raise LookupError(f"{type(code)} in set but not?")
 
@@ -44,7 +47,7 @@ def build_cfg(program: dict[int, tuple]) -> ControlFlowGraph:
 
     for addr, code in program.items():
         # Jump instructions create new leaders at their targets
-        if type(code) in (Branch, BranchOnFlag, Call):
+        if type(code) in (Branch, BranchOnFlag, Call, LoopEnd):
             jump_target = parse_jump_target(code)
             leaders.add(jump_target)
 
@@ -89,8 +92,12 @@ def build_cfg(program: dict[int, tuple]) -> ControlFlowGraph:
             if jump_target in cfg.blocks:
                 block.next_blocks.append(jump_target)
                 cfg.blocks[jump_target].predecessors.append(leader)
+        elif type(last_ins) == LoopEnd:
+            loop_target = parse_jump_target(last_instruction)
+            if loop_target in cfg.blocks:
+                block.next_blocks.append(loop_target)
+                cfg.blocks[loop_target].predecessors.append(leader)
         else:
-            # Fall-through to next block
             next_addr = leader + sum(inst[1] for inst in block.instructions)
             if next_addr in cfg.blocks:
                 block.next_blocks.append(next_addr)
@@ -131,3 +138,21 @@ def detect_if_then_else(cfg: ControlFlowGraph):
                     })
 
     return patterns
+
+
+def detect_loop(cfg: ControlFlowGraph):
+    loops = []
+    for leader, block in cfg.blocks.items():
+        if len(block.instructions) > 0 and type(block.instructions[-1]) == LoopEnd:
+            print(f"Leader: {hex(leader)}:")
+            for ins in block.instructions:
+                print(f"- {ins}")
+
+            loop_instruction = block.instructions[-1]
+            loop_header_addr = loop_instruction.addr
+            loops.append({
+                "loop_header": loop_header_addr,
+                "back_edge_block": leader,
+                "loop_exit_addr": leader + sum(inst[1] for inst in block.instructions)
+            })
+    return loops

@@ -46,12 +46,6 @@ def branch(ins: bytearray) -> tuple[tuple, list[int]]:
     return branch_ins, [branch_ins.addr]
 
 
-def loop(ins: bytearray) -> tuple[tuple, list[int]]:
-    unpacked = struct.unpack("<BBhI", ins)
-    loop_ins = Loop(*unpacked)
-    return loop_ins, [loop_ins.addr]
-
-
 def branch_flag(ins: bytearray) -> tuple[tuple, list[int]]:
     unpacked = struct.unpack("<BBBBI", ins)
     branch_ins = BranchOnFlag(*unpacked)
@@ -72,9 +66,13 @@ def call(ins: bytearray) -> tuple[tuple, list[int]]:
 
 def loop_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
     if ins[1] == 8:
-        pass
+        unpacked = struct.unpack("<BBhI", ins)
+        loop_ins = LoopEnd(*unpacked)
+        return loop_ins, [loop_ins.addr]
     else:
-        return fallback(ins)
+        unpacked = struct.unpack("<BBh", ins)
+        loop_ins = LoopStart(*unpacked)
+        return loop_ins, None
 
 
 def flag_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
@@ -86,7 +84,7 @@ def flag_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
 
 instruction_handlers = {
     0xc: branch,
-    0x19: branch,
+    0x19: loop_handler,
     0x2d: flag_handler,
     0x42: branch_by_dir,
     0x48: call
@@ -146,7 +144,11 @@ def disassemble_event(rom: Rom, event_id: int):
 
     program = disassemble(rom, offset)
     if program is not None:
+        for addr in sorted(program.keys()):
+            print(f"{hex(addr)}: {program[addr]}")
+
         cfg = build_cfg(program)
-        blocks = detect_if_then_else(cfg)
+        print(f":: Built CFG ::")
+        blocks = detect_loop(cfg)
         for ifelse in blocks:
             print(f"- {ifelse}")
