@@ -31,40 +31,45 @@ import typing
 from collections import namedtuple
 
 from doslib.rom import Rom
-from event.event_helpers import addr_to_offset, is_addr, lookup_event, offset_to_addr
+from event.event_helpers import (addr_to_offset, is_addr, lookup_event,
+                                 offset_to_addr)
 from new_events.ctrl_flow import *
+from new_events.instructions import *
 
 
-def fallback(ins: bytearray) -> tuple[tuple, None]:
-    unpacked = struct.unpack("B"*ins[1], ins)
-    return unpacked, None
+def fallback(ins: bytearray) -> tuple[GenericInstruction, None]:
+    opcode = ins[0]
+    size = ins[1]
+    params_bytes = bytes(ins[2:size])
+    fallback_ins = GenericInstruction(opcode, size, params_bytes)
+    return fallback_ins, None
 
 
-def branch(ins: bytearray) -> tuple[tuple, list[int]]:
+def branch(ins: bytearray) -> tuple[Branch, list[int]]:
     unpacked = struct.unpack("<BBxxI", ins)
     branch_ins = Branch(*unpacked)
     return branch_ins, [branch_ins.addr]
 
 
-def branch_flag(ins: bytearray) -> tuple[tuple, list[int]]:
+def branch_flag(ins: bytearray) -> tuple[BranchOnFlag, list[int]]:
     unpacked = struct.unpack("<BBBBI", ins)
     branch_ins = BranchOnFlag(*unpacked)
     return branch_ins, [branch_ins.addr]
 
 
-def branch_by_dir(ins: bytearray) -> tuple[tuple, list[int]]:
+def branch_by_dir(ins: bytearray) -> tuple[BranchByDir, list[int]]:
     unpacked = struct.unpack("<BBxxIII", ins)
     branch_ins = BranchByDir(*unpacked)
     return branch_ins, [branch_ins.addr_up, branch_ins.addr_right, branch_ins.addr_left]
 
 
-def call(ins: bytearray) -> tuple[tuple, list[int]]:
+def call(ins: bytearray) -> tuple[Call, list[int]]:
     unpacked = struct.unpack("<BBxxI", ins)
     call_ins = Call(*unpacked)
     return call_ins, [call_ins.addr]
 
 
-def loop_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
+def loop_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[int]]]:
     if ins[1] == 8:
         unpacked = struct.unpack("<BBhI", ins)
         loop_ins = LoopEnd(*unpacked)
@@ -75,7 +80,7 @@ def loop_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
         return loop_ins, None
 
 
-def flag_handler(ins: bytearray) -> tuple[tuple, typing.Optional[list[int]]]:
+def flag_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[int]]]:
     if ins[1] == 8:
         return branch_flag(ins)
     else:
@@ -98,7 +103,7 @@ def disassemble(rom: Rom, offset: int) -> typing.Optional[dict[int, tuple]]:
         print(f"Invalid address: {hex(offset)}")
         return None
 
-    program: dict[int, tuple] = dict()
+    program: dict[int, BaseInstruction] = dict()
     next_addrs = [offset]
 
     while next_addrs:
@@ -144,9 +149,6 @@ def disassemble_event(rom: Rom, event_id: int):
 
     program = disassemble(rom, offset)
     if program is not None:
-        for addr in sorted(program.keys()):
-            print(f"{hex(addr)}: {program[addr]}")
-
         cfg = build_cfg(program)
         print(f":: Built CFG ::")
         blocks = detect_loop(cfg)
