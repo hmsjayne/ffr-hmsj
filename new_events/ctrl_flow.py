@@ -54,41 +54,23 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
 
     # Connect blocks
     for leader, block in cfg.blocks.items():
-        last_instruction = block.instructions[-1]
-        last_ins = last_instruction
+        last_ins = block.instructions[-1]
 
-        if type(last_ins) == BranchOnFlag:
-            jump_target = last_ins.branch_addrs()[0]
-            next_addr = leader + sum(inst.size for inst in block.instructions)
-
-            if jump_target in cfg.blocks:
-                block.next_blocks.append(jump_target)
-                cfg.blocks[jump_target].predecessors.append(leader)
-
-            if next_addr in cfg.blocks:
-                block.next_blocks.append(next_addr)
-                cfg.blocks[next_addr].predecessors.append(leader)
-
-        elif type(last_ins) == Branch:
-            jump_target = last_ins.branch_addrs()[0]
-            if jump_target in cfg.blocks:
-                block.next_blocks.append(jump_target)
-                cfg.blocks[jump_target].predecessors.append(leader)
-        elif type(last_ins) == LoopEnd:
-            loop_target = last_ins.branch_addrs()[0]
-            if loop_target in cfg.blocks:
-                block.next_blocks.append(loop_target)
-                cfg.blocks[loop_target].predecessors.append(leader)
-        elif type(last_ins) == BranchByDir:
-            next_addr = leader + sum(inst.size for inst in block.instructions)
-            if next_addr in cfg.blocks:
-                block.next_blocks.append(next_addr)
-                cfg.blocks[next_addr].predecessors.append(leader)
-
+        if isinstance(last_ins, BaseBranch):
             for jump_target in last_ins.branch_addrs():
                 if jump_target in cfg.blocks:
                     block.next_blocks.append(jump_target)
                     cfg.blocks[jump_target].predecessors.append(leader)
+
+            # Conditional branches will branch on some condition and continue
+            # on other conditions. An unconditional branch is the only
+            # exemption to this.
+            if type(last_ins) != Branch:
+                next_addr = leader + sum(inst.size for inst in block.instructions)
+
+                if next_addr in cfg.blocks:
+                    block.next_blocks.append(next_addr)
+                    cfg.blocks[next_addr].predecessors.append(leader)
         else:
             next_addr = leader + sum(inst.size for inst in block.instructions)
             if next_addr in cfg.blocks:
