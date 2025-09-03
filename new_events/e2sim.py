@@ -152,5 +152,9 @@ def disassemble_event(rom: Rom, event_id: int):
         cfg = build_cfg(program)
         print(f":: Built CFG ::")
         blocks = detect_loop(cfg)
+        for loops in blocks:
+            print(f"- {loops}")
+
+        blocks = detect_if_then_else(cfg)
         for ifelse in blocks:
             print(f"- {ifelse}")

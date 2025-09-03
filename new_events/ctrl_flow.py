@@ -19,19 +19,6 @@ class ControlFlowGraph:
         self.entry_point: Optional[int] = None
 
 
-def parse_jump_target(code: BaseInstruction) -> int:
-    if type(code) == Branch:
-        return code.addr
-    elif type(code) == BranchOnFlag:
-        return code.addr
-    elif type(code) == Call:
-        return code.addr
-    elif type(code) == LoopEnd:
-        return code.addr
-    else:
-        raise LookupError(f"{type(code)} in set but not?")
-
-
 def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
     cfg = ControlFlowGraph()
     addresses = sorted(program.keys())
@@ -44,7 +31,6 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
         # Jump instructions create new leaders at their targets
         if isinstance(code, BaseBranch):
             for jump_target in code.branch_addrs():
-                jump_target = parse_jump_target(code)
                 leaders.add(jump_target)
 
                 # Instructions after jumps are also leaders
@@ -72,7 +58,7 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
         last_ins = last_instruction
 
         if type(last_ins) == BranchOnFlag:
-            jump_target = parse_jump_target(last_instruction)
+            jump_target = last_ins.branch_addrs()[0]
             next_addr = leader + sum(inst.size for inst in block.instructions)
 
             if jump_target in cfg.blocks:
@@ -84,15 +70,25 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
                 cfg.blocks[next_addr].predecessors.append(leader)
 
         elif type(last_ins) == Branch:
-            jump_target = parse_jump_target(last_instruction)
+            jump_target = last_ins.branch_addrs()[0]
             if jump_target in cfg.blocks:
                 block.next_blocks.append(jump_target)
                 cfg.blocks[jump_target].predecessors.append(leader)
         elif type(last_ins) == LoopEnd:
-            loop_target = parse_jump_target(last_instruction)
+            loop_target = last_ins.branch_addrs()[0]
             if loop_target in cfg.blocks:
                 block.next_blocks.append(loop_target)
                 cfg.blocks[loop_target].predecessors.append(leader)
+        elif type(last_ins) == BranchByDir:
+            next_addr = leader + sum(inst.size for inst in block.instructions)
+            if next_addr in cfg.blocks:
+                block.next_blocks.append(next_addr)
+                cfg.blocks[next_addr].predecessors.append(leader)
+
+            for jump_target in last_ins.branch_addrs():
+                if jump_target in cfg.blocks:
+                    block.next_blocks.append(jump_target)
+                    cfg.blocks[jump_target].predecessors.append(leader)
         else:
             next_addr = leader + sum(inst.size for inst in block.instructions)
             if next_addr in cfg.blocks:
@@ -114,7 +110,7 @@ def detect_if_then_else(cfg: ControlFlowGraph):
             # One successor should be the fall-through (then block)
             # The other should be the jump target (else block)
             fallthrough_addr = leader + sum(inst.size for inst in block.instructions)
-            jump_target = parse_jump_target(block.instructions[-1])
+            jump_target = block.instructions[-1].branch_addrs()[0]
 
             if fallthrough_addr in block.next_blocks and jump_target in block.next_blocks:
                 # Check if both paths eventually converge
