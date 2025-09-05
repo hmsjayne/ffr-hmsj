@@ -208,8 +208,15 @@ def disassemble_event(rom: Rom, event_id: int):
             if 'join_block' in cond_info:
                 print(f"  Join block: {hex(cond_info['join_block'])}")
             if 'condition' in cond_info:
-                print(
-                    f"  Condition: flag {cond_info['condition']['flag_id']}, type {cond_info['condition']['condition_type']}")
+                condition = cond_info['condition']
+                if condition['branch_type'] == 'flag':
+                    print(f"  Condition: flag {condition['flag_id']}, type {condition['condition_type']}")
+                elif condition['branch_type'] == 'item':
+                    print(f"  Condition: item {condition['item_index']}, mode {condition['mode']}")
+                elif condition['branch_type'] == 'gil':
+                    print(f"  Condition: gil check")
+                else:
+                    print(f"  Condition: {condition['branch_type']}")
             print()
 
         print(f":: Switches ::")
