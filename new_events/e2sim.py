@@ -35,6 +35,7 @@ from event.event_helpers import (addr_to_offset, is_addr, lookup_event,
                                  offset_to_addr)
 from new_events.ctrl_flow import *
 from new_events.instructions import *
+from new_events.ast_gen import build_ast_from_analysis, print_ast
 
 
 def fallback(ins: bytearray) -> tuple[GenericInstruction, None]:
@@ -210,3 +211,14 @@ def disassemble_event(rom: Rom, event_id: int):
         for addr, block_info in analysis['block_types'].items():
             if len(block_info['types']) > 1:  # Only show blocks with interesting annotations
                 print(f"- {hex(addr)}: {block_info['types']} ({block_info['instruction_count']} instructions)")
+        
+        print()
+        print(f":: AST Generation ::")
+        try:
+            ast = build_ast_from_analysis(cfg, analysis)
+            print("AST successfully generated:")
+            print_ast(ast)
+        except Exception as e:
+            print(f"AST generation failed: {e}")
+            import traceback
+            traceback.print_exc()
