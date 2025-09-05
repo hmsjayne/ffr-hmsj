@@ -105,6 +105,24 @@ class BranchOnFlag(BaseBranch):
 
 
 @dataclass(frozen=True, repr=False)
+class BranchOnItem(BaseBranch):
+    mode: int
+    item_index: int
+    addr: int
+
+    def branch_addrs(self) -> List[int]:
+        return [self.addr]
+
+
+@dataclass(frozen=True, repr=False)
+class BranchOnGil(BaseBranch):
+    addr: int
+
+    def branch_addrs(self) -> List[int]:
+        return [self.addr]
+
+
+@dataclass(frozen=True, repr=False)
 class BranchByDir(BaseBranch):
     addr_up: int
     addr_right: int

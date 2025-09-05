@@ -89,9 +89,27 @@ def loop_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[
         return loop_ins, None
 
 
+def gil_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[int]]]:
+    if ins[1] == 8:
+        unpacked = struct.unpack("<BBxxI", ins)
+        branch_ins = BranchOnGil(*unpacked)
+        return branch_ins, [branch_ins.addr]
+    else:
+        return fallback(ins)
+
+
 def flag_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[int]]]:
     if ins[1] == 8:
         return branch_flag(ins)
+    else:
+        return fallback(ins)
+
+
+def item_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[int]]]:
+    if ins[1] == 8:
+        unpacked = struct.unpack("<BBBBI", ins)
+        branch_ins = BranchOnItem(*unpacked)
+        return branch_ins, [branch_ins.addr]
     else:
         return fallback(ins)
 
@@ -100,7 +118,9 @@ instruction_handlers = {
     0x0: ret_instruction,
     0xc: branch,
     0x19: loop_handler,
+    0x2a: gil_handler,
     0x2d: flag_handler,
+    0x37: item_handler,
     0x42: branch_by_dir,
     0x48: call
 }
@@ -163,13 +183,13 @@ def disassemble_event(rom: Rom, event_id: int):
 
         # Comprehensive analysis with annotations
         analysis = analyze_control_flow(cfg)
-        
+
         print(f":: Control Flow Analysis ::")
         print(f"Entry Point: {hex(analysis['entry_point']) if analysis['entry_point'] else 'None'}")
         print(f"Total Blocks: {analysis['total_blocks']}")
         print(f"Complexity Metrics: {analysis['complexity_metrics']}")
         print()
-        
+
         print(f":: Loops ::")
         for loop_info in analysis['patterns']['loops']:
             print(f"- Type: {loop_info.get('type', 'unknown')}")
@@ -188,7 +208,8 @@ def disassemble_event(rom: Rom, event_id: int):
             if 'join_block' in cond_info:
                 print(f"  Join block: {hex(cond_info['join_block'])}")
             if 'condition' in cond_info:
-                print(f"  Condition: flag {cond_info['condition']['flag_id']}, type {cond_info['condition']['condition_type']}")
+                print(
+                    f"  Condition: flag {cond_info['condition']['flag_id']}, type {cond_info['condition']['condition_type']}")
             print()
 
         print(f":: Switches ::")
@@ -199,19 +220,19 @@ def disassemble_event(rom: Rom, event_id: int):
             print(f"  Join block: {hex(switch_info.get('join_block', 0))}")
             print(f"  Unique cases: {switch_info.get('unique_cases', 0)}/{switch_info.get('total_cases', 4)}")
             print()
-            
+
         print(f":: Return Blocks ::")
         for ret_info in analysis['patterns']['returns']:
             print(f"- Block: {hex(ret_info.get('return_block', 0))}")
             print(f"  Predecessors: {[hex(x) for x in ret_info.get('predecessors', [])]}")
             print(f"  Instructions: {ret_info.get('instruction_count', 0)}")
             print()
-            
+
         print(f":: Block Annotations ::")
         for addr, block_info in analysis['block_types'].items():
             if len(block_info['types']) > 1:  # Only show blocks with interesting annotations
                 print(f"- {hex(addr)}: {block_info['types']} ({block_info['instruction_count']} instructions)")
-        
+
         print()
         print(f":: AST Generation ::")
         try:
