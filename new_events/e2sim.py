@@ -45,6 +45,14 @@ def fallback(ins: bytearray) -> tuple[GenericInstruction, None]:
     return fallback_ins, None
 
 
+def ret_instruction(ins: bytearray) -> tuple[ReturnInstruction, None]:
+    opcode = ins[0]
+    size = ins[1]
+    params_bytes = bytes(ins[2:size])
+    return_ins = ReturnInstruction(opcode, size, params_bytes)
+    return return_ins, None
+
+
 def branch(ins: bytearray) -> tuple[Branch, list[int]]:
     unpacked = struct.unpack("<BBxxI", ins)
     branch_ins = Branch(*unpacked)
@@ -88,6 +96,7 @@ def flag_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[
 
 
 instruction_handlers = {
+    0x0: ret_instruction,
     0xc: branch,
     0x19: loop_handler,
     0x2d: flag_handler,

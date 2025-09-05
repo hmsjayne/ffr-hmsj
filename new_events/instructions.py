@@ -65,6 +65,11 @@ class GenericInstruction(BaseInstruction):
 
 
 @dataclass(frozen=True, repr=False)
+class ReturnInstruction(BaseInstruction):
+    params_data: bytes
+
+
+@dataclass(frozen=True, repr=False)
 class Branch(BaseBranch):
     addr: int
 
