@@ -10,6 +10,7 @@ The `new_events/` directory contains work toward a modernized event system to re
 - ✅ **Event Parsing**: Can parse events by their IDs
 - ✅ **Basic CFG Construction**: Builds control flow graphs from parsed instructions
 - ✅ **Control Flow Detection**: Can identify basic control flows in the bytecode
+- ✅ **Return Instruction Handling**: CFG properly handles return instructions as block terminators
 - ⚠️ **CFG Data Return**: Returns data about control flows but without annotations
 
 ### Implementation Roadmap

@@ -37,6 +37,13 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
                 if next_addr in program:
                     leaders.add(next_addr)
 
+        # Return instructions also create leaders for the next instruction
+        # (though return instructions themselves don't have successors)
+        elif isinstance(code, ReturnInstruction):
+            next_addr = addr + code.size
+            if next_addr in program:
+                leaders.add(next_addr)
+
     # Create basic blocks
     leaders = sorted(leaders)
     for i, leader in enumerate(leaders):
@@ -50,6 +57,10 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
             current_addr += program[current_addr].size
 
         cfg.blocks[leader] = block
+
+    # Set the entry point
+    if addresses:
+        cfg.entry_point = addresses[0]
 
     # Connect blocks
     for leader, block in cfg.blocks.items():
@@ -70,7 +81,12 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
                 if next_addr in cfg.blocks:
                     block.next_blocks.append(next_addr)
                     cfg.blocks[next_addr].predecessors.append(leader)
+        elif isinstance(last_ins, ReturnInstruction):
+            # Return instructions terminate the block with no successors
+            # They are exit points from the function/event
+            block.type.add("return")
         else:
+            # Regular instructions: connect to the next sequential block
             next_addr = leader + sum(inst.size for inst in block.instructions)
             if next_addr in cfg.blocks:
                 block.next_blocks.append(next_addr)
@@ -226,3 +242,29 @@ def detect_switch_by_dir(cfg: ControlFlowGraph) -> list[dict]:
             })
 
     return patterns
+
+
+def detect_return_blocks(cfg: ControlFlowGraph) -> list[dict]:
+    """
+    Detects blocks that end with return instructions.
+
+    These blocks represent exit points from the function/event and have no successors.
+
+    Args:
+        cfg: The ControlFlowGraph to analyze.
+
+    Returns:
+        A list of dictionaries, where each dictionary contains information about
+        a return block including its address and any preceding blocks.
+    """
+    return_blocks = []
+
+    for block_addr, block in cfg.blocks.items():
+        if "return" in block.type:
+            return_blocks.append({
+                "return_block": block_addr,
+                "predecessors": block.predecessors.copy(),
+                "instruction_count": len(block.instructions)
+            })
+
+    return return_blocks

@@ -174,3 +174,8 @@ def disassemble_event(rom: Rom, event_id: int):
         blocks = detect_switch_by_dir(cfg)
         for cases in blocks:
             print(f"- {cases}")
+
+        print(f":: Return Blocks ::")
+        blocks = detect_return_blocks(cfg)
+        for ret_block in blocks:
+            print(f"- {ret_block}")
