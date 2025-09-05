@@ -96,6 +96,7 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
 
 
 def detect_if_then_else(cfg: ControlFlowGraph):
+    """Enhanced if/then/else detection with pattern classification."""
     patterns = []
 
     for leader, block in cfg.blocks.items():
@@ -110,26 +111,61 @@ def detect_if_then_else(cfg: ControlFlowGraph):
             jump_target = block.instructions[-1].branch_addrs()[0]
 
             if fallthrough_addr in block.next_blocks and jump_target in block.next_blocks:
-                # Check if both paths eventually converge
                 then_block = cfg.blocks[fallthrough_addr]
                 else_block = cfg.blocks[jump_target]
 
-                # Look for a common successor
-                common_successors = set(then_block.next_blocks) & set(else_block.next_blocks)
+                # Enhanced pattern analysis
+                pattern_info = {
+                    "type": "conditional",
+                    "if_block": leader,
+                    "then_block": fallthrough_addr,
+                    "else_block": jump_target,
+                    "condition": {
+                        "flag_id": block.instructions[-1].flag_id,
+                        "condition_type": block.instructions[-1].cond
+                    }
+                }
 
+                # Look for a common successor (join point)
+                common_successors = set(then_block.next_blocks) & set(else_block.next_blocks)
+                
                 if common_successors:
-                    join_block = cfg.blocks[list(common_successors)[0]]
-                    patterns.append({
-                        "if_block": leader,
-                        "then_block": fallthrough_addr,
-                        "else_block": jump_target,
-                        "join_block": join_block.start_address
-                    })
+                    join_addr = list(common_successors)[0]
+                    pattern_info["join_block"] = join_addr
+                    pattern_info["pattern_type"] = "if_then_else"
+                    
+                    # Mark blocks for annotation
+                    cfg.blocks[leader].type.add("conditional_branch")
+                    cfg.blocks[fallthrough_addr].type.add("then_branch")
+                    cfg.blocks[jump_target].type.add("else_branch")
+                    cfg.blocks[join_addr].type.add("branch_join")
+                    
+                elif len(then_block.next_blocks) == 0 or len(else_block.next_blocks) == 0:
+                    # One branch leads to termination (return/exit)
+                    pattern_info["pattern_type"] = "if_then_return"
+                    pattern_info["has_early_return"] = True
+                    
+                    # Mark blocks
+                    cfg.blocks[leader].type.add("conditional_branch")
+                    cfg.blocks[fallthrough_addr].type.add("then_branch")
+                    cfg.blocks[jump_target].type.add("else_branch")
+                    
+                else:
+                    # Divergent paths (no obvious join)
+                    pattern_info["pattern_type"] = "if_then_divergent"
+                    
+                    # Mark blocks
+                    cfg.blocks[leader].type.add("conditional_branch")
+                    cfg.blocks[fallthrough_addr].type.add("then_branch")
+                    cfg.blocks[jump_target].type.add("else_branch")
+
+                patterns.append(pattern_info)
 
     return patterns
 
 
 def detect_loop(cfg: ControlFlowGraph):
+    """Enhanced loop detection with better pattern recognition."""
     loops = []
     verbose_debug = False
 
@@ -146,18 +182,72 @@ def detect_loop(cfg: ControlFlowGraph):
         if len(block.instructions) > 0 and type(block.instructions[-1]) == LoopEnd:
             start_blocks = []
             for pred in block.predecessors:
-                if isinstance(cfg.blocks[pred].instructions[-1], LoopStart):
+                if cfg.blocks[pred].instructions and isinstance(cfg.blocks[pred].instructions[-1], LoopStart):
                     start_blocks.append(pred)
 
             loop_instruction = block.instructions[-1]
             loop_header_addr = loop_instruction.addr
-            loops.append({
+            
+            # Enhanced loop information
+            loop_info = {
+                "type": "structured_loop",
                 "loop_init": start_blocks,
                 "loop_header": loop_header_addr,
                 "back_edge_block": leader,
-                "loop_exit_addr": leader + sum(inst.size for inst in block.instructions)
-            })
+                "loop_exit_addr": leader + sum(inst.size for inst in block.instructions),
+                "loop_body_blocks": _find_loop_body_blocks(cfg, start_blocks, leader),
+                "is_nested": _is_nested_loop(cfg, start_blocks, leader)
+            }
+            
+            # Mark loop-related blocks
+            for init_block_addr in start_blocks:
+                cfg.blocks[init_block_addr].type.add("loop_start")
+            cfg.blocks[leader].type.add("loop_end")
+            
+            loops.append(loop_info)
+            
     return loops
+
+
+def _find_loop_body_blocks(cfg: ControlFlowGraph, start_blocks: list[int], back_edge_block: int) -> list[int]:
+    """Find all blocks that are part of the loop body."""
+    if not start_blocks:
+        return []
+        
+    loop_body = set()
+    
+    # Simple approach: find blocks reachable from loop start and dominated by it
+    # This is a simplified version - a full implementation would use dominance analysis
+    to_visit = start_blocks.copy()
+    visited = set()
+    
+    while to_visit:
+        current = to_visit.pop()
+        if current in visited or current == back_edge_block:
+            continue
+            
+        visited.add(current)
+        loop_body.add(current)
+        
+        # Add successors to visit
+        if current in cfg.blocks:
+            to_visit.extend(cfg.blocks[current].next_blocks)
+    
+    return sorted(list(loop_body))
+
+
+def _is_nested_loop(cfg: ControlFlowGraph, start_blocks: list[int], back_edge_block: int) -> bool:
+    """Check if this loop contains other loops (nested loops)."""
+    loop_body = _find_loop_body_blocks(cfg, start_blocks, back_edge_block)
+    
+    # Check if any block in the loop body has loop_start or loop_end markers
+    for block_addr in loop_body:
+        if block_addr in cfg.blocks:
+            block_types = cfg.blocks[block_addr].type
+            if "loop_start" in block_types or "loop_end" in block_types:
+                return True
+                
+    return False
 
 
 def detect_switch_by_dir(cfg: ControlFlowGraph) -> list[dict]:
@@ -232,14 +322,31 @@ def detect_switch_by_dir(cfg: ControlFlowGraph) -> list[dict]:
         # 4. If we found exactly one common successor, we've found the pattern
         if len(common_successors) == 1:
             join_addr = common_successors.pop()
-            patterns.append({
+            
+            pattern_info = {
+                "type": "switch",
+                "pattern_type": "switch_by_direction",
                 "switch_block": switch_addr,
                 "case_up": case_addrs["up"],
                 "case_right": case_addrs["right"],
                 "case_left": case_addrs["left"],
                 "case_down": case_addrs["down"],
                 "join_block": join_addr,
-            })
+                "unique_cases": len(unique_target_addrs),
+                "total_cases": 4
+            }
+            
+            # Mark blocks for annotation
+            cfg.blocks[switch_addr].type.add("switch_block")
+            
+            for direction, addr in case_addrs.items():
+                if addr in cfg.blocks:
+                    cfg.blocks[addr].type.add(f"case_{direction}")
+                    cfg.blocks[addr].type.add("switch_case")
+            
+            cfg.blocks[join_addr].type.add("switch_join")
+            
+            patterns.append(pattern_info)
 
     return patterns
 
@@ -266,5 +373,68 @@ def detect_return_blocks(cfg: ControlFlowGraph) -> list[dict]:
                 "predecessors": block.predecessors.copy(),
                 "instruction_count": len(block.instructions)
             })
-
+            
     return return_blocks
+
+
+def analyze_control_flow(cfg: ControlFlowGraph) -> dict:
+    """Comprehensive control flow analysis with annotations."""
+    analysis = {
+        "entry_point": cfg.entry_point,
+        "total_blocks": len(cfg.blocks),
+        "patterns": {
+            "loops": detect_loop(cfg),
+            "conditionals": detect_if_then_else(cfg),
+            "switches": detect_switch_by_dir(cfg),
+            "returns": detect_return_blocks(cfg)
+        },
+        "block_types": {},
+        "complexity_metrics": _calculate_complexity_metrics(cfg)
+    }
+    
+    # Categorize blocks by their types
+    for addr, block in cfg.blocks.items():
+        analysis["block_types"][addr] = {
+            "types": list(block.type),
+            "instruction_count": len(block.instructions),
+            "successors": len(block.next_blocks),
+            "predecessors": len(block.predecessors)
+        }
+    
+    return analysis
+
+
+def _calculate_complexity_metrics(cfg: ControlFlowGraph) -> dict:
+    """Calculate complexity metrics for the control flow graph."""
+    metrics = {
+        "cyclomatic_complexity": 1,  # Base complexity
+        "max_nesting_depth": 0,
+        "branch_points": 0,
+        "exit_points": 0
+    }
+    
+    # Calculate cyclomatic complexity: edges - nodes + 2 * connected_components
+    edges = sum(len(block.next_blocks) for block in cfg.blocks.values())
+    nodes = len(cfg.blocks)
+    metrics["cyclomatic_complexity"] = edges - nodes + 2  # Assuming single connected component
+    
+    # Count various control flow elements
+    for block in cfg.blocks.values():
+        if len(block.next_blocks) > 1:
+            metrics["branch_points"] += 1
+        if len(block.next_blocks) == 0:
+            metrics["exit_points"] += 1
+    
+    # Simple nesting depth estimation based on loop and conditional markers
+    max_depth = 0
+    for block in cfg.blocks.values():
+        depth = 0
+        if "loop_start" in block.type or "conditional_branch" in block.type:
+            depth += 1
+        if "switch_block" in block.type:
+            depth += 1
+        max_depth = max(max_depth, depth)
+    
+    metrics["max_nesting_depth"] = max_depth
+    
+    return metrics

@@ -11,25 +11,29 @@ The `new_events/` directory contains work toward a modernized event system to re
 - ✅ **Basic CFG Construction**: Builds control flow graphs from parsed instructions
 - ✅ **Control Flow Detection**: Can identify basic control flows in the bytecode
 - ✅ **Return Instruction Handling**: CFG properly handles return instructions as block terminators
-- ⚠️ **CFG Data Return**: Returns data about control flows but without annotations
+- ✅ **CFG Annotation (Phase 1)**: Enhanced pattern detection with block type annotations
+- ✅ **Advanced Control Flow Analysis**: Comprehensive analysis with complexity metrics
 
 ### Implementation Roadmap
 
-#### Phase 1: CFG Annotation (In Progress)
-- [ ] **Annotate CFG with Loop Detection**
-  - Identify while loops, for loops, and other iterative structures
-  - Mark loop entry points, conditions, and exit points
-  - Handle nested loop scenarios
+#### Phase 1: CFG Annotation (✅ **Completed**)
+- ✅ **Annotate CFG with Loop Detection**
+  - ✅ Identify structured loops with LoopStart/LoopEnd instructions
+  - ✅ Mark loop entry points, headers, and body blocks
+  - ✅ Handle nested loop detection
+  - ✅ Enhanced loop analysis with body block identification
 
-- [ ] **Annotate CFG with Conditional Logic**
-  - Detect if/then/else statement patterns
-  - Identify switch/case-like structures
-  - Mark conditional branches and merge points
+- ✅ **Annotate CFG with Conditional Logic**
+  - ✅ Detect if/then/else statement patterns with join point analysis
+  - ✅ Identify different conditional patterns (if_then_else, if_then_return, if_then_divergent)
+  - ✅ Mark conditional branches, then/else branches, and merge points
+  - ✅ Extract condition information (flag IDs and condition types)
 
-- [ ] **Advanced Control Flow Annotation**
-  - Function call detection and mapping
-  - Return statement identification  
-  - Exception/error handling patterns (if applicable)
+- ✅ **Advanced Control Flow Annotation**
+  - ✅ Switch/case detection and mapping (BranchByDir patterns)
+  - ✅ Return statement identification with comprehensive tracking
+  - ✅ Block type annotation system with multiple categories
+  - ✅ Complexity metrics calculation (cyclomatic complexity, nesting depth, etc.)
 
 #### Phase 2: AST Generation
 - [ ] **CFG to AST Transformation**
@@ -68,6 +72,33 @@ The `new_events/` directory contains work toward a modernized event system to re
   - Create utilities for viewing CFGs
   - Build debugging tools for script generation
   - Documentation for working with new event system
+
+### Phase 1 Achievements
+
+**Enhanced CFG Analysis System**: Successfully implemented comprehensive control flow analysis with the following capabilities:
+
+1. **Advanced Pattern Detection**:
+   - **Loops**: Detects structured loops, identifies body blocks, handles nesting detection
+   - **Conditionals**: Recognizes if/then/else patterns with three subtypes (standard, early return, divergent)
+   - **Switches**: Handles BranchByDir patterns with case deduplication and join point analysis
+   - **Returns**: Tracks return blocks with predecessor analysis
+
+2. **Block Type Annotation System**:
+   - Blocks are automatically annotated with semantic types (loop_start, conditional_branch, switch_case, etc.)
+   - Multiple annotations per block supported (e.g., a block can be both switch_join and loop_start)
+   - Type information aids in AST generation planning
+
+3. **Complexity Metrics**:
+   - Cyclomatic complexity calculation
+   - Branch point and exit point counting
+   - Nesting depth estimation
+   - Comprehensive structural analysis
+
+4. **Testing Results** (with provided ROM):
+   - **Event 0x138a (loops)**: 5 structured loops detected, proper annotations
+   - **Event 0x139d (loops + switch)**: Switch with 2/4 unique cases, nested with loops
+   - **Event 0x13bb (complex)**: 4 loops, 2 conditionals, 2 return blocks, proper join point detection
+   - **Event 0x13c4 (multiple returns)**: Multiple return paths correctly identified
 
 ### Technical Considerations
 

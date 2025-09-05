@@ -160,22 +160,53 @@ def disassemble_event(rom: Rom, event_id: int):
     if program is not None:
         cfg = build_cfg(program)
 
+        # Comprehensive analysis with annotations
+        analysis = analyze_control_flow(cfg)
+        
+        print(f":: Control Flow Analysis ::")
+        print(f"Entry Point: {hex(analysis['entry_point']) if analysis['entry_point'] else 'None'}")
+        print(f"Total Blocks: {analysis['total_blocks']}")
+        print(f"Complexity Metrics: {analysis['complexity_metrics']}")
+        print()
+        
         print(f":: Loops ::")
-        blocks = detect_loop(cfg)
-        for loops in blocks:
-            print(f"- {loops}")
+        for loop_info in analysis['patterns']['loops']:
+            print(f"- Type: {loop_info.get('type', 'unknown')}")
+            print(f"  Init blocks: {[hex(x) for x in loop_info.get('loop_init', [])]}")
+            print(f"  Header: {hex(loop_info.get('loop_header', 0))}")
+            print(f"  Body blocks: {[hex(x) for x in loop_info.get('loop_body_blocks', [])]}")
+            print(f"  Is nested: {loop_info.get('is_nested', False)}")
+            print()
 
-        print(f":: If/Then ::")
-        blocks = detect_if_then_else(cfg)
-        for ifelse in blocks:
-            print(f"- {ifelse}")
+        print(f":: Conditionals ::")
+        for cond_info in analysis['patterns']['conditionals']:
+            print(f"- Pattern: {cond_info.get('pattern_type', 'unknown')}")
+            print(f"  If block: {hex(cond_info.get('if_block', 0))}")
+            print(f"  Then block: {hex(cond_info.get('then_block', 0))}")
+            print(f"  Else block: {hex(cond_info.get('else_block', 0))}")
+            if 'join_block' in cond_info:
+                print(f"  Join block: {hex(cond_info['join_block'])}")
+            if 'condition' in cond_info:
+                print(f"  Condition: flag {cond_info['condition']['flag_id']}, type {cond_info['condition']['condition_type']}")
+            print()
 
-        print(f":: Switch ::")
-        blocks = detect_switch_by_dir(cfg)
-        for cases in blocks:
-            print(f"- {cases}")
-
+        print(f":: Switches ::")
+        for switch_info in analysis['patterns']['switches']:
+            print(f"- Pattern: {switch_info.get('pattern_type', 'unknown')}")
+            print(f"  Switch block: {hex(switch_info.get('switch_block', 0))}")
+            print(f"  Cases: Up={hex(switch_info.get('case_up', 0))}, Right={hex(switch_info.get('case_right', 0))}, Left={hex(switch_info.get('case_left', 0))}, Down={hex(switch_info.get('case_down', 0))}")
+            print(f"  Join block: {hex(switch_info.get('join_block', 0))}")
+            print(f"  Unique cases: {switch_info.get('unique_cases', 0)}/{switch_info.get('total_cases', 4)}")
+            print()
+            
         print(f":: Return Blocks ::")
-        blocks = detect_return_blocks(cfg)
-        for ret_block in blocks:
-            print(f"- {ret_block}")
+        for ret_info in analysis['patterns']['returns']:
+            print(f"- Block: {hex(ret_info.get('return_block', 0))}")
+            print(f"  Predecessors: {[hex(x) for x in ret_info.get('predecessors', [])]}")
+            print(f"  Instructions: {ret_info.get('instruction_count', 0)}")
+            print()
+            
+        print(f":: Block Annotations ::")
+        for addr, block_info in analysis['block_types'].items():
+            if len(block_info['types']) > 1:  # Only show blocks with interesting annotations
+                print(f"- {hex(addr)}: {block_info['types']} ({block_info['instruction_count']} instructions)")
