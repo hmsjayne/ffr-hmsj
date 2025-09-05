@@ -96,7 +96,7 @@ instruction_handlers = {
 }
 
 
-def disassemble(rom: Rom, offset: int) -> typing.Optional[dict[int, tuple]]:
+def disassemble(rom: Rom, offset: int) -> typing.Optional[dict[int, BaseInstruction]]:
     rom_data = rom.rom_data
 
     if offset < 0 or offset > len(rom_data):
@@ -150,11 +150,18 @@ def disassemble_event(rom: Rom, event_id: int):
     program = disassemble(rom, offset)
     if program is not None:
         cfg = build_cfg(program)
-        print(f":: Built CFG ::")
+
+        print(f":: Loops ::")
         blocks = detect_loop(cfg)
         for loops in blocks:
             print(f"- {loops}")
 
+        print(f":: If/Then ::")
         blocks = detect_if_then_else(cfg)
         for ifelse in blocks:
             print(f"- {ifelse}")
+
+        print(f":: Switch ::")
+        blocks = detect_switch_by_dir(cfg)
+        for cases in blocks:
+            print(f"- {cases}")

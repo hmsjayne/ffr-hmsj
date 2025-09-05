@@ -1,6 +1,5 @@
 from collections import OrderedDict
 from typing import Optional
-from new_events import instructions
 from new_events.instructions import *
 
 
@@ -10,7 +9,7 @@ class BasicBlock:
         self.instructions: list[BaseInstruction] = []
         self.next_blocks: list[int] = []
         self.predecessors: list[int] = []
-        self.type: str = "basic"
+        self.type: set[str] = {"basic"}
 
 
 class ControlFlowGraph:
@@ -143,3 +142,87 @@ def detect_loop(cfg: ControlFlowGraph):
                 "loop_exit_addr": leader + sum(inst.size for inst in block.instructions)
             })
     return loops
+
+
+def detect_switch_by_dir(cfg: ControlFlowGraph) -> list[dict]:
+    """
+    Detects a switch-like control flow structure based on the BranchByDir instruction.
+
+    This pattern consists of:
+    1. A "switch" block that ends with a BranchByDir instruction.
+    2. Four potential "case" blocks corresponding to 'up', 'right', 'left', and 'down'.
+    3. A single "join" block where all execution paths from the case blocks converge.
+
+    Args:
+        cfg: The ControlFlowGraph to analyze.
+
+    Returns:
+        A list of dictionaries, where each dictionary represents a detected
+        switch pattern and contains the addresses of the switch, case, and join blocks.
+    """
+    patterns = []
+
+    for switch_addr, switch_block in cfg.blocks.items():
+        # 1. Find a block ending with BranchByDir
+        if not switch_block.instructions:
+            continue
+
+        last_ins = switch_block.instructions[-1]
+        if not isinstance(last_ins, BranchByDir):
+            continue
+
+        # 2. Identify the addresses for all four "case" blocks
+        # The 'down' case is the fall-through block
+        fallthrough_addr = switch_addr + sum(inst.size for inst in switch_block.instructions)
+
+        case_addrs = {
+            "up": last_ins.addr_up,
+            "right": last_ins.addr_right,
+            "left": last_ins.addr_left,
+            "down": fallthrough_addr,
+        }
+
+        # Collect the unique, valid blocks that the switch can branch to.
+        # It's common for 'left' and 'right' to be the same, for instance.
+        unique_target_addrs = {addr for addr in case_addrs.values() if addr in cfg.blocks}
+
+        if not unique_target_addrs:
+            continue  # This switch leads nowhere valid.
+
+        # 3. Find the common "join" block
+        # We find the set of successors for each unique case block.
+        # The intersection of these sets will give us the common join block.
+        successor_sets = []
+        for target_addr in unique_target_addrs:
+            target_block = cfg.blocks[target_addr]
+
+            # A valid case must lead somewhere. If it has no successors, the
+            # paths don't converge.
+            if not target_block.next_blocks:
+                successor_sets = []  # Invalidate to prevent finding a pattern
+                break
+
+            successor_sets.append(set(target_block.next_blocks))
+
+        # If we couldn't get successors for all paths, skip.
+        if not successor_sets:
+            continue
+
+        # Calculate the intersection of all successor sets
+        common_successors = successor_sets[0].copy()
+        for s_set in successor_sets[1:]:
+            common_successors.intersection_update(s_set)
+
+        # 4. If we found exactly one common successor, we've found the pattern
+        if len(common_successors) == 1:
+            join_addr = common_successors.pop()
+            patterns.append({
+                "switch_block": switch_addr,
+                "case_up": case_addrs["up"],
+                "case_right": case_addrs["right"],
+                "case_left": case_addrs["left"],
+                "case_down": case_addrs["down"],
+                "join_block": join_addr,
+            })
+
+    return patterns
