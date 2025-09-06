@@ -379,8 +379,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
     for offset, cmd in sorted(working.items(), key=lambda x: x[0]):
         addr = offset_to_addr(offset)
         if addr in labels:
-            print(f"{labels[addr]}:")
-        print(cmd)
+            print(f"{hex(addr)}:\t{labels[addr]}:")
+        print(f"{hex(addr)}:\t{cmd}")
 
 
 def disassemble_event(rom: Rom, event_id: int) -> dict:

@@ -505,18 +505,21 @@ def print_ast(node: ASTNode, indent: int = 0) -> None:
         pattern = node.get_metadata('pattern_type', 'unknown')
         condition = node.get_metadata('condition', {})
 
-        if condition.get('branch_type') == 'flag':
+        branch_type = condition.get('branch_type')
+        if branch_type == 'flag':
             flag_id = condition.get('flag_id', '?')
             cond_type = condition.get('condition_type', '?')
             condition_str = f"flag {flag_id}, type {cond_type}"
-        elif condition.get('branch_type') == 'item':
+        elif branch_type == 'item':
             item_id = condition.get('item_index', '?')
             mode = condition.get('mode', '?')
             condition_str = f"item {item_id}, mode {mode}"
-        elif condition.get('branch_type') == 'gil':
+        elif branch_type == 'gil':
             condition_str = "gil check"
+        elif branch_type == 'yesno':
+            condition_str = "yes/no dialog"
         else:
-            condition_str = f"{condition.get('branch_type', 'unknown')}"
+            condition_str = f"{branch_type or 'unknown'}"
 
         print(f"{prefix}If Statement ({pattern}) - {condition_str}")
     elif node.node_type == ASTNodeType.WHILE_LOOP:

@@ -114,6 +114,16 @@ def item_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[
         return fallback(ins)
 
 
+def yesno_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[int]]]:
+    """Handle Yes/No dialog instruction (0x63)."""
+    if ins[1] == 8:
+        unpacked = struct.unpack("<BBxxI", ins)
+        branch_ins = BranchOnYesNo(*unpacked)
+        return branch_ins, [branch_ins.addr]
+    else:
+        return fallback(ins)
+
+
 instruction_handlers = {
     0x0: ret_instruction,
     0xc: branch,
@@ -122,7 +132,8 @@ instruction_handlers = {
     0x2d: flag_handler,
     0x37: item_handler,
     0x42: branch_by_dir,
-    0x48: call
+    0x48: call,
+    0x63: yesno_handler
 }
 
 
@@ -209,14 +220,21 @@ def disassemble_event(rom: Rom, event_id: int):
                 print(f"  Join block: {hex(cond_info['join_block'])}")
             if 'condition' in cond_info:
                 condition = cond_info['condition']
-                if condition['branch_type'] == 'flag':
-                    print(f"  Condition: flag {condition['flag_id']}, type {condition['condition_type']}")
-                elif condition['branch_type'] == 'item':
-                    print(f"  Condition: item {condition['item_index']}, mode {condition['mode']}")
-                elif condition['branch_type'] == 'gil':
+                branch_type = condition['branch_type']
+                if branch_type == 'flag':
+                    flag_id = condition['flag_id']
+                    cond_type = condition['condition_type']
+                    print(f"  Condition: flag {flag_id}, type {cond_type}")
+                elif branch_type == 'item':
+                    item_id = condition['item_index']
+                    mode = condition['mode']
+                    print(f"  Condition: item {item_id}, mode {mode}")
+                elif branch_type == 'gil':
                     print(f"  Condition: gil check")
+                elif branch_type == 'yesno':
+                    print(f"  Condition: yes/no dialog")
                 else:
-                    print(f"  Condition: {condition['branch_type']}")
+                    print(f"  Condition: {branch_type}")
             print()
 
         print(f":: Switches ::")

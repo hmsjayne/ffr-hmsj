@@ -103,8 +103,9 @@ def detect_if_then_else(cfg: ControlFlowGraph):
         # Look for blocks ending with conditional jumps that have two successors
         last_instruction = block.instructions[-1] if block.instructions else None
         is_conditional_branch = (
-            isinstance(last_instruction, (BranchOnFlag, BranchOnItem, BranchOnGil)) and
-            len(block.next_blocks) == 2
+            isinstance(last_instruction, (
+                BranchOnFlag, BranchOnItem, BranchOnGil, BranchOnYesNo
+            )) and len(block.next_blocks) == 2
         )
 
         if is_conditional_branch:
@@ -395,6 +396,10 @@ def _extract_condition_info(instruction) -> dict:
     elif isinstance(instruction, BranchOnGil):
         return {
             "branch_type": "gil"
+        }
+    elif isinstance(instruction, BranchOnYesNo):
+        return {
+            "branch_type": "yesno"
         }
     else:
         return {"branch_type": "unknown"}
