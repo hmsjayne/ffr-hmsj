@@ -300,6 +300,23 @@ class ASTBuilder:
             # Move to next sequential block
             if len(block.next_blocks) == 1:
                 current_block = block.next_blocks[0]
+            elif len(block.next_blocks) == 2 and "call" in block.type:
+                # Special handling for call instructions:
+                # They have two successors: call target and return address
+                # For AST generation, we continue with the return address
+                # The call target will be processed separately
+                last_instruction = block.instructions[-1] if block.instructions else None
+                if hasattr(last_instruction, 'branch_addrs'):
+                    call_target = last_instruction.branch_addrs()[0]
+                    # Find the return address (the successor that's not the call target)
+                    for next_block in block.next_blocks:
+                        if next_block != call_target:
+                            current_block = next_block
+                            break
+                    else:
+                        break  # Couldn't find return address
+                else:
+                    break  # Not actually a call instruction
             else:
                 # Multiple successors or no successors - end this sequence
                 break

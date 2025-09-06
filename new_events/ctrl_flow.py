@@ -73,14 +73,18 @@ def build_cfg(program: dict[int, BaseInstruction]) -> ControlFlowGraph:
                     cfg.blocks[jump_target].predecessors.append(leader)
 
             # Conditional branches will branch on some condition and continue
-            # on other conditions. An unconditional branch is the only
-            # exemption to this.
-            if type(last_ins) != Branch:
+            # on other conditions. Call instructions also continue after return.
+            # Only unconditional Branch instructions don't continue.
+            if type(last_ins) not in [Branch]:
                 next_addr = leader + sum(inst.size for inst in block.instructions)
 
                 if next_addr in cfg.blocks:
                     block.next_blocks.append(next_addr)
                     cfg.blocks[next_addr].predecessors.append(leader)
+                    
+            # Mark call blocks for special handling
+            if isinstance(last_ins, Call):
+                block.type.add("call")
         elif isinstance(last_ins, ReturnInstruction):
             # Return instructions terminate the block with no successors
             # They are exit points from the function/event
