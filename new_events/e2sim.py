@@ -80,11 +80,13 @@ def call(ins: bytearray) -> tuple[Call, list[int]]:
 
 def loop_handler(ins: bytearray) -> tuple[BaseInstruction, typing.Optional[list[int]]]:
     if ins[1] == 8:
-        unpacked = struct.unpack("<BBhI", ins)
+        # LoopEnd: step is in byte 2 (0x1), byte 3 is always 0xff
+        unpacked = struct.unpack("<BBBxI", ins)
         loop_ins = LoopEnd(*unpacked)
         return loop_ins, [loop_ins.addr]
     else:
-        unpacked = struct.unpack("<BBh", ins)
+        # LoopStart: count is unsigned byte, not signed 16-bit  
+        unpacked = struct.unpack("<BBxB", ins)
         loop_ins = LoopStart(*unpacked)
         return loop_ins, None
 
