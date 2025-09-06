@@ -178,8 +178,8 @@ def disassemble(rom: Rom, offset: int) -> typing.Optional[dict[int, BaseInstruct
         program[offset_to_addr(offset)] = decoded
 
         if opcode != 0:
-            offset = offset + ins_size
-            next_addrs.append(offset)
+            next_offset = offset + ins_size
+            next_addrs.append(offset_to_addr(next_offset))
 
     return program
 
