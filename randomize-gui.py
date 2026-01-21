@@ -133,12 +133,28 @@ hex_seed_label.grid(row=3, column=0, sticky="we", padx=(10, 10), pady=(3, 3))
 
 rom_frame.pack(anchor='w', fill="x")
 
-exp_scale_var = tk.IntVar()
-exp_scale_var.set(150)
-exp_scale = tk.Scale(root, variable=exp_scale_var, from_=50, to=500, resolution=25, orient=tk.HORIZONTAL)
-exp_scale.pack(anchor='w', pady=(0, 10))
-
 options_frame = tk.LabelFrame(root, text='Options')
+
+# XP Scaling UI
+exp_scale_frame = tk.Frame(options_frame)
+exp_scale_frame.pack(fill="x", padx=5, pady=5)
+
+exp_scale_var = tk.IntVar(value=150)
+exp_label_var = tk.StringVar()
+
+
+def update_exp_label(val):
+    exp_label_var.set(f"XP Scaling: {val}%")
+
+
+update_exp_label(exp_scale_var.get())
+
+exp_label = tk.Label(exp_scale_frame, textvariable=exp_label_var, width=18, anchor="w")
+exp_label.pack(side=tk.LEFT, padx=(0, 10))
+
+exp_scale = tk.Scale(exp_scale_frame, variable=exp_scale_var, from_=50, to=500, resolution=25,
+                     orient=tk.HORIZONTAL, showvalue=False, command=update_exp_label)
+exp_scale.pack(side=tk.LEFT, fill="x", expand=True, padx=(0, 5))
 
 progression = add_option(options_frame, "Shuffle key items")
 shops = add_option(options_frame, "Random shops (item, weapon, armor, or magic shops)")
