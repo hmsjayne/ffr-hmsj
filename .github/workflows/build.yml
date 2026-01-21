@@ -21,6 +21,19 @@ jobs:
         exe_path: 'dist/hmsjayne/hmsjayne.exe'
         upload_exe_with_name: 'hmsjayne.exe'
 
+    - name: Create Zip (Windows)
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: pwsh
+      run: |
+        Compress-Archive -Path dist/hmsjayne/* -DestinationPath "hmsjayne-${{ github.ref_name }}-win64.zip"
+
+    - name: Upload Zip Artifact (Windows)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v4
+      with:
+        name: hmsjayne-win64-zip
+        path: hmsjayne-*.zip
+
   build-linux:
     runs-on: ubuntu-latest
 
@@ -49,11 +62,19 @@ jobs:
             echo "Executable not found!" && exit 1;
         fi
 
+    - name: Create Zip (Linux)
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        cd dist
+        zip -r "../hmsjayne-${{ github.ref_name }}-linux.zip" .
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: hmsjayne
-        path: dist/
+        path: |
+          dist/
+          hmsjayne-*.zip
 
   create-release:
     needs: [build-windows, build-linux]
@@ -76,7 +97,5 @@ jobs:
         name: HMS Jayne ${{ github.ref_name }}
         body: "Automatically generated release notes."
         generateReleaseNotes: true
-        artifacts: |
-          hmsjayne.exe
-          hmsjayne
+        artifacts: "hmsjayne-*.zip,hmsjayne.exe,hmsjayne"
         token: ${{ secrets.GITHUB_TOKEN }}
