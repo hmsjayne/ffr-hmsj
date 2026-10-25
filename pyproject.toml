@@ -1,0 +1,19 @@
+# Tooling configuration for the Python reference implementation.
+#
+# Runtime dependencies are kept in requirements.txt so the existing
+# PyInstaller build continues to work. Developer-only tools live in
+# requirements-dev.txt.
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "event/tests"]
+python_files = ["test_*.py"]
+pythonpath = ["."]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+# Start with correctness checks only. Style rules can be added once the
+# baseline is green.
+select = ["E9", "F63", "F7", "F82"]

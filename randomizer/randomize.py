@@ -41,6 +41,7 @@ from randomizer.placement import Placement, PlacementDetails
 from randomizer.spellgenerator import SpellGenerator
 from randomizer.treasure import InventoryGenerator
 from randomizer.bossshuffle import BossData
+from randomizer.trace import RandomizerTrace
 from stream.outputstream import OutputStream
 
 VehiclePosition = namedtuple("VehiclePosition", ["x", "y"])
@@ -477,7 +478,8 @@ def pick_gear_reward(rng: random.Random, gear_placement: PlacementDetails,
     return choice
 
 
-def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
+def randomize(rom_data: bytearray, seed: str, flags: Flags,
+              trace: RandomizerTrace | None = None) -> bytearray:
     print(f"Randomizing with seed {seed}, {flags.encode()}")
     # Start with the list of standard patches to improve gameplay.
     all_patches = load_ips_files("patches/DataPointerConsolidation.ips",
@@ -508,6 +510,16 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
 
     items = Items(rom, flags.new_items)
     enemy_data = load_enemy_data(rom, items, flags.fiend_ribbons)
+
+    if trace is not None:
+        trace.checkpoint(
+            "data_loaded",
+            enemies=len(enemy_data),
+            chests=len(chest_data),
+            shops=len(shop_data.shop_inventories),
+            spells=len(spells.spell_data),
+            encounters=len(encounters),
+        )
 
     # Don't load formation data (since we don't do anything with it)
     # load_formation_data(rom, enemy_data)
@@ -678,6 +690,18 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
         else:
             raise RuntimeError(f"Unknown placement type: {ki_placement.type} at {ki_placement.source}")
 
+    if trace is not None:
+        trace.checkpoint(
+            "placements",
+            shuffled=not flags.no_shuffle,
+            placements=[placement._asdict() for placement in placement.all_placements()],
+        )
+        trace.checkpoint(
+            "vehicle_starts",
+            ship={"x": vehicle_starts["ship"].x, "y": vehicle_starts["ship"].y},
+            airship={"x": vehicle_starts["airship"].x, "y": vehicle_starts["airship"].y},
+        )
+
     headers = build_headers(placement, free_header)
     event_scripts = load_event_scripts()
 
@@ -717,6 +741,9 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags) -> bytearray:
     all_patches.update(pack_enemy_data(enemy_data))
     all_patches.update(pack_chests(chest_data))
     all_patches.update(pack_vehicle_starts(vehicle_starts))
+
+    if trace is not None:
+        trace.record_patches(all_patches)
 
     randomized_rom = rom.apply_patches(all_patches)
     print("Randomization Finished")

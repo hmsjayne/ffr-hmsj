@@ -61,3 +61,49 @@ rom = rom.apply_patch(0x1DE044, new_enemy_stats_stream.get_buffer())
 ```
 
 More details coming soon(er or later).
+
+## Development setup
+
+The reference implementation targets Python 3.12. Runtime dependencies are in
+`requirements.txt`; test/lint tools are in `requirements-dev.txt`.
+
+```bash
+python -m venv .venv
+.venv/bin/pip install -r requirements.txt -r requirements-dev.txt
+```
+
+## Tests and the Python oracle
+
+Run the fast test suite (no ROM required):
+
+```bash
+.venv/bin/ruff check .
+.venv/bin/pytest -q
+```
+
+Run the ROM-backed golden tests by pointing at a clean Dawn of Souls ROM:
+
+```bash
+HMSJAYNE_ROM=/path/to/ff1-dos.gba .venv/bin/pytest tests/integration/test_golden.py
+```
+
+Run one deterministic case and emit a JSON manifest:
+
+```bash
+.venv/bin/python -m randomizer.oracle \
+  --rom /path/to/ff1-dos.gba \
+  --seed test \
+  --trace /tmp/hmsj-trace.json
+```
+
+The oracle records hashes for the randomized ROM, the IPS patch, parsed stage
+checkpoints, the patch manifest, and the input assets. `tests/golden/rom_hashes.json`
+is the checked-in baseline used by the parity tests. Regenerate it only when a
+behavior change is intentional:
+
+```bash
+.venv/bin/python tools/generate_goldens.py --rom /path/to/ff1-dos.gba
+```
+
+The base ROM is intentionally not stored in git. The golden tests verify its
+SHA-256 before running cases.

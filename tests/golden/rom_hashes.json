@@ -1,0 +1,693 @@
+{
+  "algorithm_version": 1,
+  "assets": {
+    "asp/KeyItemDataShip.lp": "584d1d95bcf634b432ebba8346997e08ca51f84fa2ab31f93e1c887ba10b9650",
+    "asp/KeyItemSolvingShip.lp": "e2837900bb6b68c56e6fc4435ce6a5f2d0626d6fd00368a54a89b8974dedc085",
+    "data/AreaWeights.tsv": "67d69f65f97f4ab33dceb1725160ac43afad2400801f2b7ad5f44b67460b8eee",
+    "data/AreaWeights_2.tsv": "46bd20d6ecff4b2d8d5af2d69cbff20435fb6331b48337a29b5a34fe60337d17",
+    "data/BossScriptData.tsv": "04e64b7229fada7cfb28c6e3bdb185c14266834819c9b18ffbc0c4bc969ff23c",
+    "data/ChestData.tsv": "bfa2302533447352b687786db90bf7a4d571b6b90a52e6f3f6ad4d9871f9827e",
+    "data/EnemyData.tsv": "d561331ddcb6bdb7157106a2e77fb35c008b0569bc61819d1e3ee02749e2a6be",
+    "data/EnemyData_2.tsv": "68c6a283a4f0a6a4776b924eaad225181eef420efc5b9aaf0babac0d5778f606",
+    "data/ItemData.tsv": "a7fa11b2fd599ea6a3b2ad451fe880d74ca7b23db1a7b3b60e362e6cd80a54c7",
+    "data/ItemData_2.tsv": "d841ee112f82022af1fc9d6d5816c37fab2e258a5a93f594a20865d68def4962",
+    "data/KeyItemPlacement.tsv": "4ab71f6aeeb52ee1b4225200ff5b5dd7f14eba7cc900932e683383506499feeb",
+    "data/MapToArea.tsv": "dfff54f567df52322289eafd502b178843225204cd4f62ce19f6d155278e7de7",
+    "data/MapToArea_2.tsv": "c60d5db243f83c5df30f68ac2c2657201a2cbb5ec90aca9340964911d2a9b6b3",
+    "data/SpellData.tsv": "f67796e15278df1ba426db29109a06cb4975682627dbb0e5d8c785a7d19205e1",
+    "data/TextUpdates.tsv": "1e0e87a68547bddcbb25ebba8751f5020465c71d2e83161b7ab75c1c0b732d15",
+    "patches/DataPointerConsolidation.ips": "961e8e897e4f42ea2667ef15d1f3f140e3d2f3c95b3c780f4a90fc14475e85c0",
+    "patches/Earth__CitadelMap.ips": "b5a28196ef92ca631f6398ac4eab40af0b9f878b7fa7917b842e095535ed9903",
+    "patches/EventUpdates.ips": "6890dabfdaf33b1497a4a35c3945443ad429c53cd0a0c98bde3a8ff678b96560",
+    "patches/FF1EncounterToggle.ips": "d3704a8b15e806b517ea1e7b37f225d16ba9a430f274265a6a2a4998c4549a81",
+    "patches/ImprovedEquipmentStatViewing.ips": "c0a07dfcaf4f28cbbde8af9138698fcfc1468b1cd256c7a4e76d93ff2eb80e1c",
+    "patches/NoEscape.ips": "304571de239bbebec3ca8457ccfce50a2f9efa5b18026fb9b8b9b287d418aa91",
+    "patches/RunningChange.ips": "88da6b1a99c89178d718f332aeef2a81a5adf9fcf16ddb42ff3d7a2cf6c8dded",
+    "patches/SpellLevelFix.ips": "21b4085e1f33ea338ba3186820f4de3c74cae26a8150712722c2ffb4b130266c",
+    "patches/SpriteFrameLoaderFix.ips": "e1ee2887064fae54ea1e9fc6e66b31e9f2f1332895ecd6edf632d1c4f441cb71",
+    "patches/StatusScreenExpansion.ips": "3eb80389eed360a07ea06c94a1c804ee44c6a5a756cf9a31506aea4229bc78c4",
+    "scripts/0x1388_Chest.script": "2b5c40c6159e532c0c66847f4939e1f9d7897d4d45391101fcd77cf6eda2f42d",
+    "scripts/0x138b_Confronting_Garland.script": "a9bc7341e0be3537c801033ae962f0eb9296052af829d6bd6bce45e8a513e0b9",
+    "scripts/0x138d_Adamantite_obtaining.script": "58013f21885c51acded889e19bf49f4d16ff1f62a70f24bc9b18610b66385e18",
+    "scripts/0x138e_Airship_rises_from_Ryukahn_Desert.script": "5c8a7833f0e7d04e1aadd7e3ea17af683d19b070f373c1f48cd7fe72a5dc55e6",
+    "scripts/0x138f_Fairy_gets_Oxyale.script": "872a68e71224643655e72316e82eb5e2cec707a43ba83e246d7f0c472efae8e5",
+    "scripts/0x1390_Confronting_Astos.script": "055d04cddd3f9c2bebbd2fedac07459ca69f3ec15f0fe1d60546f64217f69531",
+    "scripts/0x1391_Giving_Crystal_Eye_to_Matoya.script": "0d0cd845618a493a937d5d8f37d026f6ae3f0dbdf7faa18baf92b8e3c9256a13",
+    "scripts/0x1393_Nerrick_uses_Nitro_Powder.script": "cb5f0b3086427e545c950c0c82d89538142fdbb4c88879f75098078355ae5b9f",
+    "scripts/0x1394_Receive_Canoe.script": "733188c754c1ce8882c2d9a6c5d88d9d9752edde0dd9ab2d98fd969bde372e8b",
+    "scripts/0x1395_Receive_Chime.script": "abe0407640701f8192e2d05cdc15f16bcc71dddae362f7549b6f054a4302d670",
+    "scripts/0x1396_Class_change.script": "84fe6d729876bfe6e4a1cdeefeefbbc5a5e24c120d47646d9c15bb710e6390b6",
+    "scripts/0x1398_Crown_chest.script": "b31789cae1763f4a3d5eb4390b2048f4d2421f99a41fe4cb2fab9f7097182dfa",
+    "scripts/0x139a_Give_Jolt_Tonic_to_Healer.script": "802aec55b066aec4fd63e7fe32b936eca4fc2dbece4d6a805510ec7d3c3f60c1",
+    "scripts/0x139c_Use_Rod_in_Earth_B4.script": "d528da2d51cf21b8279a98db300e3a520a400a7fe5d88e85d5855bc826cba0c5",
+    "scripts/0x139d_Give_Adamantite_to_Smyth.script": "d7271e982b9701d1f4422ff8fdcded3055b95447fdf4ede61cd47382cbd233f7",
+    "scripts/0x139f_Levistone_obtaining.script": "2084d32290c9f6b9c4468bb05f50d4bbf4c766fa07562b372a323ae427a5d450",
+    "scripts/0x13a3_Confronting_Kraken.script": "de004d449c6d8b0006606b6c3babdce66c382d6295ac85297be65b7c2cbedc93",
+    "scripts/0x13a5_Unne_deciphers_Rosetta_Stone.script": "6cd7794e1cdcee383242c3bd92f020895b2e6b4a47e13c8493edbc3dd391247c",
+    "scripts/0x13a7_Receive_Lute.script": "94db0851a56277602dd74b63a34210079f91536ad7da02ee812ba84761df2ad8",
+    "scripts/0x13a8_Confronting_Marilith.script": "ee9201293e8f81d44a5da5465048653c1ad65f69918f0189f74cf4f4489904cc",
+    "scripts/0x13aa_Rat_Tail_chest.script": "5393ef9aed966a15ea3e2e85215abb32b031b635a621f0950781cad1ed414fe2",
+    "scripts/0x13ad_Nitro_Powder_chest.script": "95dc000f94761f28448e2e8bf1570021f6b25d590011d6ebf6e31b07581e93fc",
+    "scripts/0x13b3_Confronting_Lich.script": "3b114f30571ea4a77ce0a53615caddc877a7b8441cd091dffcd87833fc3b0981",
+    "scripts/0x13b4_Rosetta_Stone_chest.script": "b6ba1d862ce84d7e01320891cc6608642baf94ec983719d80fbfe4dc38adaca4",
+    "scripts/0x13b5_Confronting_Bikke.script": "b98851ad714b3b06705b27efdb6a33884f077188e0b1c23979fcaf59aeaf8dae",
+    "scripts/0x13b7_Star_Ruby_chest.script": "0c70c3ba7b18c6034445a3feaa860733ab9d49d06bd4b0ea6998d9e1a8272599",
+    "scripts/0x13b8_Receive_Earth_Rod.script": "cd3b74f90aaaca7ba4cb5ddc3dde125c2f71c1fb7a0d8733fb185f4c4bf2e873",
+    "scripts/0x13bb_Confronting_Tiamat.script": "ac8c4fed81521dbe10ecf75312c61df95ed3309a03217cdc55a5fe1c03f4d7cc",
+    "scripts/0x13bd_Robot_gives_Warp_Cube.script": "7bae96ac7af3a58a245700d25666ef2a2d98143e75bd4a2a8f4c6f2518534941",
+    "scripts/0x1F49_Cornelia_fountain.script": "c2eebd834e656156dae5e65bdc8fb5ac3288915fb79897833f0d7fec3bdd4eb8",
+    "scripts/0x1f60_Chancellor_of_Cornelia.script": "333a8ba358a55f7e6d7660d06254d353e79e3ca1d4c85bd1db7f8e583eeb41a4",
+    "scripts/0xfa6_Bridge_Credits.script": "735a62fbb0258656a1906350c3cecac7d8326bcc163814dd140b3def327d2299",
+    "scripts/Map_Init.script": "bc00f87ca4143c54741fac8458950a961a9bee51dad7b48daf8c0e3690b689ef",
+    "static/seed_data.toml": "40b908712d2a1e909bcf90277020e0c4039ec55ae2c88aed56d9ff2be0bfe006"
+  },
+  "base_rom": {
+    "name": "ff1-dos.gba",
+    "sha256": "bbafb77d2be577ca0a4bfcbec9fc3004b589f24478ec5e406d61645296449422",
+    "size": 16777216
+  },
+  "cases": [
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTGB10",
+      "ips_sha256": "c6ed963e55d0166656b6f693f3912536000c6d44ede01d84a07b42739b61272a",
+      "ips_size": 310707,
+      "name": "default",
+      "rom_sha256": "124435f24c1015546d8bb911099358cba734d620e8686dd797ccfd53ac4eac71",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "0f2babf8d4c2188bdcddb6d2afe851bbf7332c5ec56299e372651d1eff5ebbd5",
+        "patch_total_bytes": 221541,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTGB10",
+      "ips_sha256": "958ea75a2a5e81e58083bb44e8c461dc2011574404e9b4c98a8388601c3eda27",
+      "ips_size": 310783,
+      "name": "default_alt_seed",
+      "rom_sha256": "0c2c41b7e7218b9e570a9700ec3f3d5926370261155d0a344320d9134ea3b656",
+      "rom_size": 16777216,
+      "seed": "abc",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "aba0a35899e4a42062e9fb1553e59766271f5565d4d9f685d39547adb1532478",
+        "patch_total_bytes": 221530,
+        "placement_count": 27,
+        "placement_sha256": "1090d8e1e5379becdda77a829f6603048c70becff6bdc10cfe4184f930be4343",
+        "vehicle_starts": {
+          "airship": {
+            "x": 1496,
+            "y": 2392
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": true,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "STGB10",
+      "ips_sha256": "2c946040be3557cbeb89fc898ba6ebd38dad52f050f2b8053c44461c979c4f9c",
+      "ips_size": 307733,
+      "name": "no_shuffle",
+      "rom_sha256": "49a318b54940723dcc65c8f0b8731b619cf7175f4f5be30219ff992d39dca0a9",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "b87905baaa9198aef448e4b70aad33e168f282d47aae25981f9a49e5d81e5a40",
+        "patch_total_bytes": 221495,
+        "placement_count": 27,
+        "placement_sha256": "642f744752e580c8f3e975e3f132c7dc1da48cf688eea3a2afa80ba2413ed0f0",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3432,
+            "y": 3688
+          },
+          "ship": {
+            "x": 3256,
+            "y": 2344
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": true,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KTGB10",
+      "ips_sha256": "f072f30f85ac98dddca07662e193b65ea868baedaeb933703c4b9c7f92153437",
+      "ips_size": 309477,
+      "name": "standard_shops",
+      "rom_sha256": "32f3b2d2741c1af8f0d055262a330802e9a7976073765f02ef72a04e049148e2",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "3aa4b72fcd4abbbba4349b63f5e2c70152ccc4da326f8a78b86b4376ffca827c",
+        "patch_total_bytes": 221542,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": true
+      },
+      "flags_encoded": "KSGB10",
+      "ips_sha256": "dd2052cfe50031c115f1a50450325b7007e106aad165dd6bb1668267abb62c9a",
+      "ips_size": 308885,
+      "name": "standard_treasure",
+      "rom_sha256": "34e9af4a6157ccb074ca6156a2c507cb7e2ed24331115b9de743ac3f97c45dd6",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "544194ebceccd462b5b514f37c98720dbb911c6dfad6b8f2723b7f0c65d1003c",
+        "patch_total_bytes": 221539,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": true,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTB10",
+      "ips_sha256": "de319039f55dc1e3bddf028af2ddf4cbc2b81d388fd03395c16041e3ea56bafa",
+      "ips_size": 310666,
+      "name": "default_start_gear",
+      "rom_sha256": "97898a04cf71ded8bd4ec2d9095a2ee50a6141444e8c1814f22a5c12203fbd79",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 434,
+        "patch_manifest_sha256": "ff844a8b321982d7372254ae53884b3e8e800ae37959df253d17162f02a6240f",
+        "patch_total_bytes": 221443,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": true,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTG10",
+      "ips_sha256": "7d6c5e5f91291eab0b167c39f9acacef487f63ff03a5c2ce19877c830a5d5ce3",
+      "ips_size": 310184,
+      "name": "default_bosses",
+      "rom_sha256": "7995c28bd4c7678109f746378ccee59b4a04c3a88fe943bcb638a066579d2e80",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "ddf1498346f80b4c5c4b719e2a53c1446ee7c99f85543a61b63340cf7c9f3823",
+        "patch_total_bytes": 221536,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": true,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTGBNi10",
+      "ips_sha256": "d9af37c23a43526ea5c3e30f61156e58e2bdef32fc3e9af9d037f8bcaa040eb5",
+      "ips_size": 310738,
+      "name": "new_items",
+      "rom_sha256": "06964a98ebd043c0fe7f359ee458ccf898abe5fa71ecb88bf3c85bbf0b0ba55d",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "c4a62937f39e17820e1b18d594ca94fac7c236c6ddc7b0ae26c2c8bd315ff06f",
+        "patch_total_bytes": 221545,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": true,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTGBR10",
+      "ips_sha256": "c4a66542bae03d89b60ecbe6b11388a77966846df88028059e9ee79ce58c825c",
+      "ips_size": 310733,
+      "name": "fiend_ribbons",
+      "rom_sha256": "1d886a5c87769f152eb956d95fd82f2f99c9b75cff53178dd72b7d2439ced2e4",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "a499cb3e15fc7ac16d91d276f7c03574f40da23c8ca6a569218c091d7ae47758",
+        "patch_total_bytes": 221543,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 2.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTGB20",
+      "ips_sha256": "f539bf1c4b2a836a9e7f1dc01d51a48cb3b90f8a8ab86df72fb3020f326a3735",
+      "ips_size": 311464,
+      "name": "xp_50",
+      "rom_sha256": "3af122c7f3c479d89fdc945adcc258f9504d945e12224345b4d8cd94d3082812",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 436,
+        "patch_manifest_sha256": "2a61bcd876b3f899fb00872badb2f9afbb3f00917884979361030bfce2fd094d",
+        "patch_total_bytes": 221937,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 0.5,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTGB5",
+      "ips_sha256": "db3032cab1087e1afb049576929f9d0bc1772b50d0ea5a59245f008e3c227f95",
+      "ips_size": 311456,
+      "name": "xp_200",
+      "rom_sha256": "eff346abcd4093bbafaec0357230cfa7c58e470002e2f0a9b064890550c9d717",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 436,
+        "patch_manifest_sha256": "41ec8017218febbbb23d5ab045431e8e90eb7c98d37bd17ec7896cc088c0683f",
+        "patch_total_bytes": 221935,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": true,
+        "debug": false,
+        "default_start_gear": true,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": true,
+        "scale_levels": 1.0,
+        "standard_shops": true,
+        "standard_treasure": true
+      },
+      "flags_encoded": "10",
+      "ips_sha256": "69179a4398050e63d61d92b039b366d70409bcb57382cbb5bb44e6ab6dd734fc",
+      "ips_size": 304142,
+      "name": "all_standard",
+      "rom_sha256": "ecfbe2e7fcb9167bc99c9b405ba7b658883a02ea99baa72526dff8b1870e408b",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 434,
+        "patch_manifest_sha256": "64ac830d3a4c78eee1d56a1d6996ecebfd0e01f146849a7c28524594e2178503",
+        "patch_total_bytes": 221394,
+        "placement_count": 27,
+        "placement_sha256": "642f744752e580c8f3e975e3f132c7dc1da48cf688eea3a2afa80ba2413ed0f0",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3432,
+            "y": 3688
+          },
+          "ship": {
+            "x": 3256,
+            "y": 2344
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": true,
+        "new_items": true,
+        "no_shuffle": false,
+        "scale_levels": 0.5,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTGBNiR5",
+      "ips_sha256": "334f8ebb45b1d505f89cdf9970915fdd7b264da9b78a4aa5da2a262740065ee3",
+      "ips_size": 311510,
+      "name": "all_features",
+      "rom_sha256": "789d92f7ca7cb66f835508e9deb6b4eadf75fd7f050b457c7cfd4f395fffb0d1",
+      "rom_size": 16777216,
+      "seed": "test",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 436,
+        "patch_manifest_sha256": "c5157cc4171aec9fdcc42668685af35b0c37bf379fd8048845339c81fa362622",
+        "patch_total_bytes": 221941,
+        "placement_count": 27,
+        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "flags": {
+        "boss_shuffle": false,
+        "debug": false,
+        "default_start_gear": false,
+        "fiend_ribbons": false,
+        "new_items": false,
+        "no_shuffle": false,
+        "scale_levels": 1.0,
+        "standard_shops": false,
+        "standard_treasure": false
+      },
+      "flags_encoded": "KSTGB10",
+      "ips_sha256": "fdf1d1b772e1b18409d09ba97417c4ea29b74f4e7b20c70251d515db56b4e246",
+      "ips_size": 309709,
+      "name": "empty_seed",
+      "rom_sha256": "9aebeb01ab91014ab3e67c6880c0deca04505a14fe30eefb56527b73f3ba53fa",
+      "rom_size": 16777216,
+      "seed": "",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 435,
+        "patch_manifest_sha256": "2b56d8e96f53de8206ff59fc8fcbb4733e61e556f560dade64d9ea1485923315",
+        "patch_total_bytes": 221527,
+        "placement_count": 27,
+        "placement_sha256": "ad35eac328b36d6226aa1042c38f5df965d24a39ee290db72d80cbf17aae7bb4",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3384,
+            "y": 3384
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    }
+  ],
+  "environment": {
+    "clingo": "5.7.1",
+    "ips_util": "1.0",
+    "python": "3.12.4"
+  },
+  "schema_version": 1
+}

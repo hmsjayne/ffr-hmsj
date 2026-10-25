@@ -28,7 +28,7 @@ class TestEasm(unittest.TestCase):
         jump .Loop
         .End:
         """
-        bytecode = parse(code, base_addr=0x8000000)
+        bytecode = link(parse(code), base_addr=0x8000000)
         self.assertEqual(bytecode, b'\x0c\x08\xff\xff\x10\x00\x00\x08\x0c\x08\xff\xff\x08\x00\x00\x08')
 
     def test_symbol_def(self):
@@ -41,7 +41,7 @@ class TestEasm(unittest.TestCase):
         nop ; Don't have the mystic key
         .End:
         """
-        bytecode = parse(code, base_addr=0x8000000)
+        bytecode = link(parse(code), base_addr=0x8000000)
         self.assertEqual(bytecode, b'-\x08\t\x02\x14\x00\x00\x08\x01\x04\xff\xff\x0c\x08\xff\xff'
                                    b'\x18\x00\x00\x08\x01\x04\xff\xff')
 
@@ -53,7 +53,7 @@ class TestEasm(unittest.TestCase):
         .EndIsMissing:
         """
         with self.assertRaises(UndefinedLabel):
-            bytecode = parse(code, base_addr=0x8000000)
+            bytecode = link(parse(code), base_addr=0x8000000)
             self.assertNotEqual(bytecode, bytecode)
 
     def test_undefined_symbol(self):
@@ -64,7 +64,7 @@ class TestEasm(unittest.TestCase):
         end_event
         """
         with self.assertRaises(SymbolNotDefinedError):
-            bytecode = parse(code, base_addr=0x8000000)
+            bytecode = parse(code)
             self.assertNotEqual(bytecode, bytecode)
 
     def test_duplicate(self):
@@ -79,7 +79,7 @@ class TestEasm(unittest.TestCase):
         end_event
         """
         with self.assertRaises(DuplicateSymbolError):
-            bytecode = parse(code, base_addr=0x8000000)
+            bytecode = parse(code)
             self.assertNotEqual(bytecode, bytecode)
 
 
