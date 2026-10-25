@@ -12,7 +12,7 @@ from randomizer.share import (
 def test_encode_default_options_uses_only_seed():
     fragment = encode_share_fragment("test", DEFAULT_OPTIONS)
 
-    assert fragment == "#v=2&seed=test"
+    assert fragment == "#v=3&seed=test"
 
 
 def test_encode_and_parse_non_default_options():
@@ -33,8 +33,18 @@ def test_encode_and_parse_non_default_options():
     assert parsed.legacy is False
 
 
+def test_parse_previous_algorithm_link_upgrades():
+    parsed = parse_share_fragment("#v=2&seed=test&shops=0&xp=200")
+
+    assert parsed.options.randomize_shops is False
+    assert parsed.options.xp_rate_percent == 200
+    assert parsed.legacy is True
+    assert parsed.rewritten_fragment is not None
+    assert parsed.rewritten_fragment.startswith("#v=3")
+
+
 def test_parse_unknown_option_warns():
-    parsed = parse_share_fragment("#v=2&seed=test&mystery=1")
+    parsed = parse_share_fragment("#v=3&seed=test&mystery=1")
 
     assert parsed.options == DEFAULT_OPTIONS
     assert any("mystery" in warning for warning in parsed.warnings)
@@ -62,10 +72,10 @@ def test_parse_legacy_compact_link_rewrites():
 
 @pytest.mark.parametrize("fragment", [
     "#v=1&seed=test",
-    "#v=2",
-    "#v=2&seed=test&xp=55",
+    "#v=3",
+    "#v=3&seed=test&xp=55",
     "#seed=test",
-    "#v=2&seed=test&keys=maybe",
+    "#v=3&seed=test&keys=maybe",
 ])
 def test_parse_invalid_links(fragment):
     with pytest.raises(ShareLinkError):
@@ -76,5 +86,5 @@ def test_build_filename():
     options = RandomizerOptions(xp_rate_percent=200)
 
     assert build_filename("Voyage of the Cactuar", options) == (
-        "ff1-dos_v2_KSTGBXp200_Voyage-of-the-Cactuar.gba"
+        "ff1-dos_v3_KSTGBXp200_Voyage-of-the-Cactuar.gba"
     )

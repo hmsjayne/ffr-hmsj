@@ -1,5 +1,5 @@
 {
-  "algorithm_version": 2,
+  "algorithm_version": 3,
   "assets": {
     "asp/KeyItemDataShip.lp": "584d1d95bcf634b432ebba8346997e08ca51f84fa2ab31f93e1c887ba10b9650",
     "asp/KeyItemSolvingShip.lp": "e2837900bb6b68c56e6fc4435ce6a5f2d0626d6fd00368a54a89b8974dedc085",
@@ -68,8 +68,8 @@
   },
   "cases": [
     {
-      "ips_sha256": "14ed28fe6b8a769635bbc21e25e26d578ff58f0886f0f3ac12c93b2b7445e05c",
-      "ips_size": 311484,
+      "ips_sha256": "813ab72645759294ae3e0e146307a3dea07e1e4fd92e9778a4ea437ee507cc53",
+      "ips_size": 310712,
       "name": "default",
       "options": {
         "debug": false,
@@ -83,7 +83,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KSTGBXp150",
-      "rom_sha256": "5a04978a1792acda47d0f4a7c14bfeb29f5848d3b1778003ea3fe0e5d66babb5",
+      "rom_sha256": "18ff0da2e6f2ed9a49a7a0642fcb430a391f2c0493f6654d6f88a210acaba406",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -95,54 +95,10 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "69d3e4483c2b07255bff9f178aa3083488575853c7c3f82985de3d081bf6a912",
-        "patch_total_bytes": 221963,
+        "patch_manifest_sha256": "7fbf33faf16d679c2b127eeca9676c34f9d10bbe738648c700ad175eace85a0f",
+        "patch_total_bytes": 221960,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
-        "vehicle_starts": {
-          "airship": {
-            "x": 3384,
-            "y": 3384
-          },
-          "ship": {
-            "x": 2328,
-            "y": 2600
-          }
-        }
-      }
-    },
-    {
-      "ips_sha256": "e72dded8f5245fa8b578a855d96b549db787a59f3294f218ac178d2701dafba8",
-      "ips_size": 311560,
-      "name": "default_alt_seed",
-      "options": {
-        "debug": false,
-        "fiend_ribbons": false,
-        "new_item_distribution": false,
-        "randomize_bosses": true,
-        "randomize_shops": true,
-        "randomize_starting_gear": true,
-        "randomize_treasure": true,
-        "shuffle_key_items": true,
-        "xp_rate_percent": 150
-      },
-      "options_short": "KSTGBXp150",
-      "rom_sha256": "daaafce4d188c7bdd3d4e9eea591c501dd6557426168c0ef0890bcbda5ee972c",
-      "rom_size": 16777216,
-      "seed": "abc",
-      "trace": {
-        "data_loaded": {
-          "chests": 256,
-          "encounters": 369,
-          "enemies": 195,
-          "shops": 51,
-          "spells": 65
-        },
-        "patch_count": 436,
-        "patch_manifest_sha256": "8d7829c619aa35d04f7443ed7563a42a3c94a895b14907a3d91c65e49f367891",
-        "patch_total_bytes": 221952,
-        "placement_count": 27,
-        "placement_sha256": "1090d8e1e5379becdda77a829f6603048c70becff6bdc10cfe4184f930be4343",
+        "placement_sha256": "7aeafdb71ecb25ed09cd408f65bccd38ebf27fb2f53dc709e69afbb17589ea8f",
         "vehicle_starts": {
           "airship": {
             "x": 1496,
@@ -156,8 +112,52 @@
       }
     },
     {
-      "ips_sha256": "71ef54d11e657385b6e3a6239cf0ae564ed82e9ce652c88586013afcc696462b",
-      "ips_size": 308510,
+      "ips_sha256": "f6a686f046b8782baf3660fe79e1ada2b6b3d3fba649e53186161597ae4c1115",
+      "ips_size": 311404,
+      "name": "default_alt_seed",
+      "options": {
+        "debug": false,
+        "fiend_ribbons": false,
+        "new_item_distribution": false,
+        "randomize_bosses": true,
+        "randomize_shops": true,
+        "randomize_starting_gear": true,
+        "randomize_treasure": true,
+        "shuffle_key_items": true,
+        "xp_rate_percent": 150
+      },
+      "options_short": "KSTGBXp150",
+      "rom_sha256": "3b11ad3396ac3accb42fefd496dbadea358cce49cf4561bac17306fd6ff9e80f",
+      "rom_size": 16777216,
+      "seed": "abc",
+      "trace": {
+        "data_loaded": {
+          "chests": 256,
+          "encounters": 369,
+          "enemies": 195,
+          "shops": 51,
+          "spells": 65
+        },
+        "patch_count": 436,
+        "patch_manifest_sha256": "92a58f5dc5f0adfc027b4e8d239dd9e20d3f2e3932a42b8722c28d56c71e6f59",
+        "patch_total_bytes": 221956,
+        "placement_count": 27,
+        "placement_sha256": "40d0c3b50cd2c349ab2d54a47d854b12a7a6993cc25e276d191f91a20831a9a9",
+        "vehicle_starts": {
+          "airship": {
+            "x": 3432,
+            "y": 3688
+          },
+          "ship": {
+            "x": 2328,
+            "y": 2600
+          }
+        }
+      }
+    },
+    {
+      "ips_sha256": "996c01d7abb0dc647baf64d06dfa723cb481b08fa095d895e8e22bae6d1c8c1d",
+      "ips_size": 308541,
       "name": "no_shuffle",
       "options": {
         "debug": false,
@@ -171,7 +171,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "STGBXp150",
-      "rom_sha256": "f8783589bf6a3b5da3efc178b6e673a554727354cc8c4bc536b76418b25579a4",
+      "rom_sha256": "4bf10cd5bae1af0e2e506d4479d7b8b2ee7776ceed04046401fc3d4e219cd9a3",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -183,8 +183,8 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "b03fd0eed1da8be3e0d68ba35754e37df29dccb9f8033467ab0518314a61e15f",
-        "patch_total_bytes": 221917,
+        "patch_manifest_sha256": "bf5c7d80eda972d6231dd96127924b293906287e69a5fd289dcec09921deb090",
+        "patch_total_bytes": 221914,
         "placement_count": 27,
         "placement_sha256": "642f744752e580c8f3e975e3f132c7dc1da48cf688eea3a2afa80ba2413ed0f0",
         "vehicle_starts": {
@@ -200,8 +200,8 @@
       }
     },
     {
-      "ips_sha256": "ed8441ed15d15da3074b437f4dc9439a514fdc9686c00c942b502fc71416946c",
-      "ips_size": 310254,
+      "ips_sha256": "239fdc786976db2d0dedbb90be6070079a1b453461437cafdcca8f063080549a",
+      "ips_size": 309507,
       "name": "standard_shops",
       "options": {
         "debug": false,
@@ -215,7 +215,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KTGBXp150",
-      "rom_sha256": "6dde6a8f516e047bdb2fecac261bca472fa9d6138e71eb9ba65e17e55d424982",
+      "rom_sha256": "929b0ba5a8976b80ee011fc5d034bd0eaba8d4faa9460a1c76400a1831636b31",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -227,14 +227,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "8e7ab16e5e20b386bad5dcceb243fb7ded4bb793ea9de7000af5ba737e4fb208",
+        "patch_manifest_sha256": "794c65df6bbee396d68c262de41d9f50da2035907b720877c83027c2f6d1af1b",
         "patch_total_bytes": 221964,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "7aeafdb71ecb25ed09cd408f65bccd38ebf27fb2f53dc709e69afbb17589ea8f",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -244,8 +244,8 @@
       }
     },
     {
-      "ips_sha256": "795fcf6bfeb9c0370fd9b603541c9962545aabd0da705c9f5db6b1cd8b38f13d",
-      "ips_size": 309662,
+      "ips_sha256": "bf4c32c2de434e97183b62d0cd5ed2872ad19341b9ab5e2c85c7affd51cc04c2",
+      "ips_size": 308920,
       "name": "standard_treasure",
       "options": {
         "debug": false,
@@ -259,7 +259,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KSGBXp150",
-      "rom_sha256": "d9bca923ef32a26005f2c63cfa9387984f6e884a0fa1648ea64d5ac6c6cf54b6",
+      "rom_sha256": "1e8a6f22c75e899f4495cb7da859b327f445d03caa0cf2b08a32404dd5705c22",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -271,14 +271,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "0cb1e3c9598fcabc3cbc7d99a4528bd48d7ccaf0a6384e50956b7a09ebcca3c0",
-        "patch_total_bytes": 221961,
+        "patch_manifest_sha256": "fab2fbac7f004db63eede54d878496779ca08559159cec3bd5f25f3915fe2562",
+        "patch_total_bytes": 221958,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "7aeafdb71ecb25ed09cd408f65bccd38ebf27fb2f53dc709e69afbb17589ea8f",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -288,8 +288,8 @@
       }
     },
     {
-      "ips_sha256": "682464f796f1b1b4e67e025ff55b4bcdf2df4def850a46d4205ecd70d8086146",
-      "ips_size": 311443,
+      "ips_sha256": "3b398795e3b9488a95ff50b2ca43948b345738fbe058895e795a1d896a4ccb96",
+      "ips_size": 310669,
       "name": "default_start_gear",
       "options": {
         "debug": false,
@@ -303,7 +303,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KSTBXp150",
-      "rom_sha256": "21dc89dd5216e6c7e800369a5bcf74bf9537b00176b4e49c2748f645e04b8676",
+      "rom_sha256": "ef571aba6a2b09bcc34961337753d818a43d47e324f0fce0761161c9ad040563",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -315,14 +315,14 @@
           "spells": 65
         },
         "patch_count": 435,
-        "patch_manifest_sha256": "4981f37f9cd0e5bd55b92904332264a2e2d8c9de0a35b89048ed96e00c9da730",
-        "patch_total_bytes": 221865,
+        "patch_manifest_sha256": "a4bf117a94cdd5fcbc7e900047006af0eacf8de445a5733fe08a3c4cb9b69e46",
+        "patch_total_bytes": 221862,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "7aeafdb71ecb25ed09cd408f65bccd38ebf27fb2f53dc709e69afbb17589ea8f",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -332,8 +332,8 @@
       }
     },
     {
-      "ips_sha256": "75473e2f01c66217caa9e70735018c888f2a9794d350bf1e06cb7caeda5f4e16",
-      "ips_size": 310961,
+      "ips_sha256": "06bbfbd4a576e96249986d9fd96516966cfcd64195bc1a48d5170041b5663f9a",
+      "ips_size": 310157,
       "name": "default_bosses",
       "options": {
         "debug": false,
@@ -347,7 +347,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KSTGXp150",
-      "rom_sha256": "a3c9712ecdd8c6ac44b5257e771ae0ec64412dd02ecc04fa3d6cc562e426aaf6",
+      "rom_sha256": "39c1d480f63e032bfdca62dd525bb392ed9f896772ef15bc43b8431563588167",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -359,14 +359,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "81c13a7926df53c224d75fd04cef0a4489b3257f92296397246c275c15373795",
-        "patch_total_bytes": 221958,
+        "patch_manifest_sha256": "d55f9eb2f74da7271b945fa8de73df2ffbb078ff37f1468209be7c2680abae3c",
+        "patch_total_bytes": 221963,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "7aeafdb71ecb25ed09cd408f65bccd38ebf27fb2f53dc709e69afbb17589ea8f",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -376,8 +376,8 @@
       }
     },
     {
-      "ips_sha256": "810bb1f514e05ed5feeacf959d96b9e21930875f69553d828f0d8c4fba7c12cd",
-      "ips_size": 311520,
+      "ips_sha256": "1175d136443444b80f40e7c0031e0b9928a0c00868e552efbee469118992561a",
+      "ips_size": 311148,
       "name": "new_items",
       "options": {
         "debug": false,
@@ -391,7 +391,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KSTGBNiXp150",
-      "rom_sha256": "eac08dbb19ff508efa56a2d651ccb29969b40a30958e35b2b986e89c9e7ad4eb",
+      "rom_sha256": "700a2f954e711187cf0743622a69625df8d675e867015381b0f667c0874c7b20",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -403,14 +403,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "2c648bc78c101aa905ae06407e77630bbe2e1247936643a35d352bb3fd6dc08e",
-        "patch_total_bytes": 221967,
+        "patch_manifest_sha256": "718e9c82f13842e1bd879c3422e22173d53f722cb60d060c97e52c6055ecf383",
+        "patch_total_bytes": 221962,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "e018c7b2e7f1bd5fa301dfb3eca246768be7a9988ebe8e0ff99107777a3ce4d7",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -420,8 +420,8 @@
       }
     },
     {
-      "ips_sha256": "402bf47b49d5595348c564ed72ac3ad99d2b57138c35ddda8560b6aec8482c3b",
-      "ips_size": 311507,
+      "ips_sha256": "a00c7ea89ebc749a56e23c702389271121c67ccf6c3591cf163b4b059b2d89bc",
+      "ips_size": 310730,
       "name": "fiend_ribbons",
       "options": {
         "debug": false,
@@ -435,7 +435,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KSTGBRXp150",
-      "rom_sha256": "b10db120dbfa2944ec90f6998020e5a6b14c2437fd0bac2d036051fbdfc7da9f",
+      "rom_sha256": "127a0975becd59521efac4c41bbf140d8448f57a65eb38760e2ebe70cdf340f1",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -447,14 +447,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "6a8094afc259d1a69356af629179bc4963dc725638186ef87e168759d4d306f0",
-        "patch_total_bytes": 221965,
+        "patch_manifest_sha256": "f9c469d1dc6a3d4b10d26fea975e6e8c2d6a85460e44ffebd4275e26bdf3ab3f",
+        "patch_total_bytes": 221962,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "7aeafdb71ecb25ed09cd408f65bccd38ebf27fb2f53dc709e69afbb17589ea8f",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -464,8 +464,8 @@
       }
     },
     {
-      "ips_sha256": "3c45b5610985c8941e299e4cc3ac407b8e0bf95436afb4233566f13751830e3b",
-      "ips_size": 311494,
+      "ips_sha256": "d57c137b847dd3d9c74ae867cc99a543a17b0958d31de1157f935a99c0e2c4af",
+      "ips_size": 310722,
       "name": "xp_50",
       "options": {
         "debug": false,
@@ -479,7 +479,7 @@
         "xp_rate_percent": 50
       },
       "options_short": "KSTGBXp50",
-      "rom_sha256": "ac16a6bdfe273860127e32b05ffa96d48f5a503e73f47c5c9f7ff10cdc3a4492",
+      "rom_sha256": "38c7a2c3ee9088026a7ca32934015312b3d0a3450f0a8d0e80a64e67ee3526e8",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -491,14 +491,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "bd805d41d70552e7df7ebe50e108eca9c08b6f15b1c7f11de25d3fbb6c01c9cd",
-        "patch_total_bytes": 221961,
+        "patch_manifest_sha256": "254f4eb3f0875a834a2a57ec186820f32a93c8f3154e85be0dd3ee6402d1daef",
+        "patch_total_bytes": 221958,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "7aeafdb71ecb25ed09cd408f65bccd38ebf27fb2f53dc709e69afbb17589ea8f",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -508,8 +508,8 @@
       }
     },
     {
-      "ips_sha256": "a662a9dba672cfbc94bb27d44d9d7a187aa46e231d7e5fab50dff8880eb61348",
-      "ips_size": 311488,
+      "ips_sha256": "78b65a11b407a9b27ecad0b11367f407ff37a82587664254f609144d14968985",
+      "ips_size": 310716,
       "name": "xp_200",
       "options": {
         "debug": false,
@@ -523,7 +523,7 @@
         "xp_rate_percent": 200
       },
       "options_short": "KSTGBXp200",
-      "rom_sha256": "5ef8c3766e5d45f856c18f70530f0d0bb2d4f1c6e3778ce8e0200c9f1cbf0e28",
+      "rom_sha256": "255ca68ecb3eea4cf4e5022d2ab2fca3744e184890a9aba47fd7852d228371ef",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -535,14 +535,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "3b558f3b47fc284358dd38bad985fd6b57db6e06997417290a83653181e78485",
-        "patch_total_bytes": 221963,
+        "patch_manifest_sha256": "d340decbc7b4277e65284f412f6f28b9a127d992dc23feae731ba9ab5f6ce9fa",
+        "patch_total_bytes": 221960,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "7aeafdb71ecb25ed09cd408f65bccd38ebf27fb2f53dc709e69afbb17589ea8f",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -552,8 +552,8 @@
       }
     },
     {
-      "ips_sha256": "ccaaada40bf053579bcddb831fc535da4d6cfb77111d58652f0315685ea86732",
-      "ips_size": 304922,
+      "ips_sha256": "b4074f8f491137b394e3d2b35ab6dea857a21abb954ca53942438ec9c20c80b7",
+      "ips_size": 304923,
       "name": "all_standard",
       "options": {
         "debug": false,
@@ -567,7 +567,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "Xp150",
-      "rom_sha256": "2e11bbd44526fc9c281fef931f5ebe6086a6c15da6b520b99aff2dba7ec6c833",
+      "rom_sha256": "ca95729e050d5f7693eebee7c44e0482351fb449eb9bdd8fd6cea1340bbaee28",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -579,7 +579,7 @@
           "spells": 65
         },
         "patch_count": 435,
-        "patch_manifest_sha256": "f92d2de7959534fba387427bc5115dd6f0ee86818ecddbe4cfdb2db90c4941a6",
+        "patch_manifest_sha256": "e68ca8f3b8bde572cb91971d405fee92cf7d03724e63a0310e3cdda21037835f",
         "patch_total_bytes": 221816,
         "placement_count": 27,
         "placement_sha256": "642f744752e580c8f3e975e3f132c7dc1da48cf688eea3a2afa80ba2413ed0f0",
@@ -596,8 +596,8 @@
       }
     },
     {
-      "ips_sha256": "69fb33a0221e4b613ff23102d3d07a745aaaaf36dba9a478a91ca14bb85a4398",
-      "ips_size": 311542,
+      "ips_sha256": "bbdf6c61e7d15cce83971b2ada2e8c2c9e042d0ec4c04b3c81d1fba6f8199fd0",
+      "ips_size": 311165,
       "name": "all_features",
       "options": {
         "debug": false,
@@ -611,7 +611,7 @@
         "xp_rate_percent": 200
       },
       "options_short": "KSTGBNiRXp200",
-      "rom_sha256": "6bdab16f37e30f8529def65ae3bdf2bea6f03d80825fbc519126619fcf8fd25b",
+      "rom_sha256": "a2c21b9aec1468f29e704d6e87bf9524c4f3693c7edd1f6aded3e253aba7e936",
       "rom_size": 16777216,
       "seed": "test",
       "trace": {
@@ -623,14 +623,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "5d3b8ef99fba2bcba1e64cff816168ed968c6af48e65d7827f12f734bcefdb21",
-        "patch_total_bytes": 221969,
+        "patch_manifest_sha256": "e80e2f287a61dcb56149542ae6bbfa35505d6c2fd42b59110cd017246e6cbc38",
+        "patch_total_bytes": 221964,
         "placement_count": 27,
-        "placement_sha256": "d1d1bd872506bbc7d159de9acfabe023df7947ab5776c3df46ac1ec287200afb",
+        "placement_sha256": "e018c7b2e7f1bd5fa301dfb3eca246768be7a9988ebe8e0ff99107777a3ce4d7",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,
@@ -640,8 +640,8 @@
       }
     },
     {
-      "ips_sha256": "7b1dadf1a40af7898463743372f3e3a25356b66ad5e62c9cc261d3109448f92c",
-      "ips_size": 311990,
+      "ips_sha256": "13c3962c62078b4b6c49290f2921ef4cc09ed9e6e02d2f433f0b80fc25ac8c6b",
+      "ips_size": 311284,
       "name": "max_seed",
       "options": {
         "debug": false,
@@ -655,7 +655,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KSTGBXp150",
-      "rom_sha256": "f9925455ef7aa5b9fa0becf2893657f25d143eca8d2a8f91f8601c01657230f3",
+      "rom_sha256": "ec06f7ab7f2929be70429cd1032bb95a028729530262656c3c9e60fa253f2591",
       "rom_size": 16777216,
       "seed": "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456",
       "trace": {
@@ -667,14 +667,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "025c14a201b41fbec0fdd4aa567cb5bdb06090a2eca20aecc174655cb87d9d96",
-        "patch_total_bytes": 222008,
+        "patch_manifest_sha256": "46e44db7a16310799d063136bec6423cad0c58a6f5141956b1d66856d69bf9e1",
+        "patch_total_bytes": 222011,
         "placement_count": 27,
-        "placement_sha256": "5d7e19c1821de62ebf7c94505e6055c55b62f0ea2eaf666bad98f0062df61c56",
+        "placement_sha256": "33acc3a4954285cafb65476ac784769832ab6548fbf73f18e5bb70db3b4c99fc",
         "vehicle_starts": {
           "airship": {
-            "x": 2920,
-            "y": 3176
+            "x": 3384,
+            "y": 3384
           },
           "ship": {
             "x": 2328,
@@ -684,8 +684,8 @@
       }
     },
     {
-      "ips_sha256": "0a7c3db4d5c900eaf096c4d2418d408a535d0299d41d46e494ba96d925c70f34",
-      "ips_size": 311767,
+      "ips_sha256": "e56b9dc059f3446bda956d67aad61693c259ff2a33f864146b69bc7d184dbe15",
+      "ips_size": 311243,
       "name": "seed_with_spaces",
       "options": {
         "debug": false,
@@ -699,7 +699,7 @@
         "xp_rate_percent": 150
       },
       "options_short": "KSTGBXp150",
-      "rom_sha256": "927d18e0e0fed768e6c1557f34c41c2264dfa2e9a24c5565b97f4b525294d650",
+      "rom_sha256": "d32ff42f2e36541549ddd5ddac8000f3b6c75238445c6323f34e47d8181dc47e",
       "rom_size": 16777216,
       "seed": "Voyage of the Cactuar",
       "trace": {
@@ -711,14 +711,14 @@
           "spells": 65
         },
         "patch_count": 436,
-        "patch_manifest_sha256": "8e567c84357017416559a9d9e0914cd4aa29d862add6a4fbfd017ab569e682cd",
-        "patch_total_bytes": 221985,
+        "patch_manifest_sha256": "c5f674f437251cf0feb32c0a9599bb778eca8be8e5f6ce04631b31f9d3001b23",
+        "patch_total_bytes": 221981,
         "placement_count": 27,
-        "placement_sha256": "970a739a0bb1f181dae19a7d2e20f27cc2aa29b1b4bf5696c85dc0659a06871f",
+        "placement_sha256": "cab1525d4e7983237a5a1f9479bbce5c7456bf01e66f83b76af1a16cf2fad356",
         "vehicle_starts": {
           "airship": {
-            "x": 3384,
-            "y": 3384
+            "x": 1496,
+            "y": 2392
           },
           "ship": {
             "x": 2328,

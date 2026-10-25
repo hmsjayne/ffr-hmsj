@@ -31,6 +31,7 @@ OPTION_PARAMS = {
     "xp_rate_percent": "xp",
 }
 PARAM_TO_OPTION = {value: key for key, value in OPTION_PARAMS.items()}
+SUPPORTED_LINK_VERSIONS = {2, ALGORITHM_VERSION}
 
 TRUE_VALUES = {"1", "true", "yes", "on"}
 FALSE_VALUES = {"0", "false", "no", "off"}
@@ -110,9 +111,13 @@ def parse_share_fragment(fragment: str) -> ShareLink:
 
     if "v" not in params:
         raise ShareLinkError("Unsupported link format; please remake the link.")
-    if params["v"][0] != str(ALGORITHM_VERSION):
+    try:
+        link_version = int(params["v"][0])
+    except ValueError as exc:
+        raise ShareLinkError(f"Invalid link version: {params['v'][0]!r}") from exc
+    if link_version not in SUPPORTED_LINK_VERSIONS:
         raise ShareLinkError(
-            f"Unsupported link version {params['v'][0]}; expected {ALGORITHM_VERSION}."
+            f"Unsupported link version {link_version}; expected {ALGORITHM_VERSION}."
         )
     if "seed" not in params:
         raise ShareLinkError("Link is missing a seed.")
@@ -120,6 +125,11 @@ def parse_share_fragment(fragment: str) -> ShareLink:
 
     values = DEFAULT_OPTIONS.public_dict()
     warnings = []
+    upgrade_link = link_version < ALGORITHM_VERSION
+    if upgrade_link:
+        warnings.append(
+            f"Link uses algorithm v{link_version}; it will run with v{ALGORITHM_VERSION}."
+        )
     for param, raw_values in params.items():
         if param in ("v", "seed"):
             continue
@@ -140,7 +150,13 @@ def parse_share_fragment(fragment: str) -> ShareLink:
         options = RandomizerOptions(**values)
     except (TypeError, ValueError) as exc:
         raise ShareLinkError(str(exc)) from exc
-    return ShareLink(seed=seed, options=options, warnings=warnings)
+    return ShareLink(
+        seed=seed,
+        options=options,
+        warnings=warnings,
+        legacy=upgrade_link,
+        rewritten_fragment=encode_share_fragment(seed, options) if upgrade_link else None,
+    )
 
 
 def build_filename(seed: str, options: RandomizerOptions,

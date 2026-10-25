@@ -118,10 +118,15 @@ Seeds are normalized by `randomizer/seed.py`: 1–32 printable ASCII characters,
 surrounding whitespace trimmed, case and internal spaces preserved. The seed is
 hashed with SHA-256 when deriving RNG state; the short checksum is display-only.
 
+The game RNG is xoshiro128** with a 128-bit state taken from
+`SHA-256("hmsjayne-rng-v1\0" + seed-material)`. The implementation and its
+known-output vectors live in `randomizer/rng.py` and
+`tests/unit/test_rng.py`.
+
 Share links use a versioned fragment and include only non-default options:
 
 ```text
-#v=2&seed=Voyage%20of%20the%20Cactuar&shops=0&xp=200
+#v=3&seed=Voyage%20of%20the%20Cactuar&shops=0&xp=200
 ```
 
 `randomizer/share.py` builds and parses these links. Old `flags=...` links are
@@ -143,9 +148,8 @@ The Phase 1 refactor separates loading, policy, and patching:
 - `randomizer/events.py` — event script loading, preprocessing, compilation.
 - `randomizer/patchset.py` — patch collection with duplicate-offset detection.
 - `randomizer/progress.py` — progress reporting without printing from the core.
-- `randomizer/rng.py` — the RNG interface. It currently wraps Python's
-  `random.Random`; a later change will replace the implementation with a
-  portable algorithm without touching the randomization stages.
+- `randomizer/rng.py` — portable xoshiro128** RNG seeded from SHA-256 of the
+  normalized seed. The same algorithm should be implemented in TypeScript.
 - `randomizer/api.py` — stable programmatic entry point used by the CLI and
   oracle.
 
