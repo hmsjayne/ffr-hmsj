@@ -28,7 +28,7 @@ from doslib.rom import Rom
 from doslib.shopdata import ShopData
 from doslib.spells import Spells
 from randomizer.bossshuffle import BossData
-from randomizer.flags import Flags
+from randomizer.options import RandomizerOptions
 from randomizer.trace import RandomizerTrace
 from stream.outputstream import OutputStream
 
@@ -168,7 +168,7 @@ def pack_chests(chests: list) -> dict:
     return {0x217FB4: chest_stream.get_buffer()}
 
 
-def load_game_data(rom: Rom, flags: Flags, data_source=None,
+def load_game_data(rom: Rom, options: RandomizerOptions, data_source=None,
                    trace: RandomizerTrace | None = None) -> GameData:
     event_text = EventTextBlock(rom)
     shop_data = ShopData(rom)
@@ -178,8 +178,8 @@ def load_game_data(rom: Rom, flags: Flags, data_source=None,
     bosses = BossData(rom, data_source)
     vehicle_starts = load_vehicle_starts(rom)
     encounters = load_encounter_data(rom)
-    items = Items(rom, flags.new_items, data_source)
-    enemies = load_enemy_data(rom, items, flags.fiend_ribbons, data_source)
+    items = Items(rom, options.new_item_distribution, data_source)
+    enemies = load_enemy_data(rom, items, options.fiend_ribbons, data_source)
     encounter_regions = EncounterRegions(rom)
     classes = load_class_data(rom)
 

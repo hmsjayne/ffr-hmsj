@@ -12,7 +12,8 @@ python tools/generate_goldens.py --rom /path/to/ff1-dos.gba
 The manifest records:
 
 - base ROM SHA-256 and size
-- randomizer flags and seed for each case
+- canonical randomizer options, option short code, and seed for each case
+- algorithm version
 - randomized ROM hash and size
 - IPS patch hash and size
 - compact placement/patch/data-load trace hashes

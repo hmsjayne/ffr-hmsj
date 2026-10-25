@@ -1,4 +1,3 @@
-from pathlib import Path
 
 from doslib.data_source import FileSystemDataSource, InMemoryDataSource
 from doslib.dos_utils import load_tsv

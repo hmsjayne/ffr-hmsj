@@ -3,11 +3,11 @@ import hashlib
 import json
 
 from randomizer.api import RandomizerResult
-from randomizer.flags import Flags
-from randomizer.oracle import asset_manifest, build_flags, canonical_json_sha256, trace_summary
+from randomizer.options import ALGORITHM_VERSION, RandomizerOptions
+from randomizer.oracle import asset_manifest, build_options, canonical_json_sha256, trace_summary
 
 
-def test_build_flags_maps_cli_options():
+def test_build_options_maps_cli_options():
     args = argparse.Namespace(
         no_shuffle=True,
         standard_shops=False,
@@ -17,16 +17,17 @@ def test_build_flags_maps_cli_options():
         new_items=True,
         fiend_ribbons=False,
         debug=False,
-        xp_scale=2.0,
+        xp_rate=200,
     )
 
-    flags = build_flags(args)
+    options = build_options(args)
 
-    assert flags.no_shuffle is True
-    assert flags.standard_treasure is True
-    assert flags.boss_shuffle is True
-    assert flags.new_items is True
-    assert flags.scale_levels == 0.5
+    assert options.shuffle_key_items is False
+    assert options.randomize_shops is True
+    assert options.randomize_treasure is False
+    assert options.randomize_bosses is False
+    assert options.new_item_distribution is True
+    assert options.xp_rate_percent == 200
 
 
 def test_canonical_json_hash_is_key_order_independent():
@@ -69,19 +70,20 @@ def test_asset_manifest_covers_randomizer_inputs():
 
 
 def test_randomizer_result_metadata():
-    flags = Flags()
+    options = RandomizerOptions(xp_rate_percent=200)
     rom_data = b"test rom"
     result = RandomizerResult(
         rom_data=rom_data,
         seed="seed",
-        flags=flags,
+        options=options,
         base_rom_sha256=hashlib.sha256(b"base").hexdigest(),
     )
 
     metadata = result.to_metadata()
+    assert metadata["algorithm_version"] == ALGORITHM_VERSION
     assert metadata["seed"] == "seed"
-    assert metadata["flags"]["scale_levels"] == 1.0
-    assert metadata["flags_encoded"] == "KSTGB10"
+    assert metadata["options"]["xp_rate_percent"] == 200
+    assert metadata["options_short"] == "KSTGBXp200"
     assert metadata["rom_sha256"] == hashlib.sha256(rom_data).hexdigest()
     assert metadata["rom_size"] == len(rom_data)
     assert "trace" not in metadata

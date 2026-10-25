@@ -56,19 +56,17 @@ function randomize() {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", '/patch', true);
-
-    //Send the proper header information along with the request
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.responseType = "arraybuffer";
     xhr.onreadystatechange = function() { // Call a function when the state changes.
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            console.log("got data: " + xhr.response);
             applyPatch(xhr.response)
         }
     }
 
-    formData = window.location.hash.substring(1)
-    console.log(formData);
+    var formData = new FormData();
+    formData.append("seed", document.getElementById("rom-seed").value);
+    formData.append("flags", window.location.hash.split("flags=")[1] || "");
+    formData.append("rom", document.getElementById("rom-file").files[0]);
     xhr.send(formData);
 }
 

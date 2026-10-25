@@ -30,8 +30,9 @@ from pathlib import Path
 from ips_util import Patch
 
 from randomizer.api import randomize_rom
-from randomizer.flags import Flags
+from randomizer.options import ALGORITHM_VERSION, DEFAULT_XP_RATE_PERCENT, RandomizerOptions
 from randomizer.progress import PrintProgressReporter
+from randomizer.seed import normalize_seed
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -114,34 +115,32 @@ def build_ips(base_rom: bytes, randomized_rom: bytes) -> bytes:
     return Patch.create(base_rom, randomized_rom).encode()
 
 
-def build_flags(args: argparse.Namespace) -> Flags:
-    flags = Flags()
-    flags.no_shuffle = args.no_shuffle
-    flags.standard_shops = args.standard_shops
-    flags.standard_treasure = args.standard_treasure
-    flags.default_start_gear = args.default_start_gear
-    flags.boss_shuffle = args.default_bosses
-    flags.new_items = args.new_items
-    flags.fiend_ribbons = args.fiend_ribbons
-    flags.debug = args.debug
-    if args.xp_scale is not None:
-        if args.xp_scale <= 0:
-            raise ValueError("--xp-scale must be greater than zero")
-        flags.scale_levels = 1.0 / args.xp_scale
-    return flags
+def build_options(args: argparse.Namespace) -> RandomizerOptions:
+    return RandomizerOptions(
+        shuffle_key_items=not args.no_shuffle,
+        randomize_shops=not args.standard_shops,
+        randomize_treasure=not args.standard_treasure,
+        randomize_starting_gear=not args.default_start_gear,
+        randomize_bosses=not args.default_bosses,
+        new_item_distribution=args.new_items,
+        fiend_ribbons=args.fiend_ribbons,
+        xp_rate_percent=args.xp_rate,
+        debug=args.debug,
+    )
 
 
-def run_case(rom_path: Path, seed: str, flags: Flags, progress=None,
+def run_case(rom_path: Path, seed: str, options: RandomizerOptions, progress=None,
              data_source=None) -> tuple[dict, bytes, bytes]:
     """Run one case and return (manifest, randomized_rom, ips_patch)."""
+    seed = normalize_seed(seed)
     rom_bytes = rom_path.read_bytes()
-    result = randomize_rom(rom_bytes, seed, flags, data_source=data_source,
+    result = randomize_rom(rom_bytes, seed, options, data_source=data_source,
                            collect_trace=True, progress=progress)
     ips_data = build_ips(rom_bytes, result.rom_data)
 
     manifest = {
-        "schema_version": 1,
-        "algorithm_version": 1,
+        "schema_version": 2,
+        "algorithm_version": ALGORITHM_VERSION,
         "environment": {
             "python": platform.python_version(),
             "clingo": package_version("clingo"),
@@ -153,8 +152,8 @@ def run_case(rom_path: Path, seed: str, flags: Flags, progress=None,
             "rom_size": len(rom_bytes),
         },
         "seed": seed,
-        "flags": dict(vars(flags)),
-        "flags_encoded": flags.encode(),
+        "options": options.to_dict(),
+        "options_short": options.short_code(),
         "rom": {
             "sha256": result.rom_sha256,
             "size": result.rom_size,
@@ -186,7 +185,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--new-items", action="store_true", help="Use the new item distribution")
     parser.add_argument("--fiend-ribbons", action="store_true", help="Force Fiend ribbon drops")
     parser.add_argument("--debug", action="store_true", help="Enable debug randomizer behavior")
-    parser.add_argument("--xp-scale", type=float, help="Experience multiplier (2 = level twice as fast)")
+    parser.add_argument("--xp-rate", type=int, default=DEFAULT_XP_RATE_PERCENT,
+                        help="Level-up speed percentage (150 = 1.5x normal speed)")
     return parser
 
 
@@ -195,9 +195,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        flags = build_flags(args)
+        options = build_options(args)
         progress = PrintProgressReporter(file=sys.stderr) if args.verbose else None
-        manifest, randomized_rom, ips_data = run_case(args.rom, args.seed, flags, progress)
+        manifest, randomized_rom, ips_data = run_case(args.rom, args.seed, options, progress)
     except Exception as exc:  # noqa: BLE001 - CLI should report a clean error
         print(f"oracle: {exc}", file=sys.stderr)
         return 1

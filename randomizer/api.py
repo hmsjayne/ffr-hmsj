@@ -15,8 +15,9 @@
 import hashlib
 from dataclasses import dataclass
 
-from randomizer.flags import Flags
+from randomizer.options import ALGORITHM_VERSION, DEFAULT_OPTIONS, RandomizerOptions
 from randomizer.randomize import randomize
+from randomizer.seed import normalize_seed
 from randomizer.trace import RandomizerTrace
 
 
@@ -26,13 +27,13 @@ class RandomizerResult:
 
     rom_data: bytes
     seed: str
-    flags: Flags
+    options: RandomizerOptions
     base_rom_sha256: str
     trace: RandomizerTrace | None = None
 
     @property
-    def flags_encoded(self) -> str:
-        return self.flags.encode()
+    def options_short(self) -> str:
+        return self.options.short_code()
 
     @property
     def rom_sha256(self) -> str:
@@ -45,9 +46,10 @@ class RandomizerResult:
     def to_metadata(self) -> dict:
         """Return the stable, JSON-serializable part of the result."""
         metadata = {
+            "algorithm_version": ALGORITHM_VERSION,
             "seed": self.seed,
-            "flags": dict(vars(self.flags)),
-            "flags_encoded": self.flags_encoded,
+            "options": self.options.to_dict(),
+            "options_short": self.options_short,
             "base_rom_sha256": self.base_rom_sha256,
             "rom_sha256": self.rom_sha256,
             "rom_size": self.rom_size,
@@ -59,31 +61,25 @@ class RandomizerResult:
 
 def randomize_rom(rom_data: bytes | bytearray,
                   seed: str,
-                  flags: Flags | None = None,
+                  options: RandomizerOptions | None = None,
                   data_source=None,
                   collect_trace: bool = False,
                   progress=None) -> RandomizerResult:
-    """Run the randomizer through the stable programmatic entry point.
-
-    This deliberately does not normalize seeds or flags yet; Phase 2 will make
-    those canonical. It exists so the CLI, oracle, and future TypeScript port
-    all exercise the same path.
-    """
+    """Run the randomizer through the stable programmatic entry point."""
     if not isinstance(rom_data, (bytes, bytearray)):
         raise TypeError("rom_data must be bytes or bytearray")
-    if not isinstance(seed, str):
-        raise TypeError("seed must be a string")
+    normalized_seed = normalize_seed(seed)
 
     rom_bytes = bytes(rom_data)
-    active_flags = flags if flags is not None else Flags()
+    active_options = options if options is not None else DEFAULT_OPTIONS
     trace = RandomizerTrace() if collect_trace else None
-    randomized = randomize(bytearray(rom_bytes), seed, active_flags,
+    randomized = randomize(bytearray(rom_bytes), normalized_seed, active_options,
                            data_source=data_source, trace=trace, progress=progress)
 
     return RandomizerResult(
         rom_data=bytes(randomized),
-        seed=seed,
-        flags=active_flags,
+        seed=normalized_seed,
+        options=active_options,
         base_rom_sha256=hashlib.sha256(rom_bytes).hexdigest(),
         trace=trace,
     )

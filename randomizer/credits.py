@@ -12,13 +12,16 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import textwrap
+
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from randomizer.flags import Flags
+from randomizer.options import ALGORITHM_VERSION, RandomizerOptions
+from randomizer.seed import normalize_seed
 from stream.outputstream import OutputStream
 
 
-def add_credits(rom: Rom, seed: str, flags: Flags) -> dict:
+def add_credits(rom: Rom, seed: str, options: RandomizerOptions) -> dict:
     credits_lut = rom.get_lut(0x1D871C, 128)
     base_addr = credits_lut[0]
 
@@ -42,22 +45,16 @@ def add_credits(rom: Rom, seed: str, flags: Flags) -> dict:
     duration = OutputStream()
     duration.put_u16(60 * 60)
 
-    # We need to clean up the seed since this string is from untrusted input
-    # (It was untrusted the entire time, but this is the first time it matters)
-    safe_seed = ""
-    values = list(TextBlock.INVERTED_TEXT_TABLE.values())
-    for char in seed:
-        if char in TextBlock.INVERTED_TEXT_TABLE:
-            safe_seed += char
-        else:
-            encode_as = f"\\u{hex(values[ord(char) % len(values)])[2:]}"
-            safe_seed += encode_as
+    # Wrap the seed so long phrases don't overflow the credits line.
+    safe_seed = normalize_seed(seed)
+    seed_lines = textwrap.wrap(safe_seed, width=16) or [safe_seed]
+    seed_display = "\n".join(seed_lines)
 
-    # Little extra processing
-    safe_seed = safe_seed.replace("\\u82583", "\\u82D0")
-
-    # Add the seed + flags to the party creation screen.
-    seed_str = TextBlock.encode_text(f"Check:\n{safe_seed}\nFlags:\n{flags.encode()}\x00")
+    # Add the seed + options to the party creation screen.
+    seed_str = TextBlock.encode_text(
+        f"Check:\n{seed_display}\nOptions:\n{options.short_code()}\n"
+        f"Version:\n{ALGORITHM_VERSION}\x00"
+    )
     pointer = OutputStream()
     pointer.put_u32(0x8227054)
 
@@ -105,7 +102,6 @@ Playtest:
 Demerine
 leggystarscream
 rabite
-
 
 
 

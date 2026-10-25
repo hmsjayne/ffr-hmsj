@@ -12,11 +12,16 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from pathlib import Path
+
 from flask import Flask, make_response, request
 from ips_util import Patch
 
-from randomizer.flags import Flags
-from randomizer.randomize import randomize
+from randomizer.api import randomize_rom
+from randomizer.legacy_flags import LegacyFlagsError, parse_legacy_flags
+from randomizer.options import DEFAULT_OPTIONS
+from randomizer.seed import InvalidSeedError, normalize_seed
+from randomizer.share import build_filename
 
 app = Flask(__name__, static_folder="static", static_url_path='')
 
@@ -28,39 +33,33 @@ def root():
 
 @app.route('/patch', methods=['POST'])
 def create_patch():
-    patch = bytearray()
-    filename = "patch.ips"
+    rom_upload = request.files.get('rom')
+    if rom_upload is None:
+        return "Please select a ROM.", 400
 
-    flags_string = request.form['flags']
-    rom_seed = request.form['seed']
+    try:
+        seed = normalize_seed(request.form.get('seed', ''))
+    except InvalidSeedError as exc:
+        return str(exc), 400
 
-    flags = Flags()
-    flags.no_shuffle = flags_string.find("Op") != -1
-    flags.standard_shops = flags_string.find("Sv") != -1
-    flags.standard_treasure = flags_string.find("Tv") != -1
-    flags.default_start_gear = flags_string.find("Gv") != -1
-    flags.boss_shuffle = flags_string.find("B") != -1
-    flags.new_items = flags_string.find("Ni") != -1
-    flags.fiend_ribbons = flags_string.find("R") != -1
+    flags_string = request.form.get('flags', '')
+    if flags_string:
+        try:
+            options = parse_legacy_flags(flags_string).options
+        except LegacyFlagsError as exc:
+            return str(exc), 400
+    else:
+        options = DEFAULT_OPTIONS
 
-    xp_start = flags_string.find("Xp")
-    if xp_start >= 0:
-        xp_start += 2
-        xp_str = ""
-        while xp_start < len(flags_string) and flags_string[xp_start].isdigit():
-            xp_str += flags_string[xp_start]
-            xp_start += 1
-        flags.scale_levels = 1.0 / (int(xp_str) / 10.0)
+    rom_data = bytearray(rom_upload.read())
+    result = randomize_rom(rom_data, seed, options)
+    patch = Patch.create(rom_data, result.rom_data)
+    filename = build_filename(seed, options, base_name=Path(rom_upload.filename).stem, extension="ips")
 
-    with open("ff-dos.gba", "rb") as rom_file:
-        rom_data = bytearray(rom_file.read())
-        randomized_rom = randomize(rom_data, rom_seed, flags)
-
-        patch = Patch.create(rom_data, randomized_rom)
-        response = make_response(patch.encode())
-        response.headers['Content-Type'] = "application/octet-stream"
-        response.headers['Content-Disposition'] = f"inline; filename={filename}"
-        return response
+    response = make_response(patch.encode())
+    response.headers['Content-Type'] = "application/octet-stream"
+    response.headers['Content-Disposition'] = f"inline; filename={filename}"
+    return response
 
 
 # Press the green button in the gutter to run the script.

@@ -108,6 +108,27 @@ behavior change is intentional:
 The base ROM is intentionally not stored in git. The golden tests verify its
 SHA-256 before running cases.
 
+## Flags, seeds, and share links
+
+The canonical options live in `randomizer/options.py`. All fields are positive
+booleans except `xp_rate_percent`, where 100 is vanilla speed and 200 is twice
+as fast. The default is 150.
+
+Seeds are normalized by `randomizer/seed.py`: 1–32 printable ASCII characters,
+surrounding whitespace trimmed, case and internal spaces preserved. The seed is
+hashed with SHA-256 when deriving RNG state; the short checksum is display-only.
+
+Share links use a versioned fragment and include only non-default options:
+
+```text
+#v=2&seed=Voyage%20of%20the%20Cactuar&shops=0&xp=200
+```
+
+`randomizer/share.py` builds and parses these links. Old `flags=...` links are
+converted on a best-effort basis by `randomizer/legacy_flags.py`; the caller
+should replace the URL with the returned `rewritten_fragment`. Old seeds do not
+need to reproduce the old randomizer output.
+
 ## Core layout
 
 The Phase 1 refactor separates loading, policy, and patching:

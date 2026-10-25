@@ -1,15 +1,13 @@
-import hashlib
-import pprint
-import random
 import tkinter as tk
-import tomllib
 from pathlib import Path
-from tkinter import filedialog, font
+from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 
 from doslib.dos_utils import resolve_path
-from randomizer.flags import Flags
-from randomizer.randomize import randomize
+from randomizer.api import randomize_rom as run_randomizer
+from randomizer.options import RandomizerOptions
+from randomizer.seed import generate_seed, normalize_seed, seed_checksum
+from randomizer.share import build_filename
 
 
 def browse_file():
@@ -31,16 +29,16 @@ def add_option(parent: tk.Widget, option_text: str, init_value: bool = True) -> 
 
 
 def pick_new_seed():
-    title = random.choice(seed_data["titles"])
-    prefix = random.choice(seed_data["prefixes"])
-    creature = random.choice(seed_data["creatures"])
-    check_seed(f"{title} {prefix} {creature}")
+    check_seed(generate_seed())
 
 
 def check_seed(seed: str):
-    digest = hashlib.sha256(bytearray(seed, encoding="utf-8")).hexdigest()
-    hex_seed_var.set(f"Encoded: {digest[0:10]}")
-    seed_value.set(seed)
+    try:
+        normalized = normalize_seed(seed)
+        hex_seed_var.set(f"Checksum: {seed_checksum(normalized)}")
+        seed_value.set(normalized)
+    except ValueError:
+        hex_seed_var.set("Invalid seed (1-32 printable ASCII characters)")
     return True
 
 
@@ -50,27 +48,32 @@ def randomize_rom():
         # but if it does, just ignore it
         return
 
-    flags = Flags()
-    flags.no_shuffle = not progression.get()
-    flags.standard_shops = not shops.get()
-    flags.standard_treasure = not treasure.get()
-    flags.default_start_gear = not gear.get()
-    flags.boss_shuffle = fiends.get()
-    flags.new_items = shops.get()
-    flags.fiend_ribbons = ribbons.get()
+    try:
+        rom_seed = normalize_seed(seed_value.get())
+    except ValueError as exc:
+        messagebox.showerror("Invalid seed", str(exc))
+        return
 
-    flags.scale_levels = exp_scale_var.get() / 100.0
+    options = RandomizerOptions(
+        shuffle_key_items=progression.get(),
+        randomize_shops=shops.get(),
+        randomize_treasure=treasure.get(),
+        randomize_starting_gear=gear.get(),
+        randomize_bosses=fiends.get(),
+        new_item_distribution=new_items.get(),
+        fiend_ribbons=ribbons.get(),
+        xp_rate_percent=exp_scale_var.get(),
+    )
 
     with open(rom_full_path, "rb") as rom_file:
         rom_data = bytearray(rom_file.read())
 
-    base_name = rom_file.name.replace(".gba", "")
-    rom_seed = hex_seed_var.get()[len("Encoded: "):]
-    randomized_rom = randomize(rom_data, rom_seed, flags)
-
-    output_name = f"{base_name}_{flags.encode()}_{rom_seed}.gba"
-    with open(output_name, "wb") as output:
-        output.write(randomized_rom)
+    base_path = Path(rom_full_path)
+    result = run_randomizer(rom_data, rom_seed, options)
+    output_name = base_path.parent / build_filename(
+        rom_seed, options, base_name=base_path.stem, extension="gba"
+    )
+    output_name.write_bytes(result.rom_data)
 
 
 # Initialize the main window
@@ -125,7 +128,6 @@ new_seed.pack(anchor="w", side="left")
 seed_text.pack(side="left", fill="x", expand=1)
 
 hex_seed_label = tk.Label(rom_frame, textvariable=hex_seed_var, anchor="w")
-check_seed("")
 
 seed_label.grid(row=1, column=0, sticky="w", padx=(10, 10), pady=(3, 3))
 seed_frame.grid(row=2, column=0, columnspan=2, sticky="ew", padx=(10, 10), pady=(3, 3))
@@ -144,15 +146,15 @@ exp_label_var = tk.StringVar()
 
 
 def update_exp_label(val):
-    exp_label_var.set(f"XP Scaling: {val}%")
+    exp_label_var.set(f"Level-up speed: {val}% of normal")
 
 
 update_exp_label(exp_scale_var.get())
 
-exp_label = tk.Label(exp_scale_frame, textvariable=exp_label_var, width=18, anchor="w")
+exp_label = tk.Label(exp_scale_frame, textvariable=exp_label_var, width=30, anchor="w")
 exp_label.pack(side=tk.LEFT, padx=(0, 10))
 
-exp_scale = tk.Scale(exp_scale_frame, variable=exp_scale_var, from_=50, to=500, resolution=25,
+exp_scale = tk.Scale(exp_scale_frame, variable=exp_scale_var, from_=50, to=500, resolution=10,
                      orient=tk.HORIZONTAL, showvalue=False, command=update_exp_label)
 exp_scale.pack(side=tk.LEFT, fill="x", expand=True, padx=(0, 5))
 
@@ -161,12 +163,10 @@ shops = add_option(options_frame, "Random shops (item, weapon, armor, or magic s
 treasure = add_option(options_frame, "Random treasure chests")
 gear = add_option(options_frame, "Random starting gear")
 fiends = add_option(options_frame, "Random fiend fights")
-ribbons = add_option(options_frame, "Fiend 1s always drop a ribbon")
+new_items = add_option(options_frame, "New item distribution (experimental)", False)
+ribbons = add_option(options_frame, "Fiend 1s always drop a ribbon", False)
 
 options_frame.pack(anchor='w', fill="x")
-
-with open(resolve_path("static/seed_data.toml"), "rb") as seed_data_file:
-    seed_data = tomllib.load(seed_data_file)
 
 pick_new_seed()
 

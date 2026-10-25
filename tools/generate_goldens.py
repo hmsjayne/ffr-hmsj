@@ -20,20 +20,18 @@ explicitly; the manifest records only hashes and compact traces.
 """
 
 import argparse
-import contextlib
 import hashlib
-import io
 import json
 import platform
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from randomizer.flags import Flags
+from randomizer.options import ALGORITHM_VERSION, DEFAULT_OPTIONS, RandomizerOptions
 from randomizer.oracle import (
     asset_manifest,
     package_version,
@@ -46,66 +44,44 @@ from randomizer.oracle import (
 class GoldenCase:
     name: str
     seed: str
-    flags: dict
+    options: dict
 
 
-def case(
-    name: str,
-    seed: str,
-    *,
-    no_shuffle: bool = False,
-    standard_shops: bool = False,
-    standard_treasure: bool = False,
-    default_start_gear: bool = False,
-    default_bosses: bool = False,
-    new_items: bool = False,
-    fiend_ribbons: bool = False,
-    debug: bool = False,
-    xp_scale: float | None = None,
-) -> GoldenCase:
-    flags = Flags()
-    flags.no_shuffle = no_shuffle
-    flags.standard_shops = standard_shops
-    flags.standard_treasure = standard_treasure
-    flags.default_start_gear = default_start_gear
-    flags.boss_shuffle = default_bosses
-    flags.new_items = new_items
-    flags.fiend_ribbons = fiend_ribbons
-    flags.debug = debug
-    if xp_scale is not None:
-        flags.scale_levels = 1.0 / xp_scale
-    return GoldenCase(name=name, seed=seed, flags=dict(vars(flags)))
+def case(name: str, seed: str, **overrides) -> GoldenCase:
+    options = replace(DEFAULT_OPTIONS, **overrides)
+    return GoldenCase(name=name, seed=seed, options=options.to_dict())
 
 
 CASES = (
     case("default", "test"),
     case("default_alt_seed", "abc"),
-    case("no_shuffle", "test", no_shuffle=True),
-    case("standard_shops", "test", standard_shops=True),
-    case("standard_treasure", "test", standard_treasure=True),
-    case("default_start_gear", "test", default_start_gear=True),
-    case("default_bosses", "test", default_bosses=True),
-    case("new_items", "test", new_items=True),
+    case("no_shuffle", "test", shuffle_key_items=False),
+    case("standard_shops", "test", randomize_shops=False),
+    case("standard_treasure", "test", randomize_treasure=False),
+    case("default_start_gear", "test", randomize_starting_gear=False),
+    case("default_bosses", "test", randomize_bosses=False),
+    case("new_items", "test", new_item_distribution=True),
     case("fiend_ribbons", "test", fiend_ribbons=True),
-    case("xp_50", "test", xp_scale=0.5),
-    case("xp_200", "test", xp_scale=2.0),
+    case("xp_50", "test", xp_rate_percent=50),
+    case("xp_200", "test", xp_rate_percent=200),
     case(
         "all_standard",
         "test",
-        no_shuffle=True,
-        standard_shops=True,
-        standard_treasure=True,
-        default_start_gear=True,
-        default_bosses=True,
+        shuffle_key_items=False,
+        randomize_shops=False,
+        randomize_treasure=False,
+        randomize_starting_gear=False,
+        randomize_bosses=False,
     ),
     case(
         "all_features",
         "test",
-        new_items=True,
+        new_item_distribution=True,
         fiend_ribbons=True,
-        xp_scale=2.0,
+        xp_rate_percent=200,
     ),
-    case("empty_seed", ""),
+    case("max_seed", "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456"),
+    case("seed_with_spaces", "Voyage of the Cactuar"),
 )
 
 
@@ -113,19 +89,15 @@ def build_manifest(rom_path: Path) -> dict:
     base_rom = rom_path.read_bytes()
     results = []
     for golden_case in CASES:
-        flags = Flags()
-        for key, value in golden_case.flags.items():
-            setattr(flags, key, value)
+        options = RandomizerOptions(**golden_case.options)
 
-        captured = io.StringIO()
-        with contextlib.redirect_stdout(captured):
-            manifest, _randomized_rom, _ips_data = run_case(rom_path, golden_case.seed, flags)
+        manifest, _randomized_rom, _ips_data = run_case(rom_path, golden_case.seed, options)
 
         results.append({
             "name": golden_case.name,
             "seed": golden_case.seed,
-            "flags": golden_case.flags,
-            "flags_encoded": flags.encode(),
+            "options": golden_case.options,
+            "options_short": options.short_code(),
             "rom_sha256": manifest["rom"]["sha256"],
             "rom_size": manifest["rom"]["size"],
             "ips_sha256": manifest["ips"]["sha256"],
@@ -134,8 +106,8 @@ def build_manifest(rom_path: Path) -> dict:
         })
 
     return {
-        "schema_version": 1,
-        "algorithm_version": 1,
+        "schema_version": 2,
+        "algorithm_version": ALGORITHM_VERSION,
         "environment": {
             "python": platform.python_version(),
             "clingo": package_version("clingo"),

@@ -19,7 +19,7 @@ from doslib.textblock import TextBlock
 from randomizer.clingo import solve_placement_for_seed
 from randomizer.credits import add_credits
 from randomizer.events import compile_event_scripts, load_event_scripts, update_strings
-from randomizer.flags import Flags
+from randomizer.options import RandomizerOptions
 from randomizer.game_data import (
     VehiclePosition,
     load_game_data,
@@ -39,6 +39,7 @@ from randomizer.patchset import PatchSet
 from randomizer.placement import Placement
 from randomizer.placement_application import apply_placements
 from randomizer.progress import NullProgressReporter, ProgressReporter
+from randomizer.seed import normalize_seed
 from randomizer.shops import randomize_shops
 from randomizer.spellgenerator import SpellGenerator
 from randomizer.spells import spell_shuffle
@@ -46,12 +47,13 @@ from randomizer.trace import RandomizerTrace
 from randomizer.treasure import InventoryGenerator, randomize_treasure
 
 
-def randomize(rom_data: bytearray, seed: str, flags: Flags,
+def randomize(rom_data: bytearray, seed: str, options: RandomizerOptions,
               data_source=None,
               trace: RandomizerTrace | None = None,
               progress: ProgressReporter | None = None) -> bytearray:
+    seed = normalize_seed(seed)
     progress = progress if progress is not None else NullProgressReporter()
-    progress.update("start", f"Randomizing with seed {seed}, {flags.encode()}")
+    progress.update("start", f"Randomizing with seed {seed}, {options.short_code()}")
 
     # Start with the list of standard patches to improve gameplay.
     all_patches = PatchSet()
@@ -73,7 +75,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags,
     rng = random.Random()
     rng.seed(seed)
 
-    data = load_game_data(rom, flags, data_source, trace)
+    data = load_game_data(rom, options, data_source, trace)
     event_text_block = data.event_text
     shop_data = data.shop_data
     spells = data.spells
@@ -92,29 +94,29 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags,
     for region in encounter_regions.map_encounters:
         rng.shuffle(region)
 
-    if not flags.boss_shuffle:
+    if options.randomize_bosses:
         boss_data.randomize_bosses(encounters, enemy_data, rng)
 
-    inventory_generator = InventoryGenerator(seed, items, flags.new_items, data_source)
-    if not flags.standard_shops:
+    inventory_generator = InventoryGenerator(seed, items, options.new_item_distribution, data_source)
+    if options.randomize_shops:
         randomize_shops(rng, map_features, shop_data, inventory_generator)
 
         spell_generator = SpellGenerator(seed, spells, data_source)
         spell_shuffle(map_features, shop_data, spells, spell_generator)
 
     inventory_generator.update_with_new_shops(shop_data)
-    if not flags.standard_treasure:
+    if options.randomize_treasure:
         randomize_treasure(rng, map_features, chest_data, inventory_generator)
 
-    if not flags.default_start_gear:
+    if options.randomize_starting_gear:
         classes_data = randomize_starting_gear(rng, items, classes_data)
         all_patches.update(pack_class_data(classes_data), source="class data")
 
-    if flags.scale_levels != 1.0:
+    if options.xp_rate_percent != 100:
         level_reqs = load_xp_requirements(rom)
         scaled_level_reqs = []
         for level_req in level_reqs:
-            scaled_level_reqs.append(int(level_req * flags.scale_levels))
+            scaled_level_reqs.append((level_req * 100) // options.xp_rate_percent)
         all_patches.update(pack_xp_requirements(scaled_level_reqs), source="xp requirements")
 
     # Do some basic updates to the maps
@@ -128,7 +130,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags,
 
     # Are Key Items being shuffled? If so, figure out their placement.
     placement = Placement(data_source)
-    if not flags.no_shuffle:
+    if options.shuffle_key_items:
         free_items = ["bridge", "ship"]
 
         rng = random.Random()
@@ -176,7 +178,7 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags,
     if trace is not None:
         trace.checkpoint(
             "placements",
-            shuffled=not flags.no_shuffle,
+            shuffled=options.shuffle_key_items,
             placements=[placement._asdict() for placement in placement.all_placements()],
         )
         trace.checkpoint(
@@ -193,10 +195,10 @@ def randomize(rom_data: bytearray, seed: str, flags: Flags,
         rom, placement, free_header, event_scripts
     )
 
-    if flags.debug:
+    if options.debug:
         trivial_enemies(enemy_data)
 
-    all_patches.update(add_credits(rom, seed, flags), source="credits")
+    all_patches.update(add_credits(rom, seed, options), source="credits")
     all_patches.update(event_script_patches, source="event scripts")
     all_patches.update(event_table_patches, source="event tables")
     all_patches.update(map_features.get_patches(), source="maps")
