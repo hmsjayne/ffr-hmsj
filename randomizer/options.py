@@ -14,7 +14,7 @@
 
 from dataclasses import asdict, dataclass, fields
 
-ALGORITHM_VERSION = 3
+ALGORITHM_VERSION = 4
 
 MIN_XP_RATE_PERCENT = 50
 MAX_XP_RATE_PERCENT = 500

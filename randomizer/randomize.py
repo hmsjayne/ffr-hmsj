@@ -14,7 +14,6 @@
 
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
-from randomizer.clingo import solve_placement_for_seed
 from randomizer.credits import add_credits
 from randomizer.events import compile_event_scripts, load_event_scripts, update_strings
 from randomizer.options import RandomizerOptions
@@ -35,6 +34,7 @@ from randomizer.ipsfile import load_ips_files
 from randomizer.map_updates import map_updates
 from randomizer.patchset import PatchSet
 from randomizer.placement import Placement
+from randomizer.placement_solver import ClingoSolver
 from randomizer.placement_application import apply_placements
 from randomizer.progress import NullProgressReporter, ProgressReporter
 from randomizer.rng import RNG
@@ -132,7 +132,7 @@ def randomize(rom_data: bytearray, seed: str, options: RandomizerOptions,
         free_items = ["bridge", "ship"]
 
         rng = RNG(seed)
-        clingo_placements = solve_placement_for_seed(rng.randint(0, 0xffffffff))
+        clingo_placements = ClingoSolver().solve(rng)
         placement.update_placements(clingo_placements)
 
         # The key feature of HMS Janye is starting with the Ship (the HMS Janye), so move the ship to Cornelia harbor.

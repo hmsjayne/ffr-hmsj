@@ -31,7 +31,7 @@ OPTION_PARAMS = {
     "xp_rate_percent": "xp",
 }
 PARAM_TO_OPTION = {value: key for key, value in OPTION_PARAMS.items()}
-SUPPORTED_LINK_VERSIONS = {2, ALGORITHM_VERSION}
+SUPPORTED_LINK_VERSIONS = {2, 3, ALGORITHM_VERSION}
 
 TRUE_VALUES = {"1", "true", "yes", "on"}
 FALSE_VALUES = {"0", "false", "no", "off"}

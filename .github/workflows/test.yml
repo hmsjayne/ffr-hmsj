@@ -38,3 +38,23 @@ jobs:
       # ROM parity tests are opt-in because the copyrighted base ROM is not
       # stored in the repository. Set HMSJAYNE_ROM on a runner that has it to
       # run tests/integration/test_golden.py.
+
+  placement-wasm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tools/placement-parity/package-lock.json
+
+      - name: Install placement parity dependencies
+        run: npm ci --prefix tools/placement-parity
+
+      - name: Check native/WASM placement parity
+        run: node tools/placement-parity/check.mjs

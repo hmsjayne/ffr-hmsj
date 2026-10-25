@@ -34,6 +34,9 @@
 # Python .gitignore from GitHub
 # Reference: https://github.com/github/gitignore/blob/master/Python.gitignore
 
+# Node dependencies
+node_modules/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

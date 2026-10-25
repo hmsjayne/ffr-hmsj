@@ -1,9 +1,6 @@
-from collections import namedtuple
-
 from doslib.item import Item
 from randomizer.placement import Placement
-
-ClingoPlacement = namedtuple("ClingoPlacement", ["reward", "source"])
+from randomizer.placement_solver import PlacementPair
 
 
 def test_placement_data_is_loaded():
@@ -36,8 +33,8 @@ def test_update_gear_replaces_reward_and_allocates_free_flag():
 def test_update_placements_moves_reward_to_source():
     placement = Placement()
     placement.update_placements((
-        ClingoPlacement(source="king", reward="lute"),
-        ClingoPlacement(source="sara", reward="bridge"),
+        PlacementPair(item="lute", location="king"),
+        PlacementPair(item="bridge", location="sara"),
     ))
 
     placements = placement.all_placements()
@@ -51,8 +48,8 @@ def test_update_placements_moves_reward_to_source():
 def test_update_placements_skips_caravan():
     placement = Placement()
     placement.update_placements((
-        ClingoPlacement(source="caravan", reward="bottle"),
-        ClingoPlacement(source="king", reward="lute"),
+        PlacementPair(item="bottle", location="caravan"),
+        PlacementPair(item="lute", location="king"),
     ))
 
     placements = placement.all_placements()

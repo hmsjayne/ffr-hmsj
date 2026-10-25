@@ -1,0 +1,14 @@
+{
+  "name": "hmsjayne-placement-parity",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node check.mjs"
+  },
+  "dependencies": {
+    "clingo-wasm": "0.6.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

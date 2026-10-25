@@ -1,4 +1,4 @@
-clingo==5.7.1
+clingo==5.8.1
 Flask==2.2.5
 ips-util==1.0
 pillow==10.4.0

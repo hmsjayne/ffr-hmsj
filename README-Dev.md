@@ -123,10 +123,15 @@ The game RNG is xoshiro128** with a 128-bit state taken from
 known-output vectors live in `randomizer/rng.py` and
 `tests/unit/test_rng.py`.
 
+Key-item placement uses Clingo with a pinned configuration. The browser build
+will use `clingo-wasm` with the same configuration. The parity harness in
+`tools/placement-parity` compares native Python Clingo against `clingo-wasm`
+for 100 seeds, and runs in CI.
+
 Share links use a versioned fragment and include only non-default options:
 
 ```text
-#v=3&seed=Voyage%20of%20the%20Cactuar&shops=0&xp=200
+#v=4&seed=Voyage%20of%20the%20Cactuar&shops=0&xp=200
 ```
 
 `randomizer/share.py` builds and parses these links. Old `flags=...` links are
@@ -143,6 +148,9 @@ The Phase 1 refactor separates loading, policy, and patching:
 - `randomizer/game_data.py` — loads ROM/TSV data once into a `GameData` model.
 - `randomizer/placement.py` / `placement_application.py` — key-item placement
   data and applying placements to maps/vehicles.
+- `randomizer/placement_solver.py` — `PlacementSolver` interface and native
+  Clingo implementation. Both native and browser solvers use
+  `--configuration=frumpy`, `--sign-def=rnd`, and one model.
 - `randomizer/shops.py`, `spells.py`, `treasure.py`, `gear.py`,
   `map_updates.py` — individual randomization stages.
 - `randomizer/events.py` — event script loading, preprocessing, compilation.

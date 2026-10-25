@@ -18,7 +18,7 @@ def test_default_options():
     assert DEFAULT_OPTIONS.xp_rate_percent == 150
     assert DEFAULT_OPTIONS.debug is False
     assert DEFAULT_OPTIONS.short_code() == "KSTGBXp150"
-    assert ALGORITHM_VERSION == 3
+    assert ALGORITHM_VERSION == 4
 
 
 def test_options_round_trip():

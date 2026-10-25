@@ -64,10 +64,10 @@ class Placement(object):
         new_placements = []
         for clingo_placement in clingo_placements:
             # TODO: Figure something to do with the Caravan eventually...
-            if clingo_placement.source == "caravan":
+            if clingo_placement.location == "caravan":
                 continue
-            source = by_source[clingo_placement.source]
-            reward = by_reward[clingo_placement.reward]
+            source = by_source[clingo_placement.location]
+            reward = by_reward[clingo_placement.item]
             new_placement = source._replace(sprite=reward.sprite, movable=reward.movable, reward=reward.reward,
                                             reward_text_id=reward.reward_text_id, plot_flag=reward.plot_flag,
                                             plot_item=reward.plot_item, extra=reward.extra)
