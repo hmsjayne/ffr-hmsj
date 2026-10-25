@@ -1,7 +1,7 @@
-import random
 from types import SimpleNamespace
 
 from randomizer.gear import randomize_starting_gear
+from randomizer.rng import RNG
 
 
 class FakeItems:
@@ -18,7 +18,7 @@ def test_randomize_starting_gear_assigns_usable_gear():
     armor = SimpleNamespace(id=1, equip_classes=0x3F)
     classes = [SimpleNamespace(weapon_id=0, armor_id=0) for _ in range(6)]
 
-    randomize_starting_gear(random.Random(1), FakeItems([weapon], [armor]), classes)
+    randomize_starting_gear(RNG(1), FakeItems([weapon], [armor]), classes)
 
     assert all(job.weapon_id == 1 for job in classes)
     assert all(job.armor_id == 1 for job in classes)
@@ -34,7 +34,7 @@ def test_randomize_starting_gear_filters_unusable_and_high_level_gear():
     classes = [SimpleNamespace(weapon_id=0, armor_id=0)]
 
     randomize_starting_gear(
-        random.Random(1),
+        RNG(1),
         FakeItems([usable_weapon, unusable_weapon, dummy_weapon],
                   [usable_armor, unusable_armor, high_armor]),
         classes,

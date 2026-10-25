@@ -12,12 +12,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import random
 from doslib.rom import Rom
 from doslib.enemy import *
 from doslib.enemy import EnemyScript
 from collections import namedtuple
 from doslib.dos_utils import load_tsv
+from randomizer.rng import RNG
 from stream.outputstream import OutputStream
 
 NewScript = namedtuple("NewScript", ["iteration", "index", "name", "formation_size", "spell_chance", "ability_chance",
@@ -68,7 +68,7 @@ class BossData:
 
         # Finally, load in the script data from the ROM - we can read in the tsv if/when randomize gets called
 
-    def randomize_bosses(self, encounters: list, enemy_data: list, rng: random.Random):
+    def randomize_bosses(self, encounters: list, enemy_data: list, rng: RNG):
         boss_choices = rng.sample(self.boss_list, 4)
         rng.shuffle(boss_choices)
         new_fiend1s = [self.boss_data[boss_choices[0]][0], self.boss_data[boss_choices[1]][0],

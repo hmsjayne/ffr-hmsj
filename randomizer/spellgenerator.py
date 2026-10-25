@@ -12,12 +12,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import random
 from collections import namedtuple
 
 from doslib.dos_utils import load_tsv
 from doslib.spell import SpellData
 from doslib.spells import Spells
+from randomizer.rng import RNG
 
 ChestData = namedtuple("ChestData", ["chest_index", "type", "contents", "description", "map", "grade", "notes"])
 
@@ -26,8 +26,7 @@ MapToArea = namedtuple("MapToArea", ["map_index", "name", "area"])
 
 class SpellGenerator(object):
     def __init__(self, seed: str, spells: Spells, data_source=None):
-        self.rng = random.Random()
-        self.rng.seed(seed)
+        self.rng = RNG(seed)
 
         self.maps_to_area = {}
         for map_area in load_tsv("data/MapToArea.tsv", data_source):

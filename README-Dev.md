@@ -143,6 +143,9 @@ The Phase 1 refactor separates loading, policy, and patching:
 - `randomizer/events.py` — event script loading, preprocessing, compilation.
 - `randomizer/patchset.py` — patch collection with duplicate-offset detection.
 - `randomizer/progress.py` — progress reporting without printing from the core.
+- `randomizer/rng.py` — the RNG interface. It currently wraps Python's
+  `random.Random`; a later change will replace the implementation with a
+  portable algorithm without touching the randomization stages.
 - `randomizer/api.py` — stable programmatic entry point used by the CLI and
   oracle.
 

@@ -12,8 +12,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-import random
-
 from doslib.rom import Rom
 from doslib.textblock import TextBlock
 from randomizer.clingo import solve_placement_for_seed
@@ -39,6 +37,7 @@ from randomizer.patchset import PatchSet
 from randomizer.placement import Placement
 from randomizer.placement_application import apply_placements
 from randomizer.progress import NullProgressReporter, ProgressReporter
+from randomizer.rng import RNG
 from randomizer.seed import normalize_seed
 from randomizer.shops import randomize_shops
 from randomizer.spellgenerator import SpellGenerator
@@ -72,8 +71,7 @@ def randomize(rom_data: bytearray, seed: str, options: RandomizerOptions,
 
     rom = Rom(rom_data)
 
-    rng = random.Random()
-    rng.seed(seed)
+    rng = RNG(seed)
 
     data = load_game_data(rom, options, data_source, trace)
     event_text_block = data.event_text
@@ -133,8 +131,7 @@ def randomize(rom_data: bytearray, seed: str, options: RandomizerOptions,
     if options.shuffle_key_items:
         free_items = ["bridge", "ship"]
 
-        rng = random.Random()
-        rng.seed(seed)
+        rng = RNG(seed)
         clingo_placements = solve_placement_for_seed(rng.randint(0, 0xffffffff))
         placement.update_placements(clingo_placements)
 
