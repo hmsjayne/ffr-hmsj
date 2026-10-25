@@ -20,9 +20,7 @@ runner can rely on a stable interface.
 """
 
 import argparse
-import contextlib
 import hashlib
-import io
 import json
 import platform
 import sys
@@ -33,6 +31,7 @@ from ips_util import Patch
 
 from randomizer.api import randomize_rom
 from randomizer.flags import Flags
+from randomizer.progress import PrintProgressReporter
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -132,10 +131,12 @@ def build_flags(args: argparse.Namespace) -> Flags:
     return flags
 
 
-def run_case(rom_path: Path, seed: str, flags: Flags) -> tuple[dict, bytes, bytes]:
+def run_case(rom_path: Path, seed: str, flags: Flags, progress=None,
+             data_source=None) -> tuple[dict, bytes, bytes]:
     """Run one case and return (manifest, randomized_rom, ips_patch)."""
     rom_bytes = rom_path.read_bytes()
-    result = randomize_rom(rom_bytes, seed, flags, collect_trace=True)
+    result = randomize_rom(rom_bytes, seed, flags, data_source=data_source,
+                           collect_trace=True, progress=progress)
     ips_data = build_ips(rom_bytes, result.rom_data)
 
     manifest = {
@@ -195,9 +196,8 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         flags = build_flags(args)
-        captured = io.StringIO()
-        with contextlib.redirect_stdout(captured):
-            manifest, randomized_rom, ips_data = run_case(args.rom, args.seed, flags)
+        progress = PrintProgressReporter(file=sys.stderr) if args.verbose else None
+        manifest, randomized_rom, ips_data = run_case(args.rom, args.seed, flags, progress)
     except Exception as exc:  # noqa: BLE001 - CLI should report a clean error
         print(f"oracle: {exc}", file=sys.stderr)
         return 1
@@ -210,9 +210,6 @@ def main(argv: list[str] | None = None) -> int:
         args.trace.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
 
     print(json.dumps(manifest, indent=2, sort_keys=True))
-
-    if args.verbose:
-        print(captured.getvalue(), file=sys.stderr, end="")
     return 0
 
 

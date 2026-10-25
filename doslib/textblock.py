@@ -29,7 +29,7 @@ class TextBlock(object):
         return TextBlock._as_ascii(InputStream(self.strings[index], check_alignment=False))
 
     def __setitem__(self, index: int, value: str):
-        self.strings[index] = TextBlock._encode_text(InputStream(bytearray(value), check_alignment=False))
+        self.strings[index] = TextBlock.encode_text(value)
 
     def size(self):
         return len(self.strings)

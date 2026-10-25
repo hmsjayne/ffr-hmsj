@@ -17,7 +17,8 @@ import random
 from argparse import ArgumentParser, FileType
 
 from randomizer.flags import Flags
-from randomizer.randomize import randomize
+from randomizer.api import randomize_rom
+from randomizer.progress import PrintProgressReporter
 from ips_util import Patch
 
 
@@ -66,7 +67,8 @@ def main() -> int:
     rom_file.close()
 
     base_name = rom_file.name.replace(".gba", "")
-    randomized_rom = randomize(rom_data, seed_value, flags)
+    result = randomize_rom(rom_data, seed_value, flags, progress=PrintProgressReporter())
+    randomized_rom = result.rom_data
 
     if not parsed.patch:
         output_name = f"{base_name}_{flags.encode()}_{seed_value}.gba"

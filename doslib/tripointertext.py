@@ -39,7 +39,7 @@ class TriPointerTextBlock(TextBlock):
         return super().__getitem__((index * 3) + 2)
 
     def set_description(self, index: int, value: str):
-        return super().__setitem__(index * 3, value)
+        return super().__setitem__((index * 3) + 2, value)
 
     def size(self):
         return len(self.strings)

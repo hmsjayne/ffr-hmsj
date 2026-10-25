@@ -77,6 +77,7 @@ class InputStream(object):
         if self._index < len(self._stream):
             if self._check_alignment:
                 self._ensure_halfword_aligned()
+            self._ensure_available(2)
 
             data = self._stream[self._index:self._index + 2]
             self._index += 2
@@ -91,6 +92,7 @@ class InputStream(object):
         if self._index < len(self._stream):
             if self._check_alignment:
                 self._ensure_halfword_aligned()
+            self._ensure_available(2)
 
             data = self._stream[self._index:self._index + 2]
             return int.from_bytes(data, byteorder="little", signed=False)
@@ -105,6 +107,7 @@ class InputStream(object):
         if self._index < len(self._stream):
             if self._check_alignment:
                 self._ensure_word_aligned()
+            self._ensure_available(4)
 
             data = self._stream[self._index:self._index + 4]
             self._index += 4
@@ -121,6 +124,7 @@ class InputStream(object):
         if self._index < len(self._stream):
             if self._check_alignment:
                 self._ensure_word_aligned()
+            self._ensure_available(4)
 
             data = self._stream[self._index:self._index + 4]
             return int.from_bytes(data, byteorder="little", signed=False)
@@ -160,3 +164,10 @@ class InputStream(object):
     def _ensure_word_aligned(self):
         if self._index % 4 != 0:
             raise RuntimeError(f"Offset must be word aligned: {hex(self._index)}")
+
+    def _ensure_available(self, size: int):
+        if self._index + size > len(self._stream):
+            raise RuntimeError(
+                f"Unexpected end of stream: need {size} bytes at {hex(self._index)}, "
+                f"only {len(self._stream) - self._index} available"
+            )

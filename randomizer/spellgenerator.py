@@ -25,17 +25,17 @@ MapToArea = namedtuple("MapToArea", ["map_index", "name", "area"])
 
 
 class SpellGenerator(object):
-    def __init__(self, seed: str, spells: Spells):
+    def __init__(self, seed: str, spells: Spells, data_source=None):
         self.rng = random.Random()
         self.rng.seed(seed)
 
         self.maps_to_area = {}
-        for map_area in load_tsv("data/MapToArea.tsv"):
+        for map_area in load_tsv("data/MapToArea.tsv", data_source):
             map_area_data = MapToArea(*map_area)
             self.maps_to_area[map_area_data.map_index] = map_area_data.area
 
         self.area_weights = {}
-        for area_weight in load_tsv("data/AreaWeights.tsv"):
+        for area_weight in load_tsv("data/AreaWeights.tsv", data_source):
             self.area_weights[area_weight[0]] = area_weight[1:]
 
         self.spell_grades = {}

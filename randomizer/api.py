@@ -60,7 +60,9 @@ class RandomizerResult:
 def randomize_rom(rom_data: bytes | bytearray,
                   seed: str,
                   flags: Flags | None = None,
-                  collect_trace: bool = False) -> RandomizerResult:
+                  data_source=None,
+                  collect_trace: bool = False,
+                  progress=None) -> RandomizerResult:
     """Run the randomizer through the stable programmatic entry point.
 
     This deliberately does not normalize seeds or flags yet; Phase 2 will make
@@ -75,7 +77,8 @@ def randomize_rom(rom_data: bytes | bytearray,
     rom_bytes = bytes(rom_data)
     active_flags = flags if flags is not None else Flags()
     trace = RandomizerTrace() if collect_trace else None
-    randomized = randomize(bytearray(rom_bytes), seed, active_flags, trace=trace)
+    randomized = randomize(bytearray(rom_bytes), seed, active_flags,
+                           data_source=data_source, trace=trace, progress=progress)
 
     return RandomizerResult(
         rom_data=bytes(randomized),

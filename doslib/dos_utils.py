@@ -40,35 +40,42 @@ def resolve_path(path):
     """
     if hasattr(sys, "_MEIPASS"):
         return str(Path(sys._MEIPASS).joinpath(path))
-    return path
+    return str(Path(__file__).resolve().parents[1].joinpath(path))
 
 
-def load_tsv(data_file_path: str) -> list:
+def load_tsv(data_file_path: str, data_source=None) -> list:
+    if data_source is None:
+        from doslib.data_source import FileSystemDataSource
+
+        data_source = FileSystemDataSource()
+    return parse_tsv(data_source.read_text(data_file_path))
+
+
+def parse_tsv(text: str) -> list:
     data = []
     properties = None
-    with open(resolve_path(data_file_path), "r") as data_file:
-        first_line = True
-        for line in data_file.readlines():
-            if not first_line:
-                values = line.strip().split('\t')
-                row_data = []
-                for index, key in enumerate(properties):
-                    if index < len(values):
-                        if len(values[index]) == 0 or values[index] == "None":
-                            value = None
-                        elif values[index].lower() in ["true", "false"]:
-                            value = values[index].lower() == "true"
-                        else:
-                            try:
-                                value = int(values[index], 0)
-                            except ValueError:
-                                value = values[index]
-                        row_data.append(value)
+    first_line = True
+    for line in text.splitlines():
+        if not first_line:
+            values = line.strip().split('\t')
+            row_data = []
+            for index, key in enumerate(properties):
+                if index < len(values):
+                    if len(values[index]) == 0 or values[index] == "None":
+                        value = None
+                    elif values[index].lower() in ["true", "false"]:
+                        value = values[index].lower() == "true"
                     else:
-                        row_data.append(None)
+                        try:
+                            value = int(values[index], 0)
+                        except ValueError:
+                            value = values[index]
+                    row_data.append(value)
+                else:
+                    row_data.append(None)
 
-                data.append(row_data)
-            else:
-                properties = line.strip().split('\t')
-                first_line = False
+            data.append(row_data)
+        else:
+            properties = line.strip().split('\t')
+            first_line = False
     return data

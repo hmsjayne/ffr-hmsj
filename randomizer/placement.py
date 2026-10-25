@@ -14,7 +14,7 @@
 
 from collections import namedtuple
 
-from doslib.dos_utils import resolve_path
+from doslib.dos_utils import load_tsv
 from doslib.item import Item
 from doslib.items import Items
 
@@ -26,8 +26,8 @@ PlacementDetails = namedtuple("Placement",
 
 # noinspection PyProtectedMember
 class Placement(object):
-    def __init__(self):
-        self._placement_list = Placement._parse_data("data/KeyItemPlacement.tsv")
+    def __init__(self, data_source=None):
+        self._placement_list = Placement._parse_data("data/KeyItemPlacement.tsv", data_source)
 
     def all_placements(self) -> list:
         return self._placement_list
@@ -75,32 +75,5 @@ class Placement(object):
         self._placement_list = new_placements
 
     @staticmethod
-    def _parse_data(data_file_path: str) -> list:
-        data = []
-        properties = None
-        with open(resolve_path(data_file_path), "r") as data_file:
-            first_line = True
-            for line in data_file.readlines():
-                if not first_line:
-                    values = line.strip().split('\t')
-                    row_data = []
-                    for index, key in enumerate(properties):
-                        if index < len(values):
-                            if len(values[index]) == 0 or values[index] == "None":
-                                value = None
-                            elif values[index].lower() in ["true", "false"]:
-                                value = values[index].lower() == "true"
-                            else:
-                                try:
-                                    value = int(values[index], 0)
-                                except ValueError:
-                                    value = values[index]
-                            row_data.append(value)
-                        else:
-                            row_data.append(None)
-
-                    data.append(PlacementDetails(*row_data))
-                else:
-                    properties = line.strip().split('\t')
-                    first_line = False
-        return data
+    def _parse_data(data_file_path: str, data_source=None) -> list:
+        return [PlacementDetails(*row) for row in load_tsv(data_file_path, data_source)]

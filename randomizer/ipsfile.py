@@ -12,47 +12,63 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from doslib.dos_utils import resolve_path
-
 IPS_MAGIC = b'PATCH'
 IPS_EOF = 0x454F46
 
 
-def load_ips_file(path):
+def _data_source(data_source):
+    if data_source is None:
+        from doslib.data_source import FileSystemDataSource
+
+        return FileSystemDataSource()
+    return data_source
+
+
+def load_ips_file(path, data_source=None):
     """Loads an IPS file into memory.
 
     :param path: Path to the IPS to load.
+    :param data_source: Optional data source used to read the file.
     :return: A dictionary where the keys are the offset of the patch and the value is the data.
     """
-    with open(resolve_path(path), "rb") as ips_file:
-        header = ips_file.read(len(IPS_MAGIC))
-        if not header == IPS_MAGIC:
-            raise RuntimeError("File is not an IPS file (invalid header)")
+    source = _data_source(data_source)
+    data = source.read_bytes(str(path))
+    index = len(IPS_MAGIC)
+    if data[:index] != IPS_MAGIC:
+        raise RuntimeError("File is not an IPS file (invalid header)")
 
-        patch_data = dict()
-        while True:
-            offset = int.from_bytes(ips_file.read(3), byteorder="big", signed=False)
-            if offset == IPS_EOF:
-                break
+    patch_data = dict()
+    while True:
+        offset = int.from_bytes(data[index:index + 3], byteorder="big", signed=False)
+        index += 3
+        if offset == IPS_EOF:
+            break
 
-            length = int.from_bytes(ips_file.read(2), byteorder="big", signed=False)
-            if length == 0:
-                run_length = int.from_bytes(ips_file.read(2), byteorder="big", signed=False)
-                data = ips_file.read(1) * run_length
-            else:
-                data = ips_file.read(length)
+        length = int.from_bytes(data[index:index + 2], byteorder="big", signed=False)
+        index += 2
+        if length == 0:
+            run_length = int.from_bytes(data[index:index + 2], byteorder="big", signed=False)
+            index += 2
+            run_byte = data[index:index + 1]
+            index += 1
+            patch = run_byte * run_length
+        else:
+            patch = data[index:index + length]
+            index += length
 
-            patch_data[offset] = tuple(data)
+        patch_data[offset] = tuple(patch)
 
-        return patch_data
+    return patch_data
 
 
-def load_ips_files(*args) -> dict:
+def load_ips_files(*args, data_source=None) -> dict:
     """Loads a set of IPS files.
 
     :param args: List of IPS file paths to load.
+    :param data_source: Optional data source used to read the files.
     :return: A dictionary containing all the offsets & data of the patches.
     """
+    source = _data_source(data_source)
     complete = {}
     offset_file = {}
     loaded = []
@@ -62,7 +78,7 @@ def load_ips_files(*args) -> dict:
             continue
         loaded.append(file)
 
-        patches = load_ips_file(file)
+        patches = load_ips_file(file, source)
         for offset, data in patches.items():
             if offset in complete:
                 raise RuntimeWarning(f"Multiple patches targeted to {hex(offset)}: {file} vs {offset_file[offset]}")

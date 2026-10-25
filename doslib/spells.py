@@ -26,7 +26,7 @@ SpellExtraData = namedtuple("SpellExtraData",
 
 
 class Spells(object):
-    def __init__(self, rom: Rom):
+    def __init__(self, rom: Rom, data_source=None):
         # 130 Because:
         # 8 levels of magic, 8 spells per level (white + black) = 64 spells.
         # Spell name + help text for each = 64 x 2 = 128
@@ -41,7 +41,7 @@ class Spells(object):
             self.spell_data.append(SpellData(spell_data_stream))
             self.shuffled_permission.append(0)
 
-        for spell_data in load_tsv("data/SpellData.tsv"):
+        for spell_data in load_tsv("data/SpellData.tsv", data_source):
             extra = SpellExtraData(*spell_data)
             self.shuffled_permission[extra.spell_index] = decode_permission_string(extra.permissions)
 
@@ -73,9 +73,6 @@ class Spells(object):
 
     def spell_help(self, index: int) -> str:
         return self._name_help[(index * 2) + 1]
-
-    def spell_data(self, index: int) -> SpellData:
-        return self.spell_data[index]
 
     def __getitem__(self, index):
         return self.spell_data[index]

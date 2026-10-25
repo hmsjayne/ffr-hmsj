@@ -19,6 +19,7 @@ from copy import deepcopy
 from doslib.dos_utils import load_tsv
 from doslib.item import Item
 from doslib.items import Items
+from doslib.maps import ItemChest, MoneyChest
 from doslib.shopdata import ShopData
 
 ChestData = namedtuple("ChestData", ["chest_index", "type", "contents", "description", "map", "grade", "notes"])
@@ -27,7 +28,7 @@ MapToArea = namedtuple("MapToArea", ["map_index", "name", "area"])
 
 
 class InventoryGenerator(object):
-    def __init__(self, seed: str, items: Items, new_distribution: bool):
+    def __init__(self, seed: str, items: Items, new_distribution: bool, data_source=None):
         self.rng = random.Random()
         self.rng.seed(seed)
 
@@ -37,16 +38,16 @@ class InventoryGenerator(object):
         chest_data_file = "data/ChestData.tsv"
         map_to_area_file = "data/MapToArea_2.tsv" if new_distribution else "data/MapToArea.tsv"
         area_weights_file = "data/AreaWeights_2.tsv" if new_distribution else "data/AreaWeights.tsv"
-        for chest in load_tsv(chest_data_file):
+        for chest in load_tsv(chest_data_file, data_source):
             self.chests_data.append(ChestData(*chest))
 
         self.maps_to_area = {}
-        for map_area in load_tsv(map_to_area_file):
+        for map_area in load_tsv(map_to_area_file, data_source):
             map_area_data = MapToArea(*map_area)
             self.maps_to_area[map_area_data.map_index] = map_area_data.area
 
         self.area_weights = {}
-        for area_weight in load_tsv(area_weights_file):
+        for area_weight in load_tsv(area_weights_file, data_source):
             self.area_weights[area_weight[0]] = area_weight[1:]
 
 
@@ -141,3 +142,26 @@ def _grade_to_score(grade: str) -> int:
         else:
             return base_grade - 5
     return base_grade
+
+
+def randomize_treasure(rng, maps, chests: list, inventory_generator: InventoryGenerator):
+    for map_index in range(1, 0x76):
+        map_features = maps.get_map(map_index)
+        if len(map_features.chests) < 1:
+            continue
+
+        for map_chest in map_features.chests:
+            chest = chests[map_chest.chest_id]
+            if isinstance(chest, ItemChest) and chest.item_type == 0:
+                # Key item or linked chest -- don't change it
+                continue
+
+            contents = inventory_generator.get_inventory(map_index)
+            if contents.item_type == "gil":
+                new_chest = MoneyChest(0x0)
+                new_chest.qty = rng.randint(1, 0xfff) * rng.randint(1, 6)
+            else:
+                new_chest = ItemChest(0x80000000)
+                new_chest.item_type = Items.name_to_index(contents.item_type)
+                new_chest.item_id = contents.id
+            chests[map_chest.chest_id] = new_chest

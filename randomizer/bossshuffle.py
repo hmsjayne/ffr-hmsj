@@ -35,7 +35,7 @@ FIEND_2_ENCOUNTERS = [115, 116, 117, 118]
 
 
 class BossData:
-    def __init__(self, rom: Rom):
+    def __init__(self, rom: Rom, data_source=None):
         # Initialize data - the 8 boss spots that are changed, as well as the name, graphics and script blocks
         # If we don't randomize anything, get_patches() should return the same data we load in
         name_pointers = rom.open_bytestream(0x1DDD38, 0x280)
@@ -59,7 +59,7 @@ class BossData:
             self.scripts.append(EnemyScript(enemy_script_stream))
 
         self.boss_data = {}
-        for script in load_tsv("data/BossScriptData.tsv"):
+        for script in load_tsv("data/BossScriptData.tsv", data_source):
             entry = NewScript(*script)
             if entry.name not in self.boss_data:
                 self.boss_data[entry.name] = [None, None, None]

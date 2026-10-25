@@ -111,6 +111,11 @@ class Rom(object):
 
             # Now that we're caught up, plop the patch in, and update the working offset.
             patch = patches[offset]
+            if offset + len(patch) > len(self.rom_data):
+                raise RuntimeError(
+                    f"Patch at {hex(offset)} extends past the end of the ROM "
+                    f"({hex(offset + len(patch))} vs {hex(len(self.rom_data))})"
+                )
             new_data.extend(patch)
             working_offset = offset + len(patch)
 

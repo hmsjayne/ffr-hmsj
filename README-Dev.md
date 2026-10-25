@@ -107,3 +107,23 @@ behavior change is intentional:
 
 The base ROM is intentionally not stored in git. The golden tests verify its
 SHA-256 before running cases.
+
+## Core layout
+
+The Phase 1 refactor separates loading, policy, and patching:
+
+- `doslib/data_source.py` — filesystem/in-memory access to TSVs, scripts, and
+  IPS files. The TypeScript port will implement the same interface.
+- `randomizer/game_data.py` — loads ROM/TSV data once into a `GameData` model.
+- `randomizer/placement.py` / `placement_application.py` — key-item placement
+  data and applying placements to maps/vehicles.
+- `randomizer/shops.py`, `spells.py`, `treasure.py`, `gear.py`,
+  `map_updates.py` — individual randomization stages.
+- `randomizer/events.py` — event script loading, preprocessing, compilation.
+- `randomizer/patchset.py` — patch collection with duplicate-offset detection.
+- `randomizer/progress.py` — progress reporting without printing from the core.
+- `randomizer/api.py` — stable programmatic entry point used by the CLI and
+  oracle.
+
+The core no longer depends on the process working directory for data files;
+relative asset paths resolve from the repository/bundle root.

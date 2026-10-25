@@ -50,6 +50,17 @@ def test_stream_rejects_misaligned_reads():
         stream.get_u32()
 
 
+def test_stream_rejects_partial_reads():
+    with pytest.raises(RuntimeError, match="Unexpected end of stream"):
+        InputStream(bytearray(b"\x01"), check_alignment=False).get_u16()
+
+    with pytest.raises(RuntimeError, match="Unexpected end of stream"):
+        InputStream(bytearray(b"\x01\x02\x03"), check_alignment=False).get_u32()
+
+    with pytest.raises(RuntimeError, match="Unexpected end of stream"):
+        InputStream(bytearray(b"\x01"), check_alignment=False).peek_u16()
+
+
 def test_stream_from_string():
     stream = InputStream.from_string("ABC")
     assert stream.get_char() == "A"
