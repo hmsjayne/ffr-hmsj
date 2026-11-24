@@ -61,7 +61,9 @@ def lookup_event(rom: Rom, event_id: int) -> int:
     elif 0x1F40 <= event_id <= 0x202F:
         lut_id_offset = 0x1F40
         lut_base = 0x080073A0
-    elif 0x2328 <= event_id <= 0x2404:
+    elif 0x2328 <= event_id <= 0x2495:
+        # The Soul of Chaos table runs from 0x08006A98 up to the map event
+        # table at 0x08007050: 366 entries.
         lut_id_offset = 0x2328
         lut_base = 0x08006A98
     else:
