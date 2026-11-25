@@ -12,11 +12,13 @@
 
 """Tests for the e2s module. """
 
+import contextlib
+import io
 import struct
 import unittest
 
 from doslib.rom import Rom
-from event.e2s import lookup_event
+from event.e2s import disassemble, lookup_event
 
 
 def _rom_with_pointer(table_offset: int, pointer: int) -> Rom:
@@ -36,6 +38,32 @@ class TestLookupEvent(unittest.TestCase):
         rom = Rom(bytearray(0x8000))
         with self.assertRaises(ValueError):
             lookup_event(rom, 0x2496)
+
+
+def _disassemble_lines(script: bytes) -> list:
+    rom = Rom(bytearray(0x100) + bytearray(script))
+    output = io.StringIO()
+    with contextlib.redirect_stdout(output):
+        disassemble(rom, 0x100)
+    return output.getvalue().splitlines()
+
+
+class TestBattleCommands(unittest.TestCase):
+
+    def test_event_battle(self):
+        script = b'\x2b\x04\x05\xff' + b'\x00\x04\xff\xff'
+        self.assertEqual(_disassemble_lines(script), ["event_battle 0x5", "end_event"])
+
+    def test_battle_with_formation(self):
+        script = b'\x98\x0c\xff\xff\x09\x01\x0e\x00\x00\x00\x00\x00' + b'\x00\x04\xff\xff'
+        self.assertEqual(_disassemble_lines(script), ["battle 0x109 0xe", "end_event"])
+
+    def test_battle_with_formation_and_address(self):
+        script = (b'\x98\x0c\xff\xff\x09\x01\x0e\x00\x10\x01\x00\x08'
+                  b'\x01\x04\xff\xff'
+                  b'\x00\x04\xff\xff')
+        self.assertEqual(_disassemble_lines(script),
+                         ["battle 0x109 0xe .Label_1", "db 0x1 0x4 0xff 0xff", ".Label_1:", "end_event"])
 
 
 if __name__ == '__main__':

@@ -173,6 +173,13 @@ def _da_27(cmd: bytearray) -> str:
     return f"show_dialog"
 
 
+def _da_2b(cmd: bytearray) -> str:
+    # Index into the event battle table at 0x08216FB8: 4 byte records of
+    # u16 formation id and u8 battle background (handler at 0x0805DE9C).
+    battle_id = cmd[2]
+    return f"event_battle {hex(battle_id)}"
+
+
 def _da_2d(cmd: bytearray) -> tuple:
     jump_to = None
 
@@ -262,6 +269,24 @@ def _da_48(cmd: bytearray) -> tuple:
     return "call $$addr$$", sub_addr
 
 
+def _da_98(cmd: bytearray) -> tuple:
+    # Battle with a formation given directly (handler at 0x0806369C). It sets
+    # the same formation and background fields as event_battle (only the low
+    # byte of the background is used). When the address is non-zero the
+    # script continues there after the battle, unless the byte at offset 0x41
+    # of the script state is 2; otherwise it continues with the next command.
+    formation_id = array.array("H", cmd[4:6])[0]
+    background = array.array("H", cmd[6:8])[0]
+    cmd_text = f"battle {hex(formation_id)} {hex(background)}"
+
+    addr = None
+    if len(cmd) >= 0xc:
+        addr = array.array("I", cmd[8:12])[0]
+    if not addr:
+        return cmd_text, None
+    return f"{cmd_text} $$addr$$", addr
+
+
 def disassemble(rom: Rom, offset: int) -> dict:
     rom_data = rom.rom_data
     working = dict()
@@ -326,6 +351,8 @@ def disassemble(rom: Rom, offset: int) -> dict:
             working[offset] = _da_1f(full_cmd)
         elif cmd == 0x27:
             working[offset] = _da_27(full_cmd)
+        elif cmd == 0x2b:
+            working[offset] = _da_2b(full_cmd)
         elif cmd == 0x2d:
             cmd_text, jump_target = _da_2d(full_cmd)
             if jump_target is not None:
@@ -369,6 +396,14 @@ def disassemble(rom: Rom, offset: int) -> dict:
                     labels[jump_target] = f".Sub_{len(labels) + 1}"
                     print(f"{labels[jump_target]}:")
                     disassemble(rom, addr_to_offset(jump_target))
+                label = labels[jump_target]
+                cmd_text = cmd_text.replace("$$addr$$", label)
+            working[offset] = cmd_text
+        elif cmd == 0x98:
+            cmd_text, jump_target = _da_98(full_cmd)
+            if jump_target is not None:
+                if jump_target not in labels:
+                    labels[jump_target] = f".Label_{len(labels) + 1}"
                 label = labels[jump_target]
                 cmd_text = cmd_text.replace("$$addr$$", label)
             working[offset] = cmd_text
